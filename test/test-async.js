@@ -69,7 +69,7 @@ exports.testWaterfall = function(test){
             test.equals(arg1, 'one');
             test.equals(arg2, 'two');
             test.equals(arg3, 'three');
-            process.nextTick(function(){callback('four');});
+            callback('four');
         },
         function(arg4, callback){
             call_order.push('fn4');
