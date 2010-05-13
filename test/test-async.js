@@ -51,7 +51,7 @@ exports.testAuto = function(test){
 };
 
 exports.testWaterfall = function(test){
-    test.expect(6);
+    test.expect(7);
     var call_order = [];
     async.waterfall([
         function(callback){
@@ -74,6 +74,8 @@ exports.testWaterfall = function(test){
         function(arg4, callback){
             call_order.push('fn4');
             test.same(call_order, ['fn1','fn2','fn3','fn4']);
+            // don't pass callback to last in waterfall chain
+            test.ok(callback === undefined);
             test.done();
         }
     ]);
