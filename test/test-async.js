@@ -80,3 +80,51 @@ exports.testWaterfall = function(test){
         }
     ]);
 };
+
+exports.testWaterfallAsync = function(test){
+    var call_order = [];
+    async.waterfall([
+        function(callback){
+            call_order.push(1);
+            callback();
+            call_order.push(2);
+        },
+        function(callback){
+            call_order.push(3);
+            callback();
+        },
+        function(){
+            test.same(call_order, [1,2,3]);
+            test.done();
+        }
+    ]);
+};
+
+exports.testWaterfallMultipleCallback = function(test){
+    var call_order = [];
+    var arr = [
+        function(callback){
+            call_order.push(1);
+            // call the callback twice. this should call function 2 twice
+            callback('one', 'two');
+            callback('one', 'two');
+        },
+        function(arg1, arg2, callback){
+            call_order.push(2);
+            callback(arg1, arg2, 'three');
+        },
+        function(arg1, arg2, arg3, callback){
+            call_order.push(3);
+            callback('four');
+        },
+        function(arg4){
+            call_order.push(4);
+            arr[3] = function(){
+                call_order.push(4);
+                test.same(call_order, [1,2,2,3,3,4,4]);
+                test.done();
+            };
+        }
+    ];
+    async.waterfall(arr);
+};
