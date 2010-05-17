@@ -128,3 +128,39 @@ exports.testWaterfallMultipleCallback = function(test){
     ];
     async.waterfall(arr);
 };
+
+exports.testParallel = function(test){
+    async.parallel([
+        function(callback){
+            setTimeout(function(){callback(1);}, 100);
+        },
+        function(callback){
+            setTimeout(function(){callback(2);}, 200);
+        },
+        function(callback){
+            setTimeout(function(){callback(3,3);}, 50);
+        }
+    ],
+    function(results){
+        test.same(results, [[3,3],1,2]);
+        test.done();
+    });
+};
+
+exports.testSeries = function(test){
+    async.series([
+        function(callback){
+            setTimeout(function(){callback(1);}, 100);
+        },
+        function(callback){
+            setTimeout(function(){callback(2);}, 200);
+        },
+        function(callback){
+            setTimeout(function(){callback(3,3);}, 50);
+        }
+    ],
+    function(results){
+        test.same(results, [1,2,[3,3]]);
+        test.done();
+    });
+};
