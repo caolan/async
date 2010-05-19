@@ -164,3 +164,52 @@ exports.testSeries = function(test){
         test.done();
     });
 };
+
+exports.testIterator = function(test){
+    var call_order = [];
+    var iterator = async.iterator([
+        function(){call_order.push(1);},
+        function(arg1){
+            test.equals(arg1, 'arg1');
+            call_order.push(2);
+        },
+        function(arg1, arg2){
+            test.equals(arg1, 'arg1');
+            test.equals(arg2, 'arg2');
+            call_order.push(3);
+        },
+    ]);
+    iterator();
+    test.same(call_order, [1]);
+    var iterator2 = iterator();
+    test.same(call_order, [1,1]);
+    var iterator3 = iterator2('arg1');
+    test.same(call_order, [1,1,2]);
+    var iterator4 = iterator3('arg1', 'arg2');
+    test.same(call_order, [1,1,2,3]);
+    test.equals(iterator4, undefined);
+    test.done();
+};
+
+exports.testIteratorNext = function(test){
+    var call_order = [];
+    var iterator = async.iterator([
+        function(){call_order.push(1);},
+        function(arg1){
+            test.equals(arg1, 'arg1');
+            call_order.push(2);
+        },
+        function(arg1, arg2){
+            test.equals(arg1, 'arg1');
+            test.equals(arg2, 'arg2');
+            call_order.push(3);
+        },
+    ]);
+    var fn = iterator.next();
+    var iterator2 = fn('arg1');
+    test.same(call_order, [2]);
+    iterator2('arg1','arg2');
+    test.same(call_order, [2,3]);
+    test.equals(iterator2.next(), undefined);
+    test.done();
+};
