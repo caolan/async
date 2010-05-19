@@ -1,48 +1,30 @@
 var async = require('async');
 
 
-exports.testRequires = function(test){
-    var fn = function(){return 'test';};
-    test.same(
-        async.requires(['task1','task2'], fn),
-        {requires: ['task1','task2'], run: fn}
-    );
-    test.done();
-};
-
 exports.testAuto = function(test){
     var callOrder = [];
     var testdata = [{test: 'test'}];
     async.auto({
-        task1: {
-            requires: ['task2'],
-            run: function(task){
-                setTimeout(function(){
-                    callOrder.push('task1');
-                    task.done();
-                }, 100);
-            }
-        },
-        task2: function(task){
+        task1: ['task2', function(callback){
+            setTimeout(function(){
+                callOrder.push('task1');
+                callback();
+            }, 100);
+        }],
+        task2: function(callback){
             setTimeout(function(){
                 callOrder.push('task2');
-                task.done();
+                callback();
             }, 200);
         },
-        task3: {
-            requires: ['task2'],
-            run: function(task){
-                callOrder.push('task3');
-                task.done();
-            }
-        },
-        task4: {
-            requires: ['task1', 'task2'],
-            run: function(task){
-                callOrder.push('task4');
-                task.done();
-            }
-        }
+        task3: ['task2', function(callback){
+            callOrder.push('task3');
+            callback();
+        }],
+        task4: ['task1', 'task2', function(callback){
+            callOrder.push('task4');
+            callback();
+        }]
     },
     function(err){
         test.same(callOrder, ['task2','task3','task1','task4']);
