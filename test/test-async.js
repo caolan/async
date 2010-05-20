@@ -9,13 +9,13 @@ exports.testAuto = function(test){
             setTimeout(function(){
                 callOrder.push('task1');
                 callback();
-            }, 100);
+            }, 50);
         }],
         task2: function(callback){
             setTimeout(function(){
                 callOrder.push('task2');
                 callback();
-            }, 200);
+            }, 100);
         },
         task3: ['task2', function(callback){
             callOrder.push('task3');
@@ -32,8 +32,15 @@ exports.testAuto = function(test){
     });
 };
 
+exports.testAutoNoCallback = function(test){
+    async.auto({
+        task1: function(callback){callback();},
+        task2: ['task1', function(callback){callback(); test.done();}],
+    });
+};
+
 exports.testWaterfall = function(test){
-    test.expect(7);
+    test.expect(6);
     var call_order = [];
     async.waterfall([
         function(callback){
@@ -44,7 +51,7 @@ exports.testWaterfall = function(test){
             call_order.push('fn2');
             test.equals(arg1, 'one');
             test.equals(arg2, 'two');
-            setTimeout(function(){callback(arg1, arg2, 'three');}, 100);
+            setTimeout(function(){callback(arg1, arg2, 'three');}, 50);
         },
         function(arg1, arg2, arg3, callback){
             call_order.push('fn3');
@@ -56,10 +63,17 @@ exports.testWaterfall = function(test){
         function(arg4, callback){
             call_order.push('fn4');
             test.same(call_order, ['fn1','fn2','fn3','fn4']);
-            // don't pass callback to last in waterfall chain
-            test.ok(callback === undefined);
-            test.done();
+            callback('test');
         }
+    ], function(){
+        test.done();
+    });
+};
+
+exports.testWaterfallNoCallback = function(test){
+    async.waterfall([
+        function(callback){callback();},
+        function(callback){callback(); test.done();},
     ]);
 };
 
@@ -114,13 +128,13 @@ exports.testWaterfallMultipleCallback = function(test){
 exports.testParallel = function(test){
     async.parallel([
         function(callback){
-            setTimeout(function(){callback(1);}, 100);
+            setTimeout(function(){callback(1);}, 50);
         },
         function(callback){
-            setTimeout(function(){callback(2);}, 200);
+            setTimeout(function(){callback(2);}, 100);
         },
         function(callback){
-            setTimeout(function(){callback(3,3);}, 50);
+            setTimeout(function(){callback(3,3);}, 25);
         }
     ],
     function(results){
@@ -129,22 +143,55 @@ exports.testParallel = function(test){
     });
 };
 
+
+exports.testParallel = function(test){
+    async.parallel([
+        function(callback){
+            setTimeout(function(){callback(1);}, 50);
+        },
+        function(callback){
+            setTimeout(function(){callback(2);}, 100);
+        },
+        function(callback){
+            setTimeout(function(){callback(3,3);}, 25);
+        }
+    ],
+    function(results){
+        test.same(results, [[3,3],1,2]);
+        test.done();
+    });
+};
+
+exports.testParallelNoCallback = function(test){
+    async.parallel([
+        function(callback){callback();},
+        function(callback){callback(); test.done();},
+    ]);
+};
+
 exports.testSeries = function(test){
     async.series([
         function(callback){
-            setTimeout(function(){callback(1);}, 100);
+            setTimeout(function(){callback(1);}, 50);
         },
         function(callback){
-            setTimeout(function(){callback(2);}, 200);
+            setTimeout(function(){callback(2);}, 100);
         },
         function(callback){
-            setTimeout(function(){callback(3,3);}, 50);
+            setTimeout(function(){callback(3,3);}, 25);
         }
     ],
     function(results){
         test.same(results, [1,2,[3,3]]);
         test.done();
     });
+};
+
+exports.testSeriesNoCallback = function(test){
+    async.series([
+        function(callback){callback();},
+        function(callback){callback(); test.done();},
+    ]);
 };
 
 exports.testIterator = function(test){
