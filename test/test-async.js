@@ -32,6 +32,26 @@ exports.testAuto = function(test){
     });
 };
 
+exports.testAutoError = function(test){
+    test.expect(1);
+    async.auto({
+        task1: function(callback){
+            callback('testerror');
+        },
+        task2: ['task1', function(callback){
+            test.ok(false, 'task2 should not be called');
+            callback();
+        }],
+        task3: function(callback){
+            callback('testerror2');
+        },
+    },
+    function(err){
+        test.equals(err, 'testerror');
+    });
+    setTimeout(test.done, 200);
+};
+
 exports.testAutoNoCallback = function(test){
     async.auto({
         task1: function(callback){callback();},
@@ -65,7 +85,7 @@ exports.testWaterfall = function(test){
             test.same(call_order, ['fn1','fn2','fn3','fn4']);
             callback('test');
         }
-    ], function(){
+    ], function(err){
         test.done();
     });
 };
@@ -125,41 +145,39 @@ exports.testWaterfallMultipleCallback = function(test){
     async.waterfall(arr);
 };
 
+
 exports.testParallel = function(test){
     async.parallel([
         function(callback){
-            setTimeout(function(){callback(1);}, 50);
+            setTimeout(function(){callback(null, 1);}, 50);
         },
         function(callback){
-            setTimeout(function(){callback(2);}, 100);
+            setTimeout(function(){callback(null, 2);}, 100);
         },
         function(callback){
-            setTimeout(function(){callback(3,3);}, 25);
+            setTimeout(function(){callback(null, 3,3);}, 25);
         }
     ],
-    function(results){
+    function(err, results){
+        test.equals(err, null);
         test.same(results, [[3,3],1,2]);
         test.done();
     });
 };
 
-
-exports.testParallel = function(test){
+exports.testParallelError = function(test){
     async.parallel([
         function(callback){
-            setTimeout(function(){callback(1);}, 50);
+            callback('error', 1);
         },
         function(callback){
-            setTimeout(function(){callback(2);}, 100);
-        },
-        function(callback){
-            setTimeout(function(){callback(3,3);}, 25);
+            callback('error2', 2);
         }
     ],
-    function(results){
-        test.same(results, [[3,3],1,2]);
-        test.done();
+    function(err, results){
+        test.equals(err, 'error');
     });
+    setTimeout(test.done, 200);
 };
 
 exports.testParallelNoCallback = function(test){
@@ -172,16 +190,17 @@ exports.testParallelNoCallback = function(test){
 exports.testSeries = function(test){
     async.series([
         function(callback){
-            setTimeout(function(){callback(1);}, 50);
+            setTimeout(function(){callback(null, 1);}, 50);
         },
         function(callback){
-            setTimeout(function(){callback(2);}, 100);
+            setTimeout(function(){callback(null, 2);}, 100);
         },
         function(callback){
-            setTimeout(function(){callback(3,3);}, 25);
+            setTimeout(function(){callback(null, 3,3);}, 25);
         }
     ],
-    function(results){
+    function(err, results){
+        test.equals(err, null);
         test.same(results, [1,2,[3,3]]);
         test.done();
     });
