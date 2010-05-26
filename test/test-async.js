@@ -261,3 +261,222 @@ exports.testIteratorNext = function(test){
     test.equals(iterator2.next(), undefined);
     test.done();
 };
+
+exports.testForEach = function(test){
+    var args = [];
+    async.forEach([1,3,2], function(x, callback){
+        setTimeout(function(){
+            args.push(x);
+            callback();
+        }, x*50);
+    }, function(err){
+        test.same(args, [1,2,3]);
+        test.done();
+    });
+};
+
+exports.testForEachError = function(test){
+    test.expect(1);
+    async.forEach([1,2,3], function(x, callback){
+        callback('error');
+    }, function(err){
+        test.equals(err, 'error');
+    });
+    setTimeout(test.done, 100);
+};
+
+exports.testForEachSeries = function(test){
+    var args = [];
+    async.forEachSeries([1,3,2], function(x, callback){
+        setTimeout(function(){
+            args.push(x);
+            callback();
+        }, x*50);
+    }, function(err){
+        test.same(args, [1,3,2]);
+        test.done();
+    });
+};
+
+exports.testForEachSeriesError = function(test){
+    test.expect(2);
+    var call_order = [];
+    async.forEachSeries([1,2,3], function(x, callback){
+        call_order.push(x);
+        callback('error');
+    }, function(err){
+        test.same(call_order, [1]);
+        test.equals(err, 'error');
+    });
+    setTimeout(test.done, 100);
+};
+
+exports.testMap = function(test){
+    async.map([1,3,2], function(x, callback){
+        setTimeout(function(){
+            callback(null, x*2);
+        }, x*50);
+    }, function(err, results){
+        test.same(results, [2,4,6]);
+        test.done();
+    });
+};
+
+exports.testMapError = function(test){
+    test.expect(1);
+    async.map([1,2,3], function(x, callback){
+        callback('error');
+    }, function(err, results){
+        test.equals(err, 'error');
+    });
+    setTimeout(test.done, 100);
+};
+
+exports.testMapSeries = function(test){
+    async.mapSeries([1,3,2], function(x, callback){
+        setTimeout(function(){
+            callback(null, x*2);
+        }, x*50);
+    }, function(err, results){
+        test.same(results, [2,6,4]);
+        test.done();
+    });
+};
+
+exports.testMapSeriesError = function(test){
+    test.expect(1);
+    async.mapSeries([1,2,3], function(x, callback){
+        callback('error');
+    }, function(err, results){
+        test.equals(err, 'error');
+    });
+    setTimeout(test.done, 100);
+};
+
+exports.testReduce = function(test){
+    async.reduce([1,3,2], 0, function(a, x, callback){
+        callback(null, a + x);
+    }, function(err, result){
+        test.equals(result, 6);
+        test.done();
+    });
+};
+
+exports.testReduceError = function(test){
+    test.expect(1);
+    async.reduce([1,2,3], 0, function(a, x, callback){
+        callback('error');
+    }, function(err, result){
+        test.equals(err, 'error');
+    });
+    setTimeout(test.done, 100);
+};
+
+exports.testReduceSeries = function(test){
+    async.reduceSeries([1,3,2], [], function(a, x, callback){
+        callback(null, a.concat(x));
+    }, function(err, result){
+        test.same(result, [1,3,2]);
+        test.done();
+    });
+};
+
+exports.testReduceSeriesError = function(test){
+    test.expect(1);
+    async.reduceSeries([1,2,3], 0, function(a, x, callback){
+        callback('error');
+    }, function(err, result){
+        test.equals(err, 'error');
+    });
+    setTimeout(test.done, 100);
+};
+
+exports.testFilter = function(test){
+    async.filter([3,1,2], function(x, callback){
+        setTimeout(function(){callback(x % 2);}, x*50);
+    }, function(results){
+        test.same(results, [1,3]);
+        test.done();
+    });
+};
+
+exports.testFilterSeries = function(test){
+    async.filterSeries([3,1,2], function(x, callback){
+        setTimeout(function(){callback(x % 2);}, x*50);
+    }, function(results){
+        test.same(results, [3,1]);
+        test.done();
+    });
+};
+
+exports.testSomeTrue = function(test){
+    async.some([3,1,2], function(x, callback){
+        process.nextTick(function(){
+            callback(x === 1);
+        });
+    }, function(result){
+        test.equals(result, true);
+        test.done();
+    });
+};
+
+exports.testSomeFalse = function(test){
+    async.some([3,1,2], function(x, callback){
+        process.nextTick(function(){
+            callback(x === 10);
+        });
+    }, function(result){
+        test.equals(result, false);
+        test.done();
+    });
+};
+
+exports.testSomeEarlyReturn = function(test){
+    var call_order = [];
+    async.some([1,2,3], function(x, callback){
+        setTimeout(function(){
+            call_order.push(x);
+            callback(x === 1);
+        }, x*50);
+    }, function(result){
+        call_order.push('callback');
+    });
+    setTimeout(function(){
+        test.same(call_order, [1,'callback',2,3]);
+        test.done();
+    }, 200);
+};
+
+exports.testEveryTrue = function(test){
+    async.every([1,2,3], function(x, callback){
+        process.nextTick(function(){callback(true);});
+    }, function(result){
+        test.equals(result, true);
+        test.done();
+    });
+};
+
+exports.testEveryFalse = function(test){
+    async.every([1,2,3], function(x, callback){
+        process.nextTick(function(){callback(x % 2);});
+    }, function(result){
+        test.equals(result, false);
+        test.done();
+    });
+};
+
+exports.testEveryEarlyReturn = function(test){
+    var call_order = [];
+    async.every([1,2,3], function(x, callback){
+        setTimeout(function(){
+            call_order.push(x);
+            callback(x === 1);
+        }, x*50);
+    }, function(result){
+        call_order.push('callback');
+    });
+    setTimeout(function(){
+        test.same(call_order, [1,2,'callback',3]);
+        test.done();
+    }, 200);
+};
