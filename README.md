@@ -19,7 +19,30 @@ provide some higher-order functions that work when writing async code.
 
 ## Collections
 
-Not yet documented.
+Not yet fully documented.
+
+### forEach(arr, iterator, callback)
+
+Iterates over an array, applying an iterator function to each, in parallel.
+The iterator is called with an item from the list and a callback for when it
+has finished. If the iterator passes an error to this callback, the main
+callback for the forEach function is immediately called with the error.
+
+Note, that since this function applies the iterator to each item in parallel
+there is no guarantee that the iterator functions will complete in order.
+
+__Arguments__
+
+* arr - An array to iterate over.
+* iterator(item, callback) - A function to apply to each item in the array.
+  The iterator is passed a callback which is must call once it has completed.
+* callback(err) - A callback which is called after all the iterator functions
+  have finished, or an error has occurred.
+
+### forEachSeries(arr, iterator, callback)
+
+The same as forEach only the iterators are applied in series. The next
+iterator is only called once the current one has completed processing.
 
 
 ## Flow Control
