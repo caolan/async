@@ -1,32 +1,26 @@
 # Async
-_Higher-order functions and common patterns for asynchronous code_
+_Higher-order functions and common patterns for asynchronous code in node.js_
 
-Writing an async library has become a bit of a right of passage for node
-developers and I really don't want to add to this myriad of already great
-modules. Really.
+I've so far avoided using the exising async modules in favour of the standard
+callbacks provided by node. When writing modules, I find sticking to the
+convention of using a single callback makes the API easier to understand, and
+allows people to wrap the module with other methods of handling async code if
+they so wish.
 
-However (you saw that coming!), when I'm using node, I want to stay fairly
-close to the vanilla async implementation. When writing my own modules I try
-to follow the convention of using a single callback with an optional error as
-the first argument. This makes the API easier to understand, and allows people
-to wrap the API with other methods of handling async code if they so wish.
-
-Because of this, I've avoided using the exising async wrapper modules in favour
-of the standard callbacks provided by node. However, I've found myself
-repeating a number of patterns, so I've decided to abstract some of the more
-common ones into a separate module. Aha! I hear you say. You've fallen into
-the trap, and now you too are implementing a new way of doing async!
-
-Well, not quite. What I've ended up with is a few higher-order functions that
-operate on async code using the convention of a single callback. This includes
-the usual 'functional' suspects (map, reduce, filter, forEach...) as well as
-some common patterns for running blocks of async code (parallel, series,
-waterfall...).
+However, I've found myself repeating a number of patterns, so I've decided to
+abstract some of the more common ones into a separate module. What I've ended
+up with is a few higher-order functions that operate on async code using the
+convention of a single callback. This includes the usual 'functional'
+suspects (map, reduce, filter, forEach...) as well as some common patterns
+for running blocks of async code (parallel, series, waterfall...).
 
 __This is not an attempt to replace the standard callback mechanism in
-node.__ If you're interested in other ways to manage async code, take a
-look at the current implementations of the old node Promise objects or
-modules like node-continuables.
+node.__ In fact, it is designed to work as seamlessly as possible with the
+existing node modules, and any other module which follows those conventions.
+If you're interested in other ways to manage async code, then you may like
+to take a look at the new implementation of the old node Promise objects or
+alternative modules like node-continuables.
+
 
 ## API
 
