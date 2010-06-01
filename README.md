@@ -2,7 +2,7 @@
 _Higher-order functions and common patterns for asynchronous code_
 
 Writing an async library has become a bit of a right of passage for node
-developers and really I don't want to add to this myriad of already great
+developers and I really don't want to add to this myriad of already great
 modules. Really.
 
 However (you saw that coming!), when I'm using node, I want to stay fairly
@@ -20,15 +20,17 @@ the trap, and now you too are implementing a new way of doing async!
 Well, not quite. What I've ended up with is a few higher-order functions that
 operate on async code using the convention of a single callback. This includes
 the usual 'functional' suspects (map, reduce, filter, forEach...) as well as
-some common patterns for running blocks of code that are asynchronous
-(parallel, series, waterfall...).
+some common patterns for running blocks of async code (parallel, series,
+waterfall...).
 
 __This is not an attempt to replace the standard callback mechanism in
 node.__ If you're interested in other ways to manage async code, take a
 look at the current implementations of the old node Promise objects or
 modules like node-continuables.
 
-## This module provides
+## API
+
+### Collections
 
 * __forEach (forEachSeries)__ - Applies an async iterator to each item in an
   array.
@@ -42,6 +44,9 @@ modules like node-continuables.
   async test.
 * __every__ - Returns true if evert element in the array satisfies an async
   test.
+
+### Flow Control
+
 * __series__ - Run an array of functions in series, each one running once the
   previous function has completed.
 * __parallel__ - Run an array of functions in parallel, without waiting until
