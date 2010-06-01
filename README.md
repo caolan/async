@@ -1,29 +1,64 @@
 # Async
-_Commonly used patterns for asynchronous code in node.js_
+_Higher-order functions and common patterns for asynchronous code_
 
-Writing an async library has become a bit of a right of passage for node.js
-developers. There are already lots of interesting ideas out there and I 
-don't want to add to this myriad of already great modules. Really. Its just
-that I like my Javascript to look like Javascript, and when I'm using node.js,
-I want to stay fairly close to the vanilla async implementation.
+Writing an async library has become a bit of a right of passage for node
+developers and really I don't want to add to this myriad of already great
+modules. Really.
+
+However (you saw that coming!), when I'm using node, I want to stay fairly
+close to the vanilla async implementation. When writing my own modules I try
+to follow the convention of using a single callback with an optional error as
+the first argument. This makes the API easier to understand, and allows people
+to wrap the API with other methods of handling async code if they so wish.
 
 Because of this, I've avoided using the exising async wrapper modules in favour
 of the standard callbacks provided by node. However, I've found myself
 repeating a number of patterns, so I've decided to abstract some of the more
-common ones into a separate module. __This is not an attempt to replace the
-standard callback mechanism in node.js.__ Its just some utility functions for
-writing async code, sticking as closely as possible the node's normal
-callbacks. The aim is to play nicely with node's existing async functions, and
-provide some higher-order functions that work when writing async code.
+common ones into a separate module. Aha! I hear you say. You've fallen into
+the trap, and now you too are implementing a new way of doing async!
+
+Well, not quite. What I've ended up with is a few higher-order functions that
+operate on async code using the convention of a single callback. This includes
+the usual 'functional' suspects (map, reduce, filter, forEach...) as well as
+some common patterns for running blocks of code that are asynchronous
+(parallel, series, waterfall...).
+
+__This is not an attempt to replace the standard callback mechanism in
+node.__ If you're interested in other ways to manage async code, take a
+look at the current implementations of the old node Promise objects or
+modules like node-continuables.
+
+## This module provides
+
+* __forEach (forEachSeries)__ - Applies an async iterator to each item in an
+  array.
+* __map (mapSeries)__ - Produces a new array of values by mapping each value
+  in the given array through an async iterator function.
+* __filter (filterSeries)__ - Returns a new array of all the values which pass
+  an async truth test.
+* __reduce__ - Reduces a list of values into a single value using an async
+  iterator to return each successive step.
+* __some__ - Returns true if at least one element in the array satisfies an
+  async test.
+* __every__ - Returns true if evert element in the array satisfies an async
+  test.
+* __series__ - Run an array of functions in series, each one running once the
+  previous function has completed.
+* __parallel__ - Run an array of functions in parallel, without waiting until
+  the previous function has completed.
+* __waterfall__ - Runs an array of functions in series, each passing their
+  results to the next in the array.
+* __auto__ - Determines the best order for running functions based on their
+  requirements.
+* __iterator__ - Creates an iterator function which calls the next function in
+  the array, returning a continuation to call the next one after that.
 
 
 ## Collections
 
-Not yet fully documented.
-
 ### forEach(arr, iterator, callback)
 
-Iterates over an array, applying an iterator function to each, in parallel.
+Applies an iterator function to each item in an array, in parallel.
 The iterator is called with an item from the list and a callback for when it
 has finished. If the iterator passes an error to this callback, the main
 callback for the forEach function is immediately called with the error.
@@ -35,14 +70,173 @@ __Arguments__
 
 * arr - An array to iterate over.
 * iterator(item, callback) - A function to apply to each item in the array.
-  The iterator is passed a callback which is must call once it has completed.
+  The iterator is passed a callback which must be called once it has completed.
 * callback(err) - A callback which is called after all the iterator functions
   have finished, or an error has occurred.
 
+__Example__
+
+    // assuming openFiles is an array of file names and saveFile is a function
+    // to save the modified contents of that file:
+
+    async.forEach(openFiles, saveFile, function(err){
+        // if any of the saves produced an error, err would equal that error
+    });
+
 ### forEachSeries(arr, iterator, callback)
 
-The same as forEach only the iterators are applied in series. The next
-iterator is only called once the current one has completed processing.
+The same as forEach only the iterator is applied to each item in the array in
+series. The next iterator is only called once the current one has completed
+processing. This means the iterator functions will complete in order.
+
+
+### map(arr, iterator, callback)
+
+Produces a new array of values by mapping each value in the given array through
+the iterator function. The iterator is called with an item from the array and a
+callback for when it has finished processing. The callback takes 2 arguments, 
+an error and the transformed item from the array. If the iterator passes an
+error to this callback, the main callback for the map function is immediately
+called with the error.
+
+Note, that since this function applies the iterator to each item in parallel
+there is no guarantee that the iterator functions will complete in order. The
+results array can be in a different order to the source array. If you need the
+order to be the same, then use mapSeries instead.
+
+__Arguments__
+
+* arr - An array to iterate over.
+* iterator(item, callback) - A function to apply to each item in the array.
+  The iterator is passed a callback which must be called once it has completed
+  with an error (which can be null) and a transformed item.
+* callback(err, results) - A callback which is called after all the iterator
+  functions have finished, or an error has occurred. Results is an array of the
+  transformed items from the original array.
+
+__Example__
+
+    async.map(['file1','file2','file3'], fs.stat, function(err, results){
+        // results is now an array of stats for each file
+    });
+
+### mapSeries(arr, iterator, callback)
+
+The same as map only the iterator is applied to each item in the array in
+series. The next iterator is only called once the current one has completed
+processing, meaning the results array will be in the same order as the
+original.
+
+
+### filter(arr, iterator, callback)
+
+Returns a new array of all the values which pass an async truth test.
+_The callback for each iterator call only accepts a single argument of true or
+false, it does not accept an error argument first!_ This is inline with the
+way node libraries work with truth tests like path.exists. This operation is
+performed in parallel, so the results array may be in a different order to the
+original.
+
+__Arguments__
+
+* arr - An array to iterate over.
+* iterator(item, callback) - A truth test to apply to each item in the array.
+  The iterator is passed a callback which must be called once it has completed.
+* callback(results) - A callback which is called after all the iterator
+  functions have finished.
+
+__Example__
+
+    async.filter(['file1','file2','file3'], path.exists, function(results){
+        // results now equals an array of the existing files
+    });
+
+### filterSeries(arr, iterator, callback)
+
+The same as filter only the iterator is applied to each item in the array in
+series. The next iterator is only called once the current one has completed
+processing, meaning the results array will be in the same order as the
+original.
+
+
+### reduce(arr, memo, iterator, callback)
+
+Reduces a list of values into a single value using an async iterator to return
+each successive step. Memo is the initial state of the reduction. This
+function only operates in series. For performance reasons, it may make sense to
+split a call to this function into a parallel map, then use the normal
+Array.prototype.reduce on the results. This function is for situations where
+each step in the reduction needs to be async, if you can get the data before
+reducing it then its probably a good idea to do so.
+
+__Arguments__
+
+* arr - An array to iterator over.
+* memo - The initial state of the reduction.
+* iterator(memo, item, callback) - A function applied to each item in the
+  array to produce the next step in the reduction. The iterator is passed a
+  callback which accepts an optional error as its first argument, and the state
+  of the reduction as the second. If an error is passed to the callback, the
+  reduction is stopped and the main callback is immediately called with the
+  error.
+* callback(err, result) - A callback which is called after all the iterator
+  functions have finished. Result is the reduced value.
+
+__Example__
+
+    async.reduce([1,2,3], 0, function(memo, item, callback){
+        // pointless async:
+        process.nextTick(function(){
+            callback(null, memo + item)
+        });
+    }, function(err, result){
+        // result is now equal to the last value of memo, which is 6
+    });
+
+### some
+
+Returns true if at least one element in the array satisfies an async test.
+_The callback for each iterator call only accepts a single argument of true or
+false, it does not accept an error argument first!_ This is inline with the
+way node libraries work with truth tests like path.exists. Once any iterator
+call returns true, the main callback is immediately called.
+
+__Arguments__
+
+* arr - An array to iterator over.
+* iterator(item, callback) - A truth test to apply to each item in the array.
+  The iterator is passed a callback which must be called once it has completed.
+* callback(result) - A callback which is called as soon as any iterator returns
+  true, or after all the iterator functions have finished. Result will be
+  either true or false depending on the values of the async tests.
+
+__Example__
+
+    async.some(['file1','file2','file3'], path.exists, function(result){
+        // if result is true then at least one of the files exists
+    });
+
+### every
+
+Returns true if evert element in the array satisfies an async test.
+_The callback for each iterator call only accepts a single argument of true or
+false, it does not accept an error argument first!_ This is inline with the
+way node libraries work with truth tests like path.exists.
+
+__Arguments__
+
+* arr - An array to iterator over.
+* iterator(item, callback) - A truth test to apply to each item in the array.
+  The iterator is passed a callback which must be called once it has completed.
+* callback(result) - A callback which is called after all the iterator
+  functions have finished. Result will be either true or false depending on
+  the values of the async tests.
+
+__Example__
+
+    async.every(['file1','file2','file3'], path.exists, function(result){
+        // if result is true then every file exists
+    });
 
 
 ## Flow Control
