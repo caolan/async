@@ -395,28 +395,18 @@ exports['reduce'] = function(test){
     });
 };
 
-exports['reduce error'] = function(test){
-    test.expect(1);
-    async.reduce([1,2,3], 0, function(a, x, callback){
-        callback('error');
+exports['reduce async with non-reference memo'] = function(test){
+    async.reduce([1,3,2], 0, function(a, x, callback){
+        setTimeout(function(){callback(null, a + x)}, Math.random()*100);
     }, function(err, result){
-        test.equals(err, 'error');
-    });
-    setTimeout(test.done, 50);
-};
-
-exports['reduceSeries'] = function(test){
-    async.reduceSeries([1,3,2], [], function(a, x, callback){
-        callback(null, a.concat(x));
-    }, function(err, result){
-        test.same(result, [1,3,2]);
+        test.equals(result, 6);
         test.done();
     });
 };
 
-exports['reduceSeries error'] = function(test){
+exports['reduce error'] = function(test){
     test.expect(1);
-    async.reduceSeries([1,2,3], 0, function(a, x, callback){
+    async.reduce([1,2,3], 0, function(a, x, callback){
         callback('error');
     }, function(err, result){
         test.equals(err, 'error');
