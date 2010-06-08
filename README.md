@@ -370,10 +370,10 @@ __Example__
         write_file: ['get_data', 'make_folder', function(callback){
             // once there is some data and the directory exists,
             // write the data to a file in the directory
-        },
+        }],
         email_link: ['write_file', function(callback){
             // once the file is written let's email a link to it...
-        }
+        }]
     });
 
 This is a fairly trivial example, but to do this using the basic parallel and
