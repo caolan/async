@@ -99,9 +99,8 @@ error to this callback, the main callback for the map function is immediately
 called with the error.
 
 Note, that since this function applies the iterator to each item in parallel
-there is no guarantee that the iterator functions will complete in order. The
-results array can be in a different order to the source array. If you need the
-order to be the same, then use mapSeries instead.
+there is no guarantee that the iterator functions will complete in order, however
+the results array will be in the same order as the original array.
 
 __Arguments__
 
@@ -123,8 +122,7 @@ __Example__
 
 The same as map only the iterator is applied to each item in the array in
 series. The next iterator is only called once the current one has completed
-processing, meaning the results array will be in the same order as the
-original.
+processing. The results array will be in the same order as the original.
 
 
 ### filter(arr, iterator, callback)
@@ -133,7 +131,7 @@ Returns a new array of all the values which pass an async truth test.
 _The callback for each iterator call only accepts a single argument of true or
 false, it does not accept an error argument first!_ This is inline with the
 way node libraries work with truth tests like path.exists. This operation is
-performed in parallel, so the results array may be in a different order to the
+performed in parallel, but the results array will be in the same order as the
 original.
 
 __Arguments__
@@ -154,8 +152,7 @@ __Example__
 
 The same as filter only the iterator is applied to each item in the array in
 series. The next iterator is only called once the current one has completed
-processing, meaning the results array will be in the same order as the
-original.
+processing. The results array will be in the same order as the original.
 
 
 ### reduce(arr, memo, iterator, callback)
