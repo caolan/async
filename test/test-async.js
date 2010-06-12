@@ -32,6 +32,12 @@ exports['auto'] = function(test){
     });
 };
 
+exports['auto empty object'] = function(test){
+    async.auto({}, function(err){
+        test.done();
+    });
+};
+
 exports['auto error'] = function(test){
     test.expect(1);
     async.auto({
@@ -86,6 +92,12 @@ exports['waterfall'] = function(test){
             callback(null, 'test');
         }
     ], function(err){
+        test.done();
+    });
+};
+
+exports['waterfall empty array'] = function(test){
+    async.waterfall([], function(err){
         test.done();
     });
 };
@@ -192,6 +204,14 @@ exports['parallel'] = function(test){
     });
 };
 
+exports['parallel empty array'] = function(test){
+    async.parallel([], function(err, results){
+        test.equals(err, null);
+        test.same(results, []);
+        test.done();
+    });
+};
+
 exports['parallel error'] = function(test){
     async.parallel([
         function(callback){
@@ -240,6 +260,14 @@ exports['series'] = function(test){
         test.equals(err, null);
         test.same(results, [1,2,[3,3]]);
         test.same(call_order, [1,2,3]);
+        test.done();
+    });
+};
+
+exports['series empty array'] = function(test){
+    async.series([], function(err, results){
+        test.equals(err, null);
+        test.same(results, []);
         test.done();
     });
 };
@@ -294,6 +322,13 @@ exports['iterator'] = function(test){
     test.done();
 };
 
+exports['iterator empty array'] = function(test){
+    var iterator = async.iterator([]);
+    test.equals(iterator(), undefined);
+    test.equals(iterator.next(), undefined);
+    test.done();
+};
+
 exports['iterator.next'] = function(test){
     var call_order = [];
     var iterator = async.iterator([
@@ -330,6 +365,17 @@ exports['forEach'] = function(test){
     });
 };
 
+exports['forEach empty array'] = function(test){
+    test.expect(1);
+    async.forEach([], function(x, callback){
+        test.ok(false, 'iterator should not be called');
+        callback();
+    }, function(err){
+        test.ok(true, 'should call callback');
+    });
+    setTimeout(test.done, 25);
+};
+
 exports['forEach error'] = function(test){
     test.expect(1);
     async.forEach([1,2,3], function(x, callback){
@@ -351,6 +397,17 @@ exports['forEachSeries'] = function(test){
         test.same(args, [1,3,2]);
         test.done();
     });
+};
+
+exports['forEachSeries empty array'] = function(test){
+    test.expect(1);
+    async.forEachSeries([], function(x, callback){
+        test.ok(false, 'iterator should not be called');
+        callback();
+    }, function(err){
+        test.ok(true, 'should call callback');
+    });
+    setTimeout(test.done, 25);
 };
 
 exports['forEachSeries error'] = function(test){
