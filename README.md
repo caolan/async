@@ -1,7 +1,7 @@
 # Async
 _Higher-order functions and common patterns for asynchronous code in node.js_
 
-I've so far avoided using the exising async modules in favour of the standard
+I've so far avoided using the existing async modules in favour of the standard
 callbacks provided by node. When writing modules, I find sticking to the
 convention of using a single callback makes the API easier to understand, and
 allows people to wrap the module with other methods of handling async code if
@@ -32,11 +32,17 @@ alternative modules like node-continuables.
   in the given array through an async iterator function.
 * __filter (filterSeries)__ - Returns a new array of all the values which pass
   an async truth test.
-* __reduce__ - Reduces a list of values into a single value using an async
-  iterator to return each successive step.
+* __reject (rejectSeries)__ - The opposite of filter, removes items that
+  passes an async test.
+* __reduce (reduceRight)__ - Reduces a list of values into a single value
+  using an async iterator to return each successive step.
+* __detect (detectSeries)__ - Returns the first value is a list that passes an
+  async truth test.
+* __sortBy__ - Sorts a list by the results of running each value through an
+  async iterator, leaving the original values intact.
 * __some__ - Returns true if at least one element in the array satisfies an
   async test.
-* __every__ - Returns true if evert element in the array satisfies an async
+* __every__ - Returns true if every element in the array satisfies an async
   test.
 
 ### Flow Control
@@ -127,6 +133,8 @@ processing. The results array will be in the same order as the original.
 
 ### filter(arr, iterator, callback)
 
+__Alias:__ select
+
 Returns a new array of all the values which pass an async truth test.
 _The callback for each iterator call only accepts a single argument of true or
 false, it does not accept an error argument first!_ This is inline with the
@@ -150,12 +158,25 @@ __Example__
 
 ### filterSeries(arr, iterator, callback)
 
+__alias:__ selectSeries
+
 The same as filter only the iterator is applied to each item in the array in
 series. The next iterator is only called once the current one has completed
 processing. The results array will be in the same order as the original.
 
+### reject(arr, iterator, callback)
+
+The opposite of filter. Removes values that pass an async truth test.
+
+### rejectSeries(arr, iterator, callback)
+
+The same as filter, only the iterator is applied to each item in the array
+in series.
+
 
 ### reduce(arr, memo, iterator, callback)
+
+__aliases:__ inject, foldl
 
 Reduces a list of values into a single value using an async iterator to return
 each successive step. Memo is the initial state of the reduction. This
@@ -189,7 +210,74 @@ __Example__
         // result is now equal to the last value of memo, which is 6
     });
 
-### some
+### reduceRight(arr, memo, iterator, callback)
+
+__Alias:__ foldr
+
+Same as reduce, only operates on the items in the array in reverse order.
+
+
+### detect(arr, iterator, callback)
+
+Returns the first value in a list that passes an async truth test. The
+iterator is applied in parallel, meaning the first iterator to return true will
+fire the detect callback with that result. That means the result might not be
+the first item in the original array (in terms of order) that passes the test.
+
+If order within the original array is important then look at detectSeries.
+
+__Arguments__
+
+* arr - An array to iterator over.
+* iterator(item, callback) - A truth test to apply to each item in the array.
+  The iterator is passed a callback which must be called once it has completed.
+* callback(result) - A callback which is called as soon as any iterator returns
+  true, or after all the iterator functions have finished. Result will be
+  the first item in the array that passes the truth test (iterator) or the
+  value undefined if none passed.
+
+__Example__
+
+    async.detect(['file1','file2','file3'], path.exists, function(result){
+        // result now equals the first file in the list that exists
+    });
+
+### detectSeries(arr, iterator, callback)
+
+The same as detect, only the iterator is applied to each item in the array
+in series. This means the result is always the first in the original array (in
+terms of array order) that passes the truth test.
+
+
+### sortBy(arr, iterator, callback)
+
+Sorts a list by the results of running each value through an async iterator.
+
+__Arguments__
+
+* arr - An array to iterate over.
+* iterator(item, callback) - A function to apply to each item in the array.
+  The iterator is passed a callback which must be called once it has completed
+  with an error (which can be null) and a value to use as the sort criteria.
+* callback(err, results) - A callback which is called after all the iterator
+  functions have finished, or an error has occurred. Results is the items from
+  the original array sorted by the values returned by the iterator calls.
+
+__Example__
+
+    async.sortBy(['file1','file2','file3'], function(file, callback){
+        fs.stat(file, function(err, stats){
+            callback(err, stats.mtime);
+        });
+    }, function(err, results){
+        // results is now the original array of files sorted by
+        // modified date
+    });
+
+
+### some(arr, iterator, callback)
+
+__Alias:__ any
 
 Returns true if at least one element in the array satisfies an async test.
 _The callback for each iterator call only accepts a single argument of true or
@@ -212,9 +300,11 @@ __Example__
         // if result is true then at least one of the files exists
     });
 
-### every
+### every(arr, iterator, callback)
 
-Returns true if evert element in the array satisfies an async test.
+__Alias:__ all
+
+Returns true if every element in the array satisfies an async test.
 _The callback for each iterator call only accepts a single argument of true or
 false, it does not accept an error argument first!_ This is inline with the
 way node libraries work with truth tests like path.exists.
