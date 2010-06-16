@@ -437,6 +437,17 @@ exports['map'] = function(test){
     });
 };
 
+exports['map original untouched'] = function(test){
+    var a = [1,2,3];
+    async.map(a, function(x, callback){
+        callback(null, x*2);
+    }, function(err, results){
+        test.same(results, [2,4,6]);
+        test.same(a, [1,2,3]);
+        test.done();
+    });
+};
+
 exports['map error'] = function(test){
     test.expect(1);
     async.map([1,2,3], function(x, callback){
@@ -472,10 +483,13 @@ exports['mapSeries error'] = function(test){
 };
 
 exports['reduce'] = function(test){
-    async.reduce([1,3,2], 0, function(a, x, callback){
+    var call_order = [];
+    async.reduce([1,2,3], 0, function(a, x, callback){
+        call_order.push(x);
         callback(null, a + x);
     }, function(err, result){
         test.equals(result, 6);
+        test.same(call_order, [1,2,3]);
         test.done();
     });
 };
@@ -499,6 +513,35 @@ exports['reduce error'] = function(test){
     setTimeout(test.done, 50);
 };
 
+exports['inject alias'] = function(test){
+    test.equals(async.inject, async.reduce);
+    test.done();
+};
+
+exports['foldl alias'] = function(test){
+    test.equals(async.foldl, async.reduce);
+    test.done();
+};
+
+exports['reduceRight'] = function(test){
+    var call_order = [];
+    var a = [1,2,3];
+    async.reduceRight(a, 0, function(a, x, callback){
+        call_order.push(x);
+        callback(null, a + x);
+    }, function(err, result){
+        test.equals(result, 6);
+        test.same(call_order, [3,2,1]);
+        test.same(a, [1,2,3]);
+        test.done();
+    });
+};
+
+exports['foldr alias'] = function(test){
+    test.equals(async.foldr, async.reduceRight);
+    test.done();
+};
+
 exports['filter'] = function(test){
     async.filter([3,1,2], function(x, callback){
         setTimeout(function(){callback(x % 2);}, x*25);
@@ -508,11 +551,61 @@ exports['filter'] = function(test){
     });
 };
 
+exports['filter original untouched'] = function(test){
+    var a = [3,1,2];
+    async.filter(a, function(x, callback){
+        callback(x % 2);
+    }, function(results){
+        test.same(results, [3,1]);
+        test.same(a, [3,1,2]);
+        test.done();
+    });
+};
+
 exports['filterSeries'] = function(test){
     async.filterSeries([3,1,2], function(x, callback){
         setTimeout(function(){callback(x % 2);}, x*25);
     }, function(results){
         test.same(results, [3,1]);
+        test.done();
+    });
+};
+
+exports['select alias'] = function(test){
+    test.equals(async.select, async.filter);
+    test.done();
+};
+
+exports['selectSeries alias'] = function(test){
+    test.equals(async.selectSeries, async.filterSeries);
+    test.done();
+};
+
+exports['reject'] = function(test){
+    async.reject([3,1,2], function(x, callback){
+        setTimeout(function(){callback(x % 2);}, x*25);
+    }, function(results){
+        test.same(results, [2]);
+        test.done();
+    });
+};
+
+exports['reject original untouched'] = function(test){
+    var a = [3,1,2];
+    async.reject(a, function(x, callback){
+        callback(x % 2);
+    }, function(results){
+        test.same(results, [2]);
+        test.same(a, [3,1,2]);
+        test.done();
+    });
+};
+
+exports['rejectSeries'] = function(test){
+    async.rejectSeries([3,1,2], function(x, callback){
+        setTimeout(function(){callback(x % 2);}, x*25);
+    }, function(results){
+        test.same(results, [2]);
         test.done();
     });
 };
@@ -555,6 +648,11 @@ exports['some early return'] = function(test){
     }, 100);
 };
 
+exports['any alias'] = function(test){
+    test.equals(async.any, async.some);
+    test.done();
+};
+
 exports['every true'] = function(test){
     async.every([1,2,3], function(x, callback){
         process.nextTick(function(){callback(true);});
@@ -587,4 +685,52 @@ exports['every early return'] = function(test){
         test.same(call_order, [1,2,'callback',3]);
         test.done();
     }, 100);
+};
+
+exports['all alias'] = function(test){
+    test.equals(async.all, async.every);
+    test.done();
+};
+
+exports['detect'] = function(test){
+    var call_order = [];
+    async.detect([3,2,1], function(x, callback){
+        setTimeout(function(){
+            call_order.push(x);
+            callback(x == 2);
+        }, x*25);
+    }, function(result){
+        call_order.push('callback');
+        test.equals(result, 2);
+    });
+    setTimeout(function(){
+        test.same(call_order, [1,2,'callback',3]);
+        test.done();
+    }, 100);
+};
+
+exports['detectSeries'] = function(test){
+    var call_order = [];
+    async.detectSeries([3,2,1], function(x, callback){
+        setTimeout(function(){
+            call_order.push(x);
+            callback(x == 2);
+        }, x*25);
+    }, function(result){
+        call_order.push('callback');
+        test.equals(result, 2);
+    });
+    setTimeout(function(){
+        test.same(call_order, [3,2,'callback']);
+        test.done();
+    }, 200);
+};
+
+exports['sortBy'] = function(test){
+    async.sortBy([{a:1},{a:15},{a:6}], function(x, callback){
+        process.nextTick(function(){callback(null, x.a);});
+    }, function(err, result){
+        test.same(result, [{a:1},{a:6},{a:15}]);
+        test.done();
+    });
 };
