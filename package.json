@@ -1,0 +1,16 @@
+{ "name": "async"
+, "description": "Higher-order functions and common patterns for asynchronous code"
+, "main": "./index"
+, "author": "Caolan McMahon"
+, "version": "0.1.0"
+, "repository" :
+  { "type" : "git"
+  , "url" : "http://github.com/caolan/async.git"
+  }
+, "bugs" : { "web" : "http://github.com/caolan/async/issues" }
+, "licenses" :
+  [ { "type" : "MIT"
+    , "url" : "http://github.com/caolan/async/raw/master/LICENSE"
+    }
+  ]
+}
