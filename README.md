@@ -21,6 +21,10 @@ If you're interested in other ways to manage async code, then you may like
 to take a look at the new implementation of the old node Promise objects or
 alternative modules like node-continuables.
 
+__This module is also available as an npm package:__
+
+    npm install async
+
 
 ## API
 
