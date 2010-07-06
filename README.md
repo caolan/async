@@ -18,8 +18,9 @@ __This is not an attempt to replace the standard callback mechanism in
 node.__ In fact, it is designed to work as seamlessly as possible with the
 existing node modules, and any other module which follows those conventions.
 If you're interested in other ways to manage async code, then you may like
-to take a look at the new implementation of the old node Promise objects or
-alternative modules like node-continuables.
+to take a look at the new implementation of the old node Promise objects
+([node-promise](http://github.com/kriszyp/node-promise)) or alternative
+modules like [node-continuables](http://github.com/bentomas/node-continuables).
 
 __This module is also available as an npm package:__
 
@@ -61,6 +62,8 @@ __This module is also available as an npm package:__
   requirements.
 * __iterator__ - Creates an iterator function which calls the next function in
   the array, returning a continuation to call the next one after that.
+* __apply__ - Creates a continuation with some arguments already applied, a
+  useful shorthand when combined with other flow control functions.
 
 
 ## Collections
@@ -528,3 +531,45 @@ __Example__
     'three'
 
 
+### apply(function, arguments..)
+
+Creates a continuation function with some arguments already applied, a useful
+shorthand when combined with other flow control functions. Any arguments
+passed to the returned function are added to the arguments originally passed
+to apply.
+
+__Arguments__
+
+* function - The function you want to eventually apply all arguments to.
+* arguments... - Any number of arguments to automatically apply when the
+  continuation is called.
+
+__Example__
+
+    // using apply
+
+    async.parallel([
+        async.apply(fs.writeFile, 'testfile1', 'test1'),
+        async.apply(fs.writeFile, 'testfile2', 'test2'),
+    ]);
+
+
+    // the same process without using apply
+
+    async.parallel([
+        function(callback){
+            fs.writeFile('testfile1', 'test1', callback);
+        },
+        function(callback){
+            fs.writeFile('testfile2', 'test2', callback);
+        },
+    ]);
+
+It's possible to pass any number of additional arguments when calling the
+continuation:
+
+    node> var fn = async.apply(sys.puts, 'one');
+    node> fn('two', 'three');
+    one
+    two
+    three

@@ -734,3 +734,16 @@ exports['sortBy'] = function(test){
         test.done();
     });
 };
+
+exports['apply'] = function(test){
+    test.expect(5);
+    var fn = function(){
+        test.same(Array.prototype.slice.call(arguments), [1,2,3,4])
+    };
+    async.apply(fn, 1, 2, 3, 4)();
+    async.apply(fn, 1, 2, 3)(4);
+    async.apply(fn, 1, 2)(3, 4);
+    async.apply(fn, 1)(2, 3, 4);
+    async.apply(fn)(1, 2, 3, 4);
+    test.done();
+};
