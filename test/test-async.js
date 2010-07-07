@@ -50,7 +50,7 @@ exports['auto error'] = function(test){
         }],
         task3: function(callback){
             callback('testerror2');
-        },
+        }
     },
     function(err){
         test.equals(err, 'testerror');
@@ -61,7 +61,7 @@ exports['auto error'] = function(test){
 exports['auto no callback'] = function(test){
     async.auto({
         task1: function(callback){callback();},
-        task2: ['task1', function(callback){callback(); test.done();}],
+        task2: ['task1', function(callback){callback(); test.done();}]
     });
 };
 
@@ -71,7 +71,7 @@ exports['waterfall'] = function(test){
     async.waterfall([
         function(callback){
             call_order.push('fn1');
-            process.nextTick(function(){callback(null, 'one', 'two');});
+            setTimeout(function(){callback(null, 'one', 'two');}, 0);
         },
         function(arg1, arg2, callback){
             call_order.push('fn2');
@@ -105,7 +105,7 @@ exports['waterfall empty array'] = function(test){
 exports['waterfall no callback'] = function(test){
     async.waterfall([
         function(callback){callback();},
-        function(callback){callback(); test.done();},
+        function(callback){callback(); test.done();}
     ]);
 };
 
@@ -308,7 +308,7 @@ exports['iterator'] = function(test){
             test.equals(arg1, 'arg1');
             test.equals(arg2, 'arg2');
             call_order.push(3);
-        },
+        }
     ]);
     iterator();
     test.same(call_order, [1]);
@@ -341,7 +341,7 @@ exports['iterator.next'] = function(test){
             test.equals(arg1, 'arg1');
             test.equals(arg2, 'arg2');
             call_order.push(3);
-        },
+        }
     ]);
     var fn = iterator.next();
     var iterator2 = fn('arg1');
@@ -612,9 +612,7 @@ exports['rejectSeries'] = function(test){
 
 exports['some true'] = function(test){
     async.some([3,1,2], function(x, callback){
-        process.nextTick(function(){
-            callback(x === 1);
-        });
+        setTimeout(function(){callback(x === 1);}, 0);
     }, function(result){
         test.equals(result, true);
         test.done();
@@ -623,9 +621,7 @@ exports['some true'] = function(test){
 
 exports['some false'] = function(test){
     async.some([3,1,2], function(x, callback){
-        process.nextTick(function(){
-            callback(x === 10);
-        });
+        setTimeout(function(){callback(x === 10);}, 0);
     }, function(result){
         test.equals(result, false);
         test.done();
@@ -655,7 +651,7 @@ exports['any alias'] = function(test){
 
 exports['every true'] = function(test){
     async.every([1,2,3], function(x, callback){
-        process.nextTick(function(){callback(true);});
+        setTimeout(function(){callback(true);}, 0);
     }, function(result){
         test.equals(result, true);
         test.done();
@@ -664,7 +660,7 @@ exports['every true'] = function(test){
 
 exports['every false'] = function(test){
     async.every([1,2,3], function(x, callback){
-        process.nextTick(function(){callback(x % 2);});
+        setTimeout(function(){callback(x % 2);}, 0);
     }, function(result){
         test.equals(result, false);
         test.done();
@@ -728,7 +724,7 @@ exports['detectSeries'] = function(test){
 
 exports['sortBy'] = function(test){
     async.sortBy([{a:1},{a:15},{a:6}], function(x, callback){
-        process.nextTick(function(){callback(null, x.a);});
+        setTimeout(function(){callback(null, x.a);}, 0);
     }, function(err, result){
         test.same(result, [{a:1},{a:6},{a:15}]);
         test.done();

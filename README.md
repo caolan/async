@@ -1,5 +1,6 @@
 # Async
-_Higher-order functions and common patterns for asynchronous code in node.js_
+_Higher-order functions and common patterns for asynchronous code in node and
+the browser_
 
 I've so far avoided using the existing async modules in favour of the standard
 callbacks provided by node. When writing modules, I find sticking to the
@@ -22,10 +23,46 @@ to take a look at the new implementation of the old node Promise objects
 ([node-promise](http://github.com/kriszyp/node-promise)) or alternative
 modules like [node-continuables](http://github.com/bentomas/node-continuables).
 
-__This module is also available as an npm package:__
+__This module enables you to do things like:__
+
+    async.map(['file1','file2','file3'], fs.stat, function(err, results){
+        // results is now an array of stats for each file
+    });
+
+    async.filter(['file1','file2','file3'], path.exists, function(results){
+        // results now equals an array of the existing files
+    });
+
+    async.parallel([
+        function(){ ... },
+        function(){ ... }
+    ], callback);
+
+    async.series([
+        function(){ ... },
+        function(){ ... }
+    ]);
+
+There are many more functions available so take a look at the API below for a
+full list. This module aims to be a comprehensive collection of async
+utilities, so if you feel anything is missing please create a GitHub issue for
+it.
+
+__Also available as an npm package:__
 
     npm install async
 
+__Now works in the browser too!__
+So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
+
+    <script type="text/javascript" src="async.js"></script>
+    <script type="text/javascript">
+
+        async.map(data, asyncProcess, function(err, results){
+            alert(results);
+        });
+
+    </script>
 
 ## API
 
