@@ -1,29 +1,18 @@
-# Async
-_Higher-order functions and common patterns for asynchronous code in node and
-the browser_
+# Async.js
 
-I've so far avoided using the existing async modules in favour of the standard
-callbacks provided by node. When writing modules, I find sticking to the
-convention of using a single callback makes the API easier to understand, and
-allows people to wrap the module with other methods of handling async code if
-they so wish.
+Async is a utility module which provides straight-forward, powerful functions
+for working with asynchronous JavaScript. Although originally designed for
+use with [node.js](http://nodejs.org), it can also be used directly in the
+browser.
 
-However, I've found myself repeating a number of patterns, so I've decided to
-abstract some of the more common ones into a separate module. What I've ended
-up with is a few higher-order functions that operate on async code using the
-convention of a single callback. This includes the usual 'functional'
-suspects (map, reduce, filter, forEach...) as well as some common patterns
-for running blocks of async code (parallel, series, waterfall...).
+Async provides around 20 functions that include the usual 'functional'
+suspects (map, reduce, filter, forEach…) as well as some common patterns
+for asynchronous flow control (parallel, series, waterfall…). All these
+functions assume you follow the node.js convention of providing a single
+callback as the last argument of your async function.
 
-__This is not an attempt to replace the standard callback mechanism in
-node.__ In fact, it is designed to work as seamlessly as possible with the
-existing node modules, and any other module which follows those conventions.
-If you're interested in other ways to manage async code, then you may like
-to take a look at the new implementation of the old node Promise objects
-([node-promise](http://github.com/kriszyp/node-promise)) or alternative
-modules like [node-continuables](http://github.com/bentomas/node-continuables).
 
-__This module enables you to do things like:__
+## Quick Examples
 
     async.map(['file1','file2','file3'], fs.stat, function(err, results){
         // results is now an array of stats for each file
@@ -43,16 +32,22 @@ __This module enables you to do things like:__
         function(){ ... }
     ]);
 
-There are many more functions available so take a look at the API below for a
-full list. This module aims to be a comprehensive collection of async
-utilities, so if you feel anything is missing please create a GitHub issue for
-it.
+There are many more functions available so take a look at the docs below for a
+full list. This module aims to be comprehensive, so if you feel anything is
+missing please create a GitHub issue for it.
 
-__Also available as an npm package:__
+
+## Download
+
+Releases are available for download from
+[GitHub](http://github.com/caolan/async/downloads).
+Alternatively, you can install using Node Package Manager (npm):
 
     npm install async
 
-__Now works in the browser too!__
+
+## In the Browser
+
 So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 
     <script type="text/javascript" src="async.js"></script>
@@ -64,46 +59,72 @@ So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 
     </script>
 
-## API
+
+## Documentation
 
 ### Collections
 
-* __forEach (forEachSeries)__ - Applies an async iterator to each item in an
-  array.
-* __map (mapSeries)__ - Produces a new array of values by mapping each value
-  in the given array through an async iterator function.
-* __filter (filterSeries)__ - Returns a new array of all the values which pass
-  an async truth test.
-* __reject (rejectSeries)__ - The opposite of filter, removes items that
-  passes an async test.
-* __reduce (reduceRight)__ - Reduces a list of values into a single value
-  using an async iterator to return each successive step.
-* __detect (detectSeries)__ - Returns the first value is a list that passes an
-  async truth test.
-* __sortBy__ - Sorts a list by the results of running each value through an
-  async iterator, leaving the original values intact.
-* __some__ - Returns true if at least one element in the array satisfies an
-  async test.
-* __every__ - Returns true if every element in the array satisfies an async
-  test.
+forEach 
+: Applies an async iterator to each item in an array. Series version:
+  forEachSeries.
+
+map
+: Produces a new array of values by mapping each value in the given array
+  through an async iterator function. Series version: mapSeries.
+
+filter
+: Returns a new array of all the values which pass an async truth test. Series
+  version: filterSeries.
+
+reject
+: The opposite of filter, removes items that passes an async test. Series
+  version: rejectSeries.
+
+reduce
+: Reduces a list of values into a single value using an async iterator to
+  return each successive step. Use reduceRight to apply the iterator in
+  reverse order.
+
+detect
+: Returns the first value is a list that passes an async truth test. Series
+  version: detectSeries.
+
+sortBy
+: Sorts a list by the results of running each value through an async iterator,
+  leaving the original values intact.
+
+some
+: Returns true if at least one element in the array satisfies an async test.
+
+every
+: Returns true if every element in the array satisfies an async test.
+
 
 ### Flow Control
 
-* __series__ - Run an array of functions in series, each one running once the
-  previous function has completed.
-* __parallel__ - Run an array of functions in parallel, without waiting until
-  the previous function has completed.
-* __waterfall__ - Runs an array of functions in series, each passing their
-  results to the next in the array.
-* __auto__ - Determines the best order for running functions based on their
-  requirements.
-* __iterator__ - Creates an iterator function which calls the next function in
-  the array, returning a continuation to call the next one after that.
-* __apply__ - Creates a continuation with some arguments already applied, a
-  useful shorthand when combined with other flow control functions.
+series
+: Run an array of functions in series, each one running once the previous
+  function has completed.
 
+parallel
+: Run an array of functions in parallel, without waiting until the previous
+  function has completed.
 
-## Collections
+waterfall
+: Runs an array of functions in series, each passing their results to the next
+  in the array.
+
+auto
+:  Determines the best order for running functions based on their requirements.
+
+iterator
+: Creates an iterator function which calls the next function in the array,
+  returning a continuation to call the next one after that.
+
+apply
+: Creates a continuation with some arguments already applied, a useful
+  shorthand when combined with other flow control functions.
+
 
 ### forEach(arr, iterator, callback)
 
@@ -181,7 +202,7 @@ __Alias:__ select
 
 Returns a new array of all the values which pass an async truth test.
 _The callback for each iterator call only accepts a single argument of true or
-false, it does not accept an error argument first!_ This is inline with the
+false, it does not accept an error argument first!_ This is in-line with the
 way node libraries work with truth tests like path.exists. This operation is
 performed in parallel, but the results array will be in the same order as the
 original.
@@ -325,7 +346,7 @@ __Alias:__ any
 
 Returns true if at least one element in the array satisfies an async test.
 _The callback for each iterator call only accepts a single argument of true or
-false, it does not accept an error argument first!_ This is inline with the
+false, it does not accept an error argument first!_ This is in-line with the
 way node libraries work with truth tests like path.exists. Once any iterator
 call returns true, the main callback is immediately called.
 
@@ -350,7 +371,7 @@ __Alias:__ all
 
 Returns true if every element in the array satisfies an async test.
 _The callback for each iterator call only accepts a single argument of true or
-false, it does not accept an error argument first!_ This is inline with the
+false, it does not accept an error argument first!_ This is in-line with the
 way node libraries work with truth tests like path.exists.
 
 __Arguments__
@@ -368,8 +389,6 @@ __Example__
         // if result is true then every file exists
     });
 
-
-## Flow Control
 
 ### series(tasks, [callback])
 
@@ -484,9 +503,9 @@ __Arguments__
 * tasks - An object literal containing named functions or an array of
   requirements, with the function itself the last item in the array. The key
   used for each function or array is used when specifying requirements. The
-  sytax is easier to understand by looking at the example.
+  syntax is easier to understand by looking at the example.
 * callback(err) - An optional callback which is called when all the tasks have
-  been completed. The callback may recieve an error as an argument.
+  been completed. The callback may receive an error as an argument.
 
 __Example__
 
