@@ -841,3 +841,30 @@ exports['nextTick in the browser'] = function(test){
     }, 50);
     setTimeout(test.done, 100);
 };
+
+exports['noConflict'] = function(test){
+    test.expect(3);
+    var fs = require('fs');
+    var filename = __dirname + '/../lib/async.js';
+    fs.readFile(filename, function(err, content){
+        if(err) return test.done();
+        var Script = process.binding('evals').Script;
+
+        var s = new Script(content, filename);
+        var s2 = new Script(
+            content + 'this.async2 = this.async.noConflict();',
+            filename
+        );
+
+        var sandbox1 = {async: 'oldvalue'};
+        s.runInNewContext(sandbox1);
+        test.ok(sandbox1.async);
+
+        var sandbox2 = {async: 'oldvalue'};
+        s2.runInNewContext(sandbox2);
+        test.equals(sandbox2.async, 'oldvalue');
+        test.ok(sandbox2.async2);
+
+        test.done();
+    });
+};
