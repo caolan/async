@@ -136,6 +136,10 @@ log
 dir
 : Logs the result of an async function to the console using console.dir
 
+noConflict
+: Changes the value of async back to its original value, returning a reference to
+  the async object.
+
 
 ### forEach(arr, iterator, callback)
 
@@ -712,3 +716,9 @@ __Example__
 
     node> async.dir(hello, 'world');
     {hello: 'world'}
+
+
+### noConflict()
+
+Changes the value of async back to its original value, returning a reference to the
+async object.
