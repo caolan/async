@@ -1,8 +1,8 @@
 #!/usr/local/bin/node
 
-require.paths.push(__dirname);
-require.paths.push(__dirname + '/deps');
-require.paths.push(__dirname + '/lib');
+require.paths.unshift(__dirname);
+require.paths.unshift(__dirname + '/deps');
+require.paths.unshift(__dirname + '/lib');
 
 try {
     var testrunner = require('nodeunit').testrunner;

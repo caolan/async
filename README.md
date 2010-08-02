@@ -125,6 +125,9 @@ apply
 : Creates a continuation with some arguments already applied, a useful
   shorthand when combined with other flow control functions.
 
+nextTick
+: Calls the callback on a later loop around the event loop.
+
 ### Utils
 
 log
@@ -637,6 +640,27 @@ continuation:
     one
     two
     three
+
+### nextTick(callback)
+
+Calls the callback on a later loop around the event loop. In node.js this just
+calls process.nextTick, in the browser it falls back to setTimeout(callback, 0),
+which means other higher priority events may precede the execution of the callback.
+
+This is used internally for browser-compatibility purposes.
+
+__Arguments__
+
+* callback - The function to call on a later loop around the event loop.
+
+__Example__
+
+    var call_order = [];
+    async.nextTick(function(){
+        call_order.push('two');
+        // call_order now equals ['one','two]
+    });
+    call_order.push('one')
 
 
 ## Utils

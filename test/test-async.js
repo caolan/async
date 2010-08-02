@@ -804,3 +804,40 @@ console_fn_tests('dir');
 /*console_fn_tests('info');
 console_fn_tests('warn');
 console_fn_tests('error');*/
+
+exports['nextTick'] = function(test){
+    var call_order = [];
+    async.nextTick(function(){call_order.push('two');});
+    call_order.push('one');
+    setTimeout(function(){
+        test.same(call_order, ['one','two']);
+        test.done();
+    }, 50);
+};
+
+exports['nextTick in node'] = function(test){
+    test.expect(1);
+    var _nextTick = process.nextTick;
+    process.nextTick = function(){
+        process.nextTick = _nextTick;
+        test.ok(true, 'process.nextTick called');
+        test.done();
+    };
+    async.nextTick(function(){});
+};
+
+exports['nextTick in the browser'] = function(test){
+    test.expect(1);
+    var _nextTick = process.nextTick;
+    process.nextTick = undefined;
+
+    var call_order = [];
+    async.nextTick(function(){call_order.push('two');});
+
+    call_order.push('one');
+    setTimeout(function(){
+        process.nextTick = _nextTick;
+        test.same(call_order, ['one','two']);
+    }, 50);
+    setTimeout(test.done, 100);
+};
