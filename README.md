@@ -125,6 +125,14 @@ apply
 : Creates a continuation with some arguments already applied, a useful
   shorthand when combined with other flow control functions.
 
+### Utils
+
+log
+: Logs the result of an async function to the console.
+
+dir
+: Logs the result of an async function to the console using console.dir
+
 
 ### forEach(arr, iterator, callback)
 
@@ -629,3 +637,54 @@ continuation:
     one
     two
     three
+
+
+## Utils
+
+### log(function, arguments)
+
+Logs the result of an async function to the console. Only works in node.js or
+in browsers that support console.log and console.error (such as FF and Chrome).
+If multiple arguments are returned from the async function, console.log is
+called on each argument in order.
+
+__Arguments__
+
+* function - The function you want to eventually apply all arguments to.
+* arguments... - Any number of arguments to apply to the function.
+
+__Example__
+
+    var hello = function(name, callback){
+        setTimeout(function(){
+            callback(null, 'hello ' + name);
+        }, 1000);
+    };
+
+    node> async.log(hello, 'world');
+    'hello world'
+
+
+### dir(function, arguments)
+
+Logs the result of an async function to the console using console.dir to
+display the properties of the resulting object. Only works in node.js or
+in browsers that support console.dir and console.error (such as FF and Chrome).
+If multiple arguments are returned from the async function, console.dir is
+called on each argument in order.
+
+__Arguments__
+
+* function - The function you want to eventually apply all arguments to.
+* arguments... - Any number of arguments to apply to the function.
+
+__Example__
+
+    var hello = function(name, callback){
+        setTimeout(function(){
+            callback(null, {hello: name});
+        }, 1000);
+    };
+
+    node> async.dir(hello, 'world');
+    {hello: 'world'}
