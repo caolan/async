@@ -732,7 +732,7 @@ exports['sortBy'] = function(test){
 };
 
 exports['apply'] = function(test){
-    test.expect(5);
+    test.expect(6);
     var fn = function(){
         test.same(Array.prototype.slice.call(arguments), [1,2,3,4])
     };
@@ -741,6 +741,10 @@ exports['apply'] = function(test){
     async.apply(fn, 1, 2)(3, 4);
     async.apply(fn, 1)(2, 3, 4);
     async.apply(fn)(1, 2, 3, 4);
+    test.equals(
+        async.apply(function(name){return 'hello ' + name}, 'world')(),
+        'hello world'
+    );
     test.done();
 };
 
