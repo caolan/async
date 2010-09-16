@@ -872,3 +872,31 @@ exports['noConflict'] = function(test){
         test.done();
     });
 };
+
+exports['concat'] = function(test){
+    var iterator = function (x, cb) {
+        var r = [];
+        while (x > 0) {
+            r.push(x);
+            x--;
+        }
+        process.nextTick(function(){
+            cb(null, r);
+        });
+    };
+    async.concat([1,2,3], iterator, function(err, results){
+        test.same(results, [1,2,1,3,2,1]);
+        test.ok(!err);
+        test.done();
+    });
+};
+
+exports['concat error'] = function(test){
+    var iterator = function (x, cb) {
+        cb(new Error('test error'));
+    };
+    async.concat([1,2,3], iterator, function(err, results){
+        test.ok(err);
+        test.done();
+    });
+};

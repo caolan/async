@@ -99,6 +99,9 @@ some
 every
 : Returns true if every element in the array satisfies an async test.
 
+concat
+: Apply an iterator to each item in a list and concatenate the results.
+
 
 ### Flow Control
 
@@ -268,7 +271,7 @@ reducing it then its probably a good idea to do so.
 
 __Arguments__
 
-* arr - An array to iterator over.
+* arr - An array to iterate over.
 * memo - The initial state of the reduction.
 * iterator(memo, item, callback) - A function applied to each item in the
   array to produce the next step in the reduction. The iterator is passed a
@@ -308,7 +311,7 @@ If order within the original array is important then look at detectSeries.
 
 __Arguments__
 
-* arr - An array to iterator over.
+* arr - An array to iterate over.
 * iterator(item, callback) - A truth test to apply to each item in the array.
   The iterator is passed a callback which must be called once it has completed.
 * callback(result) - A callback which is called as soon as any iterator returns
@@ -367,7 +370,7 @@ call returns true, the main callback is immediately called.
 
 __Arguments__
 
-* arr - An array to iterator over.
+* arr - An array to iterate over.
 * iterator(item, callback) - A truth test to apply to each item in the array.
   The iterator is passed a callback which must be called once it has completed.
 * callback(result) - A callback which is called as soon as any iterator returns
@@ -391,7 +394,7 @@ way node libraries work with truth tests like path.exists.
 
 __Arguments__
 
-* arr - An array to iterator over.
+* arr - An array to iterate over.
 * iterator(item, callback) - A truth test to apply to each item in the array.
   The iterator is passed a callback which must be called once it has completed.
 * callback(result) - A callback which is called after all the iterator
@@ -402,6 +405,27 @@ __Example__
 
     async.every(['file1','file2','file3'], path.exists, function(result){
         // if result is true then every file exists
+    });
+
+### concat(arr, iterator, callback)
+
+Applies an iterator to each item in a list, concatenating the results. Returns the
+concatenated list.
+
+__Arguments__
+
+* arr - An array to iterate over
+* iterator(item, callback) - A function to apply to each item in the array.
+  The iterator is passed a callback which must be called once it has completed
+  with an error (which can be null) and an array of results.
+* callback(err, results) - A callback which is called after all the iterator
+  functions have finished, or an error has occurred. Results is an array containing
+  the concatenated results of the iterator function.
+
+__Example__
+
+    async.concat(['dir1','dir2','dir3'], fs.readdir, function(err, files){
+        // files is now a list of filenames that exist in the 3 directories
     });
 
 
