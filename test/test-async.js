@@ -874,18 +874,21 @@ exports['noConflict'] = function(test){
 };
 
 exports['concat'] = function(test){
+    var call_order = [];
     var iterator = function (x, cb) {
-        var r = [];
-        while (x > 0) {
-            r.push(x);
-            x--;
-        }
-        process.nextTick(function(){
+        setTimeout(function(){
+            call_order.push(x);
+            var r = [];
+            while (x > 0) {
+                r.push(x);
+                x--;
+            }
             cb(null, r);
-        });
+        }, x*25);
     };
-    async.concat([1,2,3], iterator, function(err, results){
+    async.concat([1,3,2], iterator, function(err, results){
         test.same(results, [1,2,1,3,2,1]);
+        test.same(call_order, [1,2,3]);
         test.ok(!err);
         test.done();
     });
@@ -897,6 +900,27 @@ exports['concat error'] = function(test){
     };
     async.concat([1,2,3], iterator, function(err, results){
         test.ok(err);
+        test.done();
+    });
+};
+
+exports['concatSeries'] = function(test){
+    var call_order = [];
+    var iterator = function (x, cb) {
+        setTimeout(function(){
+            call_order.push(x);
+            var r = [];
+            while (x > 0) {
+                r.push(x);
+                x--;
+            }
+            cb(null, r);
+        }, x*25);
+    };
+    async.concatSeries([1,3,2], iterator, function(err, results){
+        test.same(results, [1,3,2,1,2,1]);
+        test.same(call_order, [1,3,2]);
+        test.ok(!err);
         test.done();
     });
 };

@@ -100,7 +100,8 @@ every
 : Returns true if every element in the array satisfies an async test.
 
 concat
-: Apply an iterator to each item in a list and concatenate the results.
+: Apply an iterator to each item in a list and concatenate the results. Series
+  version: concatSeries.
 
 
 ### Flow Control
@@ -410,7 +411,9 @@ __Example__
 ### concat(arr, iterator, callback)
 
 Applies an iterator to each item in a list, concatenating the results. Returns the
-concatenated list.
+concatenated list. The iterators are called in parallel, and the results are
+concatenated as they return. There is no guarantee that the results array will
+be returned in the original order of the arguments passed to the iterator function.
 
 __Arguments__
 
@@ -427,6 +430,10 @@ __Example__
     async.concat(['dir1','dir2','dir3'], fs.readdir, function(err, files){
         // files is now a list of filenames that exist in the 3 directories
     });
+
+### concatSeries(arr, iterator, callback)
+
+Same as async.concat, but executes in series instead of parallel.
 
 
 ### series(tasks, [callback])
