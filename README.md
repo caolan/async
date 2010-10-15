@@ -62,95 +62,36 @@ So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 
 ## Documentation
 
-
 ### Collections
 
-[forEach](#forEach)
-Applies an async iterator to each item in an array. Series version:
-[forEachSeries](#forEachSeries).
-
-[map](#map)
-Produces a new array of values by mapping each value in the given array
-through an async iterator function. Series version: [mapSeries](#mapSeries).
-
-[filter](#filter)
-Returns a new array of all the values which pass an async truth test. Series
-version: [filterSeries](#filterSeries).
-
-[reject](#reject)
-The opposite of filter, removes items that passes an async test. Series
-version: [rejectSeries](#rejectSeries).
-
-[reduce](#reduce)
-Reduces a list of values into a single value using an async iterator to
-return each successive step. Use reduceRight to apply the iterator in
-reverse order.
-
-[detect](#detect)
-Returns the first value is a list that passes an async truth test. Series
-version: [detectSeries](#detectSeries).
-
-[sortBy](#sortBy)
-Sorts a list by the results of running each value through an async iterator,
-leaving the original values intact.
-
-[some](#some)
-Returns true if at least one element in the array satisfies an async test.
-
-[every](#every)
-Returns true if every element in the array satisfies an async test.
-
-[concat](#concat)
-Apply an iterator to each item in a list and concatenate the results. Series
-version: [concatSeries](#concatSeries).
-
-[whilst](#whilst)
-Repeatedly call an async function while a test function returns true.
-
-[until](#until)
-Repeatedly call an async function until a test function returns true.
-
+* [forEach](#forEach)
+* [map](#map)
+* [filter](#filter)
+* [reject](#reject)
+* [reduce](#reduce)
+* [detect](#detect)
+* [sortBy](#sortBy)
+* [some](#some)
+* [every](#every)
+* [concat](#concat)
+* [whilst](#whilst)
+* [until](#until)
 
 ### Flow Control
 
-[series](#series)
-Run an array of functions in series, each one running once the previous
-function has completed.
-
-[parallel](#parallel)
-Run an array of functions in parallel, without waiting until the previous
-function has completed.
-
-[waterfall](#waterfall)
-Runs an array of functions in series, each passing their results to the next
-in the array.
-
-[auto](#auto)
-Determines the best order for running functions based on their requirements.
-
-[iterator](#iterator)
-Creates an iterator function which calls the next function in the array,
-returning a continuation to call the next one after that.
-
-[apply](#apply)
-Creates a continuation with some arguments already applied, a useful
-shorthand when combined with other flow control functions.
-
-[nextTick](#nextTick)
-Calls the callback on a later loop around the event loop.
-
+* [series](#series)
+* [parallel](#parallel)
+* [waterfall](#waterfall)
+* [auto](#auto)
+* [iterator](#iterator)
+* [apply](#apply)
+* [nextTick](#nextTick)
 
 ### Utils
 
-[log](#log)
-Logs the result of an async function to the console.
-
-[dir](#dir)
-Logs the result of an async function to the console using console.dir
-
-[noConflict](#noConflict)
-Changes the value of async back to its original value, returning a reference to
-the async object.
+* [log](#log)
+* [dir](#dir)
+* [noConflict](#noConflict)
 
 
 ## Collections
