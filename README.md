@@ -103,6 +103,11 @@ concat
 : Apply an iterator to each item in a list and concatenate the results. Series
   version: concatSeries.
 
+whilst
+: Repeatedly call an async function while a test function returns true.
+
+until
+: Repeatedly call an async function until a test function returns true.
 
 ### Flow Control
 
@@ -434,6 +439,42 @@ __Example__
 ### concatSeries(arr, iterator, callback)
 
 Same as async.concat, but executes in series instead of parallel.
+
+### whilst(test, fn, callback)
+
+Repeatedly call fn, while test returns true. Calls the callback when stopped,
+or an error occurs.
+
+__Arguments__
+
+* test() - synchronous truth test to perform before each execution of fn.
+* fn(callback) - A function to call each time the test passes. The function is
+  passed a callback which must be called once it has completed with an optional
+  error as the first argument.
+* callback(err) - A callback which is called after the test fails and repeated
+  execution of fn has stopped.
+
+__Example__
+
+    var count = 0;
+
+    async.whilst(
+        function () { return count < 5; },
+        function (callback) {
+            count++;
+            setTimeout(callback, 1000);
+        },
+        function (err) {
+            // 5 seconds have passed
+        }
+    });
+
+### until(test, fn, callback)
+
+Repeatedly call fn, until test returns true. Calls the callback when stopped,
+or an error occurs.
+
+The inverse of async.whilst.
 
 
 ### series(tasks, [callback])
