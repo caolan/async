@@ -124,6 +124,8 @@ __Example__
         // if any of the saves produced an error, err would equal that error
     });
 
+---------------------------------------
+
 <a name="forEachSeries" />
 ### forEachSeries(arr, iterator, callback)
 
@@ -131,6 +133,8 @@ The same as forEach only the iterator is applied to each item in the array in
 series. The next iterator is only called once the current one has completed
 processing. This means the iterator functions will complete in order.
 
+
+---------------------------------------
 
 <a name="map" />
 ### map(arr, iterator, callback)
@@ -162,6 +166,8 @@ __Example__
         // results is now an array of stats for each file
     });
 
+---------------------------------------
+
 <a name="mapSeries" />
 ### mapSeries(arr, iterator, callback)
 
@@ -169,6 +175,8 @@ The same as map only the iterator is applied to each item in the array in
 series. The next iterator is only called once the current one has completed
 processing. The results array will be in the same order as the original.
 
+
+---------------------------------------
 
 <a name="filter" />
 ### filter(arr, iterator, callback)
@@ -196,6 +204,8 @@ __Example__
         // results now equals an array of the existing files
     });
 
+---------------------------------------
+
 <a name="filterSeries" />
 ### filterSeries(arr, iterator, callback)
 
@@ -205,10 +215,14 @@ The same as filter only the iterator is applied to each item in the array in
 series. The next iterator is only called once the current one has completed
 processing. The results array will be in the same order as the original.
 
+---------------------------------------
+
 <a name="reject" />
 ### reject(arr, iterator, callback)
 
 The opposite of filter. Removes values that pass an async truth test.
+
+---------------------------------------
 
 <a name="rejectSeries" />
 ### rejectSeries(arr, iterator, callback)
@@ -216,6 +230,8 @@ The opposite of filter. Removes values that pass an async truth test.
 The same as filter, only the iterator is applied to each item in the array
 in series.
 
+
+---------------------------------------
 
 <a name="reduce" />
 ### reduce(arr, memo, iterator, callback)
@@ -254,6 +270,8 @@ __Example__
         // result is now equal to the last value of memo, which is 6
     });
 
+---------------------------------------
+
 <a name="reduceRight" />
 ### reduceRight(arr, memo, iterator, callback)
 
@@ -261,6 +279,8 @@ __Alias:__ foldr
 
 Same as reduce, only operates on the items in the array in reverse order.
 
+
+---------------------------------------
 
 <a name="detect" />
 ### detect(arr, iterator, callback)
@@ -288,6 +308,8 @@ __Example__
         // result now equals the first file in the list that exists
     });
 
+---------------------------------------
+
 <a name="detectSeries" />
 ### detectSeries(arr, iterator, callback)
 
@@ -295,6 +317,8 @@ The same as detect, only the iterator is applied to each item in the array
 in series. This means the result is always the first in the original array (in
 terms of array order) that passes the truth test.
 
+
+---------------------------------------
 
 <a name="sortBy" />
 ### sortBy(arr, iterator, callback)
@@ -323,6 +347,8 @@ __Example__
     });
 
 
+---------------------------------------
+
 <a name="some" />
 ### some(arr, iterator, callback)
 
@@ -349,6 +375,8 @@ __Example__
         // if result is true then at least one of the files exists
     });
 
+---------------------------------------
+
 <a name="every" />
 ### every(arr, iterator, callback)
 
@@ -374,6 +402,8 @@ __Example__
         // if result is true then every file exists
     });
 
+---------------------------------------
+
 <a name="concat" />
 ### concat(arr, iterator, callback)
 
@@ -398,10 +428,14 @@ __Example__
         // files is now a list of filenames that exist in the 3 directories
     });
 
+---------------------------------------
+
 <a name="concatSeries" />
 ### concatSeries(arr, iterator, callback)
 
 Same as async.concat, but executes in series instead of parallel.
+
+---------------------------------------
 
 <a name="whilst" />
 ### whilst(test, fn, callback)
@@ -432,6 +466,8 @@ __Example__
             // 5 seconds have passed
         }
     });
+
+---------------------------------------
 
 <a name="until" />
 ### until(test, fn, callback)
@@ -478,6 +514,8 @@ __Example__
     });
 
 
+---------------------------------------
+
 <a name="parallel" />
 ### parallel(tasks, [callback])
 
@@ -515,6 +553,8 @@ __Example__
     });
 
 
+---------------------------------------
+
 <a name="waterfall" />
 ### waterfall(tasks, [callback])
 
@@ -545,6 +585,8 @@ __Example__
         }
     ]);
 
+
+---------------------------------------
 
 <a name="auto" />
 ### auto(tasks, [callback])
@@ -612,6 +654,8 @@ For a complicated series of async tasks using the auto function makes adding
 new tasks much easier and makes the code more readable. 
 
 
+---------------------------------------
+
 <a name="iterator" />
 ### iterator(tasks)
 
@@ -645,6 +689,8 @@ __Example__
     node> nextfn();
     'three'
 
+
+---------------------------------------
 
 <a name="apply" />
 ### apply(function, arguments..)
@@ -689,6 +735,8 @@ continuation:
     one
     two
     three
+
+---------------------------------------
 
 <a name="nextTick" />
 ### nextTick(callback)
@@ -740,6 +788,8 @@ __Example__
     'hello world'
 
 
+---------------------------------------
+
 <a name="dir" />
 ### dir(function, arguments)
 
@@ -765,6 +815,8 @@ __Example__
     node> async.dir(hello, 'world');
     {hello: 'world'}
 
+
+---------------------------------------
 
 <a name="noConflict" />
 ### noConflict()
