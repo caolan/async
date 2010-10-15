@@ -62,94 +62,100 @@ So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 
 ## Documentation
 
+
 ### Collections
 
-forEach 
-: Applies an async iterator to each item in an array. Series version:
-  forEachSeries.
+[forEach](#forEach)
+Applies an async iterator to each item in an array. Series version:
+[forEachSeries](#forEachSeries).
 
-map
-: Produces a new array of values by mapping each value in the given array
-  through an async iterator function. Series version: mapSeries.
+[map](#map)
+Produces a new array of values by mapping each value in the given array
+through an async iterator function. Series version: [mapSeries](#mapSeries).
 
-filter
-: Returns a new array of all the values which pass an async truth test. Series
-  version: filterSeries.
+[filter](#filter)
+Returns a new array of all the values which pass an async truth test. Series
+version: [filterSeries](#filterSeries).
 
-reject
-: The opposite of filter, removes items that passes an async test. Series
-  version: rejectSeries.
+[reject](#reject)
+The opposite of filter, removes items that passes an async test. Series
+version: [rejectSeries](#rejectSeries).
 
-reduce
-: Reduces a list of values into a single value using an async iterator to
-  return each successive step. Use reduceRight to apply the iterator in
-  reverse order.
+[reduce](#reduce)
+Reduces a list of values into a single value using an async iterator to
+return each successive step. Use reduceRight to apply the iterator in
+reverse order.
 
-detect
-: Returns the first value is a list that passes an async truth test. Series
-  version: detectSeries.
+[detect](#detect)
+Returns the first value is a list that passes an async truth test. Series
+version: [detectSeries](#detectSeries).
 
-sortBy
-: Sorts a list by the results of running each value through an async iterator,
-  leaving the original values intact.
+[sortBy](#sortBy)
+Sorts a list by the results of running each value through an async iterator,
+leaving the original values intact.
 
-some
-: Returns true if at least one element in the array satisfies an async test.
+[some](#some)
+Returns true if at least one element in the array satisfies an async test.
 
-every
-: Returns true if every element in the array satisfies an async test.
+[every](#every)
+Returns true if every element in the array satisfies an async test.
 
-concat
-: Apply an iterator to each item in a list and concatenate the results. Series
-  version: concatSeries.
+[concat](#concat)
+Apply an iterator to each item in a list and concatenate the results. Series
+version: [concatSeries](#concatSeries).
 
-whilst
-: Repeatedly call an async function while a test function returns true.
+[whilst](#whilst)
+Repeatedly call an async function while a test function returns true.
 
-until
-: Repeatedly call an async function until a test function returns true.
+[until](#until)
+Repeatedly call an async function until a test function returns true.
+
 
 ### Flow Control
 
-series
-: Run an array of functions in series, each one running once the previous
-  function has completed.
+[series](#series)
+Run an array of functions in series, each one running once the previous
+function has completed.
 
-parallel
-: Run an array of functions in parallel, without waiting until the previous
-  function has completed.
+[parallel](#parallel)
+Run an array of functions in parallel, without waiting until the previous
+function has completed.
 
-waterfall
-: Runs an array of functions in series, each passing their results to the next
-  in the array.
+[waterfall](#waterfall)
+Runs an array of functions in series, each passing their results to the next
+in the array.
 
-auto
-:  Determines the best order for running functions based on their requirements.
+[auto](#auto)
+Determines the best order for running functions based on their requirements.
 
-iterator
-: Creates an iterator function which calls the next function in the array,
-  returning a continuation to call the next one after that.
+[iterator](#iterator)
+Creates an iterator function which calls the next function in the array,
+returning a continuation to call the next one after that.
 
-apply
-: Creates a continuation with some arguments already applied, a useful
-  shorthand when combined with other flow control functions.
+[apply](#apply)
+Creates a continuation with some arguments already applied, a useful
+shorthand when combined with other flow control functions.
 
-nextTick
-: Calls the callback on a later loop around the event loop.
+[nextTick](#nextTick)
+Calls the callback on a later loop around the event loop.
+
 
 ### Utils
 
-log
-: Logs the result of an async function to the console.
+[log](#log)
+Logs the result of an async function to the console.
 
-dir
-: Logs the result of an async function to the console using console.dir
+[dir](#dir)
+Logs the result of an async function to the console using console.dir
 
-noConflict
-: Changes the value of async back to its original value, returning a reference to
-  the async object.
+[noConflict](#noConflict)
+Changes the value of async back to its original value, returning a reference to
+the async object.
 
 
+## Collections
+
+<a name="forEach" />
 ### forEach(arr, iterator, callback)
 
 Applies an iterator function to each item in an array, in parallel.
@@ -177,6 +183,7 @@ __Example__
         // if any of the saves produced an error, err would equal that error
     });
 
+<a name="forEachSeries" />
 ### forEachSeries(arr, iterator, callback)
 
 The same as forEach only the iterator is applied to each item in the array in
@@ -184,6 +191,7 @@ series. The next iterator is only called once the current one has completed
 processing. This means the iterator functions will complete in order.
 
 
+<a name="map" />
 ### map(arr, iterator, callback)
 
 Produces a new array of values by mapping each value in the given array through
@@ -213,6 +221,7 @@ __Example__
         // results is now an array of stats for each file
     });
 
+<a name="mapSeries" />
 ### mapSeries(arr, iterator, callback)
 
 The same as map only the iterator is applied to each item in the array in
@@ -220,6 +229,7 @@ series. The next iterator is only called once the current one has completed
 processing. The results array will be in the same order as the original.
 
 
+<a name="filter" />
 ### filter(arr, iterator, callback)
 
 __Alias:__ select
@@ -245,6 +255,7 @@ __Example__
         // results now equals an array of the existing files
     });
 
+<a name="filterSeries" />
 ### filterSeries(arr, iterator, callback)
 
 __alias:__ selectSeries
@@ -253,16 +264,19 @@ The same as filter only the iterator is applied to each item in the array in
 series. The next iterator is only called once the current one has completed
 processing. The results array will be in the same order as the original.
 
+<a name="reject" />
 ### reject(arr, iterator, callback)
 
 The opposite of filter. Removes values that pass an async truth test.
 
+<a name="rejectSeries" />
 ### rejectSeries(arr, iterator, callback)
 
 The same as filter, only the iterator is applied to each item in the array
 in series.
 
 
+<a name="reduce" />
 ### reduce(arr, memo, iterator, callback)
 
 __aliases:__ inject, foldl
@@ -299,6 +313,7 @@ __Example__
         // result is now equal to the last value of memo, which is 6
     });
 
+<a name="reduceRight" />
 ### reduceRight(arr, memo, iterator, callback)
 
 __Alias:__ foldr
@@ -306,6 +321,7 @@ __Alias:__ foldr
 Same as reduce, only operates on the items in the array in reverse order.
 
 
+<a name="detect" />
 ### detect(arr, iterator, callback)
 
 Returns the first value in a list that passes an async truth test. The
@@ -331,6 +347,7 @@ __Example__
         // result now equals the first file in the list that exists
     });
 
+<a name="detectSeries" />
 ### detectSeries(arr, iterator, callback)
 
 The same as detect, only the iterator is applied to each item in the array
@@ -338,6 +355,7 @@ in series. This means the result is always the first in the original array (in
 terms of array order) that passes the truth test.
 
 
+<a name="sortBy" />
 ### sortBy(arr, iterator, callback)
 
 Sorts a list by the results of running each value through an async iterator.
@@ -364,6 +382,7 @@ __Example__
     });
 
 
+<a name="some" />
 ### some(arr, iterator, callback)
 
 __Alias:__ any
@@ -389,6 +408,7 @@ __Example__
         // if result is true then at least one of the files exists
     });
 
+<a name="every" />
 ### every(arr, iterator, callback)
 
 __Alias:__ all
@@ -413,6 +433,7 @@ __Example__
         // if result is true then every file exists
     });
 
+<a name="concat" />
 ### concat(arr, iterator, callback)
 
 Applies an iterator to each item in a list, concatenating the results. Returns the
@@ -436,10 +457,12 @@ __Example__
         // files is now a list of filenames that exist in the 3 directories
     });
 
+<a name="concatSeries" />
 ### concatSeries(arr, iterator, callback)
 
 Same as async.concat, but executes in series instead of parallel.
 
+<a name="whilst" />
 ### whilst(test, fn, callback)
 
 Repeatedly call fn, while test returns true. Calls the callback when stopped,
@@ -469,6 +492,7 @@ __Example__
         }
     });
 
+<a name="until" />
 ### until(test, fn, callback)
 
 Repeatedly call fn, until test returns true. Calls the callback when stopped,
@@ -477,6 +501,9 @@ or an error occurs.
 The inverse of async.whilst.
 
 
+## Flow Control
+
+<a name="series" />
 ### series(tasks, [callback])
 
 Run an array of functions in series, each one running once the previous
@@ -510,6 +537,7 @@ __Example__
     });
 
 
+<a name="parallel" />
 ### parallel(tasks, [callback])
 
 Run an array of functions in parallel, without waiting until the previous
@@ -546,6 +574,7 @@ __Example__
     });
 
 
+<a name="waterfall" />
 ### waterfall(tasks, [callback])
 
 Runs an array of functions in series, each passing their results to the next in
@@ -576,6 +605,7 @@ __Example__
     ]);
 
 
+<a name="auto" />
 ### auto(tasks, [callback])
 
 Determines the best order for running functions based on their requirements.
@@ -641,6 +671,7 @@ For a complicated series of async tasks using the auto function makes adding
 new tasks much easier and makes the code more readable. 
 
 
+<a name="iterator" />
 ### iterator(tasks)
 
 Creates an iterator function which calls the next function in the array,
@@ -674,6 +705,7 @@ __Example__
     'three'
 
 
+<a name="apply" />
 ### apply(function, arguments..)
 
 Creates a continuation function with some arguments already applied, a useful
@@ -717,6 +749,7 @@ continuation:
     two
     three
 
+<a name="nextTick" />
 ### nextTick(callback)
 
 Calls the callback on a later loop around the event loop. In node.js this just
@@ -741,6 +774,7 @@ __Example__
 
 ## Utils
 
+<a name="log" />
 ### log(function, arguments)
 
 Logs the result of an async function to the console. Only works in node.js or
@@ -765,6 +799,7 @@ __Example__
     'hello world'
 
 
+<a name="dir" />
 ### dir(function, arguments)
 
 Logs the result of an async function to the console using console.dir to
@@ -790,6 +825,7 @@ __Example__
     {hello: 'world'}
 
 
+<a name="noConflict" />
 ### noConflict()
 
 Changes the value of async back to its original value, returning a reference to the
