@@ -234,6 +234,40 @@ exports['parallel no callback'] = function(test){
     ]);
 };
 
+exports['parallel object'] = function(test){
+    var call_order = [];
+    async.parallel({
+        one: function(callback){
+            setTimeout(function(){
+                call_order.push(1);
+                callback(null, 1);
+            }, 25);
+        },
+        two: function(callback){
+            setTimeout(function(){
+                call_order.push(2);
+                callback(null, 2);
+            }, 50);
+        },
+        three: function(callback){
+            setTimeout(function(){
+                call_order.push(3);
+                callback(null, 3,3);
+            }, 15);
+        }
+    },
+    function(err, results){
+        test.equals(err, null);
+        test.same(call_order, [3,1,2]);
+        test.same(results, {
+            one: 1,
+            two: 2,
+            three: [3,3]
+        });
+        test.done();
+    });
+};
+
 exports['series'] = function(test){
     var call_order = [];
     async.series([
@@ -294,6 +328,40 @@ exports['series no callback'] = function(test){
         function(callback){callback();},
         function(callback){callback(); test.done();},
     ]);
+};
+
+exports['series object'] = function(test){
+    var call_order = [];
+    async.series({
+        one: function(callback){
+            setTimeout(function(){
+                call_order.push(1);
+                callback(null, 1);
+            }, 25);
+        },
+        two: function(callback){
+            setTimeout(function(){
+                call_order.push(2);
+                callback(null, 2);
+            }, 50);
+        },
+        three: function(callback){
+            setTimeout(function(){
+                call_order.push(3);
+                callback(null, 3,3);
+            }, 15);
+        }
+    },
+    function(err, results){
+        test.equals(err, null);
+        test.same(results, {
+            one: 1,
+            two: 2,
+            three: [3,3]
+        });
+        test.same(call_order, [1,2,3]);
+        test.done();
+    });
 };
 
 exports['iterator'] = function(test){

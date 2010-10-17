@@ -444,12 +444,19 @@ Same as async.concat, but executes in series instead of parallel.
 Run an array of functions in series, each one running once the previous
 function has completed. If any functions in the series pass an error to its
 callback, no more functions are run and the callback for the series is
-immediately called with the value of the error.
+immediately called with the value of the error. Once the tasks have completed,
+the results are passed to the final callback as an array.
+
+It is also possible to use an object instead of an array. Each property will be
+run as a function and the results will be passed to the final callback as an object
+instead of an array. This can be a more readable way of handling results from
+async.series.
+
 
 __Arguments__
 
-* tasks - An array of functions to run, each function is passed a callback it
-  must call on completion.
+* tasks - An array or object containing functions to run, each function is passed
+  a callback it must call on completion.
 * callback(err, results) - An optional callback to run once all the functions
   have completed. This function gets an array of all the arguments passed to
   the callbacks used in the array.
@@ -472,6 +479,24 @@ __Example__
     });
 
 
+    // an example using an object instead of an array
+    async.series({
+        one: function(callback){
+            setTimeout(function(){
+                callback(null, 1);
+            }, 200);
+        },
+        two: function(callback){
+            setTimeout(function(){
+                callback(null, 2);
+            }, 100);
+        },
+    },
+    function(err, results) {
+        // results is now equals to: {one: 1, two: 2}
+    });
+
+
 ---------------------------------------
 
 <a name="parallel" />
@@ -480,11 +505,19 @@ __Example__
 Run an array of functions in parallel, without waiting until the previous
 function has completed. If any of the functions pass an error to its
 callback, the main callback is immediately called with the value of the error.
+Once the tasks have completed, the results are passed to the final callback as an
+array.
+
+It is also possible to use an object instead of an array. Each property will be
+run as a function and the results will be passed to the final callback as an object
+instead of an array. This can be a more readable way of handling results from
+async.parallel.
+
 
 __Arguments__
 
-* tasks - An array of functions to run, each function is passed a callback it
-  must call on completion.
+* tasks - An array or object containing functions to run, each function is passed a
+  callback it must call on completion.
 * callback(err, results) - An optional callback to run once all the functions
   have completed. This function gets an array of all the arguments passed to
   the callbacks used in the array.
@@ -508,6 +541,24 @@ __Example__
         // in this case, the results array will equal ['two','one']
         // because the functions were run in parallel and the second
         // function had a shorter timeout before calling the callback.
+    });
+
+
+    // an example using an object instead of an array
+    async.parallel({
+        one: function(callback){
+            setTimeout(function(){
+                callback(null, 1);
+            }, 200);
+        },
+        two: function(callback){
+            setTimeout(function(){
+                callback(null, 2);
+            }, 100);
+        },
+    },
+    function(err, results) {
+        // results is now equals to: {one: 1, two: 2}
     });
 
 
