@@ -74,13 +74,13 @@ So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 * [some](#some)
 * [every](#every)
 * [concat](#concat)
-* [whilst](#whilst)
-* [until](#until)
 
 ### Flow Control
 
 * [series](#series)
 * [parallel](#parallel)
+* [whilst](#whilst)
+* [until](#until)
 * [waterfall](#waterfall)
 * [auto](#auto)
 * [iterator](#iterator)
@@ -435,48 +435,6 @@ __Example__
 
 Same as async.concat, but executes in series instead of parallel.
 
----------------------------------------
-
-<a name="whilst" />
-### whilst(test, fn, callback)
-
-Repeatedly call fn, while test returns true. Calls the callback when stopped,
-or an error occurs.
-
-__Arguments__
-
-* test() - synchronous truth test to perform before each execution of fn.
-* fn(callback) - A function to call each time the test passes. The function is
-  passed a callback which must be called once it has completed with an optional
-  error as the first argument.
-* callback(err) - A callback which is called after the test fails and repeated
-  execution of fn has stopped.
-
-__Example__
-
-    var count = 0;
-
-    async.whilst(
-        function () { return count < 5; },
-        function (callback) {
-            count++;
-            setTimeout(callback, 1000);
-        },
-        function (err) {
-            // 5 seconds have passed
-        }
-    });
-
----------------------------------------
-
-<a name="until" />
-### until(test, fn, callback)
-
-Repeatedly call fn, until test returns true. Calls the callback when stopped,
-or an error occurs.
-
-The inverse of async.whilst.
-
 
 ## Flow Control
 
@@ -551,6 +509,50 @@ __Example__
         // because the functions were run in parallel and the second
         // function had a shorter timeout before calling the callback.
     });
+
+
+---------------------------------------
+
+<a name="whilst" />
+### whilst(test, fn, callback)
+
+Repeatedly call fn, while test returns true. Calls the callback when stopped,
+or an error occurs.
+
+__Arguments__
+
+* test() - synchronous truth test to perform before each execution of fn.
+* fn(callback) - A function to call each time the test passes. The function is
+  passed a callback which must be called once it has completed with an optional
+  error as the first argument.
+* callback(err) - A callback which is called after the test fails and repeated
+  execution of fn has stopped.
+
+__Example__
+
+    var count = 0;
+
+    async.whilst(
+        function () { return count < 5; },
+        function (callback) {
+            count++;
+            setTimeout(callback, 1000);
+        },
+        function (err) {
+            // 5 seconds have passed
+        }
+    });
+
+
+---------------------------------------
+
+<a name="until" />
+### until(test, fn, callback)
+
+Repeatedly call fn, until test returns true. Calls the callback when stopped,
+or an error occurs.
+
+The inverse of async.whilst.
 
 
 ---------------------------------------
