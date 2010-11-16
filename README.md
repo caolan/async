@@ -654,8 +654,8 @@ __Arguments__
 
 * worker(task, callback) - An asynchronous function for processing a queued
   task.
-* concurrency - An optional callback which is called when all the tasks have
-  been completed. The callback may receive an error as an argument.
+* concurrency - An integer for determining how many worker functions should be
+  run in parallel.
 
 __Queue objects__
 
