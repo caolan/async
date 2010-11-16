@@ -82,6 +82,7 @@ So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 * [whilst](#whilst)
 * [until](#until)
 * [waterfall](#waterfall)
+* [queue](#queue)
 * [auto](#auto)
 * [iterator](#iterator)
 * [apply](#apply)
@@ -637,6 +638,55 @@ __Example__
             callback(null, 'done');
         }
     ]);
+
+
+---------------------------------------
+
+<a name="queue" />
+### queue(worker, concurrency)
+
+Creates a queue object with the specified concurrency. Tasks added to the
+queue will be processed in parallel (up to the concurrency limit). If all
+workers are in progress, the task is queued until one is available. Once
+a worker has completed a task, the task's callback is called.
+
+__Arguments__
+
+* worker(task, callback) - An asynchronous function for processing a queued
+  task.
+* concurrency - An optional callback which is called when all the tasks have
+  been completed. The callback may receive an error as an argument.
+
+__Queue objects__
+
+The queue object returned by this function has the following properties and
+methods:
+
+* length() - a function returning the number of items waiting to be processed.
+* concurrency - an integer for determining how many worker functions should be
+  run in parallel. This property can be changed after a queue is created to
+  alter the concurrency on-the-fly.
+* push(task, callback) - add a new task to the queue, the callback is called
+  once the worker has finished processing the task.
+
+__Example__
+
+    // create a queue object with concurrency 2
+
+    var q = async.queue(function (task, callback) {
+        console.log('hello ' + task.name).
+        callback();
+    }, 2);
+
+
+    // add some items to the queue
+
+    q.push({name: 'foo'}, function (err) {
+        console.log('finished processing foo');
+    });
+    q.push({name: 'bar'}, function (err) {
+        console.log('finished processing bar');
+    });
 
 
 ---------------------------------------
