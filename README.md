@@ -671,7 +671,7 @@ methods:
 * concurrency - an integer for determining how many worker functions should be
   run in parallel. This property can be changed after a queue is created to
   alter the concurrency on-the-fly.
-* push(task, callback) - add a new task to the queue, the callback is called
+* push(task, [callback]) - add a new task to the queue, the callback is called
   once the worker has finished processing the task.
 
 __Example__
