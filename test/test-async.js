@@ -1,4 +1,4 @@
-var async = require('async');
+var async = require('../lib/async');
 
 
 exports['auto'] = function(test){
