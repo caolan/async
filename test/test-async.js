@@ -1160,3 +1160,34 @@ exports['queue changing concurrency'] = function (test) {
         test.done();
     }, 100);
 };
+
+exports['queue push without callback'] = function (test) {
+    var call_order = [],
+        delays = [20,10,30,10];
+
+    // worker1: --1-4
+    // worker2: -2---3
+    // order of completion: 2,1,4,3
+
+    var q = async.queue(function (task, callback) {
+        setTimeout(function () {
+            call_order.push('process ' + task);
+            callback('error', 'arg');
+        }, delays.splice(0,1)[0]);
+    }, 2);
+
+    q.push(1);
+    q.push(2);
+    q.push(3);
+    q.push(4);
+
+    setTimeout(function () {
+        test.same(call_order, [
+            'process 2',
+            'process 1',
+            'process 4',
+            'process 3'
+        ]);
+        test.done();
+    }, 60);
+};
