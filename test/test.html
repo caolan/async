@@ -1,0 +1,18 @@
+<html>
+  <head>
+    <title>Async.js tests</title>
+    <script src="../lib/async.js"></script>
+    <script src="../deps/nodeunit.min.js"></script>
+    <script>
+      this.require = function () { return async; }
+      this.exports = {};
+    </script>
+    <script src="test-async.js"></script>
+  </head>
+  <body>
+    <script>
+      console.log(exports);
+      nodeunit.run({'test-async': exports});
+    </script>
+  </body>
+</html>
