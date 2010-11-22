@@ -820,33 +820,49 @@ exports['apply'] = function(test){
 // generates tests for console functions such as async.log
 var console_fn_tests = function(name){
 
-    exports[name] = function(test){
-        test.expect(5);
-        var fn = function(arg1, callback){
-            test.equals(arg1, 'one');
-            process.nextTick(function(){callback(null, 'test');});
-        };
-        var fn_err = function(arg1, callback){
-            test.equals(arg1, 'one');
-            process.nextTick(function(){callback('error');});
-        };
-        var _console_fn = console[name];
-        var _error = console.error;
-        console[name] = function(val){
-            test.equals(val, 'test');
-            test.equals(arguments.length, 1);
-            console.error = function(val){
-                test.equals(val, 'error');
-                console[name] = _console_fn;
-                console.error = _error;
-                test.done();
+    if (typeof console !== 'undefined') {
+        exports[name] = function(test){
+            test.expect(5);
+            var fn = function(arg1, callback){
+                test.equals(arg1, 'one');
+                setTimeout(function(){callback(null, 'test');}, 0);
             };
-            async[name](fn_err, 'one');
+            var fn_err = function(arg1, callback){
+                test.equals(arg1, 'one');
+                setTimeout(function(){callback('error');}, 0);
+            };
+            var _console_fn = console[name];
+            var _error = console.error;
+            console[name] = function(val){
+                test.equals(val, 'test');
+                test.equals(arguments.length, 1);
+                console.error = function(val){
+                    test.equals(val, 'error');
+                    console[name] = _console_fn;
+                    console.error = _error;
+                    test.done();
+                };
+                async[name](fn_err, 'one');
+            };
+            async[name](fn, 'one');
         };
-        async[name](fn, 'one');
-    };
+
+        exports[name + ' with multiple result params'] = function(test){
+            var fn = function(callback){callback(null,'one','two','three');};
+            var _console_fn = console[name];
+            var called_with = [];
+            console[name] = function(x){
+                called_with.push(x);
+            };
+            async[name](fn);
+            test.same(called_with, ['one','two','three']);
+            console[name] = _console_fn;
+            test.done();
+        };
+    }
 
     exports[name + ' without console.' + name] = function(test){
+        if (typeof global === 'undefined') var global = window;
         var _console = global.console;
         global.console = undefined;
         var fn = function(callback){callback(null, 'val');};
@@ -857,18 +873,6 @@ var console_fn_tests = function(name){
         test.done();
     };
 
-    exports[name + ' with multiple result params'] = function(test){
-        var fn = function(callback){callback(null, 'one', 'two', 'three');};
-        var _console_fn = console[name];
-        var called_with = [];
-        console[name] = function(x){
-            called_with.push(x);
-        };
-        async[name](fn);
-        test.same(called_with, ['one','two','three']);
-        console[name] = _console_fn;
-        test.done();
-    };
 };
 
 console_fn_tests('log');
@@ -889,9 +893,19 @@ exports['nextTick'] = function(test){
 
 exports['nextTick in node'] = function(test){
     test.expect(1);
+    var browser = false;
+    if (typeof process === 'undefined') {
+        browser = true;
+        window.process = {};
+    }
     var _nextTick = process.nextTick;
     process.nextTick = function(){
-        process.nextTick = _nextTick;
+        if (browser) {
+            window.process = undefined;
+        }
+        else {
+            process.nextTick = _nextTick;
+        }
         test.ok(true, 'process.nextTick called');
         test.done();
     };
@@ -900,45 +914,54 @@ exports['nextTick in node'] = function(test){
 
 exports['nextTick in the browser'] = function(test){
     test.expect(1);
-    var _nextTick = process.nextTick;
-    process.nextTick = undefined;
+
+    if (typeof process !== 'undefined') {
+        var _nextTick = process.nextTick;
+        process.nextTick = undefined;
+    }
 
     var call_order = [];
     async.nextTick(function(){call_order.push('two');});
 
     call_order.push('one');
     setTimeout(function(){
-        process.nextTick = _nextTick;
+        if (typeof process !== 'undefined') {
+            process.nextTick = _nextTick;
+        }
         test.same(call_order, ['one','two']);
     }, 50);
     setTimeout(test.done, 100);
 };
 
-exports['noConflict'] = function(test){
-    test.expect(3);
-    var fs = require('fs');
-    var filename = __dirname + '/../lib/async.js';
-    fs.readFile(filename, function(err, content){
-        if(err) return test.done();
-        var Script = process.binding('evals').Script;
+exports['noConflict - node only'] = function(test){
+    if (typeof process !== 'undefined') {
+        // node only test
+        test.expect(3);
+        var fs = require('fs');
+        var filename = __dirname + '/../lib/async.js';
+        fs.readFile(filename, function(err, content){
+            if(err) return test.done();
+            var Script = process.binding('evals').Script;
 
-        var s = new Script(content, filename);
-        var s2 = new Script(
-            content + 'this.async2 = this.async.noConflict();',
-            filename
-        );
+            var s = new Script(content, filename);
+            var s2 = new Script(
+                content + 'this.async2 = this.async.noConflict();',
+                filename
+            );
 
-        var sandbox1 = {async: 'oldvalue'};
-        s.runInNewContext(sandbox1);
-        test.ok(sandbox1.async);
+            var sandbox1 = {async: 'oldvalue'};
+            s.runInNewContext(sandbox1);
+            test.ok(sandbox1.async);
 
-        var sandbox2 = {async: 'oldvalue'};
-        s2.runInNewContext(sandbox2);
-        test.equals(sandbox2.async, 'oldvalue');
-        test.ok(sandbox2.async2);
+            var sandbox2 = {async: 'oldvalue'};
+            s2.runInNewContext(sandbox2);
+            test.equals(sandbox2.async, 'oldvalue');
+            test.ok(sandbox2.async2);
 
-        test.done();
-    });
+            test.done();
+        });
+    }
+    else test.done();
 };
 
 exports['concat'] = function(test){
@@ -1053,7 +1076,7 @@ exports['whilst'] = function (test) {
 
 exports['queue'] = function (test) {
     var call_order = [],
-        delays = [20,10,30,10];
+        delays = [40,20,60,20];
 
     // worker1: --1-4
     // worker2: -2---3
@@ -1103,12 +1126,12 @@ exports['queue'] = function (test) {
         test.equal(q.concurrency, 2);
         test.equal(q.length(), 0);
         test.done();
-    }, 60);
+    }, 200);
 };
 
 exports['queue changing concurrency'] = function (test) {
     var call_order = [],
-        delays = [20,10,30,10];
+        delays = [40,20,60,20];
 
     // worker1: --1-2---3-4
     // order of completion: 1,2,3,4
@@ -1158,12 +1181,12 @@ exports['queue changing concurrency'] = function (test) {
         test.equal(q.concurrency, 1);
         test.equal(q.length(), 0);
         test.done();
-    }, 100);
+    }, 250);
 };
 
 exports['queue push without callback'] = function (test) {
     var call_order = [],
-        delays = [20,10,30,10];
+        delays = [40,20,60,20];
 
     // worker1: --1-4
     // worker2: -2---3
@@ -1189,5 +1212,5 @@ exports['queue push without callback'] = function (test) {
             'process 3'
         ]);
         test.done();
-    }, 60);
+    }, 200);
 };
