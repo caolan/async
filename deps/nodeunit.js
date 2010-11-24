@@ -1741,6 +1741,79 @@ exports.runModules = function (modules, opt) {
 
 
 /**
+ * Wraps a test function with setUp and tearDown functions.
+ * Used by testCase.
+ *
+ * @param {Function} setUp
+ * @param {Function} tearDown
+ * @param {Function} fn
+ * @api private
+ */
+
+var wrapTest = function (setUp, tearDown, fn) {
+    return function (test) {
+        var context = {};
+        if (tearDown) {
+            var done = test.done;
+            test.done = function (err) {
+                try {
+                    tearDown.call(context, function (err2) {
+                        if (err && err2) {
+                            test._assertion_list.push(
+                                types.assertion({error: err})
+                            );
+                            return done(err2);
+                        }
+                        done(err || err2);
+                    });
+                }
+                catch (e) {
+                    done(e);
+                }
+            };
+        }
+        if (setUp) {
+            setUp.call(context, function (err) {
+                if (err) {
+                    return test.done(err);
+                }
+                fn.call(context, test);
+            });
+        }
+        else {
+            fn.call(context, test);
+        }
+    }
+};
+
+
+/**
+ * Wraps a group of tests with setUp and tearDown functions.
+ * Used by testCase.
+ *
+ * @param {Function} setUp
+ * @param {Function} tearDown
+ * @param {Object} group
+ * @api private
+ */
+
+var wrapGroup = function (setUp, tearDown, group) {
+    var tests = {};
+    var keys = _keys(group);
+    for (var i=0; i<keys.length; i++) {
+        var k = keys[i];
+        if (typeof group[k] === 'function') {
+            tests[k] = wrapTest(setUp, tearDown, group[k]);
+        }
+        else if (typeof group[k] === 'object') {
+            tests[k] = wrapGroup(setUp, tearDown, group[k]);
+        }
+    }
+    return tests;
+}
+
+
+/**
  * Utility for wrapping a suite of test functions with setUp and tearDown
  * functions.
  *
@@ -1750,55 +1823,11 @@ exports.runModules = function (modules, opt) {
  */
 
 exports.testCase = function (suite) {
-    var tests = {};
-
     var setUp = suite.setUp;
     var tearDown = suite.tearDown;
     delete suite.setUp;
     delete suite.tearDown;
-
-    var keys = _keys(suite);
-
-    var tests = {};
-    for (var i=0; i<keys.length; i++) {
-        (function (k) {
-            tests[k] = function (test) {
-                var context = {};
-                if (tearDown) {
-                    var done = test.done;
-                    test.done = function (err) {
-                        try {
-                            tearDown.call(context, function (err2) {
-                                if (err && err2) {
-                                    test._assertion_list.push(
-                                        types.assertion({error: err})
-                                    );
-                                    return done(err2);
-                                }
-                                done(err || err2);
-                            });
-                        }
-                        catch (e) {
-                            done(e);
-                        }
-                    };
-                }
-                if (setUp) {
-                    setUp.call(context, function (err) {
-                        if (err) {
-                            return test.done(err);
-                        }
-                        suite[k].call(context, test);
-                    });
-                }
-                else {
-                    suite[k].call(context, test);
-                }
-            };
-        }(keys[i]));
-    }
-
-    return tests;
+    return wrapGroup(setUp, tearDown, suite);
 };
 })(core);
 (function(exports){
@@ -1861,18 +1890,29 @@ exports.run = function (modules, options) {
     var start = new Date().getTime();
     exports.addStyles();
 
-    var html = '';
+    var results, module;
+
+    results = document.createElement('div');
+    results.id = 'results';
+    document.body.appendChild(results);
+
     nodeunit.runModules(modules, {
         moduleStart: function (name) {
-            html += '<h2>' + name + '</h2>';
-            html += '<ol>';
+            var mheading = document.createElement('h2');
+            mheading.innerText = name;
+            results.appendChild(mheading);
+            module = document.createElement('ol');
+            results.appendChild(module);
         },
         testDone: function (name, assertions) {
+            var test = document.createElement('li');
             if (!assertions.failures()) {
-                html += '<li class="pass">' + name + '</li>';
+                test.className = 'pass';
+                test.innerText = name;
             }
             else {
-                html += '<li class="fail">' + name;
+                test.className = 'fail';
+                var html = name;
                 for (var i=0; i<assertions.length; i++) {
                     var a = assertions[i];
                     if (a.failed()) {
@@ -1886,25 +1926,25 @@ exports.run = function (modules, options) {
                         html += '</pre>';
                     }
                 };
-                html += '</li>';
+                test.innerHTML = html;
             }
-        },
-        moduleDone: function () {
-            html += '</ol>';
+            module.appendChild(test);
         },
         done: function (assertions) {
             var end = new Date().getTime();
             var duration = end - start;
+
+            var summary = document.createElement('h3');
             if (assertions.failures()) {
-                html += '<h3>FAILURES: '  + assertions.failures() +
+                summary.innerText = 'FAILURES: '  + assertions.failures() +
                     '/' + assertions.length + ' assertions failed (' +
-                    assertions.duration + 'ms)</h3>';
+                    assertions.duration + 'ms)';
             }
             else {
-                html += '<h3>OK: ' + assertions.length +
-                    ' assertions (' + assertions.duration + 'ms)</h3>';
+                summary.innerText = 'OK: ' + assertions.length +
+                    ' assertions (' + assertions.duration + 'ms)';
             }
-            document.body.innerHTML += html;
+            document.body.appendChild(summary);
         }
     });
 };
