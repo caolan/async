@@ -95,6 +95,7 @@ So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 
 ### Utils
 
+* [memoize](#memoize)
 * [log](#log)
 * [dir](#dir)
 * [noConflict](#noConflict)
@@ -870,6 +871,34 @@ __Example__
 
 
 ## Utils
+
+<a name="memoize" />
+### memoize(fn, [hasher])
+
+Caches the results of an async function. When creating a hash to store function
+results against, the callback is omitted from the hash and an optional hash
+function can be used.
+
+__Arguments__
+
+* fn - the function you to proxy and cache results from.
+* hasher - an optional function for generating a custom hash for storing
+  results, it has all the arguments applied to it apart from the callback, and
+  must be synchronous.
+
+__Example__
+
+    var slow_fn = function (name, callback) {
+        // do something
+        callback(null, result);
+    };
+    var fn = async.memoize(slow_fn);
+
+    // fn can now be used as if it were slow_fn
+    fn('some name', function () {
+        // callback
+    });
+
 
 <a name="log" />
 ### log(function, arguments)
