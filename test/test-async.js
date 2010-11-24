@@ -862,7 +862,9 @@ var console_fn_tests = function(name){
     }
 
     exports[name + ' without console.' + name] = function(test){
-        if (typeof global === 'undefined') var global = window;
+        if (typeof global === 'undefined') {
+            global = window;
+        }
         var _console = global.console;
         global.console = undefined;
         var fn = function(callback){callback(null, 'val');};
@@ -1213,4 +1215,59 @@ exports['queue push without callback'] = function (test) {
         ]);
         test.done();
     }, 200);
+};
+
+exports['memoize'] = function (test) {
+    test.expect(4);
+    var call_order = [];
+
+    var fn = function (arg1, arg2, callback) {
+        call_order.push(['fn', arg1, arg2]);
+        callback(null, arg1 + arg2);
+    };
+
+    var fn2 = async.memoize(fn);
+    fn2(1, 2, function (err, result) {
+        test.equal(result, 3);
+    });
+    fn2(1, 2, function (err, result) {
+        test.equal(result, 3);
+    });
+    fn2(2, 2, function (err, result) {
+        test.equal(result, 4);
+    });
+
+    test.same(call_order, [['fn',1,2], ['fn',2,2]]);
+    test.done();
+};
+
+exports['memoize error'] = function (test) {
+    test.expect(1);
+    var testerr = new Error('test');
+    var fn = function (arg1, arg2, callback) {
+        callback(testerr, arg1 + arg2);
+    };
+    async.memoize(fn)(1, 2, function (err, result) {
+        test.equal(err, testerr);
+    });
+    test.done();
+};
+
+exports['memoize custom hash function'] = function (test) {
+    test.expect(2);
+    var testerr = new Error('test');
+
+    var fn = function (arg1, arg2, callback) {
+        callback(testerr, arg1 + arg2);
+    };
+    var fn2 = async.memoize(fn, function () {
+        return 'custom hash';
+    });
+    fn2(1, 2, function (err, result) {
+        test.equal(result, 3);
+    });
+    fn2(2, 2, function (err, result) {
+        test.equal(result, 3);
+    });
+    test.done();
 };
