@@ -1,16 +1,12 @@
 <html>
   <head>
     <title>Async.js tests</title>
-    <!-- There are some awkward cross-dependencies here, nodeunit uses async
-         internally and the browser version of async will be added to the
-         global namespace. Because of this we only include nodeunit and it
-         runs tests against the async lib bundled with that. If you make
-         changes to async.js and want to test them you must also make a new
-         nodeunit build for now...
-
-         <script src="../lib/async.js"></script>
+    <!--
+      async must be included after nodeunit because nodeunit already uses
+      the async lib internally and will overwrite the version we want to test
     -->
     <script src="../deps/nodeunit.js"></script>
+    <script src="../lib/async.js"></script>
     <script>
       var _async = this.async;
       this.require = function () { return _async; };
