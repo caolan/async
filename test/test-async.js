@@ -894,21 +894,15 @@ exports['nextTick'] = function(test){
 };
 
 exports['nextTick in node'] = function(test){
-    test.expect(1);
-    var browser = false;
     if (typeof process === 'undefined') {
-        browser = true;
-        window.process = {};
+        // skip this test in the browser
+        return test.done();
     }
+    test.expect(1);
     var _nextTick = process.nextTick;
     process.nextTick = function(){
-        if (browser) {
-            window.process = undefined;
-        }
-        else {
-            process.nextTick = _nextTick;
-        }
         test.ok(true, 'process.nextTick called');
+        process.nextTick = _nextTick;
         test.done();
     };
     async.nextTick(function(){});

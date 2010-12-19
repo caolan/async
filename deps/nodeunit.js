@@ -1475,6 +1475,9 @@ exports.assertionList = function (arr, duration) {
         }
         return failures;
     };
+    that.passes = function () {
+        return that.length - that.failures();
+    };
     that.duration = duration || 0;
     return that;
 };
@@ -1521,9 +1524,11 @@ exports.test = function (name, start, options, callback) {
 
     var wrapAssert = assertWrapper(function (a) {
         a_list.push(a);
-        async.nextTick(function () {
-            options.log(a);
-        });
+        if (options.log) {
+            async.nextTick(function () {
+                options.log(a);
+            });
+        }
     });
 
     var test = {
@@ -1535,16 +1540,20 @@ exports.test = function (name, start, options, callback) {
                 );
                 var a1 = exports.assertion({method: 'expect', error: e});
                 a_list.push(a1);
-                async.nextTick(function () {
-                    options.log(a1);
-                });
+                if (options.log) {
+                    async.nextTick(function () {
+                        options.log(a1);
+                    });
+                }
             }
             if (err) {
                 var a2 = exports.assertion({error: err});
                 a_list.push(a2);
-                async.nextTick(function () {
-                    options.log(a2);
-                });
+                if (options.log) {
+                    async.nextTick(function () {
+                        options.log(a2);
+                    });
+                }
             }
             var end = new Date().getTime();
             async.nextTick(function () {
@@ -1588,7 +1597,7 @@ exports.options = function (opt) {
     optionalCallback('moduleDone');
     optionalCallback('testStart');
     optionalCallback('testDone');
-    optionalCallback('log');
+    //optionalCallback('log');
 
     // 'done' callback is not optional.
 
@@ -1855,30 +1864,6 @@ exports.testCase = function (suite) {
 exports.info = "Browser-based test reporter";
 
 
-exports.addStyles = function () {
-    document.body.innerHTML += '<style type="text/css">' +
-        'body { font: 12px Helvetica Neue }' +
-        'h2 { margin:0 ; padding:0 }' +
-        'pre {' +
-            'font: 11px Andale Mono;' +
-            'margin-left: 1em;' +
-            'padding-left: 1em;' +
-            'margin-top: 0;' +
-            'font-size:smaller;' +
-        '}' +
-        '.assertion_message { margin-left: 1em; }' +
-        '  ol {' +
-            'list-style: none;' +
-            'margin-left: 1em;' +
-            'padding-left: 1em;' +
-            'text-indent: -1em;' +
-        '}' +
-        '  ol li.pass:before { content: "\\2714 \\0020"; }' +
-        '  ol li.fail:before { content: "\\2716 \\0020"; }' +
-    '</style>';
-};
-
-
 /**
  * Run all tests within each module, reporting the results
  *
@@ -1888,63 +1873,88 @@ exports.addStyles = function () {
 
 exports.run = function (modules, options) {
     var start = new Date().getTime();
-    exports.addStyles();
 
-    var results, module;
+    function setText(el, txt) {
+        if ('innerText' in el) {
+            el.innerText = txt;
+        }
+        else if ('textContent' in el){
+            el.textContent = txt;
+        }
+    }
 
-    results = document.createElement('div');
-    results.id = 'results';
-    document.body.appendChild(results);
+    function getOrCreate(tag, id) {
+        var el = document.getElementById(id);
+        if (!el) {
+            el = document.createElement(tag);
+            el.id = id;
+            document.body.appendChild(el);
+        }
+        return el;
+    };
+
+    var header = getOrCreate('h1', 'nodeunit-header');
+    var banner = getOrCreate('h2', 'nodeunit-banner');
+    var userAgent = getOrCreate('h2', 'nodeunit-userAgent');
+    var tests = getOrCreate('ol', 'nodeunit-tests');
+    var result = getOrCreate('p', 'nodeunit-testresult');
+
+    setText(userAgent, navigator.userAgent);
 
     nodeunit.runModules(modules, {
         moduleStart: function (name) {
-            var mheading = document.createElement('h2');
+            /*var mheading = document.createElement('h2');
             mheading.innerText = name;
             results.appendChild(mheading);
             module = document.createElement('ol');
-            results.appendChild(module);
+            results.appendChild(module);*/
         },
         testDone: function (name, assertions) {
             var test = document.createElement('li');
-            if (!assertions.failures()) {
-                test.className = 'pass';
-                test.innerText = name;
+            var strong = document.createElement('strong');
+            strong.innerHTML = name + ' <b style="color: black;">(' +
+                '<b class="fail">' + assertions.failures() + '</b>, ' +
+                '<b class="pass">' + assertions.passes() + '</b>, ' +
+                assertions.length +
+            ')</b>';
+            test.className = assertions.failures() ? 'fail': 'pass';
+            test.appendChild(strong);
+
+            var aList = document.createElement('ol');
+            aList.style.display = 'none';
+            test.onclick = function () {
+                var d = aList.style.display;
+                aList.style.display = (d == 'none') ? 'block': 'none';
+            };
+            for (var i=0; i<assertions.length; i++) {
+                var li = document.createElement('li');
+                var a = assertions[i];
+                if (a.failed()) {
+                    li.innerHTML = (a.message || a.method || 'no message') +
+                        '<pre>' + (a.error.stack || a.error) + '</pre>';
+                    li.className = 'fail';
+                }
+                else {
+                    li.innerHTML = a.message || a.method || 'no message';
+                    li.className = 'pass';
+                }
+                aList.appendChild(li);
             }
-            else {
-                test.className = 'fail';
-                var html = name;
-                for (var i=0; i<assertions.length; i++) {
-                    var a = assertions[i];
-                    if (a.failed()) {
-                        if (a.error instanceof assert.AssertionError && a.message) {
-                            html += '<div class="assertion_message">' +
-                                'Assertion Message: ' + a.message +
-                            '</div>';
-                        }
-                        html += '<pre>';
-                        html += a.error.stack || a.error;
-                        html += '</pre>';
-                    }
-                };
-                test.innerHTML = html;
-            }
-            module.appendChild(test);
+            test.appendChild(aList);
+            tests.appendChild(test);
         },
         done: function (assertions) {
             var end = new Date().getTime();
             var duration = end - start;
 
-            var summary = document.createElement('h3');
-            if (assertions.failures()) {
-                summary.innerText = 'FAILURES: '  + assertions.failures() +
-                    '/' + assertions.length + ' assertions failed (' +
-                    assertions.duration + 'ms)';
-            }
-            else {
-                summary.innerText = 'OK: ' + assertions.length +
-                    ' assertions (' + assertions.duration + 'ms)';
-            }
-            document.body.appendChild(summary);
+            var failures = assertions.failures();
+            banner.className = failures ? 'fail': 'pass';
+
+            result.innerHTML = 'Tests completed in ' + duration +
+                ' milliseconds.<br/><span class="passed">' +
+                assertions.passes() + '</span> assertions of ' +
+                '<span class="all">' + assertions.length + '<span> passed, ' +
+                assertions.failures() + ' failed.';
         }
     });
 };
