@@ -893,21 +893,6 @@ exports['nextTick'] = function(test){
     }, 50);
 };
 
-exports['nextTick in node'] = function(test){
-    if (typeof process === 'undefined') {
-        // skip this test in the browser
-        return test.done();
-    }
-    test.expect(1);
-    var _nextTick = process.nextTick;
-    process.nextTick = function(){
-        test.ok(true, 'process.nextTick called');
-        process.nextTick = _nextTick;
-        test.done();
-    };
-    async.nextTick(function(){});
-};
-
 exports['nextTick in the browser'] = function(test){
     if (typeof process !== 'undefined') {
         // skip this test in node
