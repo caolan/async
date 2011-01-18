@@ -893,34 +893,12 @@ exports['nextTick'] = function(test){
     }, 50);
 };
 
-exports['nextTick in node'] = function(test){
-    test.expect(1);
-    var browser = false;
-    if (typeof process === 'undefined') {
-        browser = true;
-        window.process = {};
-    }
-    var _nextTick = process.nextTick;
-    process.nextTick = function(){
-        if (browser) {
-            window.process = undefined;
-        }
-        else {
-            process.nextTick = _nextTick;
-        }
-        test.ok(true, 'process.nextTick called');
-        test.done();
-    };
-    async.nextTick(function(){});
-};
-
 exports['nextTick in the browser'] = function(test){
-    test.expect(1);
-
     if (typeof process !== 'undefined') {
-        var _nextTick = process.nextTick;
-        process.nextTick = undefined;
+        // skip this test in node
+        return test.done();
     }
+    test.expect(1);
 
     var call_order = [];
     async.nextTick(function(){call_order.push('two');});
