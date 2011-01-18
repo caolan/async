@@ -1271,3 +1271,73 @@ exports['memoize custom hash function'] = function (test) {
     });
     test.done();
 };
+
+// Issue 10 on github: https://github.com/caolan/async/issues#issue/10
+exports['falsy return values in series'] = function (test) {
+    function taskFalse(callback) {
+        process.nextTick(function() {
+            callback(null, false);
+        });
+    };
+    function taskUndefined(callback) {
+        process.nextTick(function() {
+            callback(null, undefined);
+        });
+    };
+    function taskEmpty(callback) {
+        process.nextTick(function() {
+            callback(null);
+        });
+    };
+    function taskNull(callback) {
+        process.nextTick(function() {
+            callback(null, null);
+        });
+    };
+    async.series(
+        [taskFalse, taskUndefined, taskEmpty, taskNull],
+        function(err, results) {
+            test.same(results, [false, undefined, undefined, null]);
+            test.strictEqual(results[0], false);
+            test.strictEqual(results[1], undefined);
+            test.strictEqual(results[2], undefined);
+            test.strictEqual(results[3], null);
+            test.done();
+        }
+    );
+};
+
+// Issue 10 on github: https://github.com/caolan/async/issues#issue/10
+exports['falsy return values in parallel'] = function (test) {
+    function taskFalse(callback) {
+        process.nextTick(function() {
+            callback(null, false);
+        });
+    };
+    function taskUndefined(callback) {
+        process.nextTick(function() {
+            callback(null, undefined);
+        });
+    };
+    function taskEmpty(callback) {
+        process.nextTick(function() {
+            callback(null);
+        });
+    };
+    function taskNull(callback) {
+        process.nextTick(function() {
+            callback(null, null);
+        });
+    };
+    async.parallel(
+        [taskFalse, taskUndefined, taskEmpty, taskNull],
+        function(err, results) {
+            test.same(results, [false, undefined, undefined, null]);
+            test.strictEqual(results[0], false);
+            test.strictEqual(results[1], undefined);
+            test.strictEqual(results[2], undefined);
+            test.strictEqual(results[3], null);
+            test.done();
+        }
+    );
+};
