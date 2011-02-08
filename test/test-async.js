@@ -861,17 +861,17 @@ var console_fn_tests = function(name){
         };
     }
 
+    // browser-only test
     exports[name + ' without console.' + name] = function(test){
-        if (typeof global === 'undefined') {
-            global = window;
+        if (typeof window !== 'undefined') {
+            var _console = window.console;
+            window.console = undefined;
+            var fn = function(callback){callback(null, 'val');};
+            var fn_err = function(callback){callback('error');};
+            async[name](fn);
+            async[name](fn_err);
+            window.console = _console;
         }
-        var _console = global.console;
-        global.console = undefined;
-        var fn = function(callback){callback(null, 'val');};
-        var fn_err = function(callback){callback('error');};
-        async[name](fn);
-        async[name](fn_err);
-        global.console = _console;
         test.done();
     };
 
