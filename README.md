@@ -674,6 +674,9 @@ methods:
   alter the concurrency on-the-fly.
 * push(task, [callback]) - add a new task to the queue, the callback is called
   once the worker has finished processing the task.
+* saturated - a callback that is called when the queue length hits the concurrency and further tasks will be queued
+* empty - a callback that is called when the last item from the queue is given to a worker
+* drain - a callback that is called when the last item from the queue has returned from the worker
 
 __Example__
 
@@ -684,6 +687,11 @@ __Example__
         callback();
     }, 2);
 
+
+    // assign a callback
+    q.drain = function() {
+        console.log('all items have been processed');
+    }
 
     // add some items to the queue
 

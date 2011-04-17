@@ -1319,3 +1319,27 @@ exports['falsy return values in parallel'] = function (test) {
         }
     );
 };
+
+exports['queue events'] = function(test) {
+    test.expect(3);
+    var q = async.queue(function(task, cb) {
+        // nop
+        cb();
+    }, 3);
+    
+    q.saturated = function() {
+       test.ok(q.length() == 3, 'queue should be saturated now');
+    }
+    q.empty = function() {
+       test.ok(q.length() == 0, 'queue should be empty now');
+    }
+    q.drain = function() {
+       test.ok(q.length() == 0 && q.running() == 0, 'queue should be empty now and no more workers should be running');
+       test.done();
+    }
+    q.push('foo');
+    q.push('bar');
+    q.push('zoo');
+    q.push('poo');
+    q.push('moo');
+};
