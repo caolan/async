@@ -1321,25 +1321,47 @@ exports['falsy return values in parallel'] = function (test) {
 };
 
 exports['queue events'] = function(test) {
-    test.expect(3);
+    var calls = [];
     var q = async.queue(function(task, cb) {
         // nop
+        calls.push('process ' + task);
         cb();
     }, 3);
-    
+
     q.saturated = function() {
-       test.ok(q.length() == 3, 'queue should be saturated now');
-    }
+        test.ok(q.length() == 3, 'queue should be saturated now');
+        calls.push('saturated');
+    };
     q.empty = function() {
-       test.ok(q.length() == 0, 'queue should be empty now');
-    }
+        test.ok(q.length() == 0, 'queue should be empty now');
+        calls.push('empty');
+    };
     q.drain = function() {
-       test.ok(q.length() == 0 && q.running() == 0, 'queue should be empty now and no more workers should be running');
-       test.done();
-    }
-    q.push('foo');
-    q.push('bar');
-    q.push('zoo');
-    q.push('poo');
-    q.push('moo');
+        test.ok(
+            q.length() == 0 && q.running() == 0,
+            'queue should be empty now and no more workers should be running'
+        );
+        calls.push('drain');
+        test.same(calls, [
+            'saturated',
+            'process foo',
+            'foo cb',
+            'process bar',
+            'bar cb',
+            'process zoo',
+            'zoo cb',
+            'process poo',
+            'poo cb',
+            'empty',
+            'process moo',
+            'moo cb',
+            'drain',
+        ]);
+        test.done();
+    };
+    q.push('foo', function () {calls.push('foo cb');});
+    q.push('bar', function () {calls.push('bar cb');});
+    q.push('zoo', function () {calls.push('zoo cb');});
+    q.push('poo', function () {calls.push('poo cb');});
+    q.push('moo', function () {calls.push('moo cb');});
 };
