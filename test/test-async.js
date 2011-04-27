@@ -1321,12 +1321,14 @@ exports['falsy return values in parallel'] = function (test) {
 };
 
 exports['queue events'] = function(test) {
-    test.expect(3);
+    var processed = 0;
+    test.expect(4);
     var q = async.queue(function(task, cb) {
         // nop
+        processed++;
         cb();
     }, 3);
-    
+
     q.saturated = function() {
        test.ok(q.length() == 3, 'queue should be saturated now');
     }
@@ -1334,6 +1336,7 @@ exports['queue events'] = function(test) {
        test.ok(q.length() == 0, 'queue should be empty now');
     }
     q.drain = function() {
+       test.ok(processed === 5);
        test.ok(q.length() == 0 && q.running() == 0, 'queue should be empty now and no more workers should be running');
        test.done();
     }
