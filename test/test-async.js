@@ -1253,22 +1253,22 @@ exports['memoize custom hash function'] = function (test) {
 // Issue 10 on github: https://github.com/caolan/async/issues#issue/10
 exports['falsy return values in series'] = function (test) {
     function taskFalse(callback) {
-        process.nextTick(function() {
+        async.nextTick(function() {
             callback(null, false);
         });
     };
     function taskUndefined(callback) {
-        process.nextTick(function() {
+        async.nextTick(function() {
             callback(null, undefined);
         });
     };
     function taskEmpty(callback) {
-        process.nextTick(function() {
+        async.nextTick(function() {
             callback(null);
         });
     };
     function taskNull(callback) {
-        process.nextTick(function() {
+        async.nextTick(function() {
             callback(null, null);
         });
     };
@@ -1288,22 +1288,22 @@ exports['falsy return values in series'] = function (test) {
 // Issue 10 on github: https://github.com/caolan/async/issues#issue/10
 exports['falsy return values in parallel'] = function (test) {
     function taskFalse(callback) {
-        process.nextTick(function() {
+        async.nextTick(function() {
             callback(null, false);
         });
     };
     function taskUndefined(callback) {
-        process.nextTick(function() {
+        async.nextTick(function() {
             callback(null, undefined);
         });
     };
     function taskEmpty(callback) {
-        process.nextTick(function() {
+        async.nextTick(function() {
             callback(null);
         });
     };
     function taskNull(callback) {
-        process.nextTick(function() {
+        async.nextTick(function() {
             callback(null, null);
         });
     };
