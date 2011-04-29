@@ -91,6 +91,7 @@ So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 * [auto](#auto)
 * [iterator](#iterator)
 * [apply](#apply)
+* [applyThis](#applyThis)
 * [nextTick](#nextTick)
 
 ### Utils
@@ -852,6 +853,35 @@ continuation:
     one
     two
     three
+
+---------------------------------------
+
+<a name="applyThis" />
+### apply(function, thisArg, arguments...)
+
+Same as the `async.apply`, the only difference is that you can pass in
+`thisArg` as the second argument to this function.
+
+__Arguments__
+
+* function - The function you want to eventually apply all arguments to.
+* thisArg - The context in which the provided function is called.
+* arguments... - Any number of arguments to automatically apply when the
+  continuation is called.
+
+__Example__
+
+    // using applyThis
+    var context = {
+        'num1': 1
+    };
+
+    var addNum(num2) {
+        return this.num1 + num2;
+    }
+
+    // result == 3
+    result = async.applyThis(addNum, context, 2);
 
 ---------------------------------------
 
