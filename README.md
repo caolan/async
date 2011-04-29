@@ -857,7 +857,7 @@ continuation:
 ---------------------------------------
 
 <a name="applyThis" />
-### apply(function, thisArg, arguments...)
+### applyThis(function, thisArg, arguments...)
 
 Same as the `async.apply`, the only difference is that you can pass in
 `thisArg` as the second argument to this function.
@@ -878,7 +878,7 @@ __Example__
 
     var addNum(num2) {
         return this.num1 + num2;
-    }
+    };
 
     // result == 3
     result = async.applyThis(addNum, context, 2);
