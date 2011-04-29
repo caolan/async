@@ -816,6 +816,26 @@ exports['apply'] = function(test){
     test.done();
 };
 
+exports['applyThis'] = function(test) {
+    test.expect(2);
+
+    var context1 = {
+        'num1': 1
+    };
+
+    var context2 = {
+        'num1': 2
+    };
+
+    var func = function(num2) {
+        return this.num1 + num2;
+    };
+
+    test.equals(async.applyThis(func, context1, 1)(), 2);
+    test.equals(async.applyThis(func, context2, 1)(), 3);
+    test.done();
+};
+
 
 // generates tests for console functions such as async.log
 var console_fn_tests = function(name){
