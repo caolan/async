@@ -1231,6 +1231,24 @@ exports['memoize error'] = function (test) {
     test.done();
 };
 
+exports['memoize multiple calls'] = function (test) {
+    test.expect(3);
+    var fn = function (arg1, arg2, callback) {
+        test.ok(true);
+        setTimeout(function(){
+            callback(null, arg1, arg2);
+        }, 10);
+    };
+    var fn2 = async.memoize(fn);
+    fn2(1, 2, function(err, result) {
+        test.equal(result, 1, 2);
+    });
+    fn2(1, 2, function(err, result) {
+        test.equal(result, 1, 2);
+        test.done();
+    });
+};
+
 exports['memoize custom hash function'] = function (test) {
     test.expect(2);
     var testerr = new Error('test');
