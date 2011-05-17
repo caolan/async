@@ -7,7 +7,7 @@ browser.
 
 Async provides around 20 functions that include the usual 'functional'
 suspects (map, reduce, filter, forEach…) as well as some common patterns
-for asynchronous flow control (parallel, series, waterfall…). All these
+for asynchronous control flow (parallel, series, waterfall…). All these
 functions assume you follow the node.js convention of providing a single
 callback as the last argument of your async function.
 
@@ -80,7 +80,7 @@ So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 * [every](#every)
 * [concat](#concat)
 
-### Flow Control
+### Control Flow
 
 * [series](#series)
 * [parallel](#parallel)
@@ -443,7 +443,7 @@ __Example__
 Same as async.concat, but executes in series instead of parallel.
 
 
-## Flow Control
+## Control Flow
 
 <a name="series" />
 ### series(tasks, [callback])
@@ -813,7 +813,7 @@ __Example__
 ### apply(function, arguments..)
 
 Creates a continuation function with some arguments already applied, a useful
-shorthand when combined with other flow control functions. Any arguments
+shorthand when combined with other control flow functions. Any arguments
 passed to the returned function are added to the arguments originally passed
 to apply.
 
