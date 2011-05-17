@@ -181,19 +181,19 @@ exports['parallel'] = function(test){
             setTimeout(function(){
                 call_order.push(1);
                 callback(null, 1);
-            }, 25);
+            }, 50);
         },
         function(callback){
             setTimeout(function(){
                 call_order.push(2);
                 callback(null, 2);
-            }, 50);
+            }, 100);
         },
         function(callback){
             setTimeout(function(){
                 call_order.push(3);
                 callback(null, 3,3);
-            }, 15);
+            }, 25);
         }
     ],
     function(err, results){
@@ -773,9 +773,43 @@ exports['detect'] = function(test){
     }, 100);
 };
 
+exports['detect - mulitple matches'] = function(test){
+    var call_order = [];
+    async.detect([3,2,2,1,2], function(x, callback){
+        setTimeout(function(){
+            call_order.push(x);
+            callback(x == 2);
+        }, x*25);
+    }, function(result){
+        call_order.push('callback');
+        test.equals(result, 2);
+    });
+    setTimeout(function(){
+        test.same(call_order, [1,2,'callback',2,2,3]);
+        test.done();
+    }, 100);
+};
+
 exports['detectSeries'] = function(test){
     var call_order = [];
     async.detectSeries([3,2,1], function(x, callback){
+        setTimeout(function(){
+            call_order.push(x);
+            callback(x == 2);
+        }, x*25);
+    }, function(result){
+        call_order.push('callback');
+        test.equals(result, 2);
+    });
+    setTimeout(function(){
+        test.same(call_order, [3,2,'callback']);
+        test.done();
+    }, 200);
+};
+
+exports['detectSeries - multiple matches'] = function(test){
+    var call_order = [];
+    async.detectSeries([3,2,2,1,2], function(x, callback){
         setTimeout(function(){
             call_order.push(x);
             callback(x == 2);
@@ -1275,7 +1309,7 @@ exports['falsy return values in series'] = function (test) {
     async.series(
         [taskFalse, taskUndefined, taskEmpty, taskNull],
         function(err, results) {
-            test.same(results, [false, undefined, undefined, null]);
+            test.equal(results.length, 4);
             test.strictEqual(results[0], false);
             test.strictEqual(results[1], undefined);
             test.strictEqual(results[2], undefined);
@@ -1310,7 +1344,7 @@ exports['falsy return values in parallel'] = function (test) {
     async.parallel(
         [taskFalse, taskUndefined, taskEmpty, taskNull],
         function(err, results) {
-            test.same(results, [false, undefined, undefined, null]);
+            test.equal(results.length, 4);
             test.strictEqual(results[0], false);
             test.strictEqual(results[1], undefined);
             test.strictEqual(results[2], undefined);
