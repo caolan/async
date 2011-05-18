@@ -500,7 +500,7 @@ __Example__
         },
     },
     function(err, results) {
-        // results is now equals to: {one: 1, two: 2}
+        // results is now equal to: {one: 1, two: 2}
     });
 
 
