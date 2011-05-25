@@ -711,9 +711,10 @@ __Example__
 Determines the best order for running functions based on their requirements.
 Each function can optionally depend on other functions being completed first,
 and each function is run as soon as its requirements are satisfied. If any of
-the functions pass and error to their callback, that function will not complete
+the functions pass an error to their callback, that function will not complete
 (so any other functions depending on it will not run) and the main callback
-will be called immediately with the error.
+will be called immediately with the error. Functions also receive an object
+containing the results of functions on which they depend.
 
 __Arguments__
 
@@ -737,9 +738,11 @@ __Example__
         write_file: ['get_data', 'make_folder', function(callback){
             // once there is some data and the directory exists,
             // write the data to a file in the directory
+            callback(null, filename);
         }],
-        email_link: ['write_file', function(callback){
+        email_link: ['write_file', function(callback, results){
             // once the file is written let's email a link to it...
+            // results.write_file contains the filename returned by write_file.
         }]
     });
 

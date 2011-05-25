@@ -32,6 +32,42 @@ exports['auto'] = function(test){
     });
 };
 
+exports['auto results'] = function(test){
+    var callOrder = [];
+    async.auto({
+      task1: ['task2', function(callback, results){
+          test.same(results.task2, 'task2');
+          setTimeout(function(){
+              callOrder.push('task1');
+              callback(null, 'task1a', 'task1b');
+          }, 25);
+      }],
+      task2: function(callback){
+          setTimeout(function(){
+              callOrder.push('task2');
+              callback(null, 'task2');
+          }, 50);
+      },
+      task3: ['task2', function(callback, results){
+          test.same(results.task2, 'task2');
+          callOrder.push('task3');
+          callback(null);
+      }],
+      task4: ['task1', 'task2', function(callback, results){
+          test.same(results.task1, ['task1a','task1b']);
+          test.same(results.task2, 'task2');
+          callOrder.push('task4');
+          callback(null, 'task4');
+      }]
+    },
+    function(err, results){
+        test.same(callOrder, ['task2','task3','task1','task4']);
+        test.same(results, {task1: ['task1a','task1b'], task2: 'task2', task3: undefined, task4: 'task4'});
+        test.done();
+    });
+};
+
+
 exports['auto empty object'] = function(test){
     async.auto({}, function(err){
         test.done();
