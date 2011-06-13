@@ -516,6 +516,34 @@ exports['forEachLimit empty array'] = function(test){
     setTimeout(test.done, 25);
 };
 
+exports['forEachLimit limit exceeds size'] = function(test){
+    var args = [];
+    var arr = [0,1,2,3,4,5,6,7,8,9];
+    async.forEachLimit(arr, 20, function(x,callback){
+        setTimeout(function(){
+            args.push(x);
+            callback();
+        }, x*5);
+    }, function(err){
+        test.same(args, arr);
+        test.done();
+    });
+};
+
+exports['forEachLimit limit equal size'] = function(test){
+    var args = [];
+    var arr = [0,1,2,3,4,5,6,7,8,9];
+    async.forEachLimit(arr, 10, function(x,callback){
+        setTimeout(function(){
+            args.push(x);
+            callback();
+        }, x*5);
+    }, function(err){
+        test.same(args, arr);
+        test.done();
+    });
+};
+
 exports['forEachLimit zero limit'] = function(test){
     test.expect(1);
     async.forEachLimit([0,1,2,3,4,5], 0, function(x, callback){
