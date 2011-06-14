@@ -92,6 +92,7 @@ So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 * [iterator](#iterator)
 * [apply](#apply)
 * [nextTick](#nextTick)
+* [throttle](#throttle)
 
 ### Utils
 
@@ -680,28 +681,6 @@ methods:
 
 __Example__
 
-    // create a queue object with concurrency 2
-
-    var q = async.queue(function (task, callback) {
-        console.log('hello ' + task.name).
-        callback();
-    }, 2);
-
-
-    // assign a callback
-    q.drain = function() {
-        console.log('all items have been processed');
-    }
-
-    // add some items to the queue
-
-    q.push({name: 'foo'}, function (err) {
-        console.log('finished processing foo');
-    });
-    q.push({name: 'bar'}, function (err) {
-        console.log('finished processing bar');
-    });
-
 
 ---------------------------------------
 
@@ -867,6 +846,38 @@ This is used internally for browser-compatibility purposes.
 __Arguments__
 
 * callback - The function to call on a later loop around the event loop.
+
+__Example__
+
+    var call_order = [];
+    async.nextTick(function(){
+        call_order.push('two');
+        // call_order now equals ['one','two]
+    });
+    call_order.push('one')
+
+<a name="throttle" />
+### throttle( delay, [ no_trailing, ] callback )
+
+Throttle execution of a function.  Especially useful for rate limiting execution of handlers on events.
+
+In this visualization, | is a throttled-function call and X is the actual callback execution:
+
+Throttled with `no_trailing` specified as false or unspecified:
+	||||||||||||||||||||||||| (pause) |||||||||||||||||||||||||
+	X    X    X    X    X    X        X    X    X    X    X    X
+
+Throttled with `no_trailing` specified as true:
+	||||||||||||||||||||||||| (pause) |||||||||||||||||||||||||
+	X    X    X    X    X             X    X    X    X    X
+
+__Arguments__
+
+* delay - (Number) A zero-or-greater delay in milliseconds.  For event callbacks, values around 100 or 250 (or even higher) are most useful.
+* no_trailing - (Boolean) Optional, defaults to false.  If no_trailing is true, callback will only execute every `delay` milliseconds while the throttled-function is being called.  If no_trailing is false or unspecified, callback will be executed one final time after the last throttled-function call.  (After the throttled-function has not been called for `delay` milliseconds, the internal counter is reset)
+* callback - (Function) A function to be executed after delay milliseconds.  The `this` context and all arguments are passed through, as-is, to `callback` when the throttled-function is executed.
+
+Source: http://bit.ly/lCrsym 
 
 __Example__
 
