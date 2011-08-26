@@ -683,7 +683,7 @@ __Example__
     // create a queue object with concurrency 2
 
     var q = async.queue(function (task, callback) {
-        console.log('hello ' + task.name).
+        console.log('hello ' + task.name);
         callback();
     }, 2);
 
