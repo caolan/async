@@ -2,7 +2,7 @@
 , "description": "Higher-order functions and common patterns for asynchronous code"
 , "main": "./index"
 , "author": "Caolan McMahon"
-, "version": "0.1.9"
+, "version": "0.1.10"
 , "repository" :
   { "type" : "git"
   , "url" : "http://github.com/caolan/async.git"
