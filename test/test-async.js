@@ -1254,28 +1254,44 @@ exports['memoize'] = function (test) {
 };
 
 exports['unmemoize'] = function(test) {
-  test.expect(4);
-  var call_order = [];
+    test.expect(4);
+    var call_order = [];
 
-  var fn = function (arg1, arg2, callback) {
-      call_order.push(['fn', arg1, arg2]);
-      callback(null, arg1 + arg2);
-  };
+    var fn = function (arg1, arg2, callback) {
+        call_order.push(['fn', arg1, arg2]);
+        callback(null, arg1 + arg2);
+    };
 
-  var fn2 = async.memoize(fn);
-  var fn3 = async.unmemoize(fn2);
-  fn3(1, 2, function (err, result) {
-      test.equal(result, 3);
-  });
-  fn3(1, 2, function (err, result) {
-      test.equal(result, 3);
-  });
-  fn3(2, 2, function (err, result) {
-      test.equal(result, 4);
-  });
+    var fn2 = async.memoize(fn);
+    var fn3 = async.unmemoize(fn2);
+    fn3(1, 2, function (err, result) {
+        test.equal(result, 3);
+    });
+    fn3(1, 2, function (err, result) {
+        test.equal(result, 3);
+    });
+    fn3(2, 2, function (err, result) {
+        test.equal(result, 4);
+    });
 
-  test.same(call_order, [['fn',1,2], ['fn',1,2], ['fn',2,2]]);
-  test.done();
+    test.same(call_order, [['fn',1,2], ['fn',1,2], ['fn',2,2]]);
+
+    test.done();
+}
+
+exports['unmemoize a not memoized function'] = function(test) {
+    test.expect(1);
+
+    var fn = function (arg1, arg2, callback) {
+        callback(null, arg1 + arg2);
+    };
+
+    var fn2 = async.unmemoize(fn);
+    fn2(1, 2, function(err, result) {
+        test.equal(result, 3);
+    });
+
+    test.done();
 }
 
 exports['memoize error'] = function (test) {
