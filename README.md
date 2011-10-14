@@ -96,6 +96,7 @@ So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 ### Utils
 
 * [memoize](#memoize)
+* [unmemoize](#unmemoize)
 * [log](#log)
 * [dir](#dir)
 * [noConflict](#noConflict)
@@ -907,6 +908,15 @@ __Example__
         // callback
     });
 
+<a name="unmemoize" />
+### unmemoize(fn)
+
+Undoes a memoized function, reverting it to the original, unmemoized
+form. Comes handy in tests.
+
+__Arguments__
+
+* fn - the memoized function
 
 <a name="log" />
 ### log(function, arguments)
