@@ -7,7 +7,7 @@
   { "type" : "git"
   , "url" : "http://github.com/caolan/async.git"
   }
-, "bugs" : { "web" : "http://github.com/caolan/async/issues" }
+, "bugs" : { "url" : "http://github.com/caolan/async/issues" }
 , "licenses" :
   [ { "type" : "MIT"
     , "url" : "http://github.com/caolan/async/raw/master/LICENSE"
