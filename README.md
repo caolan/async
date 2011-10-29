@@ -687,7 +687,7 @@ __Arguments__
 
 * worker(task, callback) - An asynchronous function for processing a queued
   task.
-* concurrency - An integer for determining how many worker functions should be
+* concurrency(workers, task) - An integer or function for determining how many worker functions should be
   run in parallel.
 
 __Queue objects__
@@ -697,7 +697,7 @@ methods:
 
 * length() - a function returning the number of items waiting to be processed.
 * concurrency - an integer for determining how many worker functions should be
-  run in parallel. This property can be changed after a queue is created to
+  run in parallel. Can also be a function that should return true if another worker function can run. This property can be changed after a queue is created to
   alter the concurrency on-the-fly.
 * push(task, [callback]) - add a new task to the queue, the callback is called
   once the worker has finished processing the task.
