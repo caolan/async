@@ -144,6 +144,32 @@ processing. This means the iterator functions will complete in order.
 
 ---------------------------------------
 
+<a name="forEachLimit" />
+### forEachLimit(arr, limit, iterator, callback)
+
+The same as forEach only the iterator is applied to batches of items in the
+array, in series. The next batch of iterators is only called once the current
+one has completed processing.
+
+__Arguments__
+
+* arr - An array to iterate over.
+* limit - How many items should be in each batch.
+* iterator(item, callback) - A function to apply to each item in the array.
+  The iterator is passed a callback which must be called once it has completed.
+* callback(err) - A callback which is called after all the iterator functions
+  have finished, or an error has occurred.
+
+__Example__
+
+    // Assume documents is an array of JSON objects and requestApi is a
+    // function that interacts with a rate-limited REST api.
+
+    async.forEachLimit(documents, 20, requestApi, function(err){
+        // if any of the saves produced an error, err would equal that error
+    });
+---------------------------------------
+
 <a name="map" />
 ### map(arr, iterator, callback)
 
