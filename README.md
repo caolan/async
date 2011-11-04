@@ -626,7 +626,7 @@ __Example__
         function (err) {
             // 5 seconds have passed
         }
-    });
+    );
 
 
 ---------------------------------------
