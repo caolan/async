@@ -791,7 +791,7 @@ series functions would look like this:
                 // once there is some data and the directory exists,
                 // write the data to a file in the directory
             },
-            email_link: ['write_file', function(callback){
+            function(callback){
                 // once the file is written let's email a link to it...
             }
         ]);
