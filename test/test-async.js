@@ -1575,3 +1575,67 @@ exports['queue events'] = function(test) {
     q.push('poo', function () {calls.push('poo cb');});
     q.push('moo', function () {calls.push('moo cb');});
 };
+
+exports['command queue'] = function(test){
+    var target = {calls:''};
+    function f1(t, callback){ 
+        t.calls += 'f1,'; 
+        push(f3, t); 
+        setTimeout(callback, 100); 
+    }
+    function f2(t, callback){ 
+        t.calls += 'f2,'; 
+        tasks.push(f4);
+        callback(); 
+    }
+    function f3(t, callback){ 
+        t.calls += 'f3,'; 
+        setTimeout(function(){ 
+                t.calls += '---'; 
+                callback();
+            }
+            , 200);
+    }
+    function f4(callback) { 
+        target.calls += 'f4,'; 
+        callback();
+    }
+   
+    var tasks = [];
+
+    var push = async.command_queue(tasks, function(){
+        test.equal(target.calls, 'f1,f2,f3,f4,---');
+        test.equal(0, tasks.length);
+        test.done();
+    });
+    push(f1, target);
+    push(f2, target)
+
+};
+
+exports['command queue errors'] = function(test){
+    var errors = [];
+    var push = async.command_queue([], function(err){
+        errors.push(err);
+    });
+    
+    push(function(callback){
+        callback('error 1');
+    });
+    push(function(callback){
+        callback('error 2');
+    });
+    push(function(callback){
+        callback();
+    });
+    push(function(callback){
+        callback();
+    });
+   
+    setTimeout(function () {
+        test.deepEqual(['error 1', 'error 2', undefined], errors);
+        test.done();
+    }, 200);
+ 
+
+}
