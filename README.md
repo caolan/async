@@ -654,8 +654,10 @@ __Arguments__
 
 * tasks - An array of functions to run, each function is passed a callback it
   must call on completion.
-* callback(err) - An optional callback to run once all the functions have
-  completed. This function gets passed any error that may have occurred.
+* callback(err, [results]) - An optional callback to run once all the functions
+  have completed. This will be passed the results of the last task's callback.
+
+
 
 __Example__
 
@@ -670,7 +672,9 @@ __Example__
             // arg1 now equals 'three'
             callback(null, 'done');
         }
-    ]);
+    ], function (err, result) {
+       // result now equals 'done'    
+    });
 
 
 ---------------------------------------
