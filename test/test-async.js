@@ -1072,7 +1072,7 @@ exports['noConflict - node only'] = function(test){
         var filename = __dirname + '/../lib/async.js';
         fs.readFile(filename, function(err, content){
             if(err) return test.done();
-            var Script = process.binding('evals').Script;
+            var Script = require('vm').Script;
 
             var s = new Script(content, filename);
             var s2 = new Script(

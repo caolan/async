@@ -13,4 +13,7 @@
     , "url" : "http://github.com/caolan/async/raw/master/LICENSE"
     }
   ]
+, "engines": {
+    "node": ">= 0.4.5"
+  }
 }
