@@ -1,0 +1,16 @@
+{ "name" : "file"
+, "description" : "Higher level path and file manipulation functions."
+, "tags" : ["file", "path", "fs", "walk"]
+, "version" : "0.1.1"
+, "author" : "Anders Conbere <aconbere@gmail.com>"
+, "directories" :
+  { "lib" : "lib" }
+, "repository" :
+  { "type" : "git"
+  , "url" : "http://github.com/mikeal/node-utils.git"
+  }
+, "bugs" :
+  { "web" : "http://github.com/mikeal/node-utils/issues" }
+, "engines" : ["node >=0.1.90"]
+, "main" : "./lib/main"
+}
