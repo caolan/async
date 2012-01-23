@@ -94,6 +94,28 @@ exports['auto error'] = function(test){
     setTimeout(test.done, 100);
 };
 
+exports['auto error passes completed results'] = function(test){
+    test.expect(2);
+    async.auto({
+        task1: function(callback){
+            callback(null, 'task1');
+        },
+        task2: ['task1', function(callback){
+            //test.ok(false, 'task2 should not be called');
+            callback('testerror');
+        }],
+        task3: ['task2', function(callback) {
+            test.ok(false, 'task3 should not be called');
+            callback('testerror2');
+        }]
+    },
+    function(err, results){
+        test.equals(err, 'testerror');
+        test.equals(results.task1, 'task1');
+    });
+    setTimeout(test.done, 100);
+};
+
 exports['auto no callback'] = function(test){
     async.auto({
         task1: function(callback){callback();},
