@@ -1346,6 +1346,42 @@ exports['queue push without callback'] = function (test) {
     }, 200);
 };
 
+exports['queue bulk task'] = function (test) {
+    var call_order = [],
+        delays = [40,20,60,20];
+
+    // worker1: --1-4
+    // worker2: -2---3
+    // order of completion: 2,1,4,3
+
+    var q = async.queue(function (task, callback) {
+        setTimeout(function () {
+            call_order.push('process ' + task);
+            callback('error', task);
+        }, delays.splice(0,1)[0]);
+    }, 2);
+
+    q.push( [1,2,3,4], function (err, arg) {
+        test.equal(err, 'error');
+        call_order.push('callback ' + arg);
+    });
+
+    test.equal(q.length(), 4);
+    test.equal(q.concurrency, 2);
+
+    setTimeout(function () {
+        test.same(call_order, [
+            'process 2', 'callback 2',
+            'process 1', 'callback 1',
+            'process 4', 'callback 4',
+            'process 3', 'callback 3'
+        ]);
+        test.equal(q.concurrency, 2);
+        test.equal(q.length(), 0);
+        test.done();
+    }, 200);
+};
+
 exports['memoize'] = function (test) {
     test.expect(4);
     var call_order = [];
