@@ -123,6 +123,16 @@ exports['auto no callback'] = function(test){
     });
 };
 
+// Issue 24 on github: https://github.com/caolan/async/issues#issue/24
+// Issue 76 on github: https://github.com/caolan/async/issues#issue/76
+exports['auto removeListener has side effect on loop iterator'] = function(test) {
+    async.auto({
+        task1: ['task3', function(callback) { test.done() }],
+        task2: ['task3', function(callback) { /* by design: DON'T call callback */ }],
+        task3: function(callback) { callback(); },
+    });
+};
+
 exports['waterfall'] = function(test){
     test.expect(6);
     var call_order = [];
