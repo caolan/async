@@ -94,10 +94,42 @@ exports['auto error'] = function(test){
     setTimeout(test.done, 100);
 };
 
+exports['auto error passes completed results'] = function(test){
+    test.expect(2);
+    async.auto({
+        task1: function(callback){
+            callback(null, 'task1');
+        },
+        task2: ['task1', function(callback){
+            //test.ok(false, 'task2 should not be called');
+            callback('testerror');
+        }],
+        task3: ['task2', function(callback) {
+            test.ok(false, 'task3 should not be called');
+            callback('testerror2');
+        }]
+    },
+    function(err, results){
+        test.equals(err, 'testerror');
+        test.equals(results.task1, 'task1');
+    });
+    setTimeout(test.done, 100);
+};
+
 exports['auto no callback'] = function(test){
     async.auto({
         task1: function(callback){callback();},
         task2: ['task1', function(callback){callback(); test.done();}]
+    });
+};
+
+// Issue 24 on github: https://github.com/caolan/async/issues#issue/24
+// Issue 76 on github: https://github.com/caolan/async/issues#issue/76
+exports['auto removeListener has side effect on loop iterator'] = function(test) {
+    async.auto({
+        task1: ['task3', function(callback) { test.done() }],
+        task2: ['task3', function(callback) { /* by design: DON'T call callback */ }],
+        task3: function(callback) { callback(); },
     });
 };
 
@@ -1072,7 +1104,7 @@ exports['noConflict - node only'] = function(test){
         var filename = __dirname + '/../lib/async.js';
         fs.readFile(filename, function(err, content){
             if(err) return test.done();
-            var Script = process.binding('evals').Script;
+            var Script = require('vm').Script;
 
             var s = new Script(content, filename);
             var s2 = new Script(
