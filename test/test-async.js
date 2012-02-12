@@ -559,7 +559,7 @@ exports['forEachLimit limit exceeds size'] = function(test){
         setTimeout(function(){
             args.push(x);
             callback();
-        }, x*5);
+        }, x*25);
     }, function(err){
         test.same(args, arr);
         test.done();
@@ -573,7 +573,7 @@ exports['forEachLimit limit equal size'] = function(test){
         setTimeout(function(){
             args.push(x);
             callback();
-        }, x*5);
+        }, x*25);
     }, function(err){
         test.same(args, arr);
         test.done();
