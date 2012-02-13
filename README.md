@@ -752,7 +752,7 @@ and each function is run as soon as its requirements are satisfied. If any of
 the functions pass an error to their callback, that function will not complete
 (so any other functions depending on it will not run) and the main callback
 will be called immediately with the error. Functions also receive an object
-containing the results of functions on which they depend.
+containing the results of functions which have completed so far.
 
 __Arguments__
 
@@ -760,8 +760,10 @@ __Arguments__
   requirements, with the function itself the last item in the array. The key
   used for each function or array is used when specifying requirements. The
   syntax is easier to understand by looking at the example.
-* callback(err) - An optional callback which is called when all the tasks have
-  been completed. The callback may receive an error as an argument.
+* callback(err, results) - An optional callback which is called when all the
+  tasks have been completed. The callback will receive an error as an argument
+  if any tasks pass an error to their callback. If all tasks complete
+  successfully, it will receive an object containing their results.
 
 __Example__
 
@@ -802,14 +804,14 @@ series functions would look like this:
                 // once there is some data and the directory exists,
                 // write the data to a file in the directory
             },
-            email_link: ['write_file', function(callback){
+            email_link: function(callback){
                 // once the file is written let's email a link to it...
             }
         ]);
     });
 
 For a complicated series of async tasks using the auto function makes adding
-new tasks much easier and makes the code more readable. 
+new tasks much easier and makes the code more readable.
 
 
 ---------------------------------------
