@@ -107,7 +107,7 @@ exports['auto removeListener has side effect on loop iterator'] = function(test)
     async.auto({
         task1: ['task3', function(callback) { test.done() }],
         task2: ['task3', function(callback) { /* by design: DON'T call callback */ }],
-        task3: function(callback) { callback(); },
+        task3: function(callback) { callback(); }
     });
 };
 
@@ -1219,7 +1219,7 @@ exports['whilst'] = function (test) {
 
 exports['queue'] = function (test) {
     var call_order = [],
-        delays = [40,20,60,20];
+        delays = [160,80,240,80];
 
     // worker1: --1-4
     // worker2: -2---3
@@ -1269,7 +1269,7 @@ exports['queue'] = function (test) {
         test.equal(q.concurrency, 2);
         test.equal(q.length(), 0);
         test.done();
-    }, 200);
+    }, 800);
 };
 
 exports['queue changing concurrency'] = function (test) {
@@ -1329,7 +1329,7 @@ exports['queue changing concurrency'] = function (test) {
 
 exports['queue push without callback'] = function (test) {
     var call_order = [],
-        delays = [40,20,60,20];
+        delays = [160,80,240,80];
 
     // worker1: --1-4
     // worker2: -2---3
@@ -1355,12 +1355,12 @@ exports['queue push without callback'] = function (test) {
             'process 3'
         ]);
         test.done();
-    }, 200);
+    }, 800);
 };
 
 exports['queue bulk task'] = function (test) {
     var call_order = [],
-        delays = [40,20,60,20];
+        delays = [160,80,240,80];
 
     // worker1: --1-4
     // worker2: -2---3
@@ -1391,7 +1391,7 @@ exports['queue bulk task'] = function (test) {
         test.equal(q.concurrency, 2);
         test.equal(q.length(), 0);
         test.done();
-    }, 200);
+    }, 800);
 };
 
 exports['memoize'] = function (test) {
