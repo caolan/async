@@ -1,5 +1,64 @@
 var async = require('../lib/async');
 
+if (!Function.prototype.bind) {
+    Function.prototype.bind = function (thisArg) {
+        var args = Array.prototype.slice.call(arguments, 1);
+        var self = this;
+        return function () {
+            self.apply(thisArg, args.concat(Array.prototype.slice.call(arguments)));
+        }
+    };
+}
+
+function forEachIterator(args, x, callback) {
+    setTimeout(function(){
+        args.push(x);
+        callback();
+    }, x*25);
+}
+
+function mapIterator(call_order, x, callback) {
+    setTimeout(function(){
+        call_order.push(x);
+        callback(null, x*2);
+    }, x*25);
+}
+
+function filterIterator(x, callback) {
+    setTimeout(function(){
+        callback(x % 2);
+    }, x*25);
+}
+
+function detectIterator(call_order, x, callback) {
+    setTimeout(function(){
+        call_order.push(x);
+        callback(x == 2);
+    }, x*25);
+}
+
+function getFunctionsObject(call_order) {
+    return {
+        one: function(callback){
+            setTimeout(function(){
+                call_order.push(1);
+                callback(null, 1);
+            }, 25);
+        },
+        two: function(callback){
+            setTimeout(function(){
+                call_order.push(2);
+                callback(null, 2);
+            }, 50);
+        },
+        three: function(callback){
+            setTimeout(function(){
+                call_order.push(3);
+                callback(null, 3,3);
+            }, 15);
+        }
+    };
+}
 
 exports['auto'] = function(test){
     var callOrder = [];
@@ -282,27 +341,7 @@ exports['parallel no callback'] = function(test){
 
 exports['parallel object'] = function(test){
     var call_order = [];
-    async.parallel({
-        one: function(callback){
-            setTimeout(function(){
-                call_order.push(1);
-                callback(null, 1);
-            }, 25);
-        },
-        two: function(callback){
-            setTimeout(function(){
-                call_order.push(2);
-                callback(null, 2);
-            }, 50);
-        },
-        three: function(callback){
-            setTimeout(function(){
-                call_order.push(3);
-                callback(null, 3,3);
-            }, 15);
-        }
-    },
-    function(err, results){
+    async.parallel(getFunctionsObject(call_order), function(err, results){
         test.equals(err, null);
         test.same(call_order, [3,1,2]);
         test.same(results, {
@@ -378,27 +417,7 @@ exports['series no callback'] = function(test){
 
 exports['series object'] = function(test){
     var call_order = [];
-    async.series({
-        one: function(callback){
-            setTimeout(function(){
-                call_order.push(1);
-                callback(null, 1);
-            }, 25);
-        },
-        two: function(callback){
-            setTimeout(function(){
-                call_order.push(2);
-                callback(null, 2);
-            }, 50);
-        },
-        three: function(callback){
-            setTimeout(function(){
-                call_order.push(3);
-                callback(null, 3,3);
-            }, 15);
-        }
-    },
-    function(err, results){
+    async.series(getFunctionsObject(call_order), function(err, results){
         test.equals(err, null);
         test.same(results, {
             one: 1,
@@ -468,12 +487,7 @@ exports['iterator.next'] = function(test){
 
 exports['forEach'] = function(test){
     var args = [];
-    async.forEach([1,3,2], function(x, callback){
-        setTimeout(function(){
-            args.push(x);
-            callback();
-        }, x*25);
-    }, function(err){
+    async.forEach([1,3,2], forEachIterator.bind(this, args), function(err){
         test.same(args, [1,2,3]);
         test.done();
     });
@@ -502,12 +516,7 @@ exports['forEach error'] = function(test){
 
 exports['forEachSeries'] = function(test){
     var args = [];
-    async.forEachSeries([1,3,2], function(x, callback){
-        setTimeout(function(){
-            args.push(x);
-            callback();
-        }, x*25);
-    }, function(err){
+    async.forEachSeries([1,3,2], forEachIterator.bind(this, args), function(err){
         test.same(args, [1,3,2]);
         test.done();
     });
@@ -565,12 +574,7 @@ exports['forEachLimit empty array'] = function(test){
 exports['forEachLimit limit exceeds size'] = function(test){
     var args = [];
     var arr = [0,1,2,3,4,5,6,7,8,9];
-    async.forEachLimit(arr, 20, function(x,callback){
-        setTimeout(function(){
-            args.push(x);
-            callback();
-        }, x*25);
-    }, function(err){
+    async.forEachLimit(arr, 20, forEachIterator.bind(this, args), function(err){
         test.same(args, arr);
         test.done();
     });
@@ -579,12 +583,7 @@ exports['forEachLimit limit exceeds size'] = function(test){
 exports['forEachLimit limit equal size'] = function(test){
     var args = [];
     var arr = [0,1,2,3,4,5,6,7,8,9];
-    async.forEachLimit(arr, 10, function(x,callback){
-        setTimeout(function(){
-            args.push(x);
-            callback();
-        }, x*25);
-    }, function(err){
+    async.forEachLimit(arr, 10, forEachIterator.bind(this, args), function(err){
         test.same(args, arr);
         test.done();
     });
@@ -620,12 +619,7 @@ exports['forEachLimit error'] = function(test){
 
 exports['map'] = function(test){
     var call_order = [];
-    async.map([1,3,2], function(x, callback){
-        setTimeout(function(){
-            call_order.push(x);
-            callback(null, x*2);
-        }, x*25);
-    }, function(err, results){
+    async.map([1,3,2], mapIterator.bind(this, call_order), function(err, results){
         test.same(call_order, [1,2,3]);
         test.same(results, [2,6,4]);
         test.done();
@@ -655,12 +649,7 @@ exports['map error'] = function(test){
 
 exports['mapSeries'] = function(test){
     var call_order = [];
-    async.mapSeries([1,3,2], function(x, callback){
-        setTimeout(function(){
-            call_order.push(x);
-            callback(null, x*2);
-        }, x*25);
-    }, function(err, results){
+    async.mapSeries([1,3,2], mapIterator.bind(this, call_order), function(err, results){
         test.same(call_order, [1,3,2]);
         test.same(results, [2,6,4]);
         test.done();
@@ -738,9 +727,7 @@ exports['foldr alias'] = function(test){
 };
 
 exports['filter'] = function(test){
-    async.filter([3,1,2], function(x, callback){
-        setTimeout(function(){callback(x % 2);}, x*25);
-    }, function(results){
+    async.filter([3,1,2], filterIterator, function(results){
         test.same(results, [3,1]);
         test.done();
     });
@@ -758,9 +745,7 @@ exports['filter original untouched'] = function(test){
 };
 
 exports['filterSeries'] = function(test){
-    async.filterSeries([3,1,2], function(x, callback){
-        setTimeout(function(){callback(x % 2);}, x*25);
-    }, function(results){
+    async.filterSeries([3,1,2], filterIterator, function(results){
         test.same(results, [3,1]);
         test.done();
     });
@@ -777,9 +762,7 @@ exports['selectSeries alias'] = function(test){
 };
 
 exports['reject'] = function(test){
-    async.reject([3,1,2], function(x, callback){
-        setTimeout(function(){callback(x % 2);}, x*25);
-    }, function(results){
+    async.reject([3,1,2], filterIterator, function(results){
         test.same(results, [2]);
         test.done();
     });
@@ -797,9 +780,7 @@ exports['reject original untouched'] = function(test){
 };
 
 exports['rejectSeries'] = function(test){
-    async.rejectSeries([3,1,2], function(x, callback){
-        setTimeout(function(){callback(x % 2);}, x*25);
-    }, function(results){
+    async.rejectSeries([3,1,2], filterIterator, function(results){
         test.same(results, [2]);
         test.done();
     });
@@ -885,12 +866,7 @@ exports['all alias'] = function(test){
 
 exports['detect'] = function(test){
     var call_order = [];
-    async.detect([3,2,1], function(x, callback){
-        setTimeout(function(){
-            call_order.push(x);
-            callback(x == 2);
-        }, x*25);
-    }, function(result){
+    async.detect([3,2,1], detectIterator.bind(this, call_order), function(result){
         call_order.push('callback');
         test.equals(result, 2);
     });
@@ -902,12 +878,7 @@ exports['detect'] = function(test){
 
 exports['detect - mulitple matches'] = function(test){
     var call_order = [];
-    async.detect([3,2,2,1,2], function(x, callback){
-        setTimeout(function(){
-            call_order.push(x);
-            callback(x == 2);
-        }, x*25);
-    }, function(result){
+    async.detect([3,2,2,1,2], detectIterator.bind(this, call_order), function(result){
         call_order.push('callback');
         test.equals(result, 2);
     });
@@ -919,12 +890,7 @@ exports['detect - mulitple matches'] = function(test){
 
 exports['detectSeries'] = function(test){
     var call_order = [];
-    async.detectSeries([3,2,1], function(x, callback){
-        setTimeout(function(){
-            call_order.push(x);
-            callback(x == 2);
-        }, x*25);
-    }, function(result){
+    async.detectSeries([3,2,1], detectIterator.bind(this, call_order), function(result){
         call_order.push('callback');
         test.equals(result, 2);
     });
@@ -936,12 +902,7 @@ exports['detectSeries'] = function(test){
 
 exports['detectSeries - multiple matches'] = function(test){
     var call_order = [];
-    async.detectSeries([3,2,2,1,2], function(x, callback){
-        setTimeout(function(){
-            call_order.push(x);
-            callback(x == 2);
-        }, x*25);
-    }, function(result){
+    async.detectSeries([3,2,2,1,2], detectIterator.bind(this, call_order), function(result){
         call_order.push('callback');
         test.equals(result, 2);
     });
