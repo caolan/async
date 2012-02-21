@@ -155,6 +155,13 @@ exports['auto empty object'] = function(test){
     });
 };
 
+exports['auto no callback'] = function(test){
+    async.auto({
+        task1: function(callback){callback();},
+        task2: ['task1', function(callback){callback(); test.done();}]
+    });
+};
+
 exports['auto error'] = function(test){
     test.expect(2);
     async.auto({
@@ -176,10 +183,35 @@ exports['auto error'] = function(test){
     setTimeout(test.done, 100);
 };
 
-exports['auto no callback'] = function(test){
+exports['auto error awaits running tasks'] = function(test) {
+    test.expect(2);
+    var callOrder = [];
+    var run = function(t, x, c) {
+        setTimeout(function() {
+            callOrder.push(t);
+            c(null, t);
+        }, x);
+    };
+    var runError = function(t, x, c) {
+        setTimeout(function() {
+            callOrder.push(t);
+            c(t + ' error');
+        }, x);
+    };
     async.auto({
-        task1: function(callback){callback();},
-        task2: ['task1', function(callback){callback(); test.done();}]
+        task1: function(callback) {
+            run('task1', 25, callback);
+        },
+        task2: function(callback) {
+            runError('task2', 5, callback);
+        },
+        task3: function(callback) {
+            run('task3', 0, callback);
+        }
+    }, function(err, results) {
+        test.same(callOrder, ['task3','task2','task1']);
+        test.equals(err['task2'], 'task2 error');
+        test.done();
     });
 };
 
