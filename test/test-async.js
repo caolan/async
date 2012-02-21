@@ -191,6 +191,7 @@ exports['auto runs task compensation on error'] = function(test) {
     // given task1, an error in any task finalizing task1 will cause task1 to be undone
     // if a task finalize task1 but the task is never called because it await another task which fails, task1 will be undone
     // if a task does not have an undone method, mentioning it in a finalize list has no effect
+    test.expect(2);
     var someFunction = function(callback, results) {
         callback(null, 'task' + Object.keys(results).length + 1);
     };
@@ -205,7 +206,7 @@ exports['auto runs task compensation on error'] = function(test) {
         task1: someFunction,
         task2: async.task().run(someFunction).undo(undoSomeFunction),
         task3: async.task().run(badFunction).handle().finalize(['task1', 'task2']).await(['task1', 'task2']),
-        task4: async.task().run(someFunction).finalize('task2').await('task2')
+        task4: async.task().run(someFunction).finalize('task2').await('task3')
     }, function(err, results) {
 
         test.equals(err['task3'], 'badFunction');
@@ -268,6 +269,71 @@ exports['auto finalizes task'] = function(test) {
             })
     }, function(err, results) {
         test.equals(err['task3'], 'task3 error');
+        test.done();
+    });
+};
+
+exports['auto rollback works recursively'] = function(test) {
+    var callOrder = [];
+    var undoOrder = [];
+
+    var run = function(t, x, c) {
+        setTimeout(function() {
+            callOrder.push(t);
+            c();
+        }, x);
+    };
+
+    var undo = function(t, x, c) {
+        setTimeout(function() {
+            undoOrder.push(t);
+            c();
+        }, x);
+    };
+    
+    async.auto({
+        task1: async.task()
+            .run(function(callback) {
+                run('task1', 15, callback);
+            })
+            .undo(function(err, callback, results) {
+                undo('task1', 15, callback);
+        }),
+        task2: async.task().finalize('task1').await('task1')
+            .run(function(callback) {
+                run('task2', 10, callback);
+            })
+            .undo(function(err, callback, results) {
+                undo('task2', 10, callback);
+        }),
+        task3: async.task().finalize('task2').await('task2')
+            .run(function(callback) {
+                run('task3', 20, callback);
+            })
+            .undo(function(err, callback, results) {
+                undo('task3', 20, callback);
+        }),
+        task4: async.task().finalize('task3').await('task3').run(function(callback, results) {
+            callOrder.push('task4');
+            callback('task4 error');
+        }),
+        task5: async.task().await('task1')
+            .run(function(callback) {
+                run('task5', 5, callback);
+            })
+            .undo(function(err, callback, results) {
+                undo('task5', 0, callback);
+        }),
+        task6: async.task().finalize('task5').await('task2')
+            .run(function(callback) {
+                run('task6', 5, callback);
+            })
+            .undo(function(err, callback, results) {
+                undo('task6', 5, callback);
+            })
+    }, function(err, results) {
+        test.same(callOrder, ['task1','task5','task2','task6','task3','task4']);
+        test.same(undoOrder, ['task3','task2','task1']);
         test.done();
     });
 };
