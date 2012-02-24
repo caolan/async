@@ -332,7 +332,7 @@ exports['auto finalizes task when any task finalizes'] = function(test) {
 };
 
 exports['auto finalizes task'] = function(test) {
-    // if a tasks that finalizes a completed task never runs,
+    // if a task that finalizes a completed task never runs,
     // then the completed task should be undone
     test.expect(3);
     async.auto({
@@ -360,6 +360,34 @@ exports['auto finalizes task'] = function(test) {
             })
     }, function(err, results) {
         test.equals(err['task3'], 'task3 error');
+        test.done();
+    });
+};
+
+exports['auto finalize codependent tasks error'] = function(test) {
+    test.expect(2);
+    async.auto({
+        task1: async.task().finalize('task2').run(
+            function(callback) {
+                setTimeout(function() {
+                    callback(null, 'task1');
+                }, 15);
+            }
+        ).undo(
+            function(err, callback, results) {
+                test.ok(true);
+                callback();
+            }
+        ),
+        task2: async.task().finalize('task1').run(
+            function(callback) {
+                setTimeout(function() {
+                    callback('task2 error');
+                }, 5);
+            }
+        )
+    }, function(err, results) {
+        test.equals(err['task2'], 'task2 error');
         test.done();
     });
 };
