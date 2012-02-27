@@ -37,6 +37,12 @@ function detectIterator(call_order, x, callback) {
     }, x*25);
 }
 
+function forEachNoCallbackIterator(test, x, callback) {
+    test.equal(x, 1);
+    callback();
+    test.done();
+}
+
 function getFunctionsObject(call_order) {
     return {
         one: function(callback){
@@ -811,6 +817,10 @@ exports['forEach error'] = function(test){
     setTimeout(test.done, 50);
 };
 
+exports['forEach no callback'] = function(test){
+    async.forEach([1], forEachNoCallbackIterator.bind(this, test));
+};
+
 exports['forEachSeries'] = function(test){
     var args = [];
     async.forEachSeries([1,3,2], forEachIterator.bind(this, args), function(err){
@@ -841,6 +851,10 @@ exports['forEachSeries error'] = function(test){
         test.equals(err, 'error');
     });
     setTimeout(test.done, 50);
+};
+
+exports['forEachSeries no callback'] = function(test){
+    async.forEachSeries([1], forEachNoCallbackIterator.bind(this, test));
 };
 
 exports['forEachLimit'] = function(test){
@@ -912,6 +926,10 @@ exports['forEachLimit error'] = function(test){
         test.equals(err, 'error');
     });
     setTimeout(test.done, 25);
+};
+
+exports['forEachLimit no callback'] = function(test){
+    async.forEachLimit([1], 1, forEachNoCallbackIterator.bind(this, test));
 };
 
 exports['map'] = function(test){
