@@ -2,7 +2,7 @@
 , "description": "Higher-order functions and common patterns for asynchronous code"
 , "main": "./index"
 , "author": "Caolan McMahon"
-, "version": "0.1.16"
+, "version": "0.1.18"
 , "repository" :
   { "type" : "git"
   , "url" : "http://github.com/caolan/async.git"
@@ -13,16 +13,9 @@
     , "url" : "http://github.com/caolan/async/raw/master/LICENSE"
     }
   ]
-, "dependencies":
-  { "uglify-js": "1.2.x"
-  }
 , "devDependencies":
-    { "nodeunit": ">0.0.0"
-    , "nodelint": ">0.0.0"
-    }
-, "scripts":
-  { "preinstall": "make clean"
-  , "install": "make build"
-  , "test": "make test"
+  { "nodeunit": ">0.0.0"
+  , "uglify-js": "1.2.x"
+  , "nodelint": ">0.0.0"
   }
 }
