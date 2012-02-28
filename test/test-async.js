@@ -189,6 +189,54 @@ exports['auto error'] = function(test){
     setTimeout(test.done, 100);
 };
 
+exports['auto error handled'] = function(test) {
+    test.expect(6);
+    async.auto({
+        task1: async.task().run(function(callback) {
+            callback('task1 error');
+        }).handle(function(err, callback) {
+            test.equals(err, 'task1 error');
+            callback();
+        }),
+        task2: ['task1', function(callback) {
+            test.ok(true, 'task 2 should be called since task1 error is handled');
+            callback(null, 'task2');
+        }],
+        task3: async.task().run(function(callback) {
+            callback(null, 'task3');
+        }).handle(function(err, callback) {
+            test.ok(false, 'should not call handle for task3');
+            callback(err);
+        }),
+        task4: async.task().run(function(callback) {
+            callback('task4 error');
+        }).handle(function(err, callback) {
+            callback(null, 'task4 rescued');
+        })
+    }, function(err, results) {
+        test.ok(!err, 'did not expect error');
+        test.equals(results['task2'], 'task2');
+        test.equals(results['task3'], 'task3');
+        test.equals(results['task4'], 'task4 rescued');
+        test.done();
+    });
+};
+
+exports['auto error ignore'] = function(test) {
+    test.expect();
+    async.auto({
+        task1: async.task().run(function(callback) { callback('task1 error'); }).ignore(),
+        task2: async.task().await('task1').run(function(callback, results) {
+            callback(null, 'task2');
+        })
+    }, function(err, results) {
+        test.ok(!err, 'did not expect error');
+        test.ok(!results['task1'], 'did not expect a result for task1');
+        test.equals(results['task2'], 'task2');
+        test.done();
+    });
+};
+
 exports['auto error awaits running tasks'] = function(test) {
     test.expect(2);
     var callOrder = [];
