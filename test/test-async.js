@@ -1602,3 +1602,58 @@ exports['queue events'] = function(test) {
     q.push('poo', function () {calls.push('poo cb');});
     q.push('moo', function () {calls.push('moo cb');});
 };
+
+exports['onEach'] = function(test) {
+    var nextEvent = 0;
+    var texts = ['Zero', 'One', 'Two', 'Three'];
+
+    var eventemitter = {
+        processListener: null,
+        endListener: null,
+        on: function (event, fn) {
+            if (event === 'process') {
+                processListener = fn;
+            }
+            else if (event === 'end') {
+                endListener = fn;
+            }
+            else {
+                test.ok(false, 'Registering wrong listener');
+            }
+        },
+        start: function () {
+            setTimeout(function() {
+                processListener(0, 'Zero');
+            }, 40);
+            setTimeout(function() {
+                processListener(1, 'One');
+            }, 80);
+            setTimeout(function() {
+                processListener(2, 'Two');
+            }, 120);
+            setTimeout(function() {
+                processListener(3, 'Three');
+            }, 160);
+            setTimeout(function() {
+                endListener();
+            }, 200)
+        }
+    };
+
+    var processFunc = function(number, text, callback) {
+        test.equal(number, nextEvent);
+        test.equal(text, texts[number]);
+        nextEvent++;
+        setTimeout(function() {
+            callback();
+        }, number*20);
+    };
+
+    var done = function() {
+        test.ok(nextEvent, 4);
+        test.done();
+    };
+
+    async.onEach(eventemitter, 1, 'process', processFunc, 'end', done);
+    eventemitter.start();
+}

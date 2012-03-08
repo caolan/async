@@ -88,6 +88,7 @@ So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 * [until](#until)
 * [waterfall](#waterfall)
 * [queue](#queue)
+* [onEach](#onEach)
 * [auto](#auto)
 * [iterator](#iterator)
 * [apply](#apply)
@@ -740,6 +741,48 @@ __Example__
         console.log('finished processing bar');
     });
 
+
+---------------------------------------
+
+<a name="onEach" />
+### onEach(eventemitter, concurrency, process_event_name, process_func, end_event_name, all_done
+
+Executes process_func on every process_event_name event that the eventemitter emits.
+Process_func is called with every argument it would usually be called with an extra callback
+argument.
+After the end event is emitted and all outstanding process_funcs are done, the final all_done
+callback will be called.
+
+__Arguments__
+
+* eventemitter - An EventEmitter that has an 'on' method to register listeners taking an event name
+  and a callback.
+* concurrency - An integer for determining how many worker functions should be
+  run in parallel.
+* process_event_name - The name of the event that we should register the working function for
+* process_func(arguments..., callback) - The function that does the work. It accepts the
+  same arguments as the original eventlistener, with an added callback for completion.
+* end_event_name - The name of the event that signals the last processing event has been emitted.
+* all_done() - Callback when the end event has been emitted and all outstanding processes have
+  completed
+
+__Example__
+
+    var http = require('http');
+
+    http.createServer(function (req, res) {
+
+      var saveChunk = function(chunk, callback) {
+        saveToDB(chunk, callback);
+      }
+
+      async.onEach(req, 2, 'data', saveChunk, 'end', function() {
+        console.log 'All done';
+      });
+
+    }).listen(8080);
+
+    console.log("Server started on http://localhost:8080/");
 
 ---------------------------------------
 
