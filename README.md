@@ -572,9 +572,8 @@ __Example__
     ],
     // optional callback
     function(err, results){
-        // in this case, the results array will equal ['two','one']
-        // because the functions were run in parallel and the second
-        // function had a shorter timeout before calling the callback.
+        // the results array will equal ['one','two'] even though
+        // the second function had a shorter timeout.
     });
 
 
