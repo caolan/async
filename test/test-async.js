@@ -257,6 +257,7 @@ exports['waterfall error'] = function(test){
 
 exports['waterfall multiple callback calls'] = function(test){
     var call_order = [];
+    var finalCalls = 0;
     var arr = [
         function(callback){
             call_order.push(1);
@@ -274,16 +275,38 @@ exports['waterfall multiple callback calls'] = function(test){
         },
         function(arg4){
             call_order.push(4);
-            arr[3] = function(){
-                call_order.push(4);
+            finalCalls++;
+            if (finalCalls === 2) {
                 test.same(call_order, [1,2,2,3,3,4,4]);
                 test.done();
-            };
+            }
         }
     ];
     async.waterfall(arr);
 };
 
+exports['waterfall nested array'] = function(test){
+    test.expect(3);
+    async.waterfall([
+        function(callback){
+            callback(null);
+        }, [
+            function(callback){
+                test.ok(true, 'inner function 1 was called');
+                callback();
+            },
+            function(callback){
+                test.ok(true, 'inner function 2 was called');
+                callback(null, 1);
+            }
+        ],
+        function(a, callback) {
+            test.equal(a, 1, 'args were preserved');
+            test.done();
+            callback();
+        }
+    ]);
+};
 
 exports['parallel'] = function(test){
     var call_order = [];
@@ -618,7 +641,7 @@ exports['forEachLimit error'] = function(test){
     test.expect(2);
     var arr = [0,1,2,3,4,5,6,7,8,9];
     var call_order = [];
-    
+
     async.forEachLimit(arr, 3, function(x, callback){
         call_order.push(x);
         if (x === 2) {
