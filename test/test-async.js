@@ -97,6 +97,28 @@ exports['auto'] = function(test){
     });
 };
 
+exports['auto await tasks'] = function(test) {
+    var callOrder = [];
+    var testdata = [{test: 'test'}];
+    var method = function(name, timeout, callback) {
+        setTimeout(function() {
+            callOrder.push(name);
+            callback();
+        }, timeout);
+    };
+    async.auto({
+        task1: async.task().run(function(callback) { method('task1', 25, callback); }).await('task2'),
+        task2: async.task().run(function(callback) { method('task2', 50, callback); }),
+        task3: async.task().run(function(callback) { method('task3', 0, callback); }).await('task2'),
+        task4: async.task().run(function(callback) { method('task4', 0, callback); }).await(['task3', 'task1']),
+        task5: async.task().run(function(callback) {method('task5', 10, callback); }).await('task3').await('task1')
+    },
+    function(err){
+        test.same(callOrder, ['task2','task3','task1','task4','task5']);
+        test.done();
+    });
+};
+
 exports['auto results'] = function(test){
     var callOrder = [];
     async.auto({
@@ -139,8 +161,15 @@ exports['auto empty object'] = function(test){
     });
 };
 
+exports['auto no callback'] = function(test){
+    async.auto({
+        task1: function(callback){callback();},
+        task2: ['task1', function(callback){callback(); test.done();}]
+    });
+};
+
 exports['auto error'] = function(test){
-    test.expect(1);
+    test.expect(2);
     async.auto({
         task1: function(callback){
             callback('testerror');
@@ -154,15 +183,331 @@ exports['auto error'] = function(test){
         }
     },
     function(err){
-        test.equals(err, 'testerror');
+        test.equals(err['task1'], 'testerror');
+        test.equals(err['task3'], 'testerror2');
     });
     setTimeout(test.done, 100);
 };
 
-exports['auto no callback'] = function(test){
+exports['auto error handled'] = function(test) {
+    test.expect(6);
     async.auto({
-        task1: function(callback){callback();},
-        task2: ['task1', function(callback){callback(); test.done();}]
+        task1: async.task().run(function(callback) {
+            callback('task1 error');
+        }).handle(function(err, callback) {
+            test.equals(err, 'task1 error');
+            callback();
+        }),
+        task2: ['task1', function(callback) {
+            test.ok(true, 'task 2 should be called since task1 error is handled');
+            callback(null, 'task2');
+        }],
+        task3: async.task().run(function(callback) {
+            callback(null, 'task3');
+        }).handle(function(err, callback) {
+            test.ok(false, 'should not call handle for task3');
+            callback(err);
+        }),
+        task4: async.task().run(function(callback) {
+            callback('task4 error');
+        }).handle(function(err, callback) {
+            callback(null, 'task4 rescued');
+        })
+    }, function(err, results) {
+        test.ok(!err, 'did not expect error');
+        test.equals(results['task2'], 'task2');
+        test.equals(results['task3'], 'task3');
+        test.equals(results['task4'], 'task4 rescued');
+        test.done();
+    });
+};
+
+exports['auto error ignore'] = function(test) {
+    test.expect();
+    async.auto({
+        task1: async.task().run(function(callback) { callback('task1 error'); }).ignore(),
+        task2: async.task().await('task1').run(function(callback, results) {
+            callback(null, 'task2');
+        })
+    }, function(err, results) {
+        test.ok(!err, 'did not expect error');
+        test.ok(!results['task1'], 'did not expect a result for task1');
+        test.equals(results['task2'], 'task2');
+        test.done();
+    });
+};
+
+exports['auto error awaits running tasks'] = function(test) {
+    test.expect(2);
+    var callOrder = [];
+    var run = function(t, x, c) {
+        setTimeout(function() {
+            callOrder.push(t);
+            c(null, t);
+        }, x);
+    };
+    var runError = function(t, x, c) {
+        setTimeout(function() {
+            callOrder.push(t);
+            c(t + ' error');
+        }, x);
+    };
+    async.auto({
+        task1: function(callback) {
+            run('task1', 25, callback);
+        },
+        task2: function(callback) {
+            runError('task2', 5, callback);
+        },
+        task3: function(callback) {
+            run('task3', 0, callback);
+        }
+    }, function(err, results) {
+        test.same(callOrder, ['task3','task2','task1']);
+        test.equals(err['task2'], 'task2 error');
+        test.done();
+    });
+};
+
+exports['auto handles exceptions'] = function(test) {
+  async.auto({
+    task1: async.task().run(function(callback) { throw 'task1 exception!'; }).handle(),
+    task2: ['task1', function(callback, results) {
+      test.ok(false, 'task2 should not be called!');
+    }]
+  }, function(err, results) {
+    test.equals(err['task1'], 'task1 exception!');
+    test.done();
+  });
+};
+
+exports['auto calls task exception handler'] = function(test) {
+    async.auto({
+        task1: async.task()
+            .run(function(callback) { throw 'task1 exception!'; })
+            .handle(function(err, callback) {
+                test.equals(err, 'task1 exception!');
+                callback(null, 'task1 handled');
+            }),
+        task2: async.task().run(function(callback) { test.ok(false, 'task2 should not be called'); }).await('task3'),
+        task3: async.task()
+            .run(function(callback, results) {
+                test.equals(results.task1, 'task1 handled');
+                throw 'task3 exception!';
+            })
+            .handle(function(err, callback) {
+                test.equals(err, 'task3 exception!');
+                callback(err);
+            })
+            .await('task1')
+    }, function(err, results) {
+        test.equals(err['task3'], 'task3 exception!');
+        test.done();
+    });
+};
+
+exports['auto runs task compensation on exception'] = function(test) {
+    // given task1, an error in any task finalizing task1 will cause task1 to be undone
+    // if a task finalize task1 but the task is never called because it await another task which fails, task1 will be undone
+    // if a task does not have an undone method, mentioning it in a finalize list has no effect
+    var someFunction = function(callback, results) {
+        callback(null, 'task' + Object.keys(results).length + 1);
+    };
+    var badFunction = function(callback, results) {
+        throw 'badFunction';
+    };
+    var undoSomeFunction = function(err, callback, results) {
+        test.equals(err['task3'], 'badFunction');
+        callback();
+    };
+    async.auto({
+        task1: someFunction,
+        task2: async.task().run(someFunction).undo(undoSomeFunction),
+        task3: async.task().run(badFunction).handle().await(['task1', 'task2']),
+        task4: async.task().run(someFunction).finalize('task2').await('task2')
+    }, function(err, results) {
+
+        test.equals(err['task3'], 'badFunction');
+        test.done();
+    });
+};
+
+exports['auto runs task compensation on error'] = function(test) {
+    // given task1, an error in any task finalizing task1 will cause task1 to be undone
+    // if a task finalize task1 but the task is never called because it await another task which fails, task1 will be undone
+    // if a task does not have an undone method, mentioning it in a finalize list has no effect
+    test.expect(2);
+    var someFunction = function(callback, results) {
+        callback(null, 'task' + Object.keys(results).length + 1);
+    };
+    var badFunction = function(callback, results) {
+        callback('badFunction');
+    };
+    var undoSomeFunction = function(err, callback, results) {
+        test.equals(err['task3'], 'badFunction');
+        callback(err);
+    };
+    async.auto({
+        task1: someFunction,
+        task2: async.task().run(someFunction).undo(undoSomeFunction),
+        task3: async.task().run(badFunction).handle().finalize(['task1', 'task2']).await(['task1', 'task2']),
+        task4: async.task().run(someFunction).finalize('task2').await('task3')
+    }, function(err, results) {
+
+        test.equals(err['task3'], 'badFunction');
+        test.done();
+    });
+};
+
+exports['auto finalizes task when any task finalizes'] = function(test) {
+  
+    async.auto({
+        task1: async.task()
+            .run(function(callback) {
+                setTimeout(function() {
+                    callback(null, 'task1');
+                }, 10);
+            })
+            .undo(function(err, callback) {
+                test.ok(false, 'task1 should have been finalized');
+                callback();
+            }),
+        task2: async.task().finalize('task1'),
+        task3: async.task().finalize('task1')
+            .run(function(callback, results) {
+                setTimeout(function() {
+                    callback('task3 error');
+                }, 10);
+            })
+    }, function(err, results) {
+        test.equals(err['task3'], 'task3 error');
+        test.done();
+    });
+};
+
+exports['auto finalizes task'] = function(test) {
+    // if a task that finalizes a completed task never runs,
+    // then the completed task should be undone
+    test.expect(3);
+    async.auto({
+        task1: async.task()
+            .run(function(callback) {
+                setTimeout(function() {
+                    callback(null, 'task1');
+                }, 10);
+            })
+            .undo(function(errors, callback) {
+                test.equals(errors['task3'], 'task3 error');
+                test.ok(true, 'task1 should have been undone');
+                callback();
+            }),
+        task2: async.task(),
+        task3: async.task()
+            .run(function(callback, results) {
+                setTimeout(function() {
+                    callback('task3 error');
+                }, 10);
+            }),
+        task4: async.task().await(['task2', 'task3']).finalize('task1')
+            .run(function(callback) {
+                callback();
+            })
+    }, function(err, results) {
+        test.equals(err['task3'], 'task3 error');
+        test.done();
+    });
+};
+
+exports['auto finalize codependent tasks error'] = function(test) {
+    test.expect(2);
+    async.auto({
+        task1: async.task().finalize('task2').run(
+            function(callback) {
+                setTimeout(function() {
+                    callback(null, 'task1');
+                }, 15);
+            }
+        ).undo(
+            function(err, callback, results) {
+                test.ok(true);
+                callback();
+            }
+        ),
+        task2: async.task().finalize('task1').run(
+            function(callback) {
+                setTimeout(function() {
+                    callback('task2 error');
+                }, 5);
+            }
+        )
+    }, function(err, results) {
+        test.equals(err['task2'], 'task2 error');
+        test.done();
+    });
+};
+
+exports['auto rollback works recursively'] = function(test) {
+    var callOrder = [];
+    var undoOrder = [];
+
+    var run = function(t, x, c) {
+        setTimeout(function() {
+            callOrder.push(t);
+            c();
+        }, x);
+    };
+
+    var undo = function(t, x, c) {
+        setTimeout(function() {
+            undoOrder.push(t);
+            c();
+        }, x);
+    };
+    
+    async.auto({
+        task1: async.task()
+            .run(function(callback) {
+                run('task1', 15, callback);
+            })
+            .undo(function(err, callback, results) {
+                undo('task1', 15, callback);
+        }),
+        task2: async.task().finalize('task1').await('task1')
+            .run(function(callback) {
+                run('task2', 10, callback);
+            })
+            .undo(function(err, callback, results) {
+                undo('task2', 10, callback);
+        }),
+        task3: async.task().finalize('task2').await('task2')
+            .run(function(callback) {
+                run('task3', 20, callback);
+            })
+            .undo(function(err, callback, results) {
+                undo('task3', 20, callback);
+        }),
+        task4: async.task().finalize('task3').await('task3').run(function(callback, results) {
+            callOrder.push('task4');
+            callback('task4 error');
+        }),
+        task5: async.task().await('task1')
+            .run(function(callback) {
+                run('task5', 5, callback);
+            })
+            .undo(function(err, callback, results) {
+                undo('task5', 0, callback);
+        }),
+        task6: async.task().finalize('task5').await('task2')
+            .run(function(callback) {
+                run('task6', 5, callback);
+            })
+            .undo(function(err, callback, results) {
+                undo('task6', 5, callback);
+            })
+    }, function(err, results) {
+        test.same(callOrder, ['task1','task5','task2','task6','task3','task4']);
+        test.same(undoOrder, ['task3','task2','task1']);
+        test.done();
     });
 };
 
@@ -170,7 +515,7 @@ exports['auto no callback'] = function(test){
 // Issue 76 on github: https://github.com/caolan/async/issues#issue/76
 exports['auto removeListener has side effect on loop iterator'] = function(test) {
     async.auto({
-        task1: ['task3', function(callback) { test.done() }],
+        task1: ['task3', function(callback) { test.done(); }],
         task2: ['task3', function(callback) { /* by design: DON'T call callback */ }],
         task3: function(callback) { callback(); }
     });
