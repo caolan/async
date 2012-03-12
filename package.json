@@ -13,9 +13,17 @@
     , "url" : "http://github.com/caolan/async/raw/master/LICENSE"
     }
   ]
+, "dependencies":
+  { "uglify-js": "1.2.x"
+  }
 , "devDependencies":
   { "nodeunit": ">0.0.0"
-  , "uglify-js": "1.2.x"
   , "nodelint": ">0.0.0"
+  }
+, 
+"scripts":
+  { "preinstall": "make clean"
+  , "install": "make build"
+  , "test": "make test"
   }
 }
