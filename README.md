@@ -700,8 +700,8 @@ methods:
 
 * length() - a function returning the number of items waiting to be processed.
 * concurrency - an integer for determining how many worker functions should be
-  run in parallel. This property can be changed after a queue is created to
-  alter the concurrency on-the-fly.
+  run in parallel. This property can be altered on-the-fly with setConcurrency() 
+  after a queue is created.
 * push(task, [callback]) - add a new task to the queue, the callback is called
   once the worker has finished processing the task.
   instead of a single task, an array of tasks can be submitted. the respective callback is used for every task in the list.
