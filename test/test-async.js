@@ -1,5 +1,30 @@
 var async = require('../lib/async');
 
+exports['coordinizer'] = function( test ) {
+
+    var eventsHappend = [];
+
+    var coordinated = async.coordinizer( [ 'e1', 'e2', 'e3' ], function() {
+        test.same( eventsHappend, [ 'e1', 'e2', 'e3' ] );
+        test.done();
+    } );
+
+    setTimeout( function() {
+        eventsHappend.push( 'e1' );
+        coordinated( 'e1' );
+    }, 100 );
+
+    setTimeout( function() {
+        eventsHappend.push( 'e2' );
+        coordinated( 'e2' );
+    }, 200 );
+
+    setTimeout( function() {
+        eventsHappend.push( 'e3' );
+        coordinated( 'e3' );
+    }, 300 );
+
+};
 
 exports['auto'] = function(test){
     var callOrder = [];
