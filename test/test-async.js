@@ -1,31 +1,5 @@
 var async = require('../lib/async');
 
-exports['coordinizer'] = function( test ) {
-
-    var eventsHappend = [];
-
-    var coordinated = async.coordinizer( [ 'e1', 'e2', 'e3' ], function() {
-        test.same( eventsHappend, [ 'e1', 'e2', 'e3' ] );
-        test.done();
-    } );
-
-    setTimeout( function() {
-        eventsHappend.push( 'e1' );
-        coordinated( 'e1' );
-    }, 100 );
-
-    setTimeout( function() {
-        eventsHappend.push( 'e2' );
-        coordinated( 'e2' );
-    }, 200 );
-
-    setTimeout( function() {
-        eventsHappend.push( 'e3' );
-        coordinated( 'e3' );
-    }, 300 );
-
-};
-
 exports['auto'] = function(test){
     var callOrder = [];
     var testdata = [{test: 'test'}];
@@ -1647,4 +1621,30 @@ exports['queue events'] = function(test) {
     q.push('zoo', function () {calls.push('zoo cb');});
     q.push('poo', function () {calls.push('poo cb');});
     q.push('moo', function () {calls.push('moo cb');});
+};
+
+exports['coordinator'] = function( test ) {
+
+    var eventsHappend = [];
+
+    var coordinated = async.coordinator( [ 'e1', 'e2', 'e3' ], function() {
+        test.same( eventsHappend, [ 'e1', 'e2', 'e3' ] );
+        test.done();
+    } );
+
+    setTimeout( function() {
+        eventsHappend.push( 'e1' );
+        coordinated( 'e1' );
+    }, 100 );
+
+    setTimeout( function() {
+        eventsHappend.push( 'e2' );
+        coordinated( 'e2' );
+    }, 200 );
+
+    setTimeout( function() {
+        eventsHappend.push( 'e3' );
+        coordinated( 'e3' );
+    }, 300 );
+
 };
