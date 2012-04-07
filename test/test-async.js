@@ -2664,7 +2664,8 @@ exports['queue events'] = function(test) {
         // nop
         calls.push('process ' + task);
         async.setImmediate(cb);
-    }, 3);
+    }, 10);
+    q.concurrency = 3;
 
     q.saturated = function() {
         test.ok(q.length() == 3, 'queue should be saturated now');
