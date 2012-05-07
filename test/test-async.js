@@ -1625,26 +1625,31 @@ exports['queue events'] = function(test) {
 
 exports['coordinator'] = function( test ) {
 
-    var eventsHappend = [];
+    var  eventsHappend  = []
+        ,events         = [ 'e1', 'e2', 'e3' ];
 
-    var coordinated = async.coordinator( [ 'e1', 'e2', 'e3' ], function() {
-        test.same( eventsHappend, [ 'e1', 'e2', 'e3' ] );
+    var coordinated = async.coordinator( events, function() {
+        test.ok( eventsHappend.indexOf( 'e1' ) > -1 );
+        test.ok( eventsHappend.indexOf( 'e2' ) > -1 );
+        test.ok( eventsHappend.indexOf( 'e3' ) > -1 );
+
+        test.same( events, [ 'e1', 'e2', 'e3' ] );
         test.done();
     } );
 
     setTimeout( function() {
         eventsHappend.push( 'e1' );
         coordinated( 'e1' );
-    }, 100 );
+    }, 300 );
 
     setTimeout( function() {
         eventsHappend.push( 'e2' );
         coordinated( 'e2' );
-    }, 200 );
+    }, 100 );
 
     setTimeout( function() {
         eventsHappend.push( 'e3' );
         coordinated( 'e3' );
-    }, 300 );
+    }, 200 );
 
 };
