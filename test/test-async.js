@@ -635,6 +635,18 @@ exports['forEachLimit no callback'] = function(test){
     async.forEachLimit([1], 1, forEachNoCallbackIterator.bind(this, test));
 };
 
+exports['forEachLimit synchronous'] = function(test){
+    var args = [];
+    var arr = [0,1,2];
+    async.forEachLimit(arr, 5, function(x,callback){
+        args.push(x);
+        callback();
+    }, function(err){
+        test.same(args, arr);
+        test.done();
+    });
+};
+
 exports['map'] = function(test){
     var call_order = [];
     async.map([1,3,2], mapIterator.bind(this, call_order), function(err, results){
