@@ -92,6 +92,8 @@ So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 * [iterator](#iterator)
 * [apply](#apply)
 * [nextTick](#nextTick)
+* [times](#times)
+* [timesSeries](#timesSeries)
 
 ### Utils
 
@@ -906,6 +908,40 @@ __Example__
         // call_order now equals ['one','two]
     });
     call_order.push('one')
+
+<a name="times" />
+### times(n, callback)
+
+Calls the callback n times and accumulates results in the same manner
+you would use with async.map.
+
+__Arguments__
+
+* n - The number of times to run the function.
+* callback - The function to call n times.
+
+__Example__
+    // Pretend this is some complicated async factory
+    var createUser = function(id, callback) {
+      callback(null, {
+        id: 'user' + id
+      })
+    }
+    // generate 5 users
+    async.times(5, function(n, next){
+        createUser(n, function(err, user) {
+          next(err, user)
+        })
+    }, function(err, users) {
+      // we should now have 5 users
+    });
+
+<a name="timesSeries" />
+### timesSeries(n, callback)
+
+The same as times only the iterator is applied to each item in the array in
+series. The next iterator is only called once the current one has completed
+processing. The results array will be in the same order as the original.
 
 
 ## Utils
