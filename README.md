@@ -92,6 +92,7 @@ So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 * [iterator](#iterator)
 * [apply](#apply)
 * [nextTick](#nextTick)
+* [unwind](#unwind)
 
 ### Utils
 
@@ -918,6 +919,42 @@ __Example__
         // call_order now equals ['one','two]
     });
     call_order.push('one')
+
+---------------------------------------
+
+<a name="unwind" />
+### unwind(function, callback)
+
+Calls a asynchronous function. If the function is not really asynchronous, the
+callback is not called, but `unwind` returns the arguments as result.
+
+This is useful to prevent stack overflows in asynchronous loop with not really
+asynchronous functions.
+
+__Arguments__
+
+* function - A function which should be called. `task(callback)`
+* callback - The callback to call if the function is really asynchronous.
+
+__Returns__
+
+A Array containing the arguments passed from the task to the callback.
+`unwind` only returns the array if task was synchronous.
+If task is asynchronous `unwind` do not return anything.
+
+__Example__
+
+    function may(callback) {
+        if (Math.random() < 0.5) {
+            setTimeout(callback.bind(null, "async"), 1000);
+        } else {
+            callback("sync");
+        }
+    }
+    var sync = async.unwind(may, console.log);
+    if (sync) { // only if may was synchronous
+        console.log(sync[0]);
+    }
 
 
 ## Utils
