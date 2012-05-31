@@ -1212,6 +1212,30 @@ exports['whilst'] = function (test) {
     );
 };
 
+exports['whilst/until sync'] = function (test) {
+    var i = 0, j = 0;
+    var testFuncWhile = function() { return i < 100000; }
+    var testFuncUntil = function() { return i >= 100000; }
+    var iter = function(c) {
+        i++;
+        j++;
+        c();
+    }
+    var check = function() {
+        test.equals(i, 100000);
+        test.equals(j, 100000);
+       test.done();
+    }
+
+    // This will stack overflow if we wouldn't care about it.
+    async.whilst(testFuncWhile, iter, function() {
+        test.equals(i, 100000);
+        test.equals(j, 100000);
+        i = j = 0;
+        async.until(testFuncUntil, iter, check);
+    });
+};
+
 exports['queue'] = function (test) {
     var call_order = [],
         delays = [160,80,240,80];
