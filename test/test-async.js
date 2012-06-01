@@ -1033,6 +1033,76 @@ var console_fn_tests = function(name){
 
 };
 
+
+
+exports['times'] = function(test) {
+  var indices = []
+  async.times(5, function(n, next) {
+    next(null, n)
+  }, function(err, results) {
+    test.same(results, [0,1,2,3,4])
+    test.done()
+  })
+}
+
+exports['times'] = function(test){
+    var args = [];
+    async.times(3, function(n, callback){
+        setTimeout(function(){
+            args.push(n);
+            callback();
+        }, n * 25);
+    }, function(err){
+        test.same(args, [0,1,2]);
+        test.done();
+    });
+};
+
+exports['times 0'] = function(test){
+    test.expect(1);
+    async.times(0, function(n, callback){
+        test.ok(false, 'iterator should not be called');
+        callback();
+    }, function(err){
+        test.ok(true, 'should call callback');
+    });
+    setTimeout(test.done, 25);
+};
+
+exports['times error'] = function(test){
+    test.expect(1);
+    async.times(3, function(n, callback){
+        callback('error');
+    }, function(err){
+        test.equals(err, 'error');
+    });
+    setTimeout(test.done, 50);
+};
+
+exports['timesSeries'] = function(test){
+    var call_order = [];
+    async.timesSeries(5, function(n, callback){
+        setTimeout(function(){
+            call_order.push(n);
+            callback(null, n);
+        }, 100 - n * 10);
+    }, function(err, results){
+        test.same(call_order, [0,1,2,3,4]);
+        test.same(results, [0,1,2,3,4]);
+        test.done();
+    });
+};
+
+exports['timesSeries error'] = function(test){
+    test.expect(1);
+    async.timesSeries(5, function(n, callback){
+        callback('error');
+    }, function(err, results){
+        test.equals(err, 'error');
+    });
+    setTimeout(test.done, 50);
+};
+
 console_fn_tests('log');
 console_fn_tests('dir');
 /*console_fn_tests('info');
@@ -1618,3 +1688,4 @@ exports['queue events'] = function(test) {
     q.push('poo', function () {calls.push('poo cb');});
     q.push('moo', function () {calls.push('moo cb');});
 };
+
