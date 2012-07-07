@@ -18,7 +18,7 @@ callback as the last argument of your async function.
         // results is now an array of stats for each file
     });
 
-    async.filter(['file1','file2','file3'], path.exists, function(results){
+    async.filter(['file1','file2','file3'], fs.exists, function(results){
         // results now equals an array of the existing files
     });
 
@@ -220,7 +220,7 @@ __Alias:__ select
 Returns a new array of all the values which pass an async truth test.
 _The callback for each iterator call only accepts a single argument of true or
 false, it does not accept an error argument first!_ This is in-line with the
-way node libraries work with truth tests like path.exists. This operation is
+way node libraries work with truth tests like fs.exists. This operation is
 performed in parallel, but the results array will be in the same order as the
 original.
 
@@ -234,7 +234,7 @@ __Arguments__
 
 __Example__
 
-    async.filter(['file1','file2','file3'], path.exists, function(results){
+    async.filter(['file1','file2','file3'], fs.exists, function(results){
         // results now equals an array of the existing files
     });
 
@@ -338,7 +338,7 @@ __Arguments__
 
 __Example__
 
-    async.detect(['file1','file2','file3'], path.exists, function(result){
+    async.detect(['file1','file2','file3'], fs.exists, function(result){
         // result now equals the first file in the list that exists
     });
 
@@ -391,7 +391,7 @@ __Alias:__ any
 Returns true if at least one element in the array satisfies an async test.
 _The callback for each iterator call only accepts a single argument of true or
 false, it does not accept an error argument first!_ This is in-line with the
-way node libraries work with truth tests like path.exists. Once any iterator
+way node libraries work with truth tests like fs.exists. Once any iterator
 call returns true, the main callback is immediately called.
 
 __Arguments__
@@ -405,7 +405,7 @@ __Arguments__
 
 __Example__
 
-    async.some(['file1','file2','file3'], path.exists, function(result){
+    async.some(['file1','file2','file3'], fs.exists, function(result){
         // if result is true then at least one of the files exists
     });
 
@@ -419,7 +419,7 @@ __Alias:__ all
 Returns true if every element in the array satisfies an async test.
 _The callback for each iterator call only accepts a single argument of true or
 false, it does not accept an error argument first!_ This is in-line with the
-way node libraries work with truth tests like path.exists.
+way node libraries work with truth tests like fs.exists.
 
 __Arguments__
 
@@ -432,7 +432,7 @@ __Arguments__
 
 __Example__
 
-    async.every(['file1','file2','file3'], path.exists, function(result){
+    async.every(['file1','file2','file3'], fs.exists, function(result){
         // if result is true then every file exists
     });
 
