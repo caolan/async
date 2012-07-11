@@ -955,6 +955,15 @@ exports['sortBy'] = function(test){
     });
 };
 
+exports['sortBy inverted'] = function(test){
+    async.sortBy([{a:1},{a:15},{a:6}], function(x, callback){
+        setTimeout(function(){callback(null, x.a*-1);}, 0);
+    }, function(err, result){
+        test.same(result, [{a:15},{a:6},{a:1}]);
+        test.done();
+    });
+};
+
 exports['apply'] = function(test){
     test.expect(6);
     var fn = function(){
