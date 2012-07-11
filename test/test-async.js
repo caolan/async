@@ -1267,7 +1267,7 @@ exports['queue'] = function (test) {
     }, 800);
 };
 
-exports['queue changing concurrency'] = function (test) {
+exports['queue decreasing concurrency'] = function (test) {
     var call_order = [],
         delays = [40,20,60,20];
 
@@ -1307,7 +1307,7 @@ exports['queue changing concurrency'] = function (test) {
     });
     test.equal(q.length(), 4);
     test.equal(q.concurrency, 2);
-    q.concurrency = 1;
+    q.setConcurrency(1);
 
     setTimeout(function () {
         test.same(call_order, [
@@ -1320,6 +1320,56 @@ exports['queue changing concurrency'] = function (test) {
         test.equal(q.length(), 0);
         test.done();
     }, 250);
+};
+
+exports['queue increasing concurrency'] = function (test) {
+    var call_order = [],
+        delays = [60,70,80];
+    // for the first 20, only one worker should be processing
+    // task1, after 20, 3 workers should process all 3 tasks
+    // and finish at 100.
+
+    var q = async.queue(function (task, callback) {
+        setTimeout(function () {
+            call_order.push('process ' + task);
+            callback('error', 'arg');
+        }, delays.splice(0,1)[0]);
+    }, 1);
+
+    q.push(1, function (err, arg) {
+        test.equal(err, 'error');
+        test.equal(arg, 'arg');
+        test.equal(q.length(), 0);
+        call_order.push('callback ' + 1);
+    });
+    q.push(2, function (err, arg) {
+        test.equal(err, 'error');
+        test.equal(arg, 'arg');
+        test.equal(q.length(), 0);
+        call_order.push('callback ' + 2);
+    });
+    q.push(3, function (err, arg) {
+        test.equal(err, 'error');
+        test.equal(arg, 'arg');
+        test.equal(q.length(), 0);
+        call_order.push('callback ' + 3);
+    });
+    test.equal(q.length(), 3);
+    test.equal(q.concurrency, 1);
+    setTimeout(function () {
+      q.setConcurrency(3);
+      }, 20);
+
+    setTimeout(function () {
+        test.same(call_order, [
+            'process 1', 'callback 1',
+            'process 2', 'callback 2',
+            'process 3', 'callback 3',
+        ]);
+        test.equal(q.concurrency, 3);
+        test.equal(q.length(), 0);
+        test.done();
+    }, 120);
 };
 
 exports['queue push without callback'] = function (test) {
