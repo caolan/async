@@ -1618,3 +1618,48 @@ exports['queue events'] = function(test) {
     q.push('poo', function () {calls.push('poo cb');});
     q.push('moo', function () {calls.push('moo cb');});
 };
+
+exports['compose'] = function(test) {
+  var mult2 = function(result, callback) {
+    async.nextTick(function() {
+      callback(null, result * 2);
+    })
+  };
+  
+  var mult3 = function(result, callback) {
+    async.nextTick(function() {
+      callback(null, result * 3);
+    });
+  };
+  
+  async.compose(mult2, mult3)(10, function(error, result) {
+    test.strictEqual(error, null);
+    test.strictEqual(result, 60);
+    test.done();
+  });
+};
+
+exports['compose error'] = function(test) {
+  var calledG = false;
+  var err = new Error('Error');
+
+  var f = function(result, callback) {
+    async.nextTick(function() {
+      callback(err, result * 2);
+    });
+  };
+  
+  var g = function(result, callback) {
+    calledG = true;
+    async.nextTick(function() {
+      callback(null, result * 3);
+    });
+  };
+  
+  async.compose(f, g)(10, function(error, result) {
+    test.strictEqual(error, err);
+    test.strictEqual(result, undefined);
+    test.strictEqual(calledG, false);
+    test.done();
+  });
+};
