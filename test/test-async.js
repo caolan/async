@@ -91,12 +91,18 @@ exports['auto'] = function(test){
             callback();
         }],
         task5: ['task2', function(callback){
-            callOrder.push('task5');
+            setTimeout(function(){
+              callOrder.push('task5');
+              callback();
+            }, 0);
+        }],
+        task6: ['task2', function(callback){
+            callOrder.push('task6');
             callback();
         }]
     },
     function(err){
-        test.same(callOrder, ['task2','task5','task3','task1','task4']);
+        test.same(callOrder, ['task2','task6','task3','task5','task1','task4']);
         test.done();
     });
 };
