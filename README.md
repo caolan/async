@@ -119,7 +119,9 @@ __Arguments__
 
 * arr - An array to iterate over.
 * iterator(item, callback) - A function to apply to each item in the array.
-  The iterator is passed a callback which must be called once it has completed.
+  The iterator is passed a callback(err) which must be called once it has completed.
+  If no error has occured, the callback should be run without arguments or 
+  with an explicit null argument.
 * callback(err) - A callback which is called after all the iterator functions
   have finished, or an error has occurred.
 
@@ -157,6 +159,8 @@ __Arguments__
 * limit - How many items should be in each batch.
 * iterator(item, callback) - A function to apply to each item in the array.
   The iterator is passed a callback which must be called once it has completed.
+  If no error has occured, the callback should be run without arguments or 
+  with an explicit null argument.
 * callback(err) - A callback which is called after all the iterator functions
   have finished, or an error has occurred.
 
@@ -228,7 +232,8 @@ __Arguments__
 
 * arr - An array to iterate over.
 * iterator(item, callback) - A truth test to apply to each item in the array.
-  The iterator is passed a callback which must be called once it has completed.
+  The iterator is passed a callback which must be called with a boolean argument
+  once it has completed.
 * callback(results) - A callback which is called after all the iterator
   functions have finished.
 
@@ -330,7 +335,8 @@ __Arguments__
 
 * arr - An array to iterate over.
 * iterator(item, callback) - A truth test to apply to each item in the array.
-  The iterator is passed a callback which must be called once it has completed.
+  The iterator is passed a callback which must be called with a boolean argument
+  once it has completed.
 * callback(result) - A callback which is called as soon as any iterator returns
   true, or after all the iterator functions have finished. Result will be
   the first item in the array that passes the truth test (iterator) or the
@@ -398,7 +404,8 @@ __Arguments__
 
 * arr - An array to iterate over.
 * iterator(item, callback) - A truth test to apply to each item in the array.
-  The iterator is passed a callback which must be called once it has completed.
+  The iterator is passed a callback which must be called with a boolean argument
+  once it has completed.
 * callback(result) - A callback which is called as soon as any iterator returns
   true, or after all the iterator functions have finished. Result will be
   either true or false depending on the values of the async tests.
@@ -425,7 +432,8 @@ __Arguments__
 
 * arr - An array to iterate over.
 * iterator(item, callback) - A truth test to apply to each item in the array.
-  The iterator is passed a callback which must be called once it has completed.
+  The iterator is passed a callback which must be called with a boolean argument
+  once it has completed.
 * callback(result) - A callback which is called after all the iterator
   functions have finished. Result will be either true or false depending on
   the values of the async tests.
