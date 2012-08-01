@@ -18,4 +18,6 @@
   , "uglify-js": "1.2.x"
   , "nodelint": ">0.0.0"
   }
+, "scripts":
+  { "test": "nodeunit test/test-async.js" }
 }
