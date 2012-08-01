@@ -528,6 +528,21 @@ exports['forEach no callback'] = function(test){
     async.forEach([1], forEachNoCallbackIterator.bind(this, test));
 };
 
+exports['forEach with growing array'] = function(test){
+    var arr= [2,3];
+    var iterations = 0;
+    async.forEach(arr, function(x, callback){
+        if (iterations++ == 0) {
+            arr.push(4);
+        }
+        callback();
+    }, function(){
+        test.same(arr, [2,3,4]);
+        test.same(iterations, 3);
+        test.done();
+    })
+};
+
 exports['forEachSeries'] = function(test){
     var args = [];
     async.forEachSeries([1,3,2], forEachIterator.bind(this, args), function(err){
