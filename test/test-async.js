@@ -17,6 +17,13 @@ function forEachIterator(args, x, callback) {
     }, x*25);
 }
 
+function forEachOfIterator(args, x, key, callback) {
+    setTimeout(function(){
+        args.push(key, x);
+        callback();
+    }, x*25);
+}
+
 function mapIterator(call_order, x, callback) {
     setTimeout(function(){
         call_order.push(x);
@@ -39,6 +46,13 @@ function detectIterator(call_order, x, callback) {
 
 function forEachNoCallbackIterator(test, x, callback) {
     test.equal(x, 1);
+    callback();
+    test.done();
+}
+
+function forEachOfNoCallbackIterator(test, x, key, callback) {
+    test.equal(x, 1);
+    test.equal(key, "a");
     callback();
     test.done();
 }
@@ -650,6 +664,39 @@ exports['forEach error'] = function(test){
 
 exports['forEach no callback'] = function(test){
     async.forEach([1], forEachNoCallbackIterator.bind(this, test));
+};
+
+exports['forEachOf'] = function(test){
+    var args = [];
+    async.forEachOf({ a: 1, b: 2 }, forEachOfIterator.bind(this, args), function(err){
+        test.same(args, ["a", 1, "b", 2]);
+        test.done();
+    });
+};
+
+exports['forEachOf empty object'] = function(test){
+    test.expect(1);
+    async.forEachOf({}, function(value, key, callback){
+        test.ok(false, 'iterator should not be called');
+        callback();
+    }, function(err) {
+        test.ok(true, 'should call callback');
+    });
+    setTimeout(test.done, 25);
+};
+
+exports['forEachOf error'] = function(test){
+    test.expect(1);
+    async.forEachOf({ a: 1, b: 2 }, function(value, key, callback) {
+        callback('error');
+    }, function(err){
+        test.equals(err, 'error');
+    });
+    setTimeout(test.done, 50);
+};
+
+exports['forEachOf no callback'] = function(test){
+    async.forEachOf({ a: 1 }, forEachOfNoCallbackIterator.bind(this, test));
 };
 
 exports['forEachSeries'] = function(test){
