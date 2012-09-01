@@ -1503,6 +1503,18 @@ exports['memoize custom hash function'] = function (test) {
     test.done();
 };
 
+exports['memoize manually added memo value'] = function (test) {
+    test.expect(1);
+    var fn = async.memoize(function(arg, callback) {
+        test(false, "Function should never be called");
+    });
+    fn.memo["foo"] = ["bar"];
+    fn("foo", function(val) {
+        test.equal(val, "bar");
+        test.done();
+    });
+};
+
 // Issue 10 on github: https://github.com/caolan/async/issues#issue/10
 exports['falsy return values in series'] = function (test) {
     function taskFalse(callback) {
