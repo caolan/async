@@ -1618,3 +1618,25 @@ exports['queue events'] = function(test) {
     q.push('poo', function () {calls.push('poo cb');});
     q.push('moo', function () {calls.push('moo cb');});
 };
+
+// test domains
+
+var d = require('domain').create()
+d.on('error', function (err) {
+  console.log('domain error:', err.message)
+  d.errors += 1
+})
+d.errors = 0
+
+pn = function (cb) {process.nextTick(function () {cb()})}
+
+d.run(function () {
+  async.forEach([1,2], function (i, cb) {pn(cb)}, function (err) {
+    throw new Error('test async')
+  })
+})
+
+process.nextTick(function () {
+  if (d.errors !== 1) throw new Error('did not pass all domain errors')
+})
+
