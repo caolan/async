@@ -17,5 +17,6 @@
   { "nodeunit": ">0.0.0"
   , "uglify-js": "1.2.x"
   , "nodelint": ">0.0.0"
+  , "requirejs": "2.1.x"
   }
 }
