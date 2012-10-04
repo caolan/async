@@ -14,23 +14,25 @@ callback as the last argument of your async function.
 
 ## Quick Examples
 
-    async.map(['file1','file2','file3'], fs.stat, function(err, results){
-        // results is now an array of stats for each file
-    });
+```javascript
+async.map(['file1','file2','file3'], fs.stat, function(err, results){
+    // results is now an array of stats for each file
+});
 
-    async.filter(['file1','file2','file3'], path.exists, function(results){
-        // results now equals an array of the existing files
-    });
+async.filter(['file1','file2','file3'], path.exists, function(results){
+    // results now equals an array of the existing files
+});
 
-    async.parallel([
-        function(){ ... },
-        function(){ ... }
-    ], callback);
+async.parallel([
+    function(){ ... },
+    function(){ ... }
+], callback);
 
-    async.series([
-        function(){ ... },
-        function(){ ... }
-    ]);
+async.series([
+    function(){ ... },
+    function(){ ... }
+]);
+```
 
 There are many more functions available so take a look at the docs below for a
 full list. This module aims to be comprehensive, so if you feel anything is

@@ -101,6 +101,36 @@ exports['auto'] = function(test){
     });
 };
 
+exports['auto petrify'] = function (test) {
+    var callOrder = [];
+    async.auto({
+        task1: ['task2', function (callback) {
+            setTimeout(function () {
+                callOrder.push('task1');
+                callback();
+            }, 100);
+        }],
+        task2: function (callback) {
+            setTimeout(function () {
+                callOrder.push('task2');
+                callback();
+            }, 200);
+        },
+        task3: ['task2', function (callback) {
+            callOrder.push('task3');
+            callback();
+        }],
+        task4: ['task1', 'task2', function (callback) {
+            callOrder.push('task4');
+            callback();
+        }]
+    },
+    function (err) {
+        test.same(callOrder, ['task2', 'task3', 'task1', 'task4']);
+        test.done();
+    });
+};
+
 exports['auto results'] = function(test){
     var callOrder = [];
     async.auto({
