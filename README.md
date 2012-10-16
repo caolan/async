@@ -836,7 +836,7 @@ async.parallel([
         // this is run at the same time as getting the data
     }
 ],
-function(results){
+function(err, results){
     async.series([
         function(callback){
             // once there is some data and the directory exists,
