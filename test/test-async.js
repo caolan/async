@@ -986,7 +986,7 @@ exports['sortBy'] = function(test){
 };
 
 exports['apply'] = function(test){
-    test.expect(6);
+    test.expect(21);
     var fn = function(){
         test.same(Array.prototype.slice.call(arguments), [1,2,3,4])
     };
@@ -995,6 +995,30 @@ exports['apply'] = function(test){
     async.apply(fn, 1, 2)(3, 4);
     async.apply(fn, 1)(2, 3, 4);
     async.apply(fn)(1, 2, 3, 4);
+
+    var thisArg = {
+        fn: function() {
+            test.same(Array.prototype.slice.call(arguments), [1, 2, 3, 4]);
+            test.equal(this, thisArg);
+        }
+    };
+    async.apply(thisArg, 'fn', 1, 2, 3, 4)();
+    async.apply(thisArg, 'fn', 1, 2, 3)(4);
+    async.apply(thisArg, 'fn', 1, 2)(3, 4);
+    async.apply(thisArg, 'fn', 1)(2, 3, 4);
+    async.apply(thisArg, 'fn')(1, 2, 3, 4);
+
+    var objFn = {
+        apply: function() {
+            fn.apply.apply(fn, Array.prototype.slice.call(arguments));
+       }
+    };
+    async.apply(objFn, 1, 2, 3, 4)();
+    async.apply(objFn, 1, 2, 3)(4);
+    async.apply(objFn, 1, 2)(3, 4);
+    async.apply(objFn, 1)(2, 3, 4);
+    async.apply(objFn)(1, 2, 3, 4);
+
     test.equals(
         async.apply(function(name){return 'hello ' + name}, 'world')(),
         'hello world'
