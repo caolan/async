@@ -842,7 +842,7 @@ function(results){
             // once there is some data and the directory exists,
             // write the data to a file in the directory
         },
-        email_link: function(callback){
+        function(callback){
             // once the file is written let's email a link to it...
         }
     ]);
