@@ -652,7 +652,7 @@ exports['forEachLimit error'] = function(test){
     test.expect(2);
     var arr = [0,1,2,3,4,5,6,7,8,9];
     var call_order = [];
-    
+
     async.forEachLimit(arr, 3, function(x, callback){
         call_order.push(x);
         if (x === 2) {
@@ -729,6 +729,75 @@ exports['mapSeries error'] = function(test){
     });
     setTimeout(test.done, 50);
 };
+
+
+exports['mapLimit'] = function(test){
+    var call_order = [];
+    async.mapLimit([1,3,2], 2, mapIterator.bind(this, call_order), function(err, results){
+        test.same(call_order, [1,3,2]);
+        test.same(results, [2,6,4]);
+        test.done();
+    });
+};
+
+exports['mapLimit empty array'] = function(test){
+    test.expect(1);
+    async.mapLimit([], 2, function(x, callback){
+        test.ok(false, 'iterator should not be called');
+        callback();
+    }, function(err){
+        test.ok(true, 'should call callback');
+    });
+    setTimeout(test.done, 25);
+};
+
+exports['mapLimit limit exceeds size'] = function(test){
+    var call_order = [];
+    async.mapLimit([0,1,2,3,4,5,6,7,8,9], 20, mapIterator.bind(this, call_order), function(err, results){
+        test.same(call_order, [0,1,2,3,4,5,6,7,8,9]);
+        test.same(results, [0,2,4,6,8,10,12,14,16,18]);
+        test.done();
+    });
+};
+
+exports['mapLimit limit equal size'] = function(test){
+    var call_order = [];
+    async.mapLimit([0,1,2,3,4,5,6,7,8,9], 10, mapIterator.bind(this, call_order), function(err, results){
+        test.same(call_order, [0,1,2,3,4,5,6,7,8,9]);
+        test.same(results, [0,2,4,6,8,10,12,14,16,18]);
+        test.done();
+    });
+};
+
+exports['mapLimit zero limit'] = function(test){
+    test.expect(2);
+    async.mapLimit([0,1,2,3,4,5], 0, function(x, callback){
+        test.ok(false, 'iterator should not be called');
+        callback();
+    }, function(err, results){
+        test.same(results, []);
+        test.ok(true, 'should call callback');
+    });
+    setTimeout(test.done, 25);
+};
+
+exports['mapLimit error'] = function(test){
+    test.expect(2);
+    var arr = [0,1,2,3,4,5,6,7,8,9];
+    var call_order = [];
+
+    async.mapLimit(arr, 3, function(x, callback){
+        call_order.push(x);
+        if (x === 2) {
+            callback('error');
+        }
+    }, function(err){
+        test.same(call_order, [0,1,2]);
+        test.equals(err, 'error');
+    });
+    setTimeout(test.done, 25);
+};
+
 
 exports['reduce'] = function(test){
     var call_order = [];
