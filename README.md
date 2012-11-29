@@ -88,7 +88,9 @@ So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 * [series](#series)
 * [parallel](#parallel)
 * [whilst](#whilst)
+* [doWhilst](#doWhilst)
 * [until](#until)
+* [doUntil](#doUntil)
 * [waterfall](#waterfall)
 * [queue](#queue)
 * [auto](#auto)
@@ -664,6 +666,13 @@ async.whilst(
 
 ---------------------------------------
 
+<a name="doWhilst" />
+### doWhilst(fn, test, callback)
+
+The post check version of whilst. To reflect the difference in the order of operations `test` and `fn` arguments are switched. `doWhilst` is to `whilst` as `do while` is to `while` in plain JavaScript.
+
+---------------------------------------
+
 <a name="until" />
 ### until(test, fn, callback)
 
@@ -671,6 +680,13 @@ Repeatedly call fn, until test returns true. Calls the callback when stopped,
 or an error occurs.
 
 The inverse of async.whilst.
+
+---------------------------------------
+
+<a name="doUntil" />
+### doUntil(fn, test, callback)
+
+Like doWhilst except the test is inverted. Note the argument ordering differs from `until`.
 
 
 ---------------------------------------
