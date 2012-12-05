@@ -659,6 +659,24 @@ function(err, results) {
 
 ---------------------------------------
 
+<a name="parallel" />
+### parallelLimit(tasks, limit, [callback])
+
+The same as parallel only the tasks are executed in parallel with a maximum of "limit" 
+tasks executing at any time.
+
+__Arguments__
+
+* tasks - An array or object containing functions to run, each function is passed a
+  callback it must call on completion.
+* limit - The maximum number of tasks to run at any time.
+* callback(err, results) - An optional callback to run once all the functions
+  have completed. This function gets an array of all the arguments passed to
+  the callbacks used in the array.
+
+
+---------------------------------------
+
 <a name="whilst" />
 ### whilst(test, fn, callback)
 
