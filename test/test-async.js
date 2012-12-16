@@ -1419,6 +1419,34 @@ exports['queue bulk task'] = function (test) {
     }, 800);
 };
 
+exports['queue ratelimit'] = function(test) {
+    var q = async.queue(function(task, callback) {
+      // seems to need a small timeout for the ratelimiting to work correctly.
+      setTimeout(function() {
+        callback({data: task, timestamp:(new Date()).getTime()})
+      }, 20);
+    }, 1);
+    var last_time = 0
+      , delta = 500;  // every second
+    q.ratelimit(delta);
+    for(var idx=0; idx<5; idx++) {
+      q.push(idx, function(arg) {
+        if (last_time === 0) {
+          last_time = arg.timestamp
+        } else {
+          var time_taken = (arg.timestamp - last_time)
+          test.equal((time_taken - delta)<delta*10, true)
+          //console.log('#' + arg.data + ' ' + (arg.timestamp - last_time))
+          // run the rest here...
+          last_time = arg.timestamp
+          if (q.length() == 0) {
+            test.done()
+          }
+        }
+      })
+    }
+}
+
 exports['memoize'] = function (test) {
     test.expect(4);
     var call_order = [];
