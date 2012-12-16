@@ -737,6 +737,7 @@ methods:
 * concurrency - an integer for determining how many worker functions should be
   run in parallel. This property can be changed after a queue is created to
   alter the concurrency on-the-fly.
+* ratelimit(duration) - duration in ms between two tasks (1000 for every second).
 * push(task, [callback]) - add a new task to the queue, the callback is called
   once the worker has finished processing the task.
   instead of a single task, an array of tasks can be submitted. the respective callback is used for every task in the list.
@@ -774,6 +775,29 @@ q.push({name: 'bar'}, function (err) {
 q.push([{name: 'baz'},{name: 'bay'},{name: 'bax'}], function (err) {
     console.log('finished processing bar');
 });
+
+//
+// A ratelimited queue processing example
+//
+var async = require('../lib/async')
+  , q = async.queue(function(task, callback) {
+        console.log('worked on:' + task + ' at:' + (new Date()));
+        callback(task);
+    }, 1)
+q.ratelimit(1000)  // 1000 ms between tasks.
+
+q.drain = function() {
+  console.log("it's all gone now!");
+}
+// enqueue tasks...
+for(var i=0; i<10; i++) {
+  q.push(i, function(arg) {
+    console.log('task #' + arg + ' finito')
+  });
+}
+
+console.log("Our pile is " + q.length() + " tasks high!")
+
 ```
 
 ---------------------------------------
