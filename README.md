@@ -534,8 +534,9 @@ async.series([
         // do some stuff ...
         callback(null, 'one');
     },
-    function(callback){
+    function(callback, results){        
         // do some more stuff ...
+        // results is now equal to: ['one']
         callback(null, 'two');
     },
 ],
@@ -552,7 +553,8 @@ async.series({
             callback(null, 1);
         }, 200);
     },
-    two: function(callback){
+    two: function(callback, results){
+        // results is now equal to: {one: 1}
         setTimeout(function(){
             callback(null, 2);
         }, 100);
