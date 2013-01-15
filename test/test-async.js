@@ -1419,6 +1419,140 @@ exports['queue bulk task'] = function (test) {
     }, 800);
 };
 
+exports['cargo'] = function (test) {
+    var call_order = [],
+        delays = [160, 160, 80];
+
+    // worker: --12--34--5-
+    // order of completion: 1,2,3,4,5
+
+    var c = async.cargo(function (tasks, callback) {
+        setTimeout(function () {
+            call_order.push('process ' + tasks.join(' '));
+            callback('error', 'arg');
+        }, delays.shift());
+    }, 2);
+
+    c.push(1, function (err, arg) {
+        test.equal(err, 'error');
+        test.equal(arg, 'arg');
+        test.equal(c.length(), 3);
+        call_order.push('callback ' + 1);
+    });
+    c.push(2, function (err, arg) {
+        test.equal(err, 'error');
+        test.equal(arg, 'arg');
+        test.equal(c.length(), 3);
+        call_order.push('callback ' + 2);
+    });
+
+    test.equal(c.length(), 2);
+
+    // async push
+    setTimeout(function () {
+        c.push(3, function (err, arg) {
+            test.equal(err, 'error');
+            test.equal(arg, 'arg');
+            test.equal(c.length(), 1);
+            call_order.push('callback ' + 3);
+        });
+    }, 60);
+    setTimeout(function () {
+        c.push(4, function (err, arg) {
+            test.equal(err, 'error');
+            test.equal(arg, 'arg');
+            test.equal(c.length(), 1);
+            call_order.push('callback ' + 4);
+        });
+        test.equal(c.length(), 2);
+        c.push(5, function (err, arg) {
+            test.equal(err, 'error');
+            test.equal(arg, 'arg');
+            test.equal(c.length(), 0);
+            call_order.push('callback ' + 5);
+        });
+    }, 120);
+
+
+    setTimeout(function () {
+        test.same(call_order, [
+            'process 1 2', 'callback 1', 'callback 2',
+            'process 3 4', 'callback 3', 'callback 4',
+            'process 5'  , 'callback 5'
+        ]);
+        test.equal(c.length(), 0);
+        test.done();
+    }, 800);
+};
+
+exports['cargo without callback'] = function (test) {
+    var call_order = [],
+        delays = [160,80,240,80];
+
+    // worker: --1-2---34-5-
+    // order of completion: 1,2,3,4,5
+
+    var c = async.cargo(function (tasks, callback) {
+        setTimeout(function () {
+            call_order.push('process ' + tasks.join(' '));
+            callback('error', 'arg');
+        }, delays.shift());
+    }, 2);
+
+    c.push(1);
+
+    setTimeout(function () {
+        c.push(2);
+    }, 120);
+    setTimeout(function () {
+        c.push(3);
+        c.push(4);
+        c.push(5);
+    }, 180);
+
+    setTimeout(function () {
+        test.same(call_order, [
+            'process 1',
+            'process 2',
+            'process 3 4',
+            'process 5'
+        ]);
+        test.done();
+    }, 800);
+};
+
+exports['cargo bulk task'] = function (test) {
+    var call_order = [],
+        delays = [120,40];
+
+    // worker: -123-4-
+    // order of completion: 1,2,3,4
+
+    var c = async.cargo(function (tasks, callback) {
+        setTimeout(function () {
+            call_order.push('process ' + tasks.join(' '));
+            callback('error', tasks.join(' '));
+        }, delays.shift());
+    }, 3);
+
+    c.push( [1,2,3,4], function (err, arg) {
+        test.equal(err, 'error');
+        call_order.push('callback ' + arg);
+    });
+
+    test.equal(c.length(), 4);
+
+    setTimeout(function () {
+        test.same(call_order, [
+            'process 1 2 3', 'callback 1 2 3',
+            'callback 1 2 3', 'callback 1 2 3',
+            'process 4', 'callback 4',
+        ]);
+        test.equal(c.length(), 0);
+        test.done();
+    }, 800);
+};
+
 exports['memoize'] = function (test) {
     test.expect(4);
     var call_order = [];
