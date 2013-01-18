@@ -241,6 +241,39 @@ exports['waterfall'] = function(test){
     });
 };
 
+exports['waterfall with args'] = function(test){
+    test.expect(6);
+    async.waterfall([
+        function(call_order, arg1, callback){
+            call_order.push('fn1');
+            setTimeout(function(){callback(null, call_order, 'one', 'two');}, 0);
+        },
+        function(call_order, arg1, arg2, callback){
+            call_order.push('fn2');
+            test.equals(arg1, 'one');
+            test.equals(arg2, 'two');
+            setTimeout(function(){callback(null, call_order, arg1, arg2, 'three');}, 25);
+        },
+        function(call_order, arg1, arg2, arg3, callback){
+            call_order.push('fn3');
+            test.equals(arg1, 'one');
+            test.equals(arg2, 'two');
+            test.equals(arg3, 'three');
+            callback(null, call_order, 'four');
+        },
+        function(call_order, arg4, callback){
+            call_order.push('fn4');
+            test.same(call_order, ['fn0','fn1','fn2','fn3','fn4']);
+            callback(null, 'test');
+        }
+    ],
+    ['fn0'], 'testing',
+    function(err){
+        test.done();
+    });
+};
+
+
 exports['waterfall empty array'] = function(test){
     async.waterfall([], function(err){
         test.done();
