@@ -1096,6 +1096,9 @@ Caches the results of an async function. When creating a hash to store function
 results against, the callback is omitted from the hash and an optional hash
 function can be used.
 
+The cache of results is exposed as the `memo` property of the function returned
+by `memoize`.
+
 __Arguments__
 
 * fn - the function you to proxy and cache results from.
