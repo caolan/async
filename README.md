@@ -569,7 +569,7 @@ async.series([
     function(callback){
         // do some more stuff ...
         callback(null, 'two');
-    },
+    }
 ],
 // optional callback
 function(err, results){
@@ -588,7 +588,7 @@ async.series({
         setTimeout(function(){
             callback(null, 2);
         }, 100);
-    },
+    }
 },
 function(err, results) {
     // results is now equal to: {one: 1, two: 2}
@@ -633,7 +633,7 @@ async.parallel([
         setTimeout(function(){
             callback(null, 'two');
         }, 100);
-    },
+    }
 ],
 // optional callback
 function(err, results){
@@ -653,7 +653,7 @@ async.parallel({
         setTimeout(function(){
             callback(null, 2);
         }, 100);
-    },
+    }
 },
 function(err, results) {
     // results is now equals to: {one: 1, two: 2}
@@ -957,7 +957,7 @@ async.parallel([
         // this is run at the same time as getting the data
     }
 ],
-function(results){
+function(err, results){
     async.series([
         function(callback){
             // once there is some data and the directory exists,
@@ -1046,7 +1046,7 @@ async.parallel([
     },
     function(callback){
         fs.writeFile('testfile2', 'test2', callback);
-    },
+    }
 ]);
 ```
 
