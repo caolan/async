@@ -1067,8 +1067,9 @@ three
 ### nextTick(callback)
 
 Calls the callback on a later loop around the event loop. In node.js this just
-calls process.nextTick, in the browser it falls back to setTimeout(callback, 0),
-which means other higher priority events may precede the execution of the callback.
+calls process.nextTick, in the browser it falls back to setImmediate(callback)
+if available, otherwise setTimeout(callback, 0), which means other higher priority
+events may precede the execution of the callback.
 
 This is used internally for browser-compatibility purposes.
 
