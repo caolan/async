@@ -227,6 +227,35 @@ processing. The results array will be in the same order as the original.
 
 ---------------------------------------
 
+<a name="mapLimit" />
+### mapLimit(arr, limit, iterator, callback)
+
+The same as map only the iterator is applied to batches of items in the
+array, in series. The next batch of iterators is only called once the current
+one has completed processing.
+
+__Arguments__
+
+* arr - An array to iterate over.
+* limit - How many items should be in each batch.
+* iterator(item, callback) - A function to apply to each item in the array.
+  The iterator is passed a callback which must be called once it has completed.
+  If no error has occured, the callback should be run without arguments or 
+  with an explicit null argument.
+* callback(err, results) - A callback which is called after all the iterator
+  functions have finished, or an error has occurred. Results is an array of the
+  transformed items from the original array.
+
+__Example__
+
+```js
+async.map(['file1','file2','file3'], 1, fs.stat, function(err, results){
+    // results is now an array of stats for each file
+});
+```
+
+---------------------------------------
+
 <a name="filter" />
 ### filter(arr, iterator, callback)
 
@@ -628,6 +657,24 @@ function(err, results) {
     // results is now equals to: {one: 1, two: 2}
 });
 ```
+
+---------------------------------------
+
+<a name="parallel" />
+### parallelLimit(tasks, limit, [callback])
+
+The same as parallel only the tasks are executed in parallel with a maximum of "limit" 
+tasks executing at any time.
+
+__Arguments__
+
+* tasks - An array or object containing functions to run, each function is passed a
+  callback it must call on completion.
+* limit - The maximum number of tasks to run at any time.
+* callback(err, results) - An optional callback to run once all the functions
+  have completed. This function gets an array of all the arguments passed to
+  the callbacks used in the array.
+
 
 ---------------------------------------
 

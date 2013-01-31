@@ -393,6 +393,82 @@ exports['parallel object'] = function(test){
     });
 };
 
+exports['parallel limit'] = function(test){
+    var call_order = [];
+    async.parallelLimit([
+        function(callback){
+            setTimeout(function(){
+                call_order.push(1);
+                callback(null, 1);
+            }, 50);
+        },
+        function(callback){
+            setTimeout(function(){
+                call_order.push(2);
+                callback(null, 2);
+            }, 100);
+        },
+        function(callback){
+            setTimeout(function(){
+                call_order.push(3);
+                callback(null, 3,3);
+            }, 25);
+        }
+    ],
+    2,
+    function(err, results){
+        test.equals(err, null);
+        test.same(call_order, [1,3,2]);
+        test.same(results, [1,2,[3,3]]);
+        test.done();
+    });
+};
+
+exports['parallel limit empty array'] = function(test){
+    async.parallelLimit([], 2, function(err, results){
+        test.equals(err, null);
+        test.same(results, []);
+        test.done();
+    });
+};
+
+exports['parallel limit error'] = function(test){
+    async.parallelLimit([
+        function(callback){
+            callback('error', 1);
+        },
+        function(callback){
+            callback('error2', 2);
+        }
+    ],
+    1,
+    function(err, results){
+        test.equals(err, 'error');
+    });
+    setTimeout(test.done, 100);
+};
+
+exports['parallel limit no callback'] = function(test){
+    async.parallelLimit([
+        function(callback){callback();},
+        function(callback){callback(); test.done();},
+    ], 1);
+};
+
+exports['parallel limit object'] = function(test){
+    var call_order = [];
+    async.parallelLimit(getFunctionsObject(call_order), 2, function(err, results){
+        test.equals(err, null);
+        test.same(call_order, [1,3,2]);
+        test.same(results, {
+            one: 1,
+            two: 2,
+            three: [3,3]
+        });
+        test.done();
+    });
+};
+
 exports['series'] = function(test){
     var call_order = [];
     async.series([
@@ -652,7 +728,7 @@ exports['forEachLimit error'] = function(test){
     test.expect(2);
     var arr = [0,1,2,3,4,5,6,7,8,9];
     var call_order = [];
-    
+
     async.forEachLimit(arr, 3, function(x, callback){
         call_order.push(x);
         if (x === 2) {
@@ -729,6 +805,75 @@ exports['mapSeries error'] = function(test){
     });
     setTimeout(test.done, 50);
 };
+
+
+exports['mapLimit'] = function(test){
+    var call_order = [];
+    async.mapLimit([2,4,3], 2, mapIterator.bind(this, call_order), function(err, results){
+        test.same(call_order, [2,4,3]);
+        test.same(results, [4,8,6]);
+        test.done();
+    });
+};
+
+exports['mapLimit empty array'] = function(test){
+    test.expect(1);
+    async.mapLimit([], 2, function(x, callback){
+        test.ok(false, 'iterator should not be called');
+        callback();
+    }, function(err){
+        test.ok(true, 'should call callback');
+    });
+    setTimeout(test.done, 25);
+};
+
+exports['mapLimit limit exceeds size'] = function(test){
+    var call_order = [];
+    async.mapLimit([0,1,2,3,4,5,6,7,8,9], 20, mapIterator.bind(this, call_order), function(err, results){
+        test.same(call_order, [0,1,2,3,4,5,6,7,8,9]);
+        test.same(results, [0,2,4,6,8,10,12,14,16,18]);
+        test.done();
+    });
+};
+
+exports['mapLimit limit equal size'] = function(test){
+    var call_order = [];
+    async.mapLimit([0,1,2,3,4,5,6,7,8,9], 10, mapIterator.bind(this, call_order), function(err, results){
+        test.same(call_order, [0,1,2,3,4,5,6,7,8,9]);
+        test.same(results, [0,2,4,6,8,10,12,14,16,18]);
+        test.done();
+    });
+};
+
+exports['mapLimit zero limit'] = function(test){
+    test.expect(2);
+    async.mapLimit([0,1,2,3,4,5], 0, function(x, callback){
+        test.ok(false, 'iterator should not be called');
+        callback();
+    }, function(err, results){
+        test.same(results, []);
+        test.ok(true, 'should call callback');
+    });
+    setTimeout(test.done, 25);
+};
+
+exports['mapLimit error'] = function(test){
+    test.expect(2);
+    var arr = [0,1,2,3,4,5,6,7,8,9];
+    var call_order = [];
+
+    async.mapLimit(arr, 3, function(x, callback){
+        call_order.push(x);
+        if (x === 2) {
+            callback('error');
+        }
+    }, function(err){
+        test.same(call_order, [0,1,2]);
+        test.equals(err, 'error');
+    });
+    setTimeout(test.done, 25);
+};
+
 
 exports['reduce'] = function(test){
     var call_order = [];
