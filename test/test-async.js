@@ -1358,6 +1358,34 @@ exports['until'] = function (test) {
     );
 };
 
+exports['doUntil'] = function (test) {
+    var call_order = [];
+    var count = 0;
+    async.doUntil(
+        function (cb) {
+            debugger
+            call_order.push(['iterator', count]);
+            count++;
+            cb();
+        },
+        function () {
+            call_order.push(['test', count]);
+            return (count == 5);
+        },
+        function (err) {
+            test.same(call_order, [
+                ['iterator', 0], ['test', 1],
+                ['iterator', 1], ['test', 2],
+                ['iterator', 2], ['test', 3],
+                ['iterator', 3], ['test', 4],
+                ['iterator', 4], ['test', 5]
+            ]);
+            test.equals(count, 5);
+            test.done();
+        }
+    );
+};
+
 exports['whilst'] = function (test) {
     var call_order = [];
 
@@ -1380,6 +1408,35 @@ exports['whilst'] = function (test) {
                 ['iterator', 2], ['test', 3],
                 ['iterator', 3], ['test', 4],
                 ['iterator', 4], ['test', 5],
+            ]);
+            test.equals(count, 5);
+            test.done();
+        }
+    );
+};
+
+exports['doWhilst'] = function (test) {
+    var call_order = [];
+
+    var count = 0;
+    async.doWhilst(
+        function (cb) {
+            call_order.push(['iterator', count]);
+            count++;
+            cb();
+        },
+        function () {
+            call_order.push(['test', count]);
+            return (count < 5);
+        },
+        function (err) {
+            debugger
+            test.same(call_order, [
+                ['iterator', 0], ['test', 1],
+                ['iterator', 1], ['test', 2],
+                ['iterator', 2], ['test', 3],
+                ['iterator', 3], ['test', 4],
+                ['iterator', 4], ['test', 5]
             ]);
             test.equals(count, 5);
             test.done();
