@@ -310,7 +310,7 @@ The opposite of filter. Removes values that pass an async truth test.
 <a name="rejectSeries" />
 ### rejectSeries(arr, iterator, callback)
 
-The same as filter, only the iterator is applied to each item in the array
+The same as reject, only the iterator is applied to each item in the array
 in series.
 
 
