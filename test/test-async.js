@@ -2028,23 +2028,27 @@ exports['queue events'] = function(test) {
 };
 
 exports['avoid stack overflows for sync tasks'] = function (test) {
+    if (typeof window !== 'undefined') {
+        // skip this test in the browser, it takes AGES
+        return test.done();
+    }
     var arr = [];
     var funcarr = [];
-    for (var i = 0; i < 100000; i++) {
+    for (var i = 0; i < 10000; i++) {
         arr.push[i];
         funcarr.push(function (cb) { return cb(); });
     }
     var iter = function (i, cb) { cb(); };
     var counter = 0;
     var pred1 = function () {
-        return counter <= 100000;
+        return counter <= 10000;
     };
     var iter = function (cb) {
         counter++;
         cb();
     };
     var pred2 = function () {
-        return counter > 100000;
+        return counter > 10000;
     };
     var resetCounter = function (cb) {
         counter = 0;
