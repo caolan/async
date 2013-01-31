@@ -38,6 +38,8 @@ There are many more functions available so take a look at the docs below for a
 full list. This module aims to be comprehensive, so if you feel anything is
 missing please create a GitHub issue for it.
 
+## Try it live
+<a href="https://runnable.com/#caolan/async/server.js/launch" target="_blank"><img src="https://runnable.com/external/styles/assets/runnablebtn.png" style="width:67px;height:25px;"></a>
 
 ## Download
 
