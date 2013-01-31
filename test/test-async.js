@@ -49,19 +49,19 @@ function getFunctionsObject(call_order) {
             setTimeout(function(){
                 call_order.push(1);
                 callback(null, 1);
-            }, 25);
+            }, 100);
         },
         two: function(callback){
             setTimeout(function(){
                 call_order.push(2);
                 callback(null, 2);
-            }, 50);
+            }, 150);
         },
         three: function(callback){
             setTimeout(function(){
                 call_order.push(3);
                 callback(null, 3,3);
-            }, 15);
+            }, 50);
         }
     };
 }
