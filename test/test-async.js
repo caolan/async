@@ -49,13 +49,13 @@ function getFunctionsObject(call_order) {
             setTimeout(function(){
                 call_order.push(1);
                 callback(null, 1);
-            }, 100);
+            }, 125);
         },
         two: function(callback){
             setTimeout(function(){
                 call_order.push(2);
                 callback(null, 2);
-            }, 150);
+            }, 200);
         },
         three: function(callback){
             setTimeout(function(){
