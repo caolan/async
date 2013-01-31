@@ -609,6 +609,18 @@ exports['forEach'] = function(test){
     });
 };
 
+exports['forEach extra callback'] = function(test){
+    var count = 0;
+    async.forEach([1,3,2], function(val, callback) {
+        count++;
+        callback();
+        test.throws(callback);
+        if (count == 3) {
+            test.done();
+        }
+    });
+};
+
 exports['forEach empty array'] = function(test){
     test.expect(1);
     async.forEach([], function(x, callback){
@@ -1486,7 +1498,7 @@ exports['queue'] = function (test) {
     test.equal(q.length(), 4);
     test.equal(q.concurrency, 2);
 
-    setTimeout(function () {
+    q.drain = function () {
         test.same(call_order, [
             'process 2', 'callback 2',
             'process 1', 'callback 1',
@@ -1496,7 +1508,7 @@ exports['queue'] = function (test) {
         test.equal(q.concurrency, 2);
         test.equal(q.length(), 0);
         test.done();
-    }, 800);
+    };
 };
 
 exports['queue changing concurrency'] = function (test) {
@@ -1583,6 +1595,18 @@ exports['queue push without callback'] = function (test) {
         ]);
         test.done();
     }, 800);
+};
+
+exports['queue too many callbacks'] = function (test) {
+    var q = async.queue(function (task, callback) {
+        callback();
+        test.throws(function() {
+            callback();
+        });
+        test.done();
+    }, 2);
+
+    q.push(1);
 };
 
 exports['queue bulk task'] = function (test) {
