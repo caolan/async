@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/caolan/async.png)](http://travis-ci.org/caolan/async)
 # Async.js
 
 Async is a utility module which provides straight-forward, powerful functions
