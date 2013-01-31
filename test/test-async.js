@@ -2006,17 +2006,17 @@ exports['queue events'] = function(test) {
         test.same(calls, [
             'saturated',
             'process foo',
-            'foo cb',
             'process bar',
-            'bar cb',
             'process zoo',
-            'zoo cb',
+            'foo cb',
             'process poo',
-            'poo cb',
+            'bar cb',
             'empty',
             'process moo',
+            'zoo cb',
+            'poo cb',
             'moo cb',
-            'drain',
+            'drain'
         ]);
         test.done();
     };
@@ -2066,7 +2066,16 @@ exports['avoid stack overflows for sync tasks'] = function (test) {
         resetCounter,
         async.apply(async.doUntil, iter, pred2),
         async.apply(async.series, funcarr),
-        async.apply(async.parallel, funcarr)
+        async.apply(async.parallel, funcarr),
+        function (callback) {
+            var q = async.queue(function (task, cb) {
+                cb();
+            }, 2);
+            for (var j = 0; j < 10000; j++) {
+                q.push(j);
+            }
+            q.drain = callback;
+        }
     ],
     function (err) {
         test.done(err);
