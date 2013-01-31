@@ -2026,3 +2026,45 @@ exports['queue events'] = function(test) {
     q.push('poo', function () {calls.push('poo cb');});
     q.push('moo', function () {calls.push('moo cb');});
 };
+
+exports['avoid stack overflows for sync tasks'] = function (test) {
+    var arr = [];
+    var funcarr = [];
+    for (var i = 0; i < 100000; i++) {
+        arr.push[i];
+        funcarr.push(function (cb) { return cb(); });
+    }
+    var iter = function (i, cb) { cb(); };
+    var counter = 0;
+    var pred1 = function () {
+        return counter <= 100000;
+    };
+    var iter = function (cb) {
+        counter++;
+        cb();
+    };
+    var pred2 = function () {
+        return counter > 100000;
+    };
+    var resetCounter = function (cb) {
+        counter = 0;
+        cb();
+    }
+    async.series([
+        async.apply(async.forEach, arr, iter),
+        async.apply(async.forEachSeries, arr, iter),
+        async.apply(async.forEachLimit, arr, iter, 2),
+        async.apply(async.whilst, pred1, iter),
+        resetCounter,
+        async.apply(async.until, pred2, iter),
+        resetCounter,
+        async.apply(async.doWhilst, iter, pred1),
+        resetCounter,
+        async.apply(async.doUntil, iter, pred2),
+        async.apply(async.series, funcarr),
+        async.apply(async.parallel, funcarr)
+    ],
+    function (err) {
+        test.done(err);
+    });
+};
