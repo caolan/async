@@ -91,6 +91,7 @@ So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 * [until](#until)
 * [waterfall](#waterfall)
 * [queue](#queue)
+* [cargo](#cargo)
 * [auto](#auto)
 * [iterator](#iterator)
 * [apply](#apply)
@@ -773,6 +774,63 @@ q.push({name: 'bar'}, function (err) {
 
 q.push([{name: 'baz'},{name: 'bay'},{name: 'bax'}], function (err) {
     console.log('finished processing bar');
+});
+```
+
+---------------------------------------
+
+<a name="cargo" />
+### cargo(worker, [payload])
+
+Creates a cargo object with the specified payload. Tasks added to the
+cargo will be processed altogether (up to the payload limit). If the
+worker is in progress, the task is queued until it is available. Once
+the worker has completed some tasks, each callback of those tasks is called.
+
+__Arguments__
+
+* worker(tasks, callback) - An asynchronous function for processing queued
+  tasks.
+* payload - An optional integer for determining how many tasks should be
+  process per round, default is unlimited.
+
+__Cargo objects__
+
+The cargo object returned by this function has the following properties and
+methods:
+
+* length() - a function returning the number of items waiting to be processed.
+* payload - an integer for determining how many tasks should be
+  process per round. This property can be changed after a cargo is created to
+  alter the payload on-the-fly.
+* push(task, [callback]) - add a new task to the queue, the callback is called
+  once the worker has finished processing the task.
+  instead of a single task, an array of tasks can be submitted. the respective callback is used for every task in the list.
+* saturated - a callback that is called when the queue length hits the concurrency and further tasks will be queued
+* empty - a callback that is called when the last item from the queue is given to a worker
+* drain - a callback that is called when the last item from the queue has returned from the worker
+
+__Example__
+
+```js
+// create a cargo object with payload 2
+
+var cargo = async.cargo(function (task, callback) {
+    console.log('hello ' + task.name);
+    callback();
+}, 2);
+
+
+// add some items
+
+cargo.push({name: 'foo'}, function (err) {
+    console.log('finished processing foo');
+});
+cargo.push({name: 'bar'}, function (err) {
+    console.log('finished processing bar');
+});
+cargo.push({name: 'baz'}, function (err) {
+    console.log('finished processing baz');
 });
 ```
 
