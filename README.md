@@ -756,17 +756,20 @@ __Arguments__
 
 __Example__
 
-    var coordinated = async.coordinator( ['event1','event2'], function() {
-        console.log('event1 and event2 have been triggered!');
+    var dependency1 = new Dependency1();
+    var dependency2 = new Dependency2();
+    
+    var coordinated = async.coordinator( ['dep1', 'dep2'], function() {
+        console.log('all dependencies are initialized.');
     });
-
-    setTimeout(function() {
-        coordinated('event1');
-    },100);
-
-    setTimeout(function() {
-        coordinated('event2');
-    },300);
+    
+    dependency1.on('initialize', function() {
+        coordinated('dep1');
+    });
+    
+    dependency2.on('initialize', function() {
+        coordinated('dep2');
+    });
 
 
 ---------------------------------------
