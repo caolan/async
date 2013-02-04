@@ -324,6 +324,31 @@ exports['waterfall multiple callback calls'] = function(test){
     async.waterfall(arr);
 };
 
+exports['waterfall final'] = function(test){
+    var call_order = [];
+    var arr = [
+        function(callback){
+            call_order.push(1);
+            callback();
+        },
+        function(callback){
+            call_order.push(2);
+            callback.final(null, 'a result');
+        },
+        function(callback){
+            test.ok(false, 'next callback should not be reached');
+            call_order.push(3);
+            callback();
+        }
+    ];
+    async.waterfall(arr, function(err, result){
+        call_order.push(4);
+        test.same(call_order, [1, 2, 4], 'call order');
+        test.equal(err, null, 'no error should be passed');
+        test.equal(result, 'a result');
+        test.done();
+    });
+};
 
 exports['parallel'] = function(test){
     var call_order = [];
