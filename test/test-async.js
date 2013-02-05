@@ -1673,6 +1673,25 @@ exports['queue push without callback'] = function (test) {
     }, 800);
 };
 
+exports['queue unshift'] = function (test) {
+    var queue_order = [];
+
+    var q = async.queue(function (task, callback) {
+      queue_order.push(task);
+      callback();
+    }, 1);
+
+    q.unshift(4);
+    q.unshift(3);
+    q.unshift(2);
+    q.unshift(1);
+
+    setTimeout(function () {
+        test.same(queue_order, [ 1, 2, 3, 4 ]);
+        test.done();
+    }, 100);
+};
+
 exports['queue too many callbacks'] = function (test) {
     var q = async.queue(function (task, callback) {
         callback();
