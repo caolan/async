@@ -1587,6 +1587,37 @@ exports['queue'] = function (test) {
     };
 };
 
+exports['queue error propagation'] = function(test){
+    var results = [];
+
+    var q = async.queue(function (task, callback) {
+        callback(task.name === 'foo' ? new Error('fooError') : null);
+    }, 2);
+
+    q.drain = function() {
+        test.deepEqual(results, ['bar', 'fooError']);
+        test.done();
+    };
+
+    q.push({name: 'bar'}, function (err) {
+        if(err) {
+            results.push('barError');
+            return;
+        }
+
+        results.push('bar');
+    });
+
+    q.push({name: 'foo'}, function (err) {
+        if(err) {
+            results.push('fooError');
+            return;
+        }
+
+        results.push('foo');
+    });
+};
+
 exports['queue changing concurrency'] = function (test) {
     var call_order = [],
         delays = [40,20,60,20];
