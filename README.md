@@ -159,14 +159,17 @@ processing. This means the iterator functions will complete in order.
 <a name="forEachLimit" />
 ### forEachLimit(arr, limit, iterator, callback)
 
-The same as forEach only the iterator is applied to batches of items in the
-array, in series. The next batch of iterators is only called once the current
-one has completed processing.
+The same as forEach only no more than "limit" iterators will be simultaneously 
+running at any time.
+
+Note that the items are not processed in batches, so there is no guarantee that
+ the first "limit" iterator functions will complete before any others are 
+started.
 
 __Arguments__
 
 * arr - An array to iterate over.
-* limit - How many items should be in each batch.
+* limit - The maximum number of iterators to run at any time.
 * iterator(item, callback) - A function to apply to each item in the array.
   The iterator is passed a callback which must be called once it has completed.
   If no error has occured, the callback should be run without arguments or 
@@ -234,14 +237,17 @@ processing. The results array will be in the same order as the original.
 <a name="mapLimit" />
 ### mapLimit(arr, limit, iterator, callback)
 
-The same as map only the iterator is applied to batches of items in the
-array, in series. The next batch of iterators is only called once the current
-one has completed processing.
+The same as map only no more than "limit" iterators will be simultaneously 
+running at any time.
+
+Note that the items are not processed in batches, so there is no guarantee that
+ the first "limit" iterator functions will complete before any others are 
+started.
 
 __Arguments__
 
 * arr - An array to iterate over.
-* limit - How many items should be in each batch.
+* limit - The maximum number of iterators to run at any time.
 * iterator(item, callback) - A function to apply to each item in the array.
   The iterator is passed a callback which must be called once it has completed.
   If no error has occured, the callback should be run without arguments or 
@@ -669,6 +675,9 @@ function(err, results) {
 
 The same as parallel only the tasks are executed in parallel with a maximum of "limit" 
 tasks executing at any time.
+
+Note that the tasks are not executed in batches, so there is no guarantee that 
+the first "limit" tasks will complete before any others are started.
 
 __Arguments__
 
