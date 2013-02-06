@@ -79,6 +79,7 @@ So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 * [reduce](#reduce)
 * [detect](#detect)
 * [sortBy](#sortBy)
+* [groupBy](#groupBy)
 * [some](#some)
 * [every](#every)
 * [concat](#concat)
@@ -441,6 +442,38 @@ async.sortBy(['file1','file2','file3'], function(file, callback){
 }, function(err, results){
     // results is now the original array of files sorted by
     // modified date
+});
+```
+
+---------------------------------------
+
+<a name="groupBy" />
+### groupBy(arr, iterator, callback)
+
+Groups a list by the results of running each value through an async iterator.
+
+__Arguments__
+
+* arr - An array to iterate over.
+* iterator(item, callback) - A function to apply to each item in the array.
+  The iterator is passed a callback which must be called once it has completed
+  with an error (which can be null) and a value to use as the group criteria.
+* callback(err, results) - A callback which is called after all the iterator
+  functions have finished, or an error has occurred. Results is an object whose
+  keys are the unique values given by the iterator and whose corresponding 
+  values are arrays containing the elements of the original list which the 
+  iterator mapped to that value, in no particular order.
+
+__Example__
+
+```js
+async.groupBy(['file1','file2','file3'], function(file, callback){
+    fs.stat(file, function(err, stats){
+        callback(err, stats.uid);
+    });
+}, function(err, results){
+    // results is now an object mapping user ids to an array of the names of
+    // files that user owns, e.g. {1000: ['file2'], 1001: ['file1', 'file3']}
 });
 ```
 

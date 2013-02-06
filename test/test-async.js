@@ -1148,6 +1148,32 @@ exports['sortBy'] = function(test){
     });
 };
 
+exports['groupBy'] = function(test){
+    var alice = {name: 'Alice', age: 20};
+    var bob = {name: 'Bob', age: 21};
+    var carol = {name: 'Carol', age: 20};
+    var dave = {name: 'Dave', age: 22};
+    var eve = {name: 'Eve', age: 21};
+    var people = [alice, bob, carol, dave, eve];
+    function getAge(person, callback){
+        callback(null, person.age);
+    }
+    function peopleSort(firstPerson, secondPerson){
+        if(firstPerson.name < secondPerson.name) return -1;
+        else if(firstPerson.name > secondPerson.name) return 1;
+        else return 0;
+    }
+    function samePeople(firstArray, secondArray){
+        test.same(firstArray.sort(peopleSort), secondArray.sort(peopleSort));
+    }
+    async.groupBy(people, getAge, function(err, result){
+        samePeople(result[20], [alice, carol]);
+        samePeople(result[21], [bob, eve]);
+        samePeople(result[22], [dave]);
+        test.done();
+    });
+};
+
 exports['apply'] = function(test){
     test.expect(6);
     var fn = function(){
