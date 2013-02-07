@@ -92,6 +92,7 @@ So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 * [until](#until)
 * [doUntil](#doUntil)
 * [waterfall](#waterfall)
+* [compose](#compose)
 * [queue](#queue)
 * [cargo](#cargo)
 * [auto](#auto)
@@ -783,6 +784,44 @@ async.waterfall([
     }
 ], function (err, result) {
    // result now equals 'done'    
+});
+```
+
+---------------------------------------
+<a name="compose" />
+### compose(fn1, fn2...)
+
+Creates a function which is a composition of the passed asynchronous
+functions. Each function consumes the return value of the function that
+follows. Composing functions f(), g() and h() would produce the result of
+f(g(h())), only this version uses callbacks to obtain the return values.
+
+Each function is executed with the `this` binding of the composed function.
+
+__Arguments__
+
+* functions... - the asynchronous functions to compose
+
+
+__Example__
+
+```js
+function add1(n, callback) {
+    setTimeout(function () [
+        callback(null, n + 1);
+    }, 10);
+}
+
+function mul3(n, callback) {
+    setTimeout(function () [
+        callback(null, n * 3);
+    }, 10);
+}
+
+var add1mul3 = async.compose(mul3, add1);
+
+add1mul3(4, function (err, result) {
+   // result now equals 15
 });
 ```
 

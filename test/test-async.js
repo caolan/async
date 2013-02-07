@@ -66,6 +66,93 @@ function getFunctionsObject(call_order) {
     };
 }
 
+exports['compose'] = function (test) {
+    test.expect(4);
+    var add2 = function (n, cb) {
+        test.equal(n, 3);
+        setTimeout(function () {
+            cb(null, n + 2);
+        }, 50);
+    };
+    var mul3 = function (n, cb) {
+        test.equal(n, 5);
+        setTimeout(function () {
+            cb(null, n * 3);
+        }, 15);
+    };
+    var add1 = function (n, cb) {
+        test.equal(n, 15);
+        setTimeout(function () {
+            cb(null, n + 1);
+        }, 100);
+    };
+    var add2mul3add1 = async.compose(add1, mul3, add2);
+    add2mul3add1(3, function (err, result) {
+        if (err) {
+            return test.done(err);
+        }
+        test.equal(result, 16);
+        test.done();
+    });
+};
+
+exports['compose error'] = function (test) {
+    test.expect(3);
+    var testerr = new Error('test');
+
+    var add2 = function (n, cb) {
+        test.equal(n, 3);
+        setTimeout(function () {
+            cb(null, n + 2);
+        }, 50);
+    };
+    var mul3 = function (n, cb) {
+        test.equal(n, 5);
+        setTimeout(function () {
+            cb(testerr);
+        }, 15);
+    };
+    var add1 = function (n, cb) {
+        test.ok(false, 'add1 should not get called');
+        setTimeout(function () {
+            cb(null, n + 1);
+        }, 100);
+    };
+    var add2mul3add1 = async.compose(add1, mul3, add2);
+    add2mul3add1(3, function (err, result) {
+        test.equal(err, testerr);
+        test.done();
+    });
+};
+
+exports['compose binding'] = function (test) {
+    test.expect(4);
+    var testerr = new Error('test');
+    var testcontext = {name: 'foo'};
+
+    var add2 = function (n, cb) {
+        test.equal(this, testcontext);
+        setTimeout(function () {
+            cb(null, n + 2);
+        }, 50);
+    };
+    var mul3 = function (n, cb) {
+        test.equal(this, testcontext);
+        setTimeout(function () {
+            cb(null, n * 3);
+        }, 15);
+    };
+    var add2mul3 = async.compose(mul3, add2);
+    add2mul3.call(testcontext, 3, function (err, result) {
+        if (err) {
+            return test.done(err);
+        }
+        test.equal(this, testcontext);
+        test.equal(result, 15);
+        test.done();
+    });
+};
+
 exports['auto'] = function(test){
     var callOrder = [];
     var testdata = [{test: 'test'}];
