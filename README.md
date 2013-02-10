@@ -6,7 +6,7 @@ use with [node.js](http://nodejs.org), it can also be used directly in the
 browser.
 
 Async provides around 20 functions that include the usual 'functional'
-suspects (map, reduce, filter, forEach…) as well as some common patterns
+suspects (map, reduce, filter, each…) as well as some common patterns
 for asynchronous control flow (parallel, series, waterfall…). All these
 functions assume you follow the node.js convention of providing a single
 callback as the last argument of your async function.
@@ -72,7 +72,7 @@ So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 
 ### Collections
 
-* [forEach](#forEach)
+* [each](#each)
 * [map](#map)
 * [filter](#filter)
 * [reject](#reject)
@@ -114,12 +114,13 @@ So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 ## Collections
 
 <a name="forEach" />
-### forEach(arr, iterator, callback)
+<a name="each" />
+### each(arr, iterator, callback)
 
 Applies an iterator function to each item in an array, in parallel.
 The iterator is called with an item from the list and a callback for when it
 has finished. If the iterator passes an error to this callback, the main
-callback for the forEach function is immediately called with the error.
+callback for the each function is immediately called with the error.
 
 Note, that since this function applies the iterator to each item in parallel
 there is no guarantee that the iterator functions will complete in order.
@@ -140,7 +141,7 @@ __Example__
 // assuming openFiles is an array of file names and saveFile is a function
 // to save the modified contents of that file:
 
-async.forEach(openFiles, saveFile, function(err){
+async.each(openFiles, saveFile, function(err){
     // if any of the saves produced an error, err would equal that error
 });
 ```
@@ -148,9 +149,10 @@ async.forEach(openFiles, saveFile, function(err){
 ---------------------------------------
 
 <a name="forEachSeries" />
-### forEachSeries(arr, iterator, callback)
+<a name="eachSeries" />
+### eachSeries(arr, iterator, callback)
 
-The same as forEach only the iterator is applied to each item in the array in
+The same as each only the iterator is applied to each item in the array in
 series. The next iterator is only called once the current one has completed
 processing. This means the iterator functions will complete in order.
 
@@ -158,9 +160,10 @@ processing. This means the iterator functions will complete in order.
 ---------------------------------------
 
 <a name="forEachLimit" />
-### forEachLimit(arr, limit, iterator, callback)
+<a name="eachLimit" />
+### eachLimit(arr, limit, iterator, callback)
 
-The same as forEach only no more than "limit" iterators will be simultaneously 
+The same as each only no more than "limit" iterators will be simultaneously 
 running at any time.
 
 Note that the items are not processed in batches, so there is no guarantee that
@@ -184,7 +187,7 @@ __Example__
 // Assume documents is an array of JSON objects and requestApi is a
 // function that interacts with a rate-limited REST api.
 
-async.forEachLimit(documents, 20, requestApi, function(err){
+async.eachLimit(documents, 20, requestApi, function(err){
     // if any of the saves produced an error, err would equal that error
 });
 ```
