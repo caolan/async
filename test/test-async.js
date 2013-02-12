@@ -293,6 +293,25 @@ exports['auto no callback'] = function(test){
     });
 };
 
+exports['auto error should pass partial results'] = function(test) {
+    async.auto({
+        task1: function(callback){
+            callback(false, 'result1');
+        },
+        task2: ['task1', function(callback){
+            callback('testerror');
+        }],
+        task3: ['task2', function(callback){
+            test.ok(false, 'task3 should not be called');
+        }]
+    },
+    function(err, results){
+        test.equals(err, 'testerror');
+        test.equals(results.task1, 'result1');
+    });
+    setTimeout(test.done, 100);
+};
+
 // Issue 24 on github: https://github.com/caolan/async/issues#issue/24
 // Issue 76 on github: https://github.com/caolan/async/issues#issue/76
 exports['auto removeListener has side effect on loop iterator'] = function(test) {
