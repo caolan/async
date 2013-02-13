@@ -299,7 +299,7 @@ exports['auto error should pass partial results'] = function(test) {
             callback(false, 'result1');
         },
         task2: ['task1', function(callback){
-            callback('testerror');
+            callback('testerror', 'result2');
         }],
         task3: ['task2', function(callback){
             test.ok(false, 'task3 should not be called');
@@ -308,6 +308,7 @@ exports['auto error should pass partial results'] = function(test) {
     function(err, results){
         test.equals(err, 'testerror');
         test.equals(results.task1, 'result1');
+        test.equals(results.task2, 'result2');
     });
     setTimeout(test.done, 100);
 };
