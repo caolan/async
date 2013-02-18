@@ -29,5 +29,8 @@
             "README.md",
             "LICENSE"
         ]
+    },
+    "scripts": {
+        "test": "nodeunit test/test-async.js"
     }
 }
