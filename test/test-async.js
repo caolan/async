@@ -309,8 +309,8 @@ exports['auto error should pass partial results'] = function(test) {
         test.equals(err, 'testerror');
         test.equals(results.task1, 'result1');
         test.equals(results.task2, 'result2');
+				test.done();
     });
-    setTimeout(test.done, 100);
 };
 
 // Issue 24 on github: https://github.com/caolan/async/issues#issue/24
