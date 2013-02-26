@@ -814,13 +814,13 @@ __Example__
 
 ```js
 function add1(n, callback) {
-    setTimeout(function () [
+    setTimeout(function () {
         callback(null, n + 1);
     }, 10);
 }
 
 function mul3(n, callback) {
-    setTimeout(function () [
+    setTimeout(function () {
         callback(null, n * 3);
     }, 10);
 }
