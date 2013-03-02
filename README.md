@@ -986,8 +986,10 @@ __Arguments__
   function's execution. 
 * callback(err, results) - An optional callback which is called when all the
   tasks have been completed. The callback will receive an error as an argument
-  if any tasks pass an error to their callback. If all tasks complete
-  successfully, it will receive an object containing their results.
+  if any tasks pass an error to their callback. Results will always be passed
+	but if an error occurred, no other tasks will be performed, and the results
+	object will only contain partial results.
+  
 
 __Example__
 
