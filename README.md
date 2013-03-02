@@ -976,14 +976,43 @@ the functions pass an error to their callback, that function will not complete
 will be called immediately with the error. Functions also receive an object
 containing the results of functions which have completed so far.
 
+Note, all functions are called with a results object as a second argument, 
+so it is unsafe to pass functions in the tasks object which cannot handle the
+extra argument. For example, this snippet of code:
+
+```js
+async.auto({
+  readData: async.apply(fs.readFile, 'data.txt', 'utf-8');
+}, callback);
+```
+
+will have the effect of calling readFile with the results object as the last
+argument, which will fail:
+
+```js
+fs.readFile('data.txt', 'utf-8', cb, {});
+```
+
+Instead, wrap the call to readFile in a function which does not forward the 
+results object:
+
+```js
+async.auto({
+  readData: function(cb, results){
+    fs.readFile('data.txt', 'utf-8', cb);
+  }
+}, callback);
+```
+
 __Arguments__
 
 * tasks - An object literal containing named functions or an array of
   requirements, with the function itself the last item in the array. The key
   used for each function or array is used when specifying requirements. The 
-  function takes as an argument a callback(err, result) which must be called 
-  when finished, passing an error (which can be null) and the result of the
-  function's execution. 
+  function receives two arguments: (1) a callback(err, result) which must be 
+  called when finished, passing an error (which can be null) and the result of 
+  the function's execution, and (2) a results object, containing the results of
+  the previously executed functions.
 * callback(err, results) - An optional callback which is called when all the
   tasks have been completed. The callback will receive an error as an argument
   if any tasks pass an error to their callback. Results will always be passed
