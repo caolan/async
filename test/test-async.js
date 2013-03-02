@@ -360,6 +360,13 @@ exports['waterfall empty array'] = function(test){
     });
 };
 
+exports['waterfall non-array'] = function(test){
+    async.waterfall({}, function(err){
+        test.equals(err.message, 'First argument to waterfall must be an array of functions');
+        test.done();
+    });
+};
+
 exports['waterfall no callback'] = function(test){
     async.waterfall([
         function(callback){callback();},
