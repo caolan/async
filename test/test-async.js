@@ -2133,7 +2133,7 @@ exports['functionQueue default concurrency'] = function (test) {
     q.push(makeFunction(1), function (err, arg) {
         test.equal(err, 'error');
         test.equal(arg, 'arg');
-        test.equal(q.length(), 1);
+        test.equal(q.length(), 3);
         call_order.push('callback ' + 1);
     });
     q.push(makeFunction(2), function (err, arg) {
@@ -2145,7 +2145,7 @@ exports['functionQueue default concurrency'] = function (test) {
     q.push(makeFunction(3), function (err, arg) {
         test.equal(err, 'error');
         test.equal(arg, 'arg');
-        test.equal(q.length(), 0);
+        test.equal(q.length(), 1);
         call_order.push('callback ' + 3);
     });
     q.push(makeFunction(4), function (err, arg) {
@@ -2159,10 +2159,10 @@ exports['functionQueue default concurrency'] = function (test) {
 
     q.drain = function () {
         test.same(call_order, [
-            'process 2', 'callback 2',
             'process 1', 'callback 1',
-            'process 4', 'callback 4',
-            'process 3', 'callback 3'
+            'process 2', 'callback 2',
+            'process 3', 'callback 3',
+            'process 4', 'callback 4'
         ]);
         test.equal(q.concurrency, 1);
         test.equal(q.length(), 0);
