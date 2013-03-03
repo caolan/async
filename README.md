@@ -95,6 +95,7 @@ So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 * [compose](#compose)
 * [applyEach](#applyEach)
 * [queue](#queue)
+* [functionQueue](#functionQueue)
 * [cargo](#cargo)
 * [auto](#auto)
 * [iterator](#iterator)
@@ -932,6 +933,105 @@ q.push([{name: 'baz'},{name: 'bay'},{name: 'bax'}], function (err) {
 // add some items to the front of the queue
 
 q.unshift({name: 'bar'}, function (err) {
+    console.log('finished processing bar');
+});
+```
+
+---------------------------------------
+
+<a name="functionQueue" />
+### functionQueue(concurrency)
+
+Creates a function queue object with the specified concurrency. A function
+queue behaves exactly like a queue, except instead of having a single worker
+function which processes a queue of tasks, it holds a queue of functions, each
+of which is executed in turn. Functions added to the queue will be processed in
+parallel (up to the concurrency limit). If the concurrency limit of functions 
+is currently executing, the function is queued until a spot is available. Once
+a function has completed, its callback is called.
+
+__Arguments__
+
+* concurrency - An integer for determining how many functions should be run 
+  in parallel.
+
+__FunctionQueue objects__
+
+The functionQueue object returned by this function has the following properties 
+and methods:
+
+* length() - a function returning the number of functions waiting to be 
+  processed.
+* concurrency - an integer for determining how many functions should be run in 
+  parallel. This property can be changed after a functionQueue is created to
+  alter the concurrency on-the-fly.
+* push(function, [callback]) - add a new function(callback) to the queue which
+  takes a callback(err) as its only argument, which it must call when finished
+  with an optional error. The optional callback(err) passed as the second 
+  argument to push is called once the function has finished executing. Instead 
+  of a single function, an array of functions can be submitted. The respective 
+  callback is used for every function in the array.
+* unshift(function, [callback]) - add a new function to the front of the queue,
+  which takes a callback as its only argument, which it must call when finished.
+* saturated - a callback that is called when the queue length hits the 
+  concurrency and further functions will be queued
+* empty - a callback that is called when the last function from the queue is 
+  invoked
+* drain - a callback that is called when the last function from the queue has 
+  called back
+
+__Example__
+
+```js
+// create a functionQueue object with concurrency 2
+
+var q = async.functionQueue(2); 
+
+// assign a callback
+q.drain = function() {
+    console.log('all items have been processed');
+}
+
+// add some items to the queue
+
+q.push(function(callback){
+    console.log('hello foo');
+    callback();
+}, function (err) {
+    console.log('finished processing foo');
+});
+q.push(function(callback){
+    console.log('hello bar');
+    callback();
+}, function (err) {
+    console.log('finished processing bar');
+});
+
+// add some items to the queue (batch-wise)
+
+q.push([
+    function(callback){
+        console.log('hello a');
+        callback();
+    },
+    function(callback){
+        console.log('hello b');
+        callback();
+    },
+    function(callback){
+        console.log('hello c');
+        callback();
+    }
+], function (err) {
+    console.log('finished processing a, b, or c');
+});
+
+// add some items to the front of the queue
+
+q.unshift(function(callback){
+    console.log('hello bar');
+    callback();
+}, function (err) {
     console.log('finished processing bar');
 });
 ```
