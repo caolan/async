@@ -93,6 +93,7 @@ So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 * [doUntil](#doUntil)
 * [waterfall](#waterfall)
 * [compose](#compose)
+* [applyEach](#applyEach)
 * [queue](#queue)
 * [cargo](#cargo)
 * [auto](#auto)
@@ -830,6 +831,36 @@ var add1mul3 = async.compose(mul3, add1);
 add1mul3(4, function (err, result) {
    // result now equals 15
 });
+```
+
+---------------------------------------
+<a name="applyEach" />
+### applyEach(fns, args..., callback)
+
+Applies the provided arguments to each function in the array, calling the
+callback after all functions have completed. If you only provide the first
+argument then it will return a function which lets you pass in the
+arguments as if it were a single function call.
+
+__Arguments__
+
+* fns - the asynchronous functions to all call with the same arguments
+* args... - any number of separate arguments to pass to the function
+* callback - the final argument should be the callback, called when all
+  functions have completed processing
+
+
+__Example__
+
+```js
+async.applyEach([enableSearch, updateSchema], 'bucket', callback);
+
+// partial application example:
+async.each(
+    buckets,
+    async.applyEach([enableSearch, updateSchema]),
+    callback
+);
 ```
 
 ---------------------------------------

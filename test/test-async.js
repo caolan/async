@@ -66,6 +66,66 @@ function getFunctionsObject(call_order) {
     };
 }
 
+exports['applyEach'] = function (test) {
+    test.expect(4);
+    var call_order = [];
+    var one = function (val, cb) {
+        test.equal(val, 5);
+        setTimeout(function () {
+            call_order.push('one');
+            cb(null, 1);
+        }, 100);
+    };
+    var two = function (val, cb) {
+        test.equal(val, 5);
+        setTimeout(function () {
+            call_order.push('two');
+            cb(null, 2);
+        }, 50);
+    };
+    var three = function (val, cb) {
+        test.equal(val, 5);
+        setTimeout(function () {
+            call_order.push('three');
+            cb(null, 3);
+        }, 150);
+    };
+    async.applyEach([one, two, three], 5, function (err) {
+        test.same(call_order, ['two', 'one', 'three']);
+        test.done();
+    });
+};
+
+exports['applyEach partial application'] = function (test) {
+    test.expect(4);
+    var call_order = [];
+    var one = function (val, cb) {
+        test.equal(val, 5);
+        setTimeout(function () {
+            call_order.push('one');
+            cb(null, 1);
+        }, 100);
+    };
+    var two = function (val, cb) {
+        test.equal(val, 5);
+        setTimeout(function () {
+            call_order.push('two');
+            cb(null, 2);
+        }, 50);
+    };
+    var three = function (val, cb) {
+        test.equal(val, 5);
+        setTimeout(function () {
+            call_order.push('three');
+            cb(null, 3);
+        }, 150);
+    };
+    async.applyEach([one, two, three])(5, function (err) {
+        test.same(call_order, ['two', 'one', 'three']);
+        test.done();
+    });
+};
+
 exports['compose'] = function (test) {
     test.expect(4);
     var add2 = function (n, cb) {
