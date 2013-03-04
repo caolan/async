@@ -38,6 +38,41 @@ There are many more functions available so take a look at the docs below for a
 full list. This module aims to be comprehensive, so if you feel anything is
 missing please create a GitHub issue for it.
 
+## Common Pitfalls
+
+# Binding a context to an iterator
+
+This section is really about bind, not about async. If you are wondering how to
+make async execute your iterators in a given context, or are confused as to why
+a method of another library isn't working as an iterator, study this example:
+
+```js
+// Here is a simple object with an (unnecessarily roundabout) squaring method
+var AsyncSquaringLibrary = {
+  squareExponent: 2,
+  square: function(number, callback){ 
+    var result = Math.pow(number, this.squareExponent);
+    setTimeout(function(){
+      callback(null, result);
+    }, 200);
+  }
+};
+
+async.map([1, 2, 3], AsyncSquaringLibrary.square, function(err, result){
+  // result is [NaN, NaN, NaN]
+  // This fails because the `this.squareExponent` expression in the square
+  // function is not evaluated in the context of AsyncSquaringLibrary, and is
+  // therefore undefined.
+});
+
+async.map([1, 2, 3], AsyncSquaringLibrary.square.bind(AsyncSquaringLibrary), function(err, result){
+  // result is [1, 4, 9]
+  // With the help of bind we can attach a context to the iterator before
+  // passing it to async. Now the square function will be executed in its 
+  // 'home' AsyncSquaringLibrary context and the value of `this.squareExponent`
+  // will be as expected.
+});
+```
 
 ## Download
 
