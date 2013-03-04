@@ -40,7 +40,7 @@ missing please create a GitHub issue for it.
 
 ## Common Pitfalls
 
-# Binding a context to an iterator
+### Binding a context to an iterator
 
 This section is really about bind, not about async. If you are wondering how to
 make async execute your iterators in a given context, or are confused as to why
