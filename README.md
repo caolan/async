@@ -952,7 +952,7 @@ __Arguments__
   tasks, which must call its callback(err) argument when finished, with an 
   optional error as an argument.
 * payload - An optional integer for determining how many tasks should be
-  process per round, default is unlimited.
+  processed per round; if omitted, the default is unlimited.
 
 __Cargo objects__
 
