@@ -979,9 +979,9 @@ the worker has completed some tasks, each callback of those tasks is called.
 
 __Arguments__
 
-* worker(tasks, callback) - An asynchronous function for processing queued
-  tasks, which must call its callback(err) argument when finished, with an 
-  optional error as an argument.
+* worker(tasks, callback) - An asynchronous function for processing an array of
+  queued tasks, which must call its callback(err) argument when finished, with 
+  an optional error as an argument.
 * payload - An optional integer for determining how many tasks should be
   processed per round; if omitted, the default is unlimited.
 
@@ -1006,8 +1006,10 @@ __Example__
 ```js
 // create a cargo object with payload 2
 
-var cargo = async.cargo(function (task, callback) {
-    console.log('hello ' + task.name);
+var cargo = async.cargo(function (tasks, callback) {
+    for(var i=0; i<tasks.length; i++){
+      console.log('hello ' + task[i].name);
+    }
     callback();
 }, 2);
 
