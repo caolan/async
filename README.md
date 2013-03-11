@@ -73,6 +73,7 @@ So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 ### Collections
 
 * [each](#each)
+* [eachIndex](#eachIndex)
 * [map](#map)
 * [filter](#filter)
 * [reject](#reject)
@@ -131,7 +132,7 @@ __Arguments__
 * arr - An array to iterate over.
 * iterator(item, callback) - A function to apply to each item in the array.
   The iterator is passed a callback(err) which must be called once it has 
-  completed. If no error has occured, the callback should be run without 
+  completed. If no error has occurred, the callback should be run without
   arguments or with an explicit null argument.
 * callback(err) - A callback which is called after all the iterator functions
   have finished, or an error has occurred.
@@ -144,6 +145,47 @@ __Example__
 
 async.each(openFiles, saveFile, function(err){
     // if any of the saves produced an error, err would equal that error
+});
+```
+
+<a name="forEachIndex" />
+<a name="eachIndex" />
+### eachIndex(arr, iterator, callback)
+
+Just like `each`, applies an iterator function to each item in an array,
+in parallel. The iterator is called with an item from the list, the position
+an item is at in the supplied array, and a callback for when it has finished.
+If the iterator passes an error to this callback, the main callback for the
+`eachIndex` function is immediately called with the error.
+
+Note, that since this function applies the iterator to each item in parallel
+there is no guarantee that the iterator functions will complete in order.
+
+__Arguments__
+
+* arr - An array to iterate over.
+* iterator(item, index, callback) - A function to apply to each item in
+  the array. The iterator is passed an `index` position of the item in the
+  array. Useful when it is necessary to distinguish each item based on its
+  position in the array. Also the iterator is passed a `callback(err)`
+  which must be called once it has completed. If no error has occurred,
+  the callback should be run without arguments or with an explicit null
+  argument.
+* callback(err) - A callback which is called after all the iterator functions
+  have finished, or an error has occurred.
+
+__Example__
+
+```js
+var itemsArr = ['apple', 'banana', 'orange'];
+
+function iterator(val, index, callback) {
+    // do something with `val` based on its `index`,
+    // then call `callback`.
+}
+
+async.eachIndex(itemsArr, iterator, function(err){
+    // if any of the iterators produced an error, err would equal that error
 });
 ```
 
@@ -177,7 +219,7 @@ __Arguments__
 * limit - The maximum number of iterators to run at any time.
 * iterator(item, callback) - A function to apply to each item in the array.
   The iterator is passed a callback(err) which must be called once it has 
-  completed. If no error has occured, the callback should be run without 
+  completed. If no error has occurred, the callback should be run without
   arguments or with an explicit null argument.
 * callback(err) - A callback which is called after all the iterator functions
   have finished, or an error has occurred.
