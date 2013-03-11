@@ -55,7 +55,7 @@ __Production:__ [async.min.js](https://github.com/caolan/async/raw/master/dist/a
 
 ## In the Browser
 
-So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
+So far it's been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 
 ```html
 <script type="text/javascript" src="async.js"></script>
@@ -339,7 +339,7 @@ function only operates in series. For performance reasons, it may make sense to
 split a call to this function into a parallel map, then use the normal
 Array.prototype.reduce on the results. This function is for situations where
 each step in the reduction needs to be async, if you can get the data before
-reducing it then its probably a good idea to do so.
+reducing it then it's probably a good idea to do so.
 
 __Arguments__
 
@@ -1110,7 +1110,7 @@ new tasks much easier and makes the code more readable.
 ### iterator(tasks)
 
 Creates an iterator function which calls the next function in the array,
-returning a continuation to call the next one after that. Its also possible to
+returning a continuation to call the next one after that. It's also possible to
 'peek' the next iterator by doing iterator.next().
 
 This function is used internally by the async module but can be useful when
