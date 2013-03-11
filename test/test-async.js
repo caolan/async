@@ -17,6 +17,13 @@ function eachIterator(args, x, callback) {
     }, x*25);
 }
 
+function eachIndexIterator(args, x, ix, callback) {
+    setTimeout(function(){
+        args.push(x);
+        callback();
+    }, x*25);
+}
+
 function mapIterator(call_order, x, callback) {
     setTimeout(function(){
         call_order.push(x);
@@ -38,6 +45,12 @@ function detectIterator(call_order, x, callback) {
 }
 
 function eachNoCallbackIterator(test, x, callback) {
+    test.equal(x, 1);
+    callback();
+    test.done();
+}
+
+function eachIndexNoCallbackIterator(test, x, ix, callback) {
     test.equal(x, 1);
     callback();
     test.done();
@@ -821,6 +834,56 @@ exports['each no callback'] = function(test){
 
 exports['forEach alias'] = function (test) {
     test.strictEqual(async.each, async.forEach);
+    test.done();
+};
+
+exports['eachIndex'] = function(test){
+    var args = [];
+    async.eachIndex([1,3,2], eachIndexIterator.bind(this, args), function(err){
+        test.same(args, [1,2,3]);
+        test.done();
+    });
+};
+
+exports['eachIndex extra callback'] = function(test){
+    var count = 0;
+    async.eachIndex([1,3,2], function(val, index, callback) {
+        count++;
+        callback();
+        test.throws(callback);
+        if (count == 3) {
+            test.done();
+        }
+    });
+};
+
+exports['eachIndex empty array'] = function(test){
+    test.expect(1);
+    async.eachIndex([], function(x, ix, callback){
+        test.ok(false, 'iterator should not be called');
+        callback();
+    }, function(err){
+        test.ok(true, 'should call callback');
+    });
+    setTimeout(test.done, 25);
+};
+
+exports['eachIndex error'] = function(test){
+    test.expect(1);
+    async.eachIndex([1,2,3], function(x, ix, callback){
+        callback('error');
+    }, function(err){
+        test.equals(err, 'error');
+    });
+    setTimeout(test.done, 50);
+};
+
+exports['eachIndex no callback'] = function(test){
+    async.eachIndex([1], eachIndexNoCallbackIterator.bind(this, test));
+};
+
+exports['forEachIndex alias'] = function (test) {
+    test.strictEqual(async.eachIndex, async.forEachIndex);
     test.done();
 };
 
