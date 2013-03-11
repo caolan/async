@@ -76,17 +76,13 @@ async.map([1, 2, 3], AsyncSquaringLibrary.square.bind(AsyncSquaringLibrary), fun
 
 ## Download
 
-Releases are available for download from
-[GitHub](http://github.com/caolan/async/downloads).
+The source is available for download from
+[GitHub](http://github.com/caolan/async).
 Alternatively, you can install using Node Package Manager (npm):
 
     npm install async
 
-
-__Development:__ [async.js](https://github.com/caolan/async/raw/master/lib/async.js) - 17.5kb Uncompressed
-
-__Production:__ [async.min.js](https://github.com/caolan/async/raw/master/dist/async.min.js) - 1.7kb Packed and Gzipped
-
+__Development:__ [async.js](https://github.com/caolan/async/raw/master/lib/async.js) - 29.6kb Uncompressed
 
 ## In the Browser
 
