@@ -1008,7 +1008,7 @@ __Example__
 
 var cargo = async.cargo(function (tasks, callback) {
     for(var i=0; i<tasks.length; i++){
-      console.log('hello ' + task[i].name);
+      console.log('hello ' + tasks[i].name);
     }
     callback();
 }, 2);
