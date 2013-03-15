@@ -905,6 +905,13 @@ async.each(
 
 ---------------------------------------
 
+<a name="applyEachSeries" />
+### applyEachSeries(arr, iterator, callback)
+
+The same as applyEach only the functions are applied in series.
+
+---------------------------------------
+
 <a name="queue" />
 ### queue(worker, concurrency)
 
