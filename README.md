@@ -91,6 +91,7 @@ So far its been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 * [doWhilst](#doWhilst)
 * [until](#until)
 * [doUntil](#doUntil)
+* [forever](#forever)
 * [waterfall](#waterfall)
 * [compose](#compose)
 * [applyEach](#applyEach)
@@ -754,6 +755,14 @@ The inverse of async.whilst.
 
 Like doWhilst except the test is inverted. Note the argument ordering differs from `until`.
 
+---------------------------------------
+
+<a name="forever" />
+### forever(fn, callback)
+
+Calls the asynchronous function 'fn' repeatedly, in series, indefinitely.
+If an error is passed to fn's callback then 'callback' is called with the
+error, otherwise it will never be called.
 
 ---------------------------------------
 

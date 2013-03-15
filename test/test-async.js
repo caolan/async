@@ -66,6 +66,24 @@ function getFunctionsObject(call_order) {
     };
 }
 
+exports['forever'] = function (test) {
+    test.expect(1);
+    var counter = 0;
+    function addOne(callback) {
+        counter++;
+        if (counter === 50) {
+            return callback('too big!');
+        }
+        async.setImmediate(function () {
+            callback();
+        });
+    }
+    async.forever(addOne, function (err) {
+        test.equal(err, 'too big!');
+        test.done();
+    });
+};
+
 exports['applyEach'] = function (test) {
     test.expect(4);
     var call_order = [];
