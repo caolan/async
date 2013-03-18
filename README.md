@@ -295,7 +295,7 @@ __Arguments__
 __Example__
 
 ```js
-async.map(['file1','file2','file3'], 1, fs.stat, function(err, results){
+async.mapLimit(['file1','file2','file3'], 1, fs.stat, function(err, results){
     // results is now an array of stats for each file
 });
 ```
