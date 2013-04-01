@@ -1,6 +1,6 @@
 # Async.js
 
-[![Build Status via Travis CI](https://travis-ci.org/kimptoc/async.png?branch=master)](https://travis-ci.org/kimptoc/async)
+[![Build Status via Travis CI](https://travis-ci.org/caolan/async.png?branch=master)](https://travis-ci.org/caolan/async)
 
 
 Async is a utility module which provides straight-forward, powerful functions
