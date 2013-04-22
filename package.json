@@ -3,7 +3,7 @@
     "description": "Higher-order functions and common patterns for asynchronous code",
     "main": "./lib/async",
     "author": "Caolan McMahon",
-    "version": "0.1.23",
+    "version": "0.2.7",
     "repository" : {
         "type" : "git",
         "url" : "http://github.com/caolan/async.git"
@@ -21,5 +21,16 @@
         "nodeunit": ">0.0.0",
         "uglify-js": "1.2.x",
         "nodelint": ">0.0.0"
+    },
+    "jam": {
+        "main": "lib/async.js",
+        "include": [
+            "lib/async.js",
+            "README.md",
+            "LICENSE"
+        ]
+    },
+    "scripts": {
+        "test": "nodeunit test/test-async.js"
     }
 }
