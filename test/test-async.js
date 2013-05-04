@@ -2391,6 +2391,29 @@ exports['falsy return values in parallel'] = function (test) {
     );
 };
 
+exports['retry'] =  function(test) {
+
+    var retries = 0;
+    var error_final_value;
+    var testFunc = function(param1, cb) {
+      retries++;
+      var err = retries < 5;
+      cb(err, "Callback result value");
+    };
+
+    var retryTest = _.retry(5, testFunc);
+    retryTest("test", function(err, result) {
+      error_final_value = err;
+    });
+
+    var badRetry = _.retry(5,testFunc);
+    test.throws(function() { badRetry("param", function(err, res){},6); }, Error, "Last argument expected to be a callback");
+
+    test.equal(error_final_value, false, "retry(N, func) should call the function N times before giving up ");
+
+    test.done();
+};
+
 exports['queue events'] = function(test) {
     var calls = [];
     var q = async.queue(function(task, cb) {
