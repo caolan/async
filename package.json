@@ -6,15 +6,15 @@
     "version": "0.2.8",
     "repository" : {
         "type" : "git",
-        "url" : "http://github.com/caolan/async.git"
+        "url" : "https://github.com/caolan/async.git"
     },
     "bugs" : {
-        "url" : "http://github.com/caolan/async/issues"
+        "url" : "https://github.com/caolan/async/issues"
     },
     "licenses" : [
         {
             "type" : "MIT",
-            "url" : "http://github.com/caolan/async/raw/master/LICENSE"
+            "url" : "https://github.com/caolan/async/raw/master/LICENSE"
         }
     ],
     "devDependencies": {
