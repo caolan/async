@@ -150,7 +150,7 @@ So far it's been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 <a name="each" />
 ### each(arr, iterator, callback)
 
-Applies an iterator function to each item in an array, in parallel.
+Applies an iterator function to each item in an array or object, in parallel.
 The iterator is called with an item from the list and a callback for when it
 has finished. If the iterator passes an error to this callback, the main
 callback for the each function is immediately called with the error.
@@ -160,8 +160,8 @@ there is no guarantee that the iterator functions will complete in order.
 
 __Arguments__
 
-* arr - An array to iterate over.
-* iterator(item, callback) - A function to apply to each item in the array.
+* arr - An array/object to iterate over.
+* iterator(item [, key], callback) - A function to apply to each item in the array/object.
   The iterator is passed a callback(err) which must be called once it has 
   completed. If no error has occured, the callback should be run without 
   arguments or with an explicit null argument.
