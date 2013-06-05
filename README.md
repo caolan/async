@@ -210,7 +210,8 @@ __Arguments__
 * iterator(item, callback) - A function to apply to each item in the array.
   The iterator is passed a callback(err) which must be called once it has 
   completed. If no error has occured, the callback should be run without 
-  arguments or with an explicit null argument.
+  arguments or with an explicit null argument. The callback should not be called
+  synchronously; use nextTick if it might be.
 * callback(err) - A callback which is called after all the iterator functions
   have finished, or an error has occurred.
 
