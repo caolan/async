@@ -1215,6 +1215,18 @@ exports['filterSeries'] = function(test){
     });
 };
 
+exports['filterWithError'] = function(test){
+    async.filterWithError([3,1,2], function (each, callback) {
+        filterIterator(each, function (result) {
+            callback(null, result);
+        });
+    }, function(err, results){
+        test.equals(err, null);
+        test.same(results, [3,1]);
+        test.done();
+    });
+};
+
 exports['select alias'] = function(test){
     test.equals(async.select, async.filter);
     test.done();
