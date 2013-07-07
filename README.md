@@ -1062,7 +1062,7 @@ extra argument. For example, this snippet of code:
 
 ```js
 async.auto({
-  readData: async.apply(fs.readFile, 'data.txt', 'utf-8');
+  readData: async.apply(fs.readFile, 'data.txt', 'utf-8')
 }, callback);
 ```
 
