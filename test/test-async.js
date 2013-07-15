@@ -607,6 +607,99 @@ exports['parallel no callback'] = function(test){
     ]);
 };
 
+exports['parallelCollect'] = function (test) {
+    var call_order = [];
+    async.parallelCollect([
+        function (callback) {
+            setTimeout(function () {
+                call_order.push(1);
+                callback(null, 1);
+            }, 50);
+        }, function (callback) {
+            setTimeout(function () {
+                call_order.push(2);
+                callback(null, 2);
+            }, 100);
+        }, function (callback) {
+            setTimeout(function () {
+                call_order.push(3);
+                callback(null, 3, 3);
+            }, 25);
+        }
+    ], function (err, results) {
+        test.equals(err, null);
+        test.same(call_order, [3, 1, 2]);
+        test.same(results, [1, 2, [3, 3]]);
+        test.done();
+    });
+};
+
+exports['parallelCollect empty array'] = function (test) {
+    async.parallelCollect([], function (err, results) {
+        test.equals(err, null);
+        test.same(results, []);
+        test.done();
+    });
+};
+
+exports['parallelCollect error'] = function (test) {
+    async.parallelCollect([
+        function (callback) {
+            callback('error', 1);
+        }, function (callback) {
+            callback('error2', 2);
+        }
+    ], function (err, results) {
+        test.deepEqual(err, ['error','error2']);
+    });
+    setTimeout(test.done, 100);
+};
+
+exports['parallelCollect object error'] = function (test) {
+    async.parallelCollect({
+        one: function (callback) {
+            callback('errorOne', 1);
+        },
+        two: function (callback) {
+            callback(null, 2);
+        },
+        three: function (callback) {
+            callback('errorThree', 3);
+        },
+    }, function (err, results) {
+        test.same(err, {
+            one: 'errorOne',
+            three: 'errorThree',
+        });
+        test.same(results, {
+            two: 2
+        });
+    });
+    setTimeout(test.done, 100);
+};
+
+exports['parallelCollect no callback'] = function (test) {
+    async.parallelCollect([
+        function (callback) {callback();}, function (callback) {
+            callback();
+            test.done();
+        }, ]);
+};
+
+exports['parallelCollect object'] = function (test) {
+    var call_order = [];
+    async.parallelCollect(getFunctionsObject(call_order), function (err, results) {
+        test.equals(err, null);
+        test.same(call_order, [3, 1, 2]);
+        test.same(results, {
+            one: 1,
+            two: 2,
+            three: [3, 3]
+        });
+        test.done();
+    });
+};
+
 exports['parallel object'] = function(test){
     var call_order = [];
     async.parallel(getFunctionsObject(call_order), function(err, results){
