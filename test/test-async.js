@@ -1042,6 +1042,15 @@ exports['map error'] = function(test){
     setTimeout(test.done, 50);
 };
 
+exports['map no callback'] = function(test){
+    var call_order = [];
+    async.map([1,3,2], mapIterator.bind(this, call_order));
+    setTimeout(function(){
+        test.same(call_order, [1,2,3]);
+        test.done();
+    }, 100);
+};
+
 exports['mapSeries'] = function(test){
     var call_order = [];
     async.mapSeries([1,3,2], mapIterator.bind(this, call_order), function(err, results){
@@ -1061,6 +1070,14 @@ exports['mapSeries error'] = function(test){
     setTimeout(test.done, 50);
 };
 
+exports['mapSeries no callback'] = function(test){
+    var call_order = [];
+    async.mapSeries([1,3,2], mapIterator.bind(this, call_order));
+    setTimeout(function(){
+        test.same(call_order, [1,3,2]);
+        test.done();
+    }, 175);
+};
 
 exports['mapLimit'] = function(test){
     var call_order = [];
@@ -1129,6 +1146,14 @@ exports['mapLimit error'] = function(test){
     setTimeout(test.done, 25);
 };
 
+exports['mapLimit no callback'] = function(test){
+    var call_order = [];
+    async.mapLimit([1,3,2], 3, mapIterator.bind(this, call_order));
+    setTimeout(function(){
+        test.same(call_order, [1,2,3]);
+        test.done();
+    }, 100);
+};
 
 exports['reduce'] = function(test){
     var call_order = [];
