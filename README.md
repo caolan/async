@@ -543,9 +543,9 @@ call returns `true`, the main `callback` is immediately called.
 __Arguments__
 
 * `arr` - An array to iterate over.
-* `iterator(item, callback)` - A truth test to apply to each item in `arr`.
-  The iterator is passed a `callback(truthValue)` which must be called with a 
-  boolean argument once it has completed.
+* `iterator(item, callback)` - A truth test to apply to each item in the array
+  in parallel. The iterator is passed a callback(truthValue) which must be 
+  called with a boolean argument once it has completed.
 * `callback(result)` - A callback which is called as soon as any iterator returns
   `true`, or after all the iterator functions have finished. Result will be
   either `true` or `false` depending on the values of the async tests.
@@ -573,9 +573,9 @@ way node libraries work with truth tests like `fs.exists`.
 __Arguments__
 
 * `arr` - An array to iterate over.
-* `iterator(item, callback)` - A truth test to apply to each item in `arr`.
-  The `iterator` is passed a `callback(truthValue)` which must be called with a 
-  boolean argument once it has completed.
+* `iterator(item, callback)` - A truth test to apply to each item in the array
+  in parallel. The iterator is passed a callback(truthValue) which must be 
+  called with a  boolean argument once it has completed.
 * `callback(result)` - A callback which is called after all the `iterator`
   functions have finished. Result will be either `true` or `false` depending on
   the values of the async tests.
