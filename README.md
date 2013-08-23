@@ -824,6 +824,7 @@ async.waterfall([
         callback(null, 'one', 'two');
     },
     function(arg1, arg2, callback){
+    	// arg1 now equals 'one' and arg2 now equals 'two'
         callback(null, 'three');
     },
     function(arg1, callback){
