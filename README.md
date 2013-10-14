@@ -594,6 +594,14 @@ run as a function and the results will be passed to the final callback as an obj
 instead of an array. This can be a more readable way of handling results from
 async.series.
 
+**Note** that while many implementations preserve the order of object properties, the
+[ECMAScript Language Specifcation](http://www.ecma-international.org/ecma-262/5.1/#sec-8.6) 
+explicitly states that
+
+> The mechanics and order of enumerating the properties is not specified.
+
+So if you rely on the order in which your series of functions are executed, and want
+this to work on all platforms, consider using an array. 
 
 __Arguments__
 
