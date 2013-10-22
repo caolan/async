@@ -90,6 +90,7 @@ exports['applyEach'] = function (test) {
     var one = function (val, cb) {
         test.equal(val, 5);
         setTimeout(function () {
+
             call_order.push('one');
             cb(null, 1);
         }, 100);
@@ -544,6 +545,22 @@ exports['waterfall multiple callback calls'] = function(test){
         }
     ];
     async.waterfall(arr);
+};
+
+exports['waterfall exception'] = function(test){
+    test.expect(0);
+    async.waterfall([
+        function(callback){
+            null.crash;
+        },
+        function(callback){
+            test.ok(false, 'next function should not be called');
+            callback();
+        }
+    ], function(err){
+        test.done()
+    });
+    setTimeout(test.done, 50);
 };
 
 
