@@ -170,6 +170,16 @@ __Arguments__
 
 __Examples__
 
+
+```js
+// assuming openFiles is an array of file names and saveFile is a function
+// to save the modified contents of that file:
+
+async.each(openFiles, saveFile, function(err){
+    // if any of the saves produced an error, err would equal that error
+});
+```
+
 ```js
 // assuming openFiles is an array of file names and saveFile is a function
 // to save the modified contents of that file:
@@ -198,17 +208,6 @@ async.each(openFiles, function( file, callback) {
     } else {
       console.log('All files have been processed successfully');
     }
-});
-```
-
----------------------------------------
-
-```js
-// assuming openFiles is an array of file names and saveFile is a function
-// to save the modified contents of that file:
-
-async.each(openFiles, saveFile, function(err){
-    // if any of the saves produced an error, err would equal that error
 });
 ```
 
