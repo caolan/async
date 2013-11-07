@@ -125,6 +125,7 @@ So far it's been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 * [forever](#forever)
 * [waterfall](#waterfall)
 * [compose](#compose)
+* [seq](#seq)
 * [applyEach](#applyEach)
 * [queue](#queue)
 * [cargo](#cargo)
@@ -870,6 +871,51 @@ var add1mul3 = async.compose(mul3, add1);
 
 add1mul3(4, function (err, result) {
    // result now equals 15
+});
+```
+
+---------------------------------------
+<a name="seq" />
+### seq(fn1, fn2...)
+
+Version of the compose function that is more natural to read.
+Each following function consumes the return value of the latter function. 
+
+Each function is executed with the `this` binding of the composed function.
+
+__Arguments__
+
+* functions... - the asynchronous functions to compose
+
+
+__Example__
+
+```js
+// Requires lodash (or underscore), express3 and dresende's orm2
+// Part of an app, that fetches cats of the logged user.
+app.get('/cats', function(request, response) {
+  function handleError(err, data, callback) {
+    if (err) {
+      console.error(err);
+      response.json({ status: 'error', message: err.message });
+    }
+    else {
+      callback(data);
+    }
+  }
+  var User = request.models.User;
+  asyc.seq(
+    _.bind(User.get, User),  // 'User.get' has signature (id, callback(err, data))
+    handleError,
+    function(user, fn) {
+      user.getCats(fn);      // 'getCats' has signature (callback(err, data))
+    },
+    handleError,
+    function(cats) {
+      response.json({ status: 'ok', message: 'Cats found', data: cats });
+    }
+  )(req.session.user_id);
+  }
 });
 ```
 
