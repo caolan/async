@@ -891,8 +891,10 @@ __Arguments__
 __Example__
 
 ```js
-// Requires lodash (or underscore), express3 and dresende's orm2
+// Requires lodash (or underscore), express3 and dresende's orm2.
 // Part of an app, that fetches cats of the logged user.
+// This example uses `seq` function to avoid overnesting and error 
+// handling clutter.
 app.get('/cats', function(request, response) {
   function handleError(err, data, callback) {
     if (err) {
