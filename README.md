@@ -104,20 +104,30 @@ So far it's been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 ### Collections
 
 * [each](#each)
+* [eachSeries](#eachSeries)
+* [eachLimit](#eachLimit)
 * [map](#map)
+* [mapSeries](#mapSeries)
+* [mapLimit](#mapLimit)
 * [filter](#filter)
+* [filterSeries](#filterSeries)
 * [reject](#reject)
+* [rejectSeries](#rejectSeries)
 * [reduce](#reduce)
+* [reduceRight](#reduceRight)
 * [detect](#detect)
+* [detectSeries](#detectSeries)
 * [sortBy](#sortBy)
 * [some](#some)
 * [every](#every)
 * [concat](#concat)
+* [concatSeries](#concatSeries)
 
 ### Control Flow
 
 * [series](#series)
 * [parallel](#parallel)
+* [parallelLimit](#parallellimittasks-limit-callback)
 * [whilst](#whilst)
 * [doWhilst](#doWhilst)
 * [until](#until)
@@ -126,6 +136,7 @@ So far it's been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 * [waterfall](#waterfall)
 * [compose](#compose)
 * [applyEach](#applyEach)
+* [applyEachSeries](#applyEachSeries)
 * [queue](#queue)
 * [cargo](#cargo)
 * [auto](#auto)
