@@ -2061,6 +2061,15 @@ exports['queue bulk task'] = function (test) {
     }, 800);
 };
 
+exports['queue big stack'] = function (test) {
+    var q = async.queue(function (task, callback) {
+        callback();
+    }, 1);
+    var i;
+    for (i = 0 ; i < 10000 ; i++) q.push(1);
+    q.drain = test.done;
+};
+
 exports['cargo'] = function (test) {
     var call_order = [],
         delays = [160, 160, 80];
