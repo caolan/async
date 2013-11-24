@@ -2265,24 +2265,24 @@ exports['unmemoize'] = function(test) {
 
     var fn = function (arg1, arg2, callback) {
         call_order.push(['fn', arg1, arg2]);
-        callback(null, arg1 + arg2);
+        async.setImmediate(function () {
+            callback(null, arg1 + arg2);
+        });
     };
 
     var fn2 = async.memoize(fn);
     var fn3 = async.unmemoize(fn2);
     fn3(1, 2, function (err, result) {
         test.equal(result, 3);
+        fn3(1, 2, function (err, result) {
+            test.equal(result, 3);
+            fn3(2, 2, function (err, result) {
+                test.equal(result, 4);
+                test.same(call_order, [['fn',1,2], ['fn',1,2], ['fn',2,2]]);
+                test.done();
+            });
+        });
     });
-    fn3(1, 2, function (err, result) {
-        test.equal(result, 3);
-    });
-    fn3(2, 2, function (err, result) {
-        test.equal(result, 4);
-    });
-
-    test.same(call_order, [['fn',1,2], ['fn',1,2], ['fn',2,2]]);
-
-    test.done();
 }
 
 exports['unmemoize a not memoized function'] = function(test) {
