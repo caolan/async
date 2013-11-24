@@ -2200,23 +2200,24 @@ exports['memoize'] = function (test) {
     var call_order = [];
 
     var fn = function (arg1, arg2, callback) {
-        call_order.push(['fn', arg1, arg2]);
-        callback(null, arg1 + arg2);
+        async.setImmediate(function () {
+            call_order.push(['fn', arg1, arg2]);
+            callback(null, arg1 + arg2);
+        });
     };
 
     var fn2 = async.memoize(fn);
     fn2(1, 2, function (err, result) {
         test.equal(result, 3);
+        fn2(1, 2, function (err, result) {
+            test.equal(result, 3);
+            fn2(2, 2, function (err, result) {
+                test.equal(result, 4);
+                test.same(call_order, [['fn',1,2], ['fn',2,2]]);
+                test.done();
+            });
+        });
     });
-    fn2(1, 2, function (err, result) {
-        test.equal(result, 3);
-    });
-    fn2(2, 2, function (err, result) {
-        test.equal(result, 4);
-    });
-
-    test.same(call_order, [['fn',1,2], ['fn',2,2]]);
-    test.done();
 };
 
 exports['memoize maintains asynchrony'] = function (test) {
