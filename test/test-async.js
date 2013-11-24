@@ -2244,16 +2244,16 @@ exports['memoize maintains asynchrony'] = function (test) {
     call_order.push('tick1');
 
     function memoize_done() {
-        var zalgo_call_order = [
+        var async_call_order = [
             ['fn',1,2],             // initial async call
             'tick1',                // async caller
             ['cb',1,2],             // async callback
         //  ['fn',1,2], // memoized // memoized async body
+            'tick2',                // handler for first async call
         //  ['cb',1,2], // memoized // memoized async response body
-            'tick3',                // handler for memoized async call
-            'tick2'                 // handler for first async call
+            'tick3'                 // handler for memoized async call
         ];
-        test.same(call_order, zalgo_call_order);
+        test.same(call_order, async_call_order);
         test.done();
     }
 };
