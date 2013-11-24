@@ -2342,11 +2342,11 @@ exports['memoize custom hash function'] = function (test) {
     });
     fn2(1, 2, function (err, result) {
         test.equal(result, 3);
+        fn2(2, 2, function (err, result) {
+            test.equal(result, 3);
+            test.done();
+        });
     });
-    fn2(2, 2, function (err, result) {
-        test.equal(result, 3);
-    });
-    test.done();
 };
 
 exports['memoize manually added memo value'] = function (test) {
