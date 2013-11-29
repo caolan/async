@@ -470,7 +470,7 @@ exports['waterfall empty array'] = function(test){
 
 exports['waterfall non-array'] = function(test){
     async.waterfall({}, function(err){
-        test.equals(err.message, 'First argument to waterfall must be an array of functions');
+        test.equals(err.message, 'First argument to waterfall must be an array of functions.');
         test.done();
     });
 };
@@ -2435,4 +2435,81 @@ exports['queue events'] = function(test) {
     q.push('zoo', function () {calls.push('zoo cb');});
     q.push('poo', function () {calls.push('poo cb');});
     q.push('moo', function () {calls.push('moo cb');});
+};
+
+exports['switch with default'] = function(test){
+    var tasks = {
+        case1: function(callback){
+            async.nextTick(function() {
+                callback(null, 1);
+            });
+        },
+        case2: function(callback){
+            async.nextTick(function() {
+                callback(null, 2);
+            });
+        },
+        default: function(callback){
+            async.nextTick(function() {
+                callback(null, 'default');
+            });
+        }
+    };
+
+    async.switch('case1', tasks, function(err, result){
+        test.equals(err, null);
+        test.equals(result, 1);
+
+        async.switch('case2', tasks, function(err, result){
+            test.equals(err, null);
+            test.equals(result, 2);
+
+            async.switch('case3', tasks, function(err, result){
+                test.equals(err, null);
+                test.equals(result, 'default');
+
+                test.done();
+            });
+        });
+    });
+};
+
+exports['switch without default'] = function(test){
+    var tasks = {
+        case1: function(callback){
+            async.nextTick(function() {
+                callback(null, 1);
+            });
+        },
+        case2: function(callback){
+            async.nextTick(function() {
+                callback(null, 2);
+            });
+        }
+    };
+
+    async.switch('case1', tasks, function(err, result){
+        test.equals(err, null);
+        test.equals(result, 1);
+
+        async.switch('case2', tasks, function(err, result){
+            test.equals(err, null);
+            test.equals(result, 2);
+
+            async.switch('case3', tasks, function(err, result){
+                test.ok(err);
+                test.equals(err.message, 'No task to match expression.');
+
+                test.done();
+            });
+        });
+    });
+};
+
+exports['switch bad arguments'] = function(test){
+    async.switch('whatever', null, function(err, result) {
+        test.ok(err);
+        test.equals(err.message, 'Second argument to switch must be an object.');
+        test.done();
+    });
 };
