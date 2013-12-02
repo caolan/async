@@ -439,7 +439,7 @@ exports['auto calls callback multiple times'] = function(test) {
         task2: ['task1', function(callback) { callback(null); }]
     },
 
-    // Final callback. This should only run once...
+    // Error throwing final callback. This should only run once
     function(err) {
         finalCallCount++;
         if (finalCallCount > 1) {
