@@ -442,12 +442,11 @@ exports['auto calls callback multiple times'] = function(test) {
     // Final callback. This should only run once...
     function(err) {
         finalCallCount++;
-        console.log('Called ' + finalCallCount + ' times');
         if (finalCallCount > 1) {
-          test.done(new Error("Final auto callback should only be called once"));
+            test.done(new Error("Final auto callback should only be called once"));
         } else {
-          test.done();
-          throw new Error("An error");
+            test.done();
+            throw new Error("An error");
         }
     });
 };
