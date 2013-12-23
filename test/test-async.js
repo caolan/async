@@ -621,6 +621,22 @@ exports['parallel object'] = function(test){
     });
 };
 
+exports['parallel each'] = function(test) {
+    var init_order = [150, 20, 80],
+        call_order = [];
+    async.parallelEach(init_order, function(item, callback){
+        setTimeout(function(){
+            call_order.push(item);
+            callback(null, item);
+        }, item);
+    }, function(err, results) {
+        test.equals(err, null);
+        test.same(call_order, [20, 80, 150]);
+        test.same(results, init_order);
+        test.done();
+    });
+};
+
 exports['parallel limit'] = function(test){
     var call_order = [];
     async.parallelLimit([
