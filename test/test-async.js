@@ -17,6 +17,13 @@ function eachIterator(args, x, callback) {
     }, x*25);
 }
 
+function eachIteratorWitResults(args, x, callback) {
+	setTimeout(function(){
+		args.push(x);
+		callback(null, x);
+	}, x*25);
+}
+
 function mapIterator(call_order, x, callback) {
     setTimeout(function(){
         call_order.push(x);
@@ -112,6 +119,37 @@ exports['applyEach'] = function (test) {
         test.same(call_order, ['two', 'one', 'three']);
         test.done();
     });
+};
+
+exports['applyEach with callbacks which return results'] = function (test) {
+	test.expect(5);
+	var call_order = [];
+	var one = function (val, cb) {
+		test.equal(val, 5);
+		setTimeout(function () {
+			call_order.push('one');
+			cb(null, 1);
+		}, 100);
+	};
+	var two = function (val, cb) {
+		test.equal(val, 5);
+		setTimeout(function () {
+			call_order.push('two');
+			cb(null, 2);
+		}, 50);
+	};
+	var three = function (val, cb) {
+		test.equal(val, 5);
+		setTimeout(function () {
+			call_order.push('three');
+			cb(null, 3);
+		}, 150);
+	};
+	async.applyEach([one, two, three], 5, function (err, results) {
+		test.same(call_order, ['two', 'one', 'three']);
+		test.same(results, [[1], [2], [3]]);
+		test.done();
+	});
 };
 
 exports['applyEachSeries'] = function (test) {
@@ -858,6 +896,15 @@ exports['each empty array'] = function(test){
         test.ok(true, 'should call callback');
     });
     setTimeout(test.done, 25);
+};
+
+exports['each iterator return results'] = function(test){
+	var args = [];
+	async.each([1,3,2], eachIteratorWitResults.bind(this, args), function(err, results){
+		test.same(args, [1,2,3]);
+		test.same(results, [[1],[3],[2]]);
+		test.done();
+	});
 };
 
 exports['each error'] = function(test){
