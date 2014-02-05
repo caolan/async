@@ -837,6 +837,32 @@ exports['each'] = function(test){
     });
 };
 
+exports['each with key'] = function(test){
+    var count = 0;
+    var obj = {a: 1, b: 2, c: 3};
+    async.each(obj, function(val, key, callback) {
+        count++;
+        test.equals(obj[key], val);
+        callback();
+        if (count == 3) {
+            test.done();
+        }
+    });
+};
+
+exports['each with index'] = function(test){
+    var count = 0;
+    var arr = ['a','b','c'];
+    async.each(arr, function(val, index, callback) {
+        count++;
+        test.equals(arr[index], val);
+        callback();
+        if (count == 3) {
+            test.done();
+        }
+    });
+};
+
 exports['each extra callback'] = function(test){
     var count = 0;
     async.each([1,3,2], function(val, callback) {
