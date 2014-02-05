@@ -951,6 +951,7 @@ methods:
 * push(task, [callback]) - add a new task to the queue, the callback is called
   once the worker has finished processing the task.
   instead of a single task, an array of tasks can be submitted. the respective callback is used for every task in the list.
+* clear() - clear all the task in task queue.
 * unshift(task, [callback]) - add a new task to the front of the queue.
 * saturated - a callback that is called when the queue length hits the concurrency and further tasks will be queued
 * empty - a callback that is called when the last item from the queue is given to a worker
