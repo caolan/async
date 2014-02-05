@@ -50,7 +50,7 @@ a method of another library isn't working as an iterator, study this example:
 // Here is a simple object with an (unnecessarily roundabout) squaring method
 var AsyncSquaringLibrary = {
   squareExponent: 2,
-  square: function(number, callback){ 
+  square: function(number, callback){
     var result = Math.pow(number, this.squareExponent);
     setTimeout(function(){
       callback(null, result);
@@ -68,7 +68,7 @@ async.map([1, 2, 3], AsyncSquaringLibrary.square, function(err, result){
 async.map([1, 2, 3], AsyncSquaringLibrary.square.bind(AsyncSquaringLibrary), function(err, result){
   // result is [1, 4, 9]
   // With the help of bind we can attach a context to the iterator before
-  // passing it to async. Now the square function will be executed in its 
+  // passing it to async. Now the square function will be executed in its
   // 'home' AsyncSquaringLibrary context and the value of `this.squareExponent`
   // will be as expected.
 });
@@ -145,6 +145,7 @@ So far it's been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 * [nextTick](#nextTick)
 * [times](#times)
 * [timesSeries](#timesSeries)
+* [switch](#switch)
 
 ### Utils
 
@@ -173,8 +174,8 @@ __Arguments__
 
 * arr - An array to iterate over.
 * iterator(item, callback) - A function to apply to each item in the array.
-  The iterator is passed a callback(err) which must be called once it has 
-  completed. If no error has occured, the callback should be run without 
+  The iterator is passed a callback(err) which must be called once it has
+  completed. If no error has occured, the callback should be run without
   arguments or with an explicit null argument.
 * callback(err) - A callback which is called after all the iterator functions
   have finished, or an error has occurred.
@@ -207,11 +208,11 @@ processing. This means the iterator functions will complete in order.
 <a name="eachLimit" />
 ### eachLimit(arr, limit, iterator, callback)
 
-The same as each only no more than "limit" iterators will be simultaneously 
+The same as each only no more than "limit" iterators will be simultaneously
 running at any time.
 
 Note that the items are not processed in batches, so there is no guarantee that
- the first "limit" iterator functions will complete before any others are 
+ the first "limit" iterator functions will complete before any others are
 started.
 
 __Arguments__
@@ -219,8 +220,8 @@ __Arguments__
 * arr - An array to iterate over.
 * limit - The maximum number of iterators to run at any time.
 * iterator(item, callback) - A function to apply to each item in the array.
-  The iterator is passed a callback(err) which must be called once it has 
-  completed. If no error has occured, the callback should be run without 
+  The iterator is passed a callback(err) which must be called once it has
+  completed. If no error has occured, the callback should be run without
   arguments or with an explicit null argument.
 * callback(err) - A callback which is called after all the iterator functions
   have finished, or an error has occurred.
@@ -243,7 +244,7 @@ async.eachLimit(documents, 20, requestApi, function(err){
 
 Produces a new array of values by mapping each value in the given array through
 the iterator function. The iterator is called with an item from the array and a
-callback for when it has finished processing. The callback takes 2 arguments, 
+callback for when it has finished processing. The callback takes 2 arguments,
 an error and the transformed item from the array. If the iterator passes an
 error to this callback, the main callback for the map function is immediately
 called with the error.
@@ -256,7 +257,7 @@ __Arguments__
 
 * arr - An array to iterate over.
 * iterator(item, callback) - A function to apply to each item in the array.
-  The iterator is passed a callback(err, transformed) which must be called once 
+  The iterator is passed a callback(err, transformed) which must be called once
   it has completed with an error (which can be null) and a transformed item.
 * callback(err, results) - A callback which is called after all the iterator
   functions have finished, or an error has occurred. Results is an array of the
@@ -285,11 +286,11 @@ processing. The results array will be in the same order as the original.
 <a name="mapLimit" />
 ### mapLimit(arr, limit, iterator, callback)
 
-The same as map only no more than "limit" iterators will be simultaneously 
+The same as map only no more than "limit" iterators will be simultaneously
 running at any time.
 
 Note that the items are not processed in batches, so there is no guarantee that
- the first "limit" iterator functions will complete before any others are 
+ the first "limit" iterator functions will complete before any others are
 started.
 
 __Arguments__
@@ -297,7 +298,7 @@ __Arguments__
 * arr - An array to iterate over.
 * limit - The maximum number of iterators to run at any time.
 * iterator(item, callback) - A function to apply to each item in the array.
-  The iterator is passed a callback(err, transformed) which must be called once 
+  The iterator is passed a callback(err, transformed) which must be called once
   it has completed with an error (which can be null) and a transformed item.
 * callback(err, results) - A callback which is called after all the iterator
   functions have finished, or an error has occurred. Results is an array of the
@@ -329,7 +330,7 @@ __Arguments__
 
 * arr - An array to iterate over.
 * iterator(item, callback) - A truth test to apply to each item in the array.
-  The iterator is passed a callback(truthValue) which must be called with a 
+  The iterator is passed a callback(truthValue) which must be called with a
   boolean argument once it has completed.
 * callback(results) - A callback which is called after all the iterator
   functions have finished.
@@ -390,9 +391,9 @@ __Arguments__
 * memo - The initial state of the reduction.
 * iterator(memo, item, callback) - A function applied to each item in the
   array to produce the next step in the reduction. The iterator is passed a
-  callback(err, reduction) which accepts an optional error as its first 
-  argument, and the state of the reduction as the second. If an error is 
-  passed to the callback, the reduction is stopped and the main callback is 
+  callback(err, reduction) which accepts an optional error as its first
+  argument, and the state of the reduction as the second. If an error is
+  passed to the callback, the reduction is stopped and the main callback is
   immediately called with the error.
 * callback(err, result) - A callback which is called after all the iterator
   functions have finished. Result is the reduced value.
@@ -436,7 +437,7 @@ __Arguments__
 
 * arr - An array to iterate over.
 * iterator(item, callback) - A truth test to apply to each item in the array.
-  The iterator is passed a callback(truthValue) which must be called with a 
+  The iterator is passed a callback(truthValue) which must be called with a
   boolean argument once it has completed.
 * callback(result) - A callback which is called as soon as any iterator returns
   true, or after all the iterator functions have finished. Result will be
@@ -509,7 +510,7 @@ __Arguments__
 
 * arr - An array to iterate over.
 * iterator(item, callback) - A truth test to apply to each item in the array.
-  The iterator is passed a callback(truthValue) which must be called with a 
+  The iterator is passed a callback(truthValue) which must be called with a
   boolean argument once it has completed.
 * callback(result) - A callback which is called as soon as any iterator returns
   true, or after all the iterator functions have finished. Result will be
@@ -539,7 +540,7 @@ __Arguments__
 
 * arr - An array to iterate over.
 * iterator(item, callback) - A truth test to apply to each item in the array.
-  The iterator is passed a callback(truthValue) which must be called with a 
+  The iterator is passed a callback(truthValue) which must be called with a
   boolean argument once it has completed.
 * callback(result) - A callback which is called after all the iterator
   functions have finished. Result will be either true or false depending on
@@ -567,7 +568,7 @@ __Arguments__
 
 * arr - An array to iterate over
 * iterator(item, callback) - A function to apply to each item in the array.
-  The iterator is passed a callback(err, results) which must be called once it 
+  The iterator is passed a callback(err, results) which must be called once it
   has completed with an error (which can be null) and an array of results.
 * callback(err, results) - A callback which is called after all the iterator
   functions have finished, or an error has occurred. Results is an array containing
@@ -612,7 +613,7 @@ __Arguments__
   a callback(err, result) it must call on completion with an error (which can
   be null) and an optional result value.
 * callback(err, results) - An optional callback to run once all the functions
-  have completed. This function gets a results array (or object) containing all 
+  have completed. This function gets a results array (or object) containing all
   the result arguments passed to the task callbacks.
 
 __Example__
@@ -671,11 +672,11 @@ async.parallel.
 
 __Arguments__
 
-* tasks - An array or object containing functions to run, each function is passed 
+* tasks - An array or object containing functions to run, each function is passed
   a callback(err, result) it must call on completion with an error (which can
   be null) and an optional result value.
 * callback(err, results) - An optional callback to run once all the functions
-  have completed. This function gets a results array (or object) containing all 
+  have completed. This function gets a results array (or object) containing all
   the result arguments passed to the task callbacks.
 
 __Example__
@@ -723,20 +724,20 @@ function(err, results) {
 <a name="parallel" />
 ### parallelLimit(tasks, limit, [callback])
 
-The same as parallel only the tasks are executed in parallel with a maximum of "limit" 
+The same as parallel only the tasks are executed in parallel with a maximum of "limit"
 tasks executing at any time.
 
-Note that the tasks are not executed in batches, so there is no guarantee that 
+Note that the tasks are not executed in batches, so there is no guarantee that
 the first "limit" tasks will complete before any others are started.
 
 __Arguments__
 
-* tasks - An array or object containing functions to run, each function is passed 
+* tasks - An array or object containing functions to run, each function is passed
   a callback(err, result) it must call on completion with an error (which can
   be null) and an optional result value.
 * limit - The maximum number of tasks to run at any time.
 * callback(err, results) - An optional callback to run once all the functions
-  have completed. This function gets a results array (or object) containing all 
+  have completed. This function gets a results array (or object) containing all
   the result arguments passed to the task callbacks.
 
 ---------------------------------------
@@ -751,7 +752,7 @@ __Arguments__
 
 * test() - synchronous truth test to perform before each execution of fn.
 * fn(callback) - A function to call each time the test passes. The function is
-  passed a callback(err) which must be called once it has completed with an 
+  passed a callback(err) which must be called once it has completed with an
   optional error argument.
 * callback(err) - A callback which is called after the test fails and repeated
   execution of fn has stopped.
@@ -818,9 +819,9 @@ the error.
 
 __Arguments__
 
-* tasks - An array of functions to run, each function is passed a 
+* tasks - An array of functions to run, each function is passed a
   callback(err, result1, result2, ...) it must call on completion. The first
-  argument is an error (which can be null) and any further arguments will be 
+  argument is an error (which can be null) and any further arguments will be
   passed as arguments in order to the next task.
 * callback(err, [results]) - An optional callback to run once all the functions
   have completed. This will be passed the results of the last task's callback.
@@ -842,7 +843,7 @@ async.waterfall([
         callback(null, 'done');
     }
 ], function (err, result) {
-   // result now equals 'done'    
+   // result now equals 'done'
 });
 ```
 
@@ -934,7 +935,7 @@ a worker has completed a task, the task's callback is called.
 __Arguments__
 
 * worker(task, callback) - An asynchronous function for processing a queued
-  task, which must call its callback(err) argument when finished, with an 
+  task, which must call its callback(err) argument when finished, with an
   optional error as an argument.
 * concurrency - An integer for determining how many worker functions should be
   run in parallel.
@@ -1007,7 +1008,7 @@ the worker has completed some tasks, each callback of those tasks is called.
 __Arguments__
 
 * worker(tasks, callback) - An asynchronous function for processing an array of
-  queued tasks, which must call its callback(err) argument when finished, with 
+  queued tasks, which must call its callback(err) argument when finished, with
   an optional error as an argument.
 * payload - An optional integer for determining how many tasks should be
   processed per round; if omitted, the default is unlimited.
@@ -1067,7 +1068,7 @@ the functions pass an error to their callback, that function will not complete
 will be called immediately with the error. Functions also receive an object
 containing the results of functions which have completed so far.
 
-Note, all functions are called with a results object as a second argument, 
+Note, all functions are called with a results object as a second argument,
 so it is unsafe to pass functions in the tasks object which cannot handle the
 extra argument. For example, this snippet of code:
 
@@ -1084,7 +1085,7 @@ argument, which will fail:
 fs.readFile('data.txt', 'utf-8', cb, {});
 ```
 
-Instead, wrap the call to readFile in a function which does not forward the 
+Instead, wrap the call to readFile in a function which does not forward the
 results object:
 
 ```js
@@ -1099,9 +1100,9 @@ __Arguments__
 
 * tasks - An object literal containing named functions or an array of
   requirements, with the function itself the last item in the array. The key
-  used for each function or array is used when specifying requirements. The 
-  function receives two arguments: (1) a callback(err, result) which must be 
-  called when finished, passing an error (which can be null) and the result of 
+  used for each function or array is used when specifying requirements. The
+  function receives two arguments: (1) a callback(err, result) which must be
+  called when finished, passing an error (which can be null) and the result of
   the function's execution, and (2) a results object, containing the results of
   the previously executed functions.
 * callback(err, results) - An optional callback which is called when all the
@@ -1109,7 +1110,7 @@ __Arguments__
   if any tasks pass an error to their callback. Results will always be passed
 	but if an error occurred, no other tasks will be performed, and the results
 	object will only contain partial results.
-  
+
 
 __Example__
 
@@ -1313,6 +1314,42 @@ async.times(5, function(n, next){
 The same as times only the iterator is applied to each item in the array in
 series. The next iterator is only called once the current one has completed
 processing. The results array will be in the same order as the original.
+
+
+<a name="switch" />
+### switch(expression, tasks, callback)
+
+Compares expression with the fields of the object tasks, picking one and
+passing callback to it.
+
+__Arguments__
+
+* expression - The expression to compare with the fields of the tasks object.
+* tasks - An object populated with functions that take a single argument
+  (callback). The special `default` field will match anything not already
+  matched by another field. If no default function is assigned, then no match
+  results in an error being passed to the callback function.
+* callback - A callback function to pass as an to one of the tasks.
+
+__Example__
+
+```js
+var expression = 'case 1';
+
+async.switch(expression, {
+    'case 1': function (callback) {
+        callback(null, 'case 1 ran');
+    },
+    'case 2': function (callback) {
+        callback(null, 'case 2 ran');
+    },
+    default: function (callback) {
+        callback(null, 'default ran');
+    }
+}, function (err, result) {
+    console.log(result); // 'case 1 ran'
+});
+```
 
 
 ## Utils
