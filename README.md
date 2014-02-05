@@ -142,6 +142,7 @@ So far it's been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 * [auto](#auto)
 * [iterator](#iterator)
 * [apply](#apply)
+* [applySync](#applySync)
 * [nextTick](#nextTick)
 * [times](#times)
 * [timesSeries](#timesSeries)
@@ -1245,6 +1246,60 @@ continuation:
 ```js
 node> var fn = async.apply(sys.puts, 'one');
 node> fn('two', 'three');
+one
+two
+three
+```
+
+---------------------------------------
+
+<a name="applySync" />
+### applySync(function, arguments..)
+
+The same as apply, only designed to be used as shorthand for creating
+continuations for _synchronous_ tasks.
+
+__Arguments__
+
+* function - The function you want to eventually apply all arguments to.
+* arguments... - Any number of arguments to automatically apply when the
+  continuation is called.
+
+
+__Example__
+
+```js
+// using applySync
+
+async.series([
+    async.applySync(fs.writeFileSync, 'testfile1', 'test1')
+    // ...
+]);
+
+
+// the same process without using applySync
+
+async.series([
+    function(callback){
+        try {
+            fs.writeFileSync('testfile1', 'test1');
+            callback();
+        }
+        catch (err) {
+            callback(err);
+        }
+    }
+    / ...
+]);
+```
+
+The continuation function expects a callback as its last argument.
+
+```js
+node> var fn = async.applySync(sys.puts, 'one');
+node> fn('two', 'three');
+TypeError
+node> fn('two', 'three', function() {});
 one
 two
 three

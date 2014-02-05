@@ -1402,6 +1402,31 @@ exports['apply'] = function(test){
     test.done();
 };
 
+exports['applySync'] = function(test){
+    test.expect(7);
+    var fn = function(){
+        test.same(Array.prototype.slice.call(arguments), [1,2,3,4])
+    };
+    var callback = function() {};
+    async.applySync(fn, 1, 2, 3, 4)(callback);
+    async.applySync(fn, 1, 2, 3)(4, callback);
+    async.applySync(fn, 1, 2)(3, 4, callback);
+    async.applySync(fn, 1)(2, 3, 4, callback);
+    async.applySync(fn)(1, 2, 3, 4, callback);
+    test.equals(
+        async.applySync(function(name){return 'hello ' + name}, 'world')(),
+        'hello world'
+    );
+
+    async.series([
+        async.applySync(function() {}),
+        async.applySync(function() {}),
+        async.applySync(function() {})
+    ], function(err, result){
+        test.ok(true);
+        test.done();
+    });
+};
 
 // generates tests for console functions such as async.log
 var console_fn_tests = function(name){
