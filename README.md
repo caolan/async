@@ -952,9 +952,13 @@ methods:
   once the worker has finished processing the task.
   instead of a single task, an array of tasks can be submitted. the respective callback is used for every task in the list.
 * unshift(task, [callback]) - add a new task to the front of the queue.
+* pause() - pause a queue task temporary
+* resume - resume a queue task
+* isPause - a boolean indicating whether a queue is during period of pause.
 * saturated - a callback that is called when the queue length hits the concurrency and further tasks will be queued
 * empty - a callback that is called when the last item from the queue is given to a worker
 * drain - a callback that is called when the last item from the queue has returned from the worker
+* onpause - callback that is called when the pause method is called.
 
 __Example__
 
