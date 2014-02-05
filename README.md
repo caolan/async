@@ -139,6 +139,7 @@ So far it's been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 * [applyEachSeries](#applyEachSeries)
 * [queue](#queue)
 * [cargo](#cargo)
+* [cargoQueue](#cargoQueue)
 * [auto](#auto)
 * [iterator](#iterator)
 * [apply](#apply)
@@ -1053,6 +1054,13 @@ cargo.push({name: 'baz'}, function (err) {
     console.log('finished processing baz');
 });
 ```
+
+---------------------------------------
+
+<a name="cargoQueue" />
+### cargoQueue(worker, [payload], [concurrency])
+
+The same as cargo but allows concurrency like queue does.
 
 ---------------------------------------
 
