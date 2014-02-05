@@ -945,6 +945,7 @@ The queue object returned by this function has the following properties and
 methods:
 
 * length() - a function returning the number of items waiting to be processed.
+* running() - a function returning the number of workers currently running.
 * concurrency - an integer for determining how many worker functions should be
   run in parallel. This property can be changed after a queue is created to
   alter the concurrency on-the-fly.
@@ -1018,6 +1019,7 @@ The cargo object returned by this function has the following properties and
 methods:
 
 * length() - a function returning the number of items waiting to be processed.
+* running() - a function returning the number of workers currently running.
 * payload - an integer for determining how many tasks should be
   process per round. This property can be changed after a cargo is created to
   alter the payload on-the-fly.
