@@ -1004,6 +1004,10 @@ cargo will be processed altogether (up to the payload limit). If the
 worker is in progress, the task is queued until it is available. Once
 the worker has completed some tasks, each callback of those tasks is called.
 
+While [queue](#queue) passes only one task to one of a group of workers
+at a time, cargo passes an array of tasks to a single worker, repeating
+when the worker is finished.
+
 __Arguments__
 
 * worker(tasks, callback) - An asynchronous function for processing an array of
