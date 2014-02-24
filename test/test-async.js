@@ -2195,6 +2195,53 @@ exports['cargo bulk task'] = function (test) {
     }, 800);
 };
 
+exports['cargo drain once'] = function (test) {
+   
+   var c = async.cargo(function (tasks, callback) {
+      callback();
+    }, 3);
+    
+    var drainCounter = 0;
+    c.drain = function () {
+      drainCounter++;
+    }
+    
+    for(var i = 0; i < 10; i++){
+      c.push(i);
+    }
+    
+    setTimeout(function(){
+      test.equal(drainCounter, 1);
+      test.done();
+    }, 500);
+};
+
+exports['cargo drain twice'] = function (test) {
+    
+    var c = async.cargo(function (tasks, callback) {
+      callback();
+    }, 3);
+    
+    var loadCargo = function(){
+      for(var i = 0; i < 10; i++){
+        c.push(i);
+      }
+    };
+    
+    var drainCounter = 0;
+    c.drain = function () {
+      drainCounter++;
+    }
+
+    loadCargo();
+    setTimeout(loadCargo, 500);
+
+    setTimeout(function(){
+      test.equal(drainCounter, 2);
+      test.done();
+    }, 1000);
+};
+
 exports['memoize'] = function (test) {
     test.expect(4);
     var call_order = [];
