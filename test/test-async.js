@@ -2013,6 +2013,47 @@ exports['queue unshift'] = function (test) {
     }, 100);
 };
 
+exports['queue splice'] = function (test) {
+  var queue_order = [];
+
+  var q = async.queue(function (task, callback) {
+    queue_order.push(task);
+    callback();
+  }, 1);
+
+  q.splice(0, 0, 1);
+  q.splice(1, 0, 2);
+  q.splice(2, 0, 4);
+  q.splice(3, 0, 6);
+  q.splice(2, 0, 3);
+  q.splice(4, 0, 5);
+
+  setTimeout(function () {
+    test.same(queue_order, [ 1, 2, 3, 4, 5, 6 ]);
+    test.done();
+  }, 100);
+};
+
+exports['queue splice with "howmany" argument'] = function (test) {
+  var queue_order = [];
+
+  var q = async.queue(function (task, callback) {
+    queue_order.push(task);
+    callback();
+  }, 1);
+
+  q.splice(0, 0, 2);
+  q.splice(1, 0, 2);
+  q.splice(2, 0, 4);
+  q.splice(0, 1, 1);
+  q.splice(2, 1, 3);
+
+  setTimeout(function () {
+    test.same(queue_order, [ 1, 2, 3 ]);
+    test.done();
+  }, 100);
+};
+
 exports['queue too many callbacks'] = function (test) {
     var q = async.queue(function (task, callback) {
         callback();
