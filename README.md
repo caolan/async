@@ -171,12 +171,12 @@ there is no guarantee that the iterator functions will complete in order.
 
 __Arguments__
 
-* arr - An array to iterate over.
-* iterator(item, callback) - A function to apply to each item in the array.
+* `arr` - An array to iterate over.
+* `iterator(item, callback)` - A function to apply to each item in the array.
   The iterator is passed a callback(err) which must be called once it has 
   completed. If no error has occured, the callback should be run without 
   arguments or with an explicit null argument.
-* callback(err) - A callback which is called after all the iterator functions
+* `callback(err)` - A callback which is called after all the iterator functions
   have finished, or an error has occurred.
 
 __Example__
@@ -216,13 +216,13 @@ started.
 
 __Arguments__
 
-* arr - An array to iterate over.
-* limit - The maximum number of iterators to run at any time.
-* iterator(item, callback) - A function to apply to each item in the array.
+* `arr` - An array to iterate over.
+* `limit` - The maximum number of iterators to run at any time.
+* `iterator(item, callback)` - A function to apply to each item in the array.
   The iterator is passed a callback(err) which must be called once it has 
   completed. If no error has occured, the callback should be run without 
   arguments or with an explicit null argument.
-* callback(err) - A callback which is called after all the iterator functions
+* `callback(err)` - A callback which is called after all the iterator functions
   have finished, or an error has occurred.
 
 __Example__
@@ -254,11 +254,11 @@ the results array will be in the same order as the original array.
 
 __Arguments__
 
-* arr - An array to iterate over.
-* iterator(item, callback) - A function to apply to each item in the array.
+* `arr` - An array to iterate over.
+* `iterator(item, callback)` - A function to apply to each item in the array.
   The iterator is passed a callback(err, transformed) which must be called once 
   it has completed with an error (which can be null) and a transformed item.
-* callback(err, results) - A callback which is called after all the iterator
+* `callback(err, results)` - A callback which is called after all the iterator
   functions have finished, or an error has occurred. Results is an array of the
   transformed items from the original array.
 
@@ -294,12 +294,12 @@ started.
 
 __Arguments__
 
-* arr - An array to iterate over.
-* limit - The maximum number of iterators to run at any time.
-* iterator(item, callback) - A function to apply to each item in the array.
+* `arr` - An array to iterate over.
+* `limit` - The maximum number of iterators to run at any time.
+* `iterator(item, callback)` - A function to apply to each item in the array.
   The iterator is passed a callback(err, transformed) which must be called once 
   it has completed with an error (which can be null) and a transformed item.
-* callback(err, results) - A callback which is called after all the iterator
+* `callback(err, results)` - A callback which is called after all the iterator
   functions have finished, or an error has occurred. Results is an array of the
   transformed items from the original array.
 
@@ -327,11 +327,11 @@ original.
 
 __Arguments__
 
-* arr - An array to iterate over.
-* iterator(item, callback) - A truth test to apply to each item in the array.
+* `arr` - An array to iterate over.
+* `iterator(item, callback)` - A truth test to apply to each item in the array.
   The iterator is passed a callback(truthValue) which must be called with a 
   boolean argument once it has completed.
-* callback(results) - A callback which is called after all the iterator
+* `callback(results)` - A callback which is called after all the iterator
   functions have finished.
 
 __Example__
@@ -386,15 +386,15 @@ reducing it then it's probably a good idea to do so.
 
 __Arguments__
 
-* arr - An array to iterate over.
-* memo - The initial state of the reduction.
-* iterator(memo, item, callback) - A function applied to each item in the
+* `arr` - An array to iterate over.
+* `memo` - The initial state of the reduction.
+* `iterator(memo, item, callback)` - A function applied to each item in the
   array to produce the next step in the reduction. The iterator is passed a
   callback(err, reduction) which accepts an optional error as its first 
   argument, and the state of the reduction as the second. If an error is 
   passed to the callback, the reduction is stopped and the main callback is 
   immediately called with the error.
-* callback(err, result) - A callback which is called after all the iterator
+* `callback(err, result)` - A callback which is called after all the iterator
   functions have finished. Result is the reduced value.
 
 __Example__
@@ -434,11 +434,11 @@ If order within the original array is important then look at detectSeries.
 
 __Arguments__
 
-* arr - An array to iterate over.
-* iterator(item, callback) - A truth test to apply to each item in the array.
+* `arr` - An array to iterate over.
+* `iterator(item, callback)` - A truth test to apply to each item in the array.
   The iterator is passed a callback(truthValue) which must be called with a 
   boolean argument once it has completed.
-* callback(result) - A callback which is called as soon as any iterator returns
+* `callback(result)` - A callback which is called as soon as any iterator returns
   true, or after all the iterator functions have finished. Result will be
   the first item in the array that passes the truth test (iterator) or the
   value undefined if none passed.
@@ -470,12 +470,12 @@ Sorts a list by the results of running each value through an async iterator.
 
 __Arguments__
 
-* arr - An array to iterate over.
-* iterator(item, callback) - A function to apply to each item in the array.
+* `arr` - An array to iterate over.
+* `iterator(item, callback)` - A function to apply to each item in the array.
   The iterator is passed a callback(err, sortValue) which must be called once it
   has completed with an error (which can be null) and a value to use as the sort
   criteria.
-* callback(err, results) - A callback which is called after all the iterator
+* `callback(err, results)` - A callback which is called after all the iterator
   functions have finished, or an error has occurred. Results is the items from
   the original array sorted by the values returned by the iterator calls.
 
@@ -507,11 +507,11 @@ call returns true, the main callback is immediately called.
 
 __Arguments__
 
-* arr - An array to iterate over.
-* iterator(item, callback) - A truth test to apply to each item in the array.
+* `arr` - An array to iterate over.
+* `iterator(item, callback)` - A truth test to apply to each item in the array.
   The iterator is passed a callback(truthValue) which must be called with a 
   boolean argument once it has completed.
-* callback(result) - A callback which is called as soon as any iterator returns
+* `callback(result)` - A callback which is called as soon as any iterator returns
   true, or after all the iterator functions have finished. Result will be
   either true or false depending on the values of the async tests.
 
@@ -537,11 +537,11 @@ way node libraries work with truth tests like fs.exists.
 
 __Arguments__
 
-* arr - An array to iterate over.
-* iterator(item, callback) - A truth test to apply to each item in the array.
+* `arr` - An array to iterate over.
+* `iterator(item, callback)` - A truth test to apply to each item in the array.
   The iterator is passed a callback(truthValue) which must be called with a 
   boolean argument once it has completed.
-* callback(result) - A callback which is called after all the iterator
+* `callback(result)` - A callback which is called after all the iterator
   functions have finished. Result will be either true or false depending on
   the values of the async tests.
 
@@ -565,11 +565,11 @@ be returned in the original order of the arguments passed to the iterator functi
 
 __Arguments__
 
-* arr - An array to iterate over
-* iterator(item, callback) - A function to apply to each item in the array.
+* `arr` - An array to iterate over
+* `iterator(item, callback)` - A function to apply to each item in the array.
   The iterator is passed a callback(err, results) which must be called once it 
   has completed with an error (which can be null) and an array of results.
-* callback(err, results) - A callback which is called after all the iterator
+* `callback(err, results)` - A callback which is called after all the iterator
   functions have finished, or an error has occurred. Results is an array containing
   the concatenated results of the iterator function.
 
@@ -608,10 +608,10 @@ async.series.
 
 __Arguments__
 
-* tasks - An array or object containing functions to run, each function is passed
+* `tasks` - An array or object containing functions to run, each function is passed
   a callback(err, result) it must call on completion with an error (which can
   be null) and an optional result value.
-* callback(err, results) - An optional callback to run once all the functions
+* `callback(err, results)` - An optional callback to run once all the functions
   have completed. This function gets a results array (or object) containing all 
   the result arguments passed to the task callbacks.
 
@@ -671,10 +671,10 @@ async.parallel.
 
 __Arguments__
 
-* tasks - An array or object containing functions to run, each function is passed 
+* `tasks` - An array or object containing functions to run, each function is passed 
   a callback(err, result) it must call on completion with an error (which can
   be null) and an optional result value.
-* callback(err, results) - An optional callback to run once all the functions
+* `callback(err, results)` - An optional callback to run once all the functions
   have completed. This function gets a results array (or object) containing all 
   the result arguments passed to the task callbacks.
 
@@ -731,11 +731,11 @@ the first "limit" tasks will complete before any others are started.
 
 __Arguments__
 
-* tasks - An array or object containing functions to run, each function is passed 
+* `tasks` - An array or object containing functions to run, each function is passed 
   a callback(err, result) it must call on completion with an error (which can
   be null) and an optional result value.
-* limit - The maximum number of tasks to run at any time.
-* callback(err, results) - An optional callback to run once all the functions
+* `limit` - The maximum number of tasks to run at any time.
+* `callback(err, results)` - An optional callback to run once all the functions
   have completed. This function gets a results array (or object) containing all 
   the result arguments passed to the task callbacks.
 
@@ -749,11 +749,11 @@ or an error occurs.
 
 __Arguments__
 
-* test() - synchronous truth test to perform before each execution of fn.
-* fn(callback) - A function to call each time the test passes. The function is
+* `test()` - synchronous truth test to perform before each execution of fn.
+* `fn(callback)` - A function to call each time the test passes. The function is
   passed a callback(err) which must be called once it has completed with an 
   optional error argument.
-* callback(err) - A callback which is called after the test fails and repeated
+* `callback(err)` - A callback which is called after the test fails and repeated
   execution of fn has stopped.
 
 __Example__
@@ -818,11 +818,11 @@ the error.
 
 __Arguments__
 
-* tasks - An array of functions to run, each function is passed a 
+* `tasks` - An array of functions to run, each function is passed a 
   callback(err, result1, result2, ...) it must call on completion. The first
   argument is an error (which can be null) and any further arguments will be 
   passed as arguments in order to the next task.
-* callback(err, [results]) - An optional callback to run once all the functions
+* `callback(err, [results])` - An optional callback to run once all the functions
   have completed. This will be passed the results of the last task's callback.
 
 
@@ -859,7 +859,7 @@ Each function is executed with the `this` binding of the composed function.
 
 __Arguments__
 
-* functions... - the asynchronous functions to compose
+* `functions...` - the asynchronous functions to compose
 
 
 __Example__
@@ -895,9 +895,9 @@ arguments as if it were a single function call.
 
 __Arguments__
 
-* fns - the asynchronous functions to all call with the same arguments
-* args... - any number of separate arguments to pass to the function
-* callback - the final argument should be the callback, called when all
+* `fns` - the asynchronous functions to all call with the same arguments
+* `args...` - any number of separate arguments to pass to the function
+* `callback` - the final argument should be the callback, called when all
   functions have completed processing
 
 
@@ -933,10 +933,10 @@ a worker has completed a task, the task's callback is called.
 
 __Arguments__
 
-* worker(task, callback) - An asynchronous function for processing a queued
+* `worker(task, callback)` - An asynchronous function for processing a queued
   task, which must call its callback(err) argument when finished, with an 
   optional error as an argument.
-* concurrency - An integer for determining how many worker functions should be
+* `concurrency` - An integer for determining how many worker functions should be
   run in parallel.
 
 __Queue objects__
@@ -944,17 +944,17 @@ __Queue objects__
 The queue object returned by this function has the following properties and
 methods:
 
-* length() - a function returning the number of items waiting to be processed.
-* concurrency - an integer for determining how many worker functions should be
+* `length()` - a function returning the number of items waiting to be processed.
+* `concurrency` - an integer for determining how many worker functions should be
   run in parallel. This property can be changed after a queue is created to
   alter the concurrency on-the-fly.
-* push(task, [callback]) - add a new task to the queue, the callback is called
+* `push(task, [callback])` - add a new task to the queue, the callback is called
   once the worker has finished processing the task.
   instead of a single task, an array of tasks can be submitted. the respective callback is used for every task in the list.
-* unshift(task, [callback]) - add a new task to the front of the queue.
-* saturated - a callback that is called when the queue length hits the concurrency and further tasks will be queued
-* empty - a callback that is called when the last item from the queue is given to a worker
-* drain - a callback that is called when the last item from the queue has returned from the worker
+* `unshift(task, [callback])` - add a new task to the front of the queue.
+* `saturated` - a callback that is called when the queue length hits the concurrency and further tasks will be queued
+* `empty` - a callback that is called when the last item from the queue is given to a worker
+* `drain` - a callback that is called when the last item from the queue has returned from the worker
 
 __Example__
 
@@ -1006,10 +1006,10 @@ the worker has completed some tasks, each callback of those tasks is called.
 
 __Arguments__
 
-* worker(tasks, callback) - An asynchronous function for processing an array of
+* `worker(tasks, callback)` - An asynchronous function for processing an array of
   queued tasks, which must call its callback(err) argument when finished, with 
   an optional error as an argument.
-* payload - An optional integer for determining how many tasks should be
+* `payload` - An optional integer for determining how many tasks should be
   processed per round; if omitted, the default is unlimited.
 
 __Cargo objects__
@@ -1017,16 +1017,16 @@ __Cargo objects__
 The cargo object returned by this function has the following properties and
 methods:
 
-* length() - a function returning the number of items waiting to be processed.
-* payload - an integer for determining how many tasks should be
+* `length()` - a function returning the number of items waiting to be processed.
+* `payload` - an integer for determining how many tasks should be
   process per round. This property can be changed after a cargo is created to
   alter the payload on-the-fly.
-* push(task, [callback]) - add a new task to the queue, the callback is called
+* `push(task, [callback])` - add a new task to the queue, the callback is called
   once the worker has finished processing the task.
   instead of a single task, an array of tasks can be submitted. the respective callback is used for every task in the list.
-* saturated - a callback that is called when the queue length hits the concurrency and further tasks will be queued
-* empty - a callback that is called when the last item from the queue is given to a worker
-* drain - a callback that is called when the last item from the queue has returned from the worker
+* `saturated` - a callback that is called when the queue length hits the concurrency and further tasks will be queued
+* `empty` - a callback that is called when the last item from the queue is given to a worker
+* `drain` - a callback that is called when the last item from the queue has returned from the worker
 
 __Example__
 
@@ -1097,14 +1097,14 @@ async.auto({
 
 __Arguments__
 
-* tasks - An object literal containing named functions or an array of
+* `tasks` - An object literal containing named functions or an array of
   requirements, with the function itself the last item in the array. The key
   used for each function or array is used when specifying requirements. The 
   function receives two arguments: (1) a callback(err, result) which must be 
   called when finished, passing an error (which can be null) and the result of 
   the function's execution, and (2) a results object, containing the results of
   the previously executed functions.
-* callback(err, results) - An optional callback which is called when all the
+* `callback(err, results)` - An optional callback which is called when all the
   tasks have been completed. The callback will receive an error as an argument
   if any tasks pass an error to their callback. Results will always be passed
 	but if an error occurred, no other tasks will be performed, and the results
@@ -1178,7 +1178,7 @@ you want to manually control the flow of functions in series.
 
 __Arguments__
 
-* tasks - An array of functions to run.
+* `tasks` - An array of functions to run.
 
 __Example__
 
@@ -1212,8 +1212,8 @@ to apply.
 
 __Arguments__
 
-* function - The function you want to eventually apply all arguments to.
-* arguments... - Any number of arguments to automatically apply when the
+* `function` - The function you want to eventually apply all arguments to.
+* `arguments...` - Any number of arguments to automatically apply when the
   continuation is called.
 
 __Example__
@@ -1264,7 +1264,7 @@ This is used internally for browser-compatibility purposes.
 
 __Arguments__
 
-* callback - The function to call on a later loop around the event loop.
+* `callback` - The function to call on a later loop around the event loop.
 
 __Example__
 
@@ -1285,8 +1285,8 @@ you would use with async.map.
 
 __Arguments__
 
-* n - The number of times to run the function.
-* callback - The function to call n times.
+* `n` - The number of times to run the function.
+* `callback` - The function to call n times.
 
 __Example__
 
@@ -1329,8 +1329,8 @@ by `memoize`.
 
 __Arguments__
 
-* fn - the function you to proxy and cache results from.
-* hasher - an optional function for generating a custom hash for storing
+* `fn` - the function you to proxy and cache results from.
+* `hasher` - an optional function for generating a custom hash for storing
   results, it has all the arguments applied to it apart from the callback, and
   must be synchronous.
 
@@ -1357,7 +1357,7 @@ form. Comes handy in tests.
 
 __Arguments__
 
-* fn - the memoized function
+* `fn` - the memoized function
 
 <a name="log" />
 ### log(function, arguments)
@@ -1369,8 +1369,8 @@ called on each argument in order.
 
 __Arguments__
 
-* function - The function you want to eventually apply all arguments to.
-* arguments... - Any number of arguments to apply to the function.
+* `function` - The function you want to eventually apply all arguments to.
+* `arguments...` - Any number of arguments to apply to the function.
 
 __Example__
 
@@ -1399,8 +1399,8 @@ called on each argument in order.
 
 __Arguments__
 
-* function - The function you want to eventually apply all arguments to.
-* arguments... - Any number of arguments to apply to the function.
+* `function` - The function you want to eventually apply all arguments to.
+* `arguments...` - Any number of arguments to apply to the function.
 
 __Example__
 
