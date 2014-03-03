@@ -175,7 +175,7 @@ __Arguments__
 * `iterator(item, callback)` - A function to apply to each item in the array.
   The iterator is passed a callback(err) which must be called once it has 
   completed. If no error has occured, the callback should be run without 
-  arguments or with an explicit null argument.
+  arguments or with an explicit `null` argument.
 * `callback(err)` - A callback which is called after all the iterator functions
   have finished, or an error has occurred.
 
@@ -207,11 +207,11 @@ processing. This means the iterator functions will complete in order.
 <a name="eachLimit" />
 ### eachLimit(arr, limit, iterator, callback)
 
-The same as each only no more than "limit" iterators will be simultaneously 
+The same as each only no more than `limit` iterators will be simultaneously 
 running at any time.
 
 Note that the items are not processed in batches, so there is no guarantee that
- the first "limit" iterator functions will complete before any others are 
+ the first `limit` iterator functions will complete before any others are 
 started.
 
 __Arguments__
@@ -221,7 +221,7 @@ __Arguments__
 * `iterator(item, callback)` - A function to apply to each item in the array.
   The iterator is passed a callback(err) which must be called once it has 
   completed. If no error has occured, the callback should be run without 
-  arguments or with an explicit null argument.
+  arguments or with an explicit `null` argument.
 * `callback(err)` - A callback which is called after all the iterator functions
   have finished, or an error has occurred.
 
@@ -257,7 +257,7 @@ __Arguments__
 * `arr` - An array to iterate over.
 * `iterator(item, callback)` - A function to apply to each item in the array.
   The iterator is passed a callback(err, transformed) which must be called once 
-  it has completed with an error (which can be null) and a transformed item.
+  it has completed with an error (which can be `null`) and a transformed item.
 * `callback(err, results)` - A callback which is called after all the iterator
   functions have finished, or an error has occurred. Results is an array of the
   transformed items from the original array.
@@ -285,11 +285,11 @@ processing. The results array will be in the same order as the original.
 <a name="mapLimit" />
 ### mapLimit(arr, limit, iterator, callback)
 
-The same as map only no more than "limit" iterators will be simultaneously 
+The same as map only no more than `limit` iterators will be simultaneously 
 running at any time.
 
 Note that the items are not processed in batches, so there is no guarantee that
- the first "limit" iterator functions will complete before any others are 
+ the first `limit` iterator functions will complete before any others are 
 started.
 
 __Arguments__
@@ -298,7 +298,7 @@ __Arguments__
 * `limit` - The maximum number of iterators to run at any time.
 * `iterator(item, callback)` - A function to apply to each item in the array.
   The iterator is passed a callback(err, transformed) which must be called once 
-  it has completed with an error (which can be null) and a transformed item.
+  it has completed with an error (which can be `null`) and a transformed item.
 * `callback(err, results)` - A callback which is called after all the iterator
   functions have finished, or an error has occurred. Results is an array of the
   transformed items from the original array.
@@ -316,12 +316,12 @@ async.mapLimit(['file1','file2','file3'], 1, fs.stat, function(err, results){
 <a name="filter" />
 ### filter(arr, iterator, callback)
 
-__Alias:__ select
+__Alias:__ `select`
 
 Returns a new array of all the values which pass an async truth test.
-_The callback for each iterator call only accepts a single argument of true or
-false, it does not accept an error argument first!_ This is in-line with the
-way node libraries work with truth tests like fs.exists. This operation is
+_The callback for each iterator call only accepts a single argument of `true` or
+`false`, it does not accept an error argument first!_ This is in-line with the
+way node libraries work with truth tests like `fs.exists`. This operation is
 performed in parallel, but the results array will be in the same order as the
 original.
 
@@ -347,7 +347,7 @@ async.filter(['file1','file2','file3'], fs.exists, function(results){
 <a name="filterSeries" />
 ### filterSeries(arr, iterator, callback)
 
-__alias:__ selectSeries
+__Alias:__ `selectSeries`
 
 The same as filter only the iterator is applied to each item in the array in
 series. The next iterator is only called once the current one has completed
@@ -374,7 +374,7 @@ in series.
 <a name="reduce" />
 ### reduce(arr, memo, iterator, callback)
 
-__aliases:__ inject, foldl
+__Aliases:__ `inject`, `foldl`
 
 Reduces a list of values into a single value using an async iterator to return
 each successive step. Memo is the initial state of the reduction. This
@@ -415,7 +415,7 @@ async.reduce([1,2,3], 0, function(memo, item, callback){
 <a name="reduceRight" />
 ### reduceRight(arr, memo, iterator, callback)
 
-__Alias:__ foldr
+__Alias:__ `foldr`
 
 Same as reduce, only operates on the items in the array in reverse order.
 
@@ -426,7 +426,7 @@ Same as reduce, only operates on the items in the array in reverse order.
 ### detect(arr, iterator, callback)
 
 Returns the first value in a list that passes an async truth test. The
-iterator is applied in parallel, meaning the first iterator to return true will
+iterator is applied in parallel, meaning the first iterator to return `true` will
 fire the detect callback with that result. That means the result might not be
 the first item in the original array (in terms of order) that passes the test.
 
@@ -439,7 +439,7 @@ __Arguments__
   The iterator is passed a callback(truthValue) which must be called with a 
   boolean argument once it has completed.
 * `callback(result)` - A callback which is called as soon as any iterator returns
-  true, or after all the iterator functions have finished. Result will be
+  `true`, or after all the iterator functions have finished. Result will be
   the first item in the array that passes the truth test (iterator) or the
   value undefined if none passed.
 
@@ -473,7 +473,7 @@ __Arguments__
 * `arr` - An array to iterate over.
 * `iterator(item, callback)` - A function to apply to each item in the array.
   The iterator is passed a callback(err, sortValue) which must be called once it
-  has completed with an error (which can be null) and a value to use as the sort
+  has completed with an error (which can be `null`) and a value to use as the sort
   criteria.
 * `callback(err, results)` - A callback which is called after all the iterator
   functions have finished, or an error has occurred. Results is the items from
@@ -497,13 +497,13 @@ async.sortBy(['file1','file2','file3'], function(file, callback){
 <a name="some" />
 ### some(arr, iterator, callback)
 
-__Alias:__ any
+__Alias:__ `any`
 
-Returns true if at least one element in the array satisfies an async test.
-_The callback for each iterator call only accepts a single argument of true or
-false, it does not accept an error argument first!_ This is in-line with the
-way node libraries work with truth tests like fs.exists. Once any iterator
-call returns true, the main callback is immediately called.
+Returns `true` if at least one element in the array satisfies an async test.
+_The callback for each iterator call only accepts a single argument of `true` or
+`false`, it does not accept an error argument first!_ This is in-line with the
+way node libraries work with truth tests like `fs.exists`. Once any iterator
+call returns `true`, the main callback is immediately called.
 
 __Arguments__
 
@@ -512,8 +512,8 @@ __Arguments__
   The iterator is passed a callback(truthValue) which must be called with a 
   boolean argument once it has completed.
 * `callback(result)` - A callback which is called as soon as any iterator returns
-  true, or after all the iterator functions have finished. Result will be
-  either true or false depending on the values of the async tests.
+  `true`, or after all the iterator functions have finished. Result will be
+  either `true` or `false` depending on the values of the async tests.
 
 __Example__
 
@@ -528,12 +528,12 @@ async.some(['file1','file2','file3'], fs.exists, function(result){
 <a name="every" />
 ### every(arr, iterator, callback)
 
-__Alias:__ all
+__Alias:__ `all`
 
-Returns true if every element in the array satisfies an async test.
-_The callback for each iterator call only accepts a single argument of true or
-false, it does not accept an error argument first!_ This is in-line with the
-way node libraries work with truth tests like fs.exists.
+Returns `true` if every element in the array satisfies an async test.
+_The callback for each iterator call only accepts a single argument of `true` or
+`false`, it does not accept an error argument first!_ This is in-line with the
+way node libraries work with truth tests like `fs.exists`.
 
 __Arguments__
 
@@ -542,7 +542,7 @@ __Arguments__
   The iterator is passed a callback(truthValue) which must be called with a 
   boolean argument once it has completed.
 * `callback(result)` - A callback which is called after all the iterator
-  functions have finished. Result will be either true or false depending on
+  functions have finished. Result will be either `true` or `false` depending on
   the values of the async tests.
 
 __Example__
@@ -568,7 +568,7 @@ __Arguments__
 * `arr` - An array to iterate over
 * `iterator(item, callback)` - A function to apply to each item in the array.
   The iterator is passed a callback(err, results) which must be called once it 
-  has completed with an error (which can be null) and an array of results.
+  has completed with an error (which can be `null`) and an array of results.
 * `callback(err, results)` - A callback which is called after all the iterator
   functions have finished, or an error has occurred. Results is an array containing
   the concatenated results of the iterator function.
@@ -610,7 +610,7 @@ __Arguments__
 
 * `tasks` - An array or object containing functions to run, each function is passed
   a callback(err, result) it must call on completion with an error (which can
-  be null) and an optional result value.
+  be `null`) and an optional result value.
 * `callback(err, results)` - An optional callback to run once all the functions
   have completed. This function gets a results array (or object) containing all 
   the result arguments passed to the task callbacks.
@@ -673,7 +673,7 @@ __Arguments__
 
 * `tasks` - An array or object containing functions to run, each function is passed 
   a callback(err, result) it must call on completion with an error (which can
-  be null) and an optional result value.
+  be `null`) and an optional result value.
 * `callback(err, results)` - An optional callback to run once all the functions
   have completed. This function gets a results array (or object) containing all 
   the result arguments passed to the task callbacks.
@@ -733,7 +733,7 @@ __Arguments__
 
 * `tasks` - An array or object containing functions to run, each function is passed 
   a callback(err, result) it must call on completion with an error (which can
-  be null) and an optional result value.
+  be `null`) and an optional result value.
 * `limit` - The maximum number of tasks to run at any time.
 * `callback(err, results)` - An optional callback to run once all the functions
   have completed. This function gets a results array (or object) containing all 
@@ -744,7 +744,7 @@ __Arguments__
 <a name="whilst" />
 ### whilst(test, fn, callback)
 
-Repeatedly call fn, while test returns true. Calls the callback when stopped,
+Repeatedly call fn, while test returns `true`. Calls the callback when stopped,
 or an error occurs.
 
 __Arguments__
@@ -785,7 +785,7 @@ The post check version of whilst. To reflect the difference in the order of oper
 <a name="until" />
 ### until(test, fn, callback)
 
-Repeatedly call fn, until test returns true. Calls the callback when stopped,
+Repeatedly call fn, until test returns `true`. Calls the callback when stopped,
 or an error occurs.
 
 The inverse of async.whilst.
@@ -820,7 +820,7 @@ __Arguments__
 
 * `tasks` - An array of functions to run, each function is passed a 
   callback(err, result1, result2, ...) it must call on completion. The first
-  argument is an error (which can be null) and any further arguments will be 
+  argument is an error (which can be `null`) and any further arguments will be 
   passed as arguments in order to the next task.
 * `callback(err, [results])` - An optional callback to run once all the functions
   have completed. This will be passed the results of the last task's callback.
@@ -1101,7 +1101,7 @@ __Arguments__
   requirements, with the function itself the last item in the array. The key
   used for each function or array is used when specifying requirements. The 
   function receives two arguments: (1) a callback(err, result) which must be 
-  called when finished, passing an error (which can be null) and the result of 
+  called when finished, passing an error (which can be `null`) and the result of 
   the function's execution, and (2) a results object, containing the results of
   the previously executed functions.
 * `callback(err, results)` - An optional callback which is called when all the
