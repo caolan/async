@@ -6,8 +6,8 @@ use with [node.js](http://nodejs.org), it can also be used directly in the
 browser. Also supports [component](https://github.com/component/component).
 
 Async provides around 20 functions that include the usual 'functional'
-suspects (map, reduce, filter, each…) as well as some common patterns
-for asynchronous control flow (parallel, series, waterfall…). All these
+suspects (`map`, `reduce`, `filter`, `each`…) as well as some common patterns
+for asynchronous control flow (`parallel`, `series`, `waterfall`…). All these
 functions assume you follow the node.js convention of providing a single
 callback as the last argument of your async function.
 
@@ -42,8 +42,8 @@ missing please create a GitHub issue for it.
 
 ### Binding a context to an iterator
 
-This section is really about bind, not about async. If you are wondering how to
-make async execute your iterators in a given context, or are confused as to why
+This section is really about `bind`, not about `async`. If you are wondering how to
+make `async` execute your iterators in a given context, or are confused as to why
 a method of another library isn't working as an iterator, study this example:
 
 ```js
@@ -78,7 +78,7 @@ async.map([1, 2, 3], AsyncSquaringLibrary.square.bind(AsyncSquaringLibrary), fun
 
 The source is available for download from
 [GitHub](http://github.com/caolan/async).
-Alternatively, you can install using Node Package Manager (npm):
+Alternatively, you can install using Node Package Manager (`npm`):
 
     npm install async
 
@@ -103,56 +103,56 @@ So far it's been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 
 ### Collections
 
-* [each](#each)
-* [eachSeries](#eachSeries)
-* [eachLimit](#eachLimit)
-* [map](#map)
-* [mapSeries](#mapSeries)
-* [mapLimit](#mapLimit)
-* [filter](#filter)
-* [filterSeries](#filterSeries)
-* [reject](#reject)
-* [rejectSeries](#rejectSeries)
-* [reduce](#reduce)
-* [reduceRight](#reduceRight)
-* [detect](#detect)
-* [detectSeries](#detectSeries)
-* [sortBy](#sortBy)
-* [some](#some)
-* [every](#every)
-* [concat](#concat)
-* [concatSeries](#concatSeries)
+* [`each`](#each)
+* [`eachSeries`](#eachSeries)
+* [`eachLimit`](#eachLimit)
+* [`map`](#map)
+* [`mapSeries`](#mapSeries)
+* [`mapLimit`](#mapLimit)
+* [`filter`](#filter)
+* [`filterSeries`](#filterSeries)
+* [`reject`](#reject)
+* [`rejectSeries`](#rejectSeries)
+* [`reduce`](#reduce)
+* [`reduceRight`](#reduceRight)
+* [`detect`](#detect)
+* [`detectSeries`](#detectSeries)
+* [`sortBy`](#sortBy)
+* [`some`](#some)
+* [`every`](#every)
+* [`concat`](#concat)
+* [`concatSeries`](#concatSeries)
 
 ### Control Flow
 
-* [series](#series)
-* [parallel](#parallel)
-* [parallelLimit](#parallellimittasks-limit-callback)
-* [whilst](#whilst)
-* [doWhilst](#doWhilst)
-* [until](#until)
-* [doUntil](#doUntil)
-* [forever](#forever)
-* [waterfall](#waterfall)
-* [compose](#compose)
-* [applyEach](#applyEach)
-* [applyEachSeries](#applyEachSeries)
-* [queue](#queue)
-* [cargo](#cargo)
-* [auto](#auto)
-* [iterator](#iterator)
-* [apply](#apply)
-* [nextTick](#nextTick)
-* [times](#times)
-* [timesSeries](#timesSeries)
+* [`series`](#series)
+* [`parallel`](#parallel)
+* [`parallelLimit`](#parallellimittasks-limit-callback)
+* [`whilst`](#whilst)
+* [`doWhilst`](#doWhilst)
+* [`until`](#until)
+* [`doUntil`](#doUntil)
+* [`forever`](#forever)
+* [`waterfall`](#waterfall)
+* [`compose`](#compose)
+* [`applyEach`](#applyEach)
+* [`applyEachSeries`](#applyEachSeries)
+* [`queue`](#queue)
+* [`cargo`](#cargo)
+* [`auto`](#auto)
+* [`iterator`](#iterator)
+* [`apply`](#apply)
+* [`nextTick`](#nextTick)
+* [`times`](#times)
+* [`timesSeries`](#timesSeries)
 
 ### Utils
 
-* [memoize](#memoize)
-* [unmemoize](#unmemoize)
-* [log](#log)
-* [dir](#dir)
-* [noConflict](#noConflict)
+* [`memoize`](#memoize)
+* [`unmemoize`](#unmemoize)
+* [`log`](#log)
+* [`dir`](#dir)
+* [`noConflict`](#noConflict)
 
 
 ## Collections
