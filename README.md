@@ -804,11 +804,26 @@ Like [`doWhilst`](#doWhilst), except the `test` is inverted. Note the argument o
 ---------------------------------------
 
 <a name="forever" />
-### forever(fn, callback)
+### forever(fn, errback)
 
-Calls the asynchronous function `fn` repeatedly, in series, indefinitely.
-If an error is passed to `fn`'s callback, then `callback` is called with the
-error; otherwise it is never called.
+Calls the asynchronous function `fn` with a callback parameter that allows it to
+call itself again, in series, indefinitely.
+
+If an error is passed to the callback then `errback` is called with the
+error, and execution stops, otherwise it will never be called.
+
+```js
+async.forever(
+    function(next) {
+        // next is suitable for passing to things that need a callback(err [, whatever]);
+        // it will result in this function being called again.
+    },
+    function(err) {
+        // if next is called with a value in its first parameter, it will appear
+        // in here as 'err', and execution will stop.
+    }
+);
+```
 
 ---------------------------------------
 
