@@ -554,6 +554,31 @@ exports['auto calls callback multiple times'] = function(test) {
     }, 10);
 };
 
+// Issue 462 on github: https://github.com/caolan/async/issues/462
+exports['auto modifying results causes final callback to run early'] = function(test) {
+    async.auto({
+        task1: function(callback, results){
+            results.inserted = true
+            callback(null, 'task1');
+        },
+        task2: function(callback){
+            setTimeout(function(){
+                callback(null, 'task2');
+            }, 50);
+        },
+        task3: function(callback){
+            setTimeout(function(){
+                callback(null, 'task3');
+            }, 100);
+        }
+    },
+    function(err, results){
+        test.equal(results.inserted, true)
+        test.ok(results.task3, 'task3')
+        test.done();
+    });
+};
+
 exports['waterfall'] = function(test){
     test.expect(6);
     var call_order = [];
