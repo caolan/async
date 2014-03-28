@@ -2483,3 +2483,25 @@ exports['queue events'] = function(test) {
     q.push('poo', function () {calls.push('poo cb');});
     q.push('moo', function () {calls.push('moo cb');});
 };
+
+exports['queue empty'] = function(test) {
+    var calls = [];
+    var q = async.queue(function(task, cb) {
+        // nop
+        calls.push('process ' + task);
+        async.setImmediate(cb);
+    }, 3);
+
+    q.drain = function() {
+        test.ok(
+            q.length() == 0 && q.running() == 0,
+            'queue should be empty now and no more workers should be running'
+        );
+        calls.push('drain');
+        test.same(calls, [
+            'drain'
+        ]);
+        test.done();
+    };
+    q.push([]);
+};
