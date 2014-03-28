@@ -2250,6 +2250,27 @@ exports['queue bulk task'] = function (test) {
     }, 800);
 };
 
+exports['queue kill'] = function (test) {
+    var q = async.queue(function (task, callback) {
+        setTimeout(function () {
+            test.ok(false, "Function should never be called");
+            callback();
+        }, 300);
+    }, 1);
+    q.drain = function() {
+        test.ok(false, "Function should never be called");
+    }
+
+    q.push(0);
+
+    q.kill();
+    
+    setTimeout(function() {
+      test.equal(q.length(), 0);
+      test.done();
+    }, 600)
+};
+
 exports['cargo'] = function (test) {
     var call_order = [],
         delays = [160, 160, 80];
