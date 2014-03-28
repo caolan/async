@@ -2283,23 +2283,63 @@ exports['memoize'] = function (test) {
     var call_order = [];
 
     var fn = function (arg1, arg2, callback) {
-        call_order.push(['fn', arg1, arg2]);
-        callback(null, arg1 + arg2);
+        async.setImmediate(function () {
+            call_order.push(['fn', arg1, arg2]);
+            callback(null, arg1 + arg2);
+        });
     };
 
     var fn2 = async.memoize(fn);
     fn2(1, 2, function (err, result) {
         test.equal(result, 3);
+        fn2(1, 2, function (err, result) {
+            test.equal(result, 3);
+            fn2(2, 2, function (err, result) {
+                test.equal(result, 4);
+                test.same(call_order, [['fn',1,2], ['fn',2,2]]);
+                test.done();
+            });
+        });
     });
+};
+
+exports['memoize maintains asynchrony'] = function (test) {
+    test.expect(3);
+    var call_order = [];
+
+    var fn = function (arg1, arg2, callback) {
+        call_order.push(['fn', arg1, arg2]);
+        async.setImmediate(function () {
+            call_order.push(['cb', arg1, arg2]);
+            callback(null, arg1 + arg2);
+        });
+    };
+
+    var fn2 = async.memoize(fn);
     fn2(1, 2, function (err, result) {
         test.equal(result, 3);
+        fn2(1, 2, function (err, result) {
+            test.equal(result, 3);
+            async.nextTick(memoize_done);
+            call_order.push('tick3');
+        });
+        call_order.push('tick2');
     });
-    fn2(2, 2, function (err, result) {
-        test.equal(result, 4);
-    });
+    call_order.push('tick1');
 
-    test.same(call_order, [['fn',1,2], ['fn',2,2]]);
-    test.done();
+    function memoize_done() {
+        var async_call_order = [
+            ['fn',1,2],             // initial async call
+            'tick1',                // async caller
+            ['cb',1,2],             // async callback
+        //  ['fn',1,2], // memoized // memoized async body
+            'tick2',                // handler for first async call
+        //  ['cb',1,2], // memoized // memoized async response body
+            'tick3'                 // handler for memoized async call
+        ];
+        test.same(call_order, async_call_order);
+        test.done();
+    }
 };
 
 exports['unmemoize'] = function(test) {
@@ -2308,24 +2348,24 @@ exports['unmemoize'] = function(test) {
 
     var fn = function (arg1, arg2, callback) {
         call_order.push(['fn', arg1, arg2]);
-        callback(null, arg1 + arg2);
+        async.setImmediate(function () {
+            callback(null, arg1 + arg2);
+        });
     };
 
     var fn2 = async.memoize(fn);
     var fn3 = async.unmemoize(fn2);
     fn3(1, 2, function (err, result) {
         test.equal(result, 3);
+        fn3(1, 2, function (err, result) {
+            test.equal(result, 3);
+            fn3(2, 2, function (err, result) {
+                test.equal(result, 4);
+                test.same(call_order, [['fn',1,2], ['fn',1,2], ['fn',2,2]]);
+                test.done();
+            });
+        });
     });
-    fn3(1, 2, function (err, result) {
-        test.equal(result, 3);
-    });
-    fn3(2, 2, function (err, result) {
-        test.equal(result, 4);
-    });
-
-    test.same(call_order, [['fn',1,2], ['fn',1,2], ['fn',2,2]]);
-
-    test.done();
 }
 
 exports['unmemoize a not memoized function'] = function(test) {
@@ -2385,11 +2425,11 @@ exports['memoize custom hash function'] = function (test) {
     });
     fn2(1, 2, function (err, result) {
         test.equal(result, 3);
+        fn2(2, 2, function (err, result) {
+            test.equal(result, 3);
+            test.done();
+        });
     });
-    fn2(2, 2, function (err, result) {
-        test.equal(result, 3);
-    });
-    test.done();
 };
 
 exports['memoize manually added memo value'] = function (test) {
