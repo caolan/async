@@ -104,6 +104,27 @@ Usage:
 </script>
 ```
 
+## How to contribute
+
+1. Fork repository on GitHub.
+2. Clone forked repository: `git clone git@github.com:_username_/async.git`
+3. Add original remote repository: `git remote add upstream https://github.com/caolan/async.git`
+4. Create and checkout dev branch: `cd async && git checkout -b dev origin/dev`
+5. Create and checkout feature/bugfix branch: `git checkout -b _branch_ dev`
+6. Get latest updates from the upstream dev branch: `git remote update && git pull upstream dev`
+7. Setup for development: `sudo npm link` (use it in a library by running: `npm link async`).
+8. Run tests and check that all pass: `nodeunit test/test-async.js`
+9. Write tests in test/test-async.js
+10. Write source (eg. in lib/async.js).
+11. Run tests and check that all pass.
+12. Save changes: `git add --all && git commit -m "_message_"
+13. Create another feature/bugfix by following steps 4-12
+    Merge feature/bugfix branch back to dev branch: `git checkout dev && git merge _branch_`
+    Delete feature/bugfix branch: `git branch -d _branch_`
+14. Push your changes to GitHub: `git push origin dev`
+15. Make pull request for your forked repository's dev branch into the original repository's dev branch.
+
+
 ## Documentation
 
 ### Collections
