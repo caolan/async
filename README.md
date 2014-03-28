@@ -1,5 +1,8 @@
 # Async.js
 
+[![Build Status via Travis CI](https://travis-ci.org/caolan/async.png?branch=master)](https://travis-ci.org/caolan/async)
+
+
 Async is a utility module which provides straight-forward, powerful functions
 for working with asynchronous JavaScript. Although originally designed for
 use with [Node.js](http://nodejs.org), it can also be used directly in the
