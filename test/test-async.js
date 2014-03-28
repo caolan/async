@@ -66,6 +66,29 @@ function getFunctionsObject(call_order) {
     };
 }
 
+exports['cond'] = function(test) {
+    var yesFn = function (cb) { return cb(null, true); },
+        noFn = function (cb) { return cb(null, false); },
+        errFn = function (cb) { return cb(new Error); },
+        oneFn = function (cb) { return cb(null, 'one'); },
+        twoFn = function (cb) { return cb(null, 'two'); };
+    test.expect(7);
+    test.equal(async.cond, async['if']);
+    async.cond(yesFn, oneFn, twoFn, function(err, result) {
+        test.equal(err, null);
+        test.equal(result, 'one');
+        async.cond(noFn, oneFn, twoFn, function(err, result) {
+            test.equal(err, null);
+            test.equal(result, 'two');
+            async.cond(errFn, oneFn, twoFn, function(err, result) {
+                test.ok(err);
+                test.equal(result, null);
+                test.done();
+            });
+        });
+    });
+};
+
 exports['forever'] = function (test) {
     test.expect(1);
     var counter = 0;
