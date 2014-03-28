@@ -1165,6 +1165,20 @@ exports['map error'] = function(test){
     setTimeout(test.done, 50);
 };
 
+exports['map without callback'] = function(test){
+    var a = []
+    async.series([function(callback){
+        async.map([1,2,3], function(x){
+            a.push(x);
+        });
+        callback();
+    },
+    function(callback){
+        test.same(a, [1,2,3]);
+	test.done();
+    }]);
+};
+
 exports['mapSeries'] = function(test){
     var call_order = [];
     async.mapSeries([1,3,2], mapIterator.bind(this, call_order), function(err, results){
