@@ -182,7 +182,8 @@ __Arguments__
 * `callback(err)` - A callback which is called when all `iterator` functions
   have finished, or an error occurs.
 
-__Example__
+__Examples__
+
 
 ```js
 // assuming openFiles is an array of file names and saveFile is a function
@@ -190,6 +191,37 @@ __Example__
 
 async.each(openFiles, saveFile, function(err){
     // if any of the saves produced an error, err would equal that error
+});
+```
+
+```js
+// assuming openFiles is an array of file names and saveFile is a function
+// to save the modified contents of that file:
+
+async.each(openFiles, function( file, callback) {
+  
+  // Perform operation on file here.
+  console.log('Processing file ' + file);
+  callback();
+
+  if( file.length > 32 ) {
+    console.log('This file name is too long');
+    callback('File name too long');
+
+    return;
+  } else {
+    console.log('File saved');
+    callback();
+  }
+}, function(err){
+    // if any of the saves produced an error, err would equal that error
+    if( err ) {
+      // One of the iterations produced an error.
+      // All processing will now stop.
+      console.log('A file failed to process');
+    } else {
+      console.log('All files have been processed successfully');
+    }
 });
 ```
 
