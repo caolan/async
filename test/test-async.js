@@ -2061,6 +2061,31 @@ exports['queue bulk task'] = function (test) {
     }, 800);
 };
 
+exports['queue idle'] = function(test) {
+    var q = async.queue(function (task, callback) {
+      // Queue is busy when workers are running
+      test.equal(q.idle(), false)
+      callback();
+    }, 1);
+
+    // Queue is idle before anything added
+    test.equal(q.idle(), true)
+
+    q.unshift(4);
+    q.unshift(3);
+    q.unshift(2);
+    q.unshift(1);
+
+    // Queue is busy when tasks added
+    test.equal(q.idle(), false)
+
+    q.drain = function() {
+        // Queue is idle after drain
+        test.equal(q.idle(), true);
+        test.done();
+    }
+}
+
 exports['cargo'] = function (test) {
     var call_order = [],
         delays = [160, 160, 80];
