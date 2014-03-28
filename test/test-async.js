@@ -433,22 +433,38 @@ exports['auto removeListener has side effect on loop iterator'] = function(test)
 
 // Issue 410 on github: https://github.com/caolan/async/issues/410
 exports['auto calls callback multiple times'] = function(test) {
+    if (typeof process === 'undefined') {
+        // node only test
+        return;
+    }
     var finalCallCount = 0;
-    async.auto({
-        task1: function(callback) { callback(null); },
-        task2: ['task1', function(callback) { callback(null); }]
-    },
-
-    // Error throwing final callback. This should only run once
-    function(err) {
-        finalCallCount++;
-        if (finalCallCount > 1) {
-            test.done(new Error("Final auto callback should only be called once"));
-        } else {
-            test.done();
-            throw new Error("An error");
+    var domain = require('domain').create();
+    domain.on('error', function (e) {
+        // ignore test error
+        if (!e._test_error) {
+            return test.done(e);
         }
     });
+    domain.run(function () {
+        async.auto({
+            task1: function(callback) { callback(null); },
+            task2: ['task1', function(callback) { callback(null); }]
+        },
+
+        // Error throwing final callback. This should only run once
+        function(err) {
+            finalCallCount++;
+            var e = new Error("An error");
+            e._test_error = true;
+            throw e;
+        });
+    });
+    setTimeout(function () {
+        test.equal(finalCallCount, 1,
+            "Final auto callback should only be called once"
+        );
+        test.done();
+    }, 10);
 };
 
 exports['waterfall'] = function(test){
