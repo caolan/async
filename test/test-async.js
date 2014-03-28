@@ -1002,6 +1002,72 @@ exports['forEach alias'] = function (test) {
     test.done();
 };
 
+exports['eachParams thisOk callback'] = function(test){
+    var count = 0;
+    async.eachParams(this, [[1,2],[1,3]], function(val1, val2, callback) {
+        count++;
+        callback();
+        test.throws(callback);
+        if (count == 2) {
+            test.done();
+        }
+    });
+};
+
+exports['eachParams thisNull callback'] = function(test){
+    var count = 0;
+    async.eachParams(null, [[1,2],[1,3]], function(val1, val2, callback) {
+        count++;
+        callback();
+        test.throws(callback);
+        if (count == 2) {
+            test.done();
+        }
+    });
+};
+
+exports['eachParams extra callback'] = function(test){
+    var count = 0;
+    async.eachParams([[1,2],[1,3]], function(val1, val2, callback) {
+        count++;
+        callback();
+        test.throws(callback);
+        if (count == 2) {
+            test.done();
+        }
+    });
+};
+
+exports['eachParams empty array'] = function(test){
+    test.expect(1);
+    async.eachParams([], function(x, callback){
+        test.ok(false, 'iterator should not be called');
+        callback();
+    }, function(err){
+        test.ok(true, 'should call callback');
+    });
+    setTimeout(test.done, 25);
+};
+
+exports['eachParams error'] = function(test){
+    test.expect(1);
+    async.eachParams([[1,2,3],[4,5,6]], function(val1, val2, val3, callback){
+        callback('error');
+    }, function(err){
+        test.equals(err, 'error');
+    });
+    setTimeout(test.done, 50);
+};
+
+exports['eachParams no callback'] = function(test){
+    async.eachParams([1], eachNoCallbackIterator.bind(this, test));
+};
+
+exports['forEachParams alias'] = function (test) {
+    test.strictEqual(async.eachParams, async.forEachParams);
+    test.done();
+};
+
 exports['eachSeries'] = function(test){
     var args = [];
     async.eachSeries([1,3,2], eachIterator.bind(this, args), function(err){
