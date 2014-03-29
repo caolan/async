@@ -579,6 +579,41 @@ exports['auto modifying results causes final callback to run early'] = function(
     });
 };
 
+// Issue 306 on github: https://github.com/caolan/async/issues/306
+exports['retry when attempt succeeds'] = function(test) {
+    var failed = 3
+    var callCount = 0
+    var expectedResult = 'success'
+    function fn(callback, results) {
+        callCount++
+        failed--
+        if (!failed) callback(null, expectedResult)
+        else callback(true) // respond with error
+    }
+    async.retry(fn, function(err, result){
+        test.equal(callCount, 3, 'did not retry the correct number of times')
+        test.equal(result, expectedResult, 'did not return the expected result')
+        test.done();
+    });
+};
+
+exports['retry when all attempts succeeds'] = function(test) {
+    var times = 3;
+    var callCount = 0;
+    var error = 'ERROR';
+    var erroredResult = 'RESULT';
+    function fn(callback, results) {
+        callCount++;
+        callback(error + callCount, erroredResult + callCount); // respond with indexed values
+    };
+    async.retry(times, fn, function(err, result){
+        test.equal(callCount, 3, "did not retry the correct number of times");
+        test.equal(err, error + times, "Incorrect error was returned");
+        test.equal(result, erroredResult + times, "Incorrect result was returned");
+        test.done();
+    });
+};
+
 exports['waterfall'] = function(test){
     test.expect(6);
     var call_order = [];

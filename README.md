@@ -146,6 +146,7 @@ Usage:
 * [`queue`](#queue)
 * [`cargo`](#cargo)
 * [`auto`](#auto)
+* [`retry`](#retry)
 * [`iterator`](#iterator)
 * [`apply`](#apply)
 * [`nextTick`](#nextTick)
@@ -1321,6 +1322,47 @@ function(err, results){
 
 For a complicated series of `async` tasks, using the [`auto`](#auto) function makes adding
 new tasks much easier (and the code more readable).
+
+
+---------------------------------------
+
+<a name="retry" />
+### retry([times = 5], task, [callback])
+
+Attempts to get a successful response from `task` no more than `times` times before
+returning an error. If the task is successful, the `callback` will be passed the result
+of the successfull task. If all attemps fail, the callback will be passed the error and
+result (if any) of the final attempt.
+
+__Arguments__
+
+* `task(callback, results)` - A function which receives two arguments: (1) a `callback(err, result)`
+  which must be called when finished, passing `err` (which can be `null`) and the `result` of 
+  the function's execution, and (2) a `results` object, containing the results of
+  the previously executed functions (if nested inside another controll flow).
+* `callback(err, results)` - An optional callback which is called when the
+  task has succeeded, or after the final failed attempt. It receives the `err` and `result` arguments of the last attempt at completing the `task`.
+
+The [`retry`](#retry) function can be used as a stand-alone controll flow by passing a
+callback, as shown below:
+
+```js
+async.retry(3, apiMethod, function(err, result) {
+    // do something with the result
+});
+```
+
+It can also be embeded within other controll flow functions to retry individual methods
+that are not as reliable, like this:
+
+```js
+async.auto({
+    users: api.getUsers.bind(api),
+    payments: async.retry(3, api.getPayments.bind(api))
+}, function(err, results) {
+  // do something with the results
+});
+```
 
 
 ---------------------------------------
