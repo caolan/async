@@ -614,6 +614,27 @@ exports['retry when all attempts succeeds'] = function(test) {
     });
 };
 
+exports['retry as an embedded task'] = function(test) {
+    var retryResult = 'RETRY';
+    var fooResults;
+    var retryResults;
+    
+    async.auto({
+        foo: function(callback, results){
+            fooResults = results;
+            callback(null, 'FOO');
+        },
+        retry: async.retry(function(callback, results) {
+            retryResults = results;
+            callback(null, retryResult);
+        })
+    }, function(err, results){
+        test.equal(results.retry, retryResult, "Incorrect result was returned from retry function");
+        test.equal(fooResults, retryResults, "Incorrect results were passed to retry function");
+        test.done();
+    });
+};
+
 exports['waterfall'] = function(test){
     test.expect(6);
     var call_order = [];
