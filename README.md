@@ -142,6 +142,7 @@ So far it's been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. Usage:
 * [log](#log)
 * [dir](#dir)
 * [noConflict](#noConflict)
+* [retry](#retry)
 
 
 ## Collections
@@ -1412,3 +1413,42 @@ node> async.dir(hello, 'world');
 
 Changes the value of async back to its original value, returning a reference to the
 async object.
+
+<a name="retry" />
+### retry([times], fn)
+
+Allows the developer to get the original function to retry itself N times whenever 
+there is failure (when the first argument of the callback is true) before giving up
+
+It overrides the original callback  function in order to test for the value of the 
+first argument until it is false (no error) or the retry cap is reached.
+
+__Arguments__
+
+* times - The number of retries before giving up. This is optional, is not specified, it'll retry 5 times.
+* fn - The function to retry. 
+
+__Example__
+
+```js
+ var testFunc = function(param1, cb) {
+    var result = //service request that tends to be unstable
+    var err = result == null;
+    cb(err, result);
+  };
+
+ //Doing...
+ testFunc("test", function(err, result) {
+   //Here we'll have to handle the error that happens when the service is unstable
+ });
+
+  //But by doing
+  var retryTest = async.retry(3, testFunc);
+  retryTest("test", function(err, result) {
+     //It'll retry 3 times before giving up and calling this callback, if one of those times, the service works, it'll return a valid response instead of the error.
+    console.log("The service call has failed 3 consecutive times!");
+  });
+
+```
+
+
