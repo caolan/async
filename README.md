@@ -1339,11 +1339,11 @@ __Arguments__
 * `task(callback, results)` - A function which receives two arguments: (1) a `callback(err, result)`
   which must be called when finished, passing `err` (which can be `null`) and the `result` of 
   the function's execution, and (2) a `results` object, containing the results of
-  the previously executed functions (if nested inside another controll flow).
+  the previously executed functions (if nested inside another control flow).
 * `callback(err, results)` - An optional callback which is called when the
   task has succeeded, or after the final failed attempt. It receives the `err` and `result` arguments of the last attempt at completing the `task`.
 
-The [`retry`](#retry) function can be used as a stand-alone controll flow by passing a
+The [`retry`](#retry) function can be used as a stand-alone control flow by passing a
 callback, as shown below:
 
 ```js
@@ -1352,7 +1352,7 @@ async.retry(3, apiMethod, function(err, result) {
 });
 ```
 
-It can also be embeded within other controll flow functions to retry individual methods
+It can also be embeded within other control flow functions to retry individual methods
 that are not as reliable, like this:
 
 ```js
