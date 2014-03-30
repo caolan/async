@@ -1088,6 +1088,9 @@ methods:
    and further tasks will be queued.
 * `empty` - a callback that is called when the last item from the `queue` is given to a `worker`.
 * `drain` - a callback that is called when the last item from the `queue` has returned from the `worker`.
+* `paused` - a boolean for determining whether the queue is in a paused state
+* `pause()` - a function that pauses the processing of tasks until `resume()` is called.
+* `resume()` - a function that resumes the processing of queued tasks when the queue is paused.
 
 __Example__
 
