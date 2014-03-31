@@ -774,7 +774,7 @@ exports['parallel'] = function(test){
         }
     ],
     function(err, results){
-        test.equals(err, null);
+        test.strictEqual(err, null);
         test.same(call_order, [3,1,2]);
         test.same(results, [1,2,[3,3]]);
         test.done();
@@ -783,7 +783,7 @@ exports['parallel'] = function(test){
 
 exports['parallel empty array'] = function(test){
     async.parallel([], function(err, results){
-        test.equals(err, null);
+        test.strictEqual(err, null);
         test.same(results, []);
         test.done();
     });
@@ -814,7 +814,7 @@ exports['parallel no callback'] = function(test){
 exports['parallel object'] = function(test){
     var call_order = [];
     async.parallel(getFunctionsObject(call_order), function(err, results){
-        test.equals(err, null);
+        test.strictEqual(err, null);
         test.same(call_order, [3,1,2]);
         test.same(results, {
             one: 1,
@@ -849,7 +849,7 @@ exports['parallel limit'] = function(test){
     ],
     2,
     function(err, results){
-        test.equals(err, null);
+        test.strictEqual(err, null);
         test.same(call_order, [1,3,2]);
         test.same(results, [1,2,[3,3]]);
         test.done();
@@ -858,7 +858,7 @@ exports['parallel limit'] = function(test){
 
 exports['parallel limit empty array'] = function(test){
     async.parallelLimit([], 2, function(err, results){
-        test.equals(err, null);
+        test.strictEqual(err, null);
         test.same(results, []);
         test.done();
     });
@@ -890,7 +890,7 @@ exports['parallel limit no callback'] = function(test){
 exports['parallel limit object'] = function(test){
     var call_order = [];
     async.parallelLimit(getFunctionsObject(call_order), 2, function(err, results){
-        test.equals(err, null);
+        test.strictEqual(err, null);
         test.same(call_order, [1,3,2]);
         test.same(results, {
             one: 1,
@@ -924,7 +924,7 @@ exports['series'] = function(test){
         }
     ],
     function(err, results){
-        test.equals(err, null);
+        test.strictEqual(err, null);
         test.same(results, [1,2,[3,3]]);
         test.same(call_order, [1,2,3]);
         test.done();
@@ -933,7 +933,7 @@ exports['series'] = function(test){
 
 exports['series empty array'] = function(test){
     async.series([], function(err, results){
-        test.equals(err, null);
+        test.strictEqual(err, null);
         test.same(results, []);
         test.done();
     });
@@ -966,7 +966,7 @@ exports['series no callback'] = function(test){
 exports['series object'] = function(test){
     var call_order = [];
     async.series(getFunctionsObject(call_order), function(err, results){
-        test.equals(err, null);
+        test.strictEqual(err, null);
         test.same(results, {
             one: 1,
             two: 2,
