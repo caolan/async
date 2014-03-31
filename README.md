@@ -1242,10 +1242,11 @@ async.auto({
 
 __Arguments__
 
-* `tasks` - An object literal (containing named functions) or an array (of
-  requirements, with the function itself the last item in the array). The key
-  used for each function or array is used when specifying requirements. The 
-  function receives two arguments: (1) a `callback(err, result)` which must be 
+* `tasks` - An object. Each of its properties is either a function or an array of
+  requirements, with the function itself the last item in the array. The object's key
+  of a property serves as the name of the task defined by that property,
+  i.e. can be used when specifying requirements for other tasks.
+  The function receives two arguments: (1) a `callback(err, result)` which must be 
   called when finished, passing an `error` (which can be `null`) and the result of 
   the function's execution, and (2) a `results` object, containing the results of
   the previously executed functions.
