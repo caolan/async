@@ -554,6 +554,87 @@ exports['auto calls callback multiple times'] = function(test) {
     }, 10);
 };
 
+// Issue 462 on github: https://github.com/caolan/async/issues/462
+exports['auto modifying results causes final callback to run early'] = function(test) {
+    async.auto({
+        task1: function(callback, results){
+            results.inserted = true
+            callback(null, 'task1');
+        },
+        task2: function(callback){
+            setTimeout(function(){
+                callback(null, 'task2');
+            }, 50);
+        },
+        task3: function(callback){
+            setTimeout(function(){
+                callback(null, 'task3');
+            }, 100);
+        }
+    },
+    function(err, results){
+        test.equal(results.inserted, true)
+        test.ok(results.task3, 'task3')
+        test.done();
+    });
+};
+
+// Issue 306 on github: https://github.com/caolan/async/issues/306
+exports['retry when attempt succeeds'] = function(test) {
+    var failed = 3
+    var callCount = 0
+    var expectedResult = 'success'
+    function fn(callback, results) {
+        callCount++
+        failed--
+        if (!failed) callback(null, expectedResult)
+        else callback(true) // respond with error
+    }
+    async.retry(fn, function(err, result){
+        test.equal(callCount, 3, 'did not retry the correct number of times')
+        test.equal(result, expectedResult, 'did not return the expected result')
+        test.done();
+    });
+};
+
+exports['retry when all attempts succeeds'] = function(test) {
+    var times = 3;
+    var callCount = 0;
+    var error = 'ERROR';
+    var erroredResult = 'RESULT';
+    function fn(callback, results) {
+        callCount++;
+        callback(error + callCount, erroredResult + callCount); // respond with indexed values
+    };
+    async.retry(times, fn, function(err, result){
+        test.equal(callCount, 3, "did not retry the correct number of times");
+        test.equal(err, error + times, "Incorrect error was returned");
+        test.equal(result, erroredResult + times, "Incorrect result was returned");
+        test.done();
+    });
+};
+
+exports['retry as an embedded task'] = function(test) {
+    var retryResult = 'RETRY';
+    var fooResults;
+    var retryResults;
+    
+    async.auto({
+        foo: function(callback, results){
+            fooResults = results;
+            callback(null, 'FOO');
+        },
+        retry: async.retry(function(callback, results) {
+            retryResults = results;
+            callback(null, retryResult);
+        })
+    }, function(err, results){
+        test.equal(results.retry, retryResult, "Incorrect result was returned from retry function");
+        test.equal(fooResults, retryResults, "Incorrect results were passed to retry function");
+        test.done();
+    });
+};
+
 exports['waterfall'] = function(test){
     test.expect(6);
     var call_order = [];
@@ -2273,6 +2354,57 @@ exports['queue idle'] = function(test) {
         test.equal(q.idle(), true);
         test.done();
     }
+}
+
+exports['queue pause'] = function(test) {
+    var call_order = [],
+        task_timeout = 100,
+        pause_timeout = 300,
+        resume_timeout = 500,
+        tasks = [ 1, 2, 3, 4, 5, 6 ],
+
+        elapsed = (function () {
+            var start = +Date.now();
+            return function () { return Math.floor((+Date.now() - start) / 100) * 100; };
+        })();
+
+    var q = async.queue(function (task, callback) {
+        call_order.push('process ' + task);
+        call_order.push('timeout ' + elapsed());
+        callback();
+    });
+
+    function pushTask () {
+        var task = tasks.shift();
+        if (!task) { return; }
+        setTimeout(function () {
+            q.push(task);
+            pushTask();
+        }, task_timeout);
+    }
+    pushTask();
+
+    setTimeout(function () {
+        q.pause();
+        test.equal(q.paused, true);
+    }, pause_timeout);
+
+    setTimeout(function () {
+        q.resume();
+        test.equal(q.paused, false);
+    }, resume_timeout);
+
+    setTimeout(function () {
+        test.same(call_order, [
+            'process 1', 'timeout 100',
+            'process 2', 'timeout 200',
+            'process 3', 'timeout 500',
+            'process 4', 'timeout 500',
+            'process 5', 'timeout 500',
+            'process 6', 'timeout 600'
+        ]);
+        test.done();
+    }, 800);
 }
 
 exports['cargo'] = function (test) {

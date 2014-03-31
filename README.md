@@ -146,6 +146,7 @@ Usage:
 * [`queue`](#queue)
 * [`cargo`](#cargo)
 * [`auto`](#auto)
+* [`retry`](#retry)
 * [`iterator`](#iterator)
 * [`apply`](#apply)
 * [`nextTick`](#nextTick)
@@ -1088,6 +1089,9 @@ methods:
    and further tasks will be queued.
 * `empty` - a callback that is called when the last item from the `queue` is given to a `worker`.
 * `drain` - a callback that is called when the last item from the `queue` has returned from the `worker`.
+* `paused` - a boolean for determining whether the queue is in a paused state
+* `pause()` - a function that pauses the processing of tasks until `resume()` is called.
+* `resume()` - a function that resumes the processing of queued tasks when the queue is paused.
 
 __Example__
 
@@ -1136,6 +1140,7 @@ Creates a `cargo` object with the specified payload. Tasks added to the
 cargo will be processed altogether (up to the `payload` limit). If the
 `worker` is in progress, the task is queued until it becomes available. Once
 the `worker` has completed some tasks, each callback of those tasks is called.
+Check out [this animation](https://camo.githubusercontent.com/6bbd36f4cf5b35a0f11a96dcd2e97711ffc2fb37/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313637363837312f36383130382f62626330636662302d356632392d313165322d393734662d3333393763363464633835382e676966) for how `cargo` and `queue` work.
 
 While [queue](#queue) passes only one task to one of a group of workers
 at a time, cargo passes an array of tasks to a single worker, repeating
@@ -1321,6 +1326,47 @@ function(err, results){
 
 For a complicated series of `async` tasks, using the [`auto`](#auto) function makes adding
 new tasks much easier (and the code more readable).
+
+
+---------------------------------------
+
+<a name="retry" />
+### retry([times = 5], task, [callback])
+
+Attempts to get a successful response from `task` no more than `times` times before
+returning an error. If the task is successful, the `callback` will be passed the result
+of the successfull task. If all attemps fail, the callback will be passed the error and
+result (if any) of the final attempt.
+
+__Arguments__
+
+* `task(callback, results)` - A function which receives two arguments: (1) a `callback(err, result)`
+  which must be called when finished, passing `err` (which can be `null`) and the `result` of 
+  the function's execution, and (2) a `results` object, containing the results of
+  the previously executed functions (if nested inside another control flow).
+* `callback(err, results)` - An optional callback which is called when the
+  task has succeeded, or after the final failed attempt. It receives the `err` and `result` arguments of the last attempt at completing the `task`.
+
+The [`retry`](#retry) function can be used as a stand-alone control flow by passing a
+callback, as shown below:
+
+```js
+async.retry(3, apiMethod, function(err, result) {
+    // do something with the result
+});
+```
+
+It can also be embeded within other control flow functions to retry individual methods
+that are not as reliable, like this:
+
+```js
+async.auto({
+    users: api.getUsers.bind(api),
+    payments: async.retry(3, api.getPayments.bind(api))
+}, function(err, results) {
+  // do something with the results
+});
+```
 
 
 ---------------------------------------
