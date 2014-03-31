@@ -1341,7 +1341,7 @@ result (if any) of the final attempt.
 
 __Arguments__
 
-* `times` - An integer indicating how many times to attempt the `task` before giving up.
+* `times` - An integer indicating how many times to attempt the `task` before giving up. Defaults to 5.
 * `task(callback, results)` - A function which receives two arguments: (1) a `callback(err, result)`
   which must be called when finished, passing `err` (which can be `null`) and the `result` of 
   the function's execution, and (2) a `results` object, containing the results of
