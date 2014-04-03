@@ -1000,7 +1000,7 @@ app.get('/cats', function(request, response) {
     }
   }
   var User = request.models.User;
-  asyc.seq(
+  async.seq(
     _.bind(User.get, User),  // 'User.get' has signature (id, callback(err, data))
     handleError,
     function(user, fn) {
