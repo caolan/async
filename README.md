@@ -1092,6 +1092,7 @@ methods:
 * `paused` - a boolean for determining whether the queue is in a paused state
 * `pause()` - a function that pauses the processing of tasks until `resume()` is called.
 * `resume()` - a function that resumes the processing of queued tasks when the queue is paused.
+* `kill()` - a function that empties remaining tasks from the queue forcing it to go idle.
 
 __Example__
 
