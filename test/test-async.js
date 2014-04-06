@@ -2913,3 +2913,16 @@ exports['queue empty'] = function(test) {
     };
     q.push([]);
 };
+
+exports['queue started'] = function(test) {
+
+  var calls = [];
+  var q = async.queue(function(task, cb) {});
+  
+  test.equal(q.started, false);
+  q.push([]);
+  test.equal(q.started, true);
+  test.done();
+
+};
+
