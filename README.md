@@ -918,7 +918,7 @@ async.waterfall([
         callback(null, 'one', 'two');
     },
     function(arg1, arg2, callback){
-    	// arg1 now equals 'one' and arg2 now equals 'two'
+      // arg1 now equals 'one' and arg2 now equals 'two'
         callback(null, 'three');
     },
     function(arg1, callback){
@@ -1076,6 +1076,7 @@ The `queue` object returned by this function has the following properties and
 methods:
 
 * `length()` - a function returning the number of items waiting to be processed.
+* `started` - a function returning whether or not any items have been pushed and processed by the queue
 * `running()` - a function returning the number of items currently being processed.
 * `idle()` - a function returning false if there are items waiting or being processed, or true if not.
 * `concurrency` - an integer for determining how many `worker` functions should be
