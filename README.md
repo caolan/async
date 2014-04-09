@@ -210,7 +210,7 @@ async.each(openFiles, function( file, callback) {
     console.log('This file name is too long');
     callback('File name too long');
   } else {
-    // Do work To process file here
+    // Do work to process file here
     console.log('File processed');
     callback();
   }
