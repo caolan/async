@@ -130,7 +130,7 @@ Usage:
 
 ### Control Flow
 
-* [`series`](#series)
+* [`series`](#seriestasks-callback)
 * [`parallel`](#parallel)
 * [`parallelLimit`](#parallellimittasks-limit-callback)
 * [`whilst`](#whilst)
