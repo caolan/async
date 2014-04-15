@@ -2926,3 +2926,43 @@ exports['queue started'] = function(test) {
 
 };
 
+exports['queue pause resume'] = function(test) {
+
+  var calls = [];
+  var q = async.queue(function(task, cb) {});
+  
+  q.pause();
+  
+  q.push([]);
+  q.push([]);
+  q.push([]);
+
+  q.resume()
+  test.done();
+
+};
+
+exports['queue pause resume rangeerror'] = function(test) {
+  var q = async.queue(function(task, cb) { 
+    try {
+        cb();
+    } catch (ex) {
+        test.done();
+        throw ex;
+    }
+ },1);
+  
+  q.pause();
+
+  q.drain = function(){
+    if (testdone) return;
+    test.done();
+  }
+  
+  for (var i=0;i<5000;i++) {
+    q.push({});
+  }
+
+  q.resume();  
+};
+
