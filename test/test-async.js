@@ -1074,6 +1074,16 @@ exports['each error'] = function(test){
     setTimeout(test.done, 50);
 };
 
+exports['each errors'] = function(test){
+    test.expect(1);
+    async.each([1,2,3], function(x, callback){
+        callback('error');
+    }, function(err, errs){
+        test.deepEqual(errs, ['error','error','error']);
+    });
+    setTimeout(test.done, 50);
+};
+
 exports['each no callback'] = function(test){
     async.each([1], eachNoCallbackIterator.bind(this, test));
 };
