@@ -636,7 +636,7 @@ exports['retry as an embedded task'] = function(test) {
 };
 
 exports['waterfall'] = function(test){
-    test.expect(6);
+    test.expect(8);
     var call_order = [];
     async.waterfall([
         function(callback){
@@ -656,9 +656,15 @@ exports['waterfall'] = function(test){
             test.equals(arg3, 'three');
             callback(null, 'four');
         },
-        function(arg4, callback){
+        function(arg4, arg5, callback){
             call_order.push('fn4');
-            test.same(call_order, ['fn1','fn2','fn3','fn4']);
+            test.equals(arg4, 'four');
+            test.equals(arg5, undefined);
+            callback(null, 'five');
+        },
+        function(arg5, callback){
+            call_order.push('fn5');
+            test.same(call_order, ['fn1','fn2','fn3','fn4','fn5']);
             callback(null, 'test');
         }
     ], function(err){
