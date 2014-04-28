@@ -1076,8 +1076,7 @@ exports['each error'] = function(test){
 
 exports['each errors'] = function(test){
     test.expect(1);
-    async.collect();
-    async.each([1,2,3], function(x, callback){
+    async.collect().each([1,2,3], function(x, callback){
         callback('error');
     }, function(err){
         test.deepEqual(err, ['error','error','error']);
