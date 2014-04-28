@@ -1236,6 +1236,19 @@ exports['map original untouched'] = function(test){
     });
 };
 
+exports['map without main callback'] = function(test){
+    var a = [1,2,3];
+    var r = [];
+    async.map(a, function(x, callback){
+        r.push(x);
+        callback(null);
+        if (r.length >= a.length) {
+            test.same(r, a);
+            test.done();
+        }
+    });
+};
+
 exports['map error'] = function(test){
     test.expect(1);
     async.map([1,2,3], function(x, callback){
