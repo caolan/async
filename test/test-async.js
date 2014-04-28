@@ -522,6 +522,7 @@ exports['auto removeListener has side effect on loop iterator'] = function(test)
 exports['auto calls callback multiple times'] = function(test) {
     if (typeof process === 'undefined') {
         // node only test
+        test.done();
         return;
     }
     var finalCallCount = 0;
