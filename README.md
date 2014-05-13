@@ -144,6 +144,7 @@ Usage:
 * [`applyEach`](#applyEach)
 * [`applyEachSeries`](#applyEachSeries)
 * [`queue`](#queue)
+* [`priorityQueue`](#priorityQueue)
 * [`cargo`](#cargo)
 * [`auto`](#auto)
 * [`retry`](#retry)
@@ -1130,6 +1131,18 @@ q.unshift({name: 'bar'}, function (err) {
     console.log('finished processing bar');
 });
 ```
+
+
+---------------------------------------
+
+<a name="priorityQueue" />
+### priorityQueue(worker, concurrency)
+
+The same as [`queue`](#queue) only tasks are assigned a priority and completed in ascending priority order. There are two differences between `queue` and `priorityQueue` objects:
+
+* `push(task, priority, [callback])` - `priority` should be a number. If an array of
+  `tasks` is given, all tasks will be assigned the same priority.
+* The `unshift` method was removed.
 
 ---------------------------------------
 
