@@ -804,6 +804,26 @@ exports['parallel error'] = function(test){
     setTimeout(test.done, 100);
 };
 
+exports['parallelAnyway error'] = function(test){
+    async.parallelAnyway([
+        function(callback){
+            callback('error', 1);
+        },
+        function(callback){
+            callback('error2', 2);
+        },
+        function(callback){
+            callback(null, 3);
+        }
+    ],
+    function(err, results){
+        console.log(err, results)
+        test.deepEqual(results, [3]);
+        test.deepEqual(err, ['error', 'error2']);
+    });
+    setTimeout(test.done, 100);
+};
+
 exports['parallel no callback'] = function(test){
     async.parallel([
         function(callback){callback();},
@@ -1071,6 +1091,23 @@ exports['each error'] = function(test){
     }, function(err){
         test.equals(err, 'error');
     });
+    setTimeout(test.done, 50);
+};
+
+exports['mapAnyway error'] = function(test){
+    test.expect(2);
+    async.mapAnyway([1,2,3], function(x, callback){
+        if (x == 1) {
+            callback('error');
+        } else {
+            callback(null, { pluto: x })
+        }
+    }, function(err, results) {
+        console.log('uffa', err, results)
+        test.deepEqual(results, [{pluto: 2}, {pluto: 3}])
+        test.deepEqual(err, ['error']);
+    });
+
     setTimeout(test.done, 50);
 };
 
