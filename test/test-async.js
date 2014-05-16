@@ -2442,6 +2442,111 @@ exports['queue kill'] = function (test) {
     }, 600)
 };
 
+exports['priorityQueue'] = function (test) {
+    var call_order = [];
+
+    // order of completion: 2,1,4,3
+
+    var q = async.priorityQueue(function (task, callback) {
+      call_order.push('process ' + task);
+      callback('error', 'arg');
+    }, 1);
+
+    q.push(1, 1.4, function (err, arg) {
+        test.equal(err, 'error');
+        test.equal(arg, 'arg');
+        test.equal(q.length(), 2);
+        call_order.push('callback ' + 1);
+    });
+    q.push(2, 0.2, function (err, arg) {
+        test.equal(err, 'error');
+        test.equal(arg, 'arg');
+        test.equal(q.length(), 3);
+        call_order.push('callback ' + 2);
+    });
+    q.push(3, 3.8, function (err, arg) {
+        test.equal(err, 'error');
+        test.equal(arg, 'arg');
+        test.equal(q.length(), 0);
+        call_order.push('callback ' + 3);
+    });
+    q.push(4, 2.9, function (err, arg) {
+        test.equal(err, 'error');
+        test.equal(arg, 'arg');
+        test.equal(q.length(), 1);
+        call_order.push('callback ' + 4);
+    });
+    test.equal(q.length(), 4);
+    test.equal(q.concurrency, 1);
+
+    q.drain = function () {
+        test.same(call_order, [
+            'process 2', 'callback 2',
+            'process 1', 'callback 1',
+            'process 4', 'callback 4',
+            'process 3', 'callback 3'
+        ]);
+        test.equal(q.concurrency, 1);
+        test.equal(q.length(), 0);
+        test.done();
+    };
+};
+
+exports['priorityQueue concurrency'] = function (test) {
+    var call_order = [],
+        delays = [160,80,240,80];
+
+    // worker1: --2-3
+    // worker2: -1---4
+    // order of completion: 1,2,3,4
+
+    var q = async.priorityQueue(function (task, callback) {
+        setTimeout(function () {
+            call_order.push('process ' + task);
+            callback('error', 'arg');
+        }, delays.splice(0,1)[0]);
+    }, 2);
+
+    q.push(1, 1.4, function (err, arg) {
+        test.equal(err, 'error');
+        test.equal(arg, 'arg');
+        test.equal(q.length(), 2);
+        call_order.push('callback ' + 1);
+    });
+    q.push(2, 0.2, function (err, arg) {
+        test.equal(err, 'error');
+        test.equal(arg, 'arg');
+        test.equal(q.length(), 1);
+        call_order.push('callback ' + 2);
+    });
+    q.push(3, 3.8, function (err, arg) {
+        test.equal(err, 'error');
+        test.equal(arg, 'arg');
+        test.equal(q.length(), 0);
+        call_order.push('callback ' + 3);
+    });
+    q.push(4, 2.9, function (err, arg) {
+        test.equal(err, 'error');
+        test.equal(arg, 'arg');
+        test.equal(q.length(), 0);
+        call_order.push('callback ' + 4);
+    });
+    test.equal(q.length(), 4);
+    test.equal(q.concurrency, 2);
+
+    q.drain = function () {
+        test.same(call_order, [
+            'process 1', 'callback 1',
+            'process 2', 'callback 2',
+            'process 3', 'callback 3',
+            'process 4', 'callback 4'
+        ]);
+        test.equal(q.concurrency, 2);
+        test.equal(q.length(), 0);
+        test.done();
+    };
+};
+
 exports['cargo'] = function (test) {
     var call_order = [],
         delays = [160, 160, 80];
