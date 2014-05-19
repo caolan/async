@@ -751,6 +751,27 @@ exports['waterfall multiple callback calls'] = function(test){
     async.waterfall(arr);
 };
 
+exports['waterfall call in another context'] = function(test) {
+    var vm = require('vm');
+    var sandbox = {
+        async: async,
+        test: test
+    };
+
+    var fn = "(" + (function () {
+        async.waterfall([function (callback) {
+            callback();
+        }], function (err) {
+            if (err) {
+                return test.done(err);
+            }
+            test.done();
+        });
+    }).toString() + "())";
+
+    vm.runInNewContext(fn, sandbox);
+};
+
 
 exports['parallel'] = function(test){
     var call_order = [];
@@ -902,6 +923,28 @@ exports['parallel limit object'] = function(test){
     });
 };
 
+exports['parallel call in another context'] = function(test) {
+    var vm = require('vm');
+    var sandbox = {
+        async: async,
+        test: test
+    };
+
+    var fn = "(" + (function () {
+        async.parallel([function (callback) {
+            callback();
+        }], function (err) {
+            if (err) {
+                return test.done(err);
+            }
+            test.done();
+        });
+    }).toString() + "())";
+
+    vm.runInNewContext(fn, sandbox);
+};
+
+
 exports['series'] = function(test){
     var call_order = [];
     async.series([
@@ -977,6 +1020,28 @@ exports['series object'] = function(test){
         test.done();
     });
 };
+
+exports['series call in another context'] = function(test) {
+    var vm = require('vm');
+    var sandbox = {
+        async: async,
+        test: test
+    };
+
+    var fn = "(" + (function () {
+        async.series([function (callback) {
+            callback();
+        }], function (err) {
+            if (err) {
+                return test.done(err);
+            }
+            test.done();
+        });
+    }).toString() + "())";
+
+    vm.runInNewContext(fn, sandbox);
+};
+
 
 exports['iterator'] = function(test){
     var call_order = [];
