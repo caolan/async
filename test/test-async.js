@@ -752,6 +752,12 @@ exports['waterfall multiple callback calls'] = function(test){
 };
 
 exports['waterfall call in another context'] = function(test) {
+    if (typeof process === 'undefined') {
+        // node only test
+        test.done();
+        return;
+    }
+
     var vm = require('vm');
     var sandbox = {
         async: async,
@@ -924,6 +930,11 @@ exports['parallel limit object'] = function(test){
 };
 
 exports['parallel call in another context'] = function(test) {
+    if (typeof process === 'undefined') {
+        // node only test
+        test.done();
+        return;
+    }
     var vm = require('vm');
     var sandbox = {
         async: async,
@@ -1022,6 +1033,11 @@ exports['series object'] = function(test){
 };
 
 exports['series call in another context'] = function(test) {
+    if (typeof process === 'undefined') {
+        // node only test
+        test.done();
+        return;
+    }
     var vm = require('vm');
     var sandbox = {
         async: async,
