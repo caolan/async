@@ -182,7 +182,7 @@ __Arguments__
 * `arr` - An array to iterate over.
 * `iterator(item, callback)` - A function to apply to each item in `arr`.
   The iterator is passed a `callback(err)` which must be called once it has 
-  completed. If no error has occured, the `callback` should be run without 
+  completed. If no error has occurred, the `callback` should be run without 
   arguments or with an explicit `null` argument.
 * `callback(err)` - A callback which is called when all `iterator` functions
   have finished, or an error occurs.
@@ -256,7 +256,7 @@ __Arguments__
 * `limit` - The maximum number of `iterator`s to run at any time.
 * `iterator(item, callback)` - A function to apply to each item in `arr`.
   The iterator is passed a `callback(err)` which must be called once it has 
-  completed. If no error has occured, the callback should be run without 
+  completed. If no error has occurred, the callback should be run without 
   arguments or with an explicit `null` argument.
 * `callback(err)` - A callback which is called when all `iterator` functions
   have finished, or an error occurs.
@@ -280,7 +280,7 @@ async.eachLimit(documents, 20, requestApi, function(err){
 Produces a new array of values by mapping each value in `arr` through
 the `iterator` function. The `iterator` is called with an item from `arr` and a
 callback for when it has finished processing. Each of these callback takes 2 arguments: 
-an `error`, and the transformed item from `arr`. If `iterator` passes an error to this 
+an `error`, and the transformed item from `arr`. If `iterator` passes an error to his 
 callback, the main `callback` (for the `map` function) is immediately called with the error.
 
 Note, that since this function applies the `iterator` to each item in parallel,

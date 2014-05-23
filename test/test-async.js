@@ -2502,6 +2502,51 @@ exports['queue pause'] = function(test) {
     }, 800);
 }
 
+exports['queue pause with concurrency'] = function(test) {
+    var call_order = [],
+        task_timeout = 100,
+        pause_timeout = 50,
+        resume_timeout = 300,
+        tasks = [ 1, 2, 3, 4, 5, 6 ],
+
+        elapsed = (function () {
+            var start = +Date.now();
+            return function () { return Math.floor((+Date.now() - start) / 100) * 100; };
+        })();
+
+    var q = async.queue(function (task, callback) {
+        setTimeout(function () {
+            call_order.push('process ' + task);
+            call_order.push('timeout ' + elapsed());
+            callback();
+        }, task_timeout);
+    }, 2);
+
+    q.push(tasks);
+
+    setTimeout(function () {
+        q.pause();
+        test.equal(q.paused, true);
+    }, pause_timeout);
+
+    setTimeout(function () {
+        q.resume();
+        test.equal(q.paused, false);
+    }, resume_timeout);
+
+    setTimeout(function () {
+        test.same(call_order, [
+            'process 1', 'timeout 100',
+            'process 2', 'timeout 100',
+            'process 3', 'timeout 400',
+            'process 4', 'timeout 400',
+            'process 5', 'timeout 500',
+            'process 6', 'timeout 500'
+        ]);
+        test.done();
+    }, 800);
+}
+
 exports['queue kill'] = function (test) {
     var q = async.queue(function (task, callback) {
         setTimeout(function () {
