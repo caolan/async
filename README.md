@@ -1115,7 +1115,7 @@ q.push({name: 'bar'}, function (err) {
 // add some items to the queue (batch-wise)
 
 q.push([{name: 'baz'},{name: 'bay'},{name: 'bax'}], function (err) {
-    console.log('finished processing bar');
+    console.log('finished processing item');
 });
 
 // add some items to the front of the queue
