@@ -161,7 +161,8 @@ Usage:
 * [`log`](#log)
 * [`dir`](#dir)
 * [`noConflict`](#noConflict)
-
+* [`collect`](#collect)
+* [`uncollect`](#uncollect)
 
 ## Collections
 
@@ -1644,3 +1645,57 @@ node> async.dir(hello, 'world');
 
 Changes the value of `async` back to its original value, returning a reference to the
 `async` object.
+
+---------------------------------------
+
+<a name="collect" />
+### collect()
+
+Changes the behavior of `async` to process each item and then return the errors of each item.
+
+__Example__
+
+```js
+var async = require('async');
+async.collect().forEach([1, 2, 3], function(item, callback) {
+  console.log(item);
+  var ok = (item != 2);
+  callback(!ok ? new Error('Bad thing') : null);
+}, function (e) {
+  console.log('end', e);
+});
+```
+output
+```
+1
+2
+3
+end [ [Error: Bad thing] ]
+```
+
+---------------------------------------
+
+<a name="uncollect" />
+### uncollect()
+
+Reverts the behavior of `async.collect` to process each item and then return at the first error.
+
+__Example__
+
+```js
+var async = require('async');
+async.uncollect().forEach([1, 2, 3], function(item, callback) {
+  console.log(item);
+  var ok = (item != 2);
+  callback(!ok ? new Error('Bad thing') : null);
+}, function (e) {
+  console.log('end', e);
+});
+```
+output
+```
+1
+2
+end [ [Error: Bad thing] ]
+3
+```
