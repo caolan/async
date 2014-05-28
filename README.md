@@ -1010,7 +1010,6 @@ app.get('/cats', function(request, response) {
       response.json({ status: 'ok', message: 'Cats found', data: cats });
     }
   )(req.session.user_id);
-  }
 });
 ```
 
