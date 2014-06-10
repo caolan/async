@@ -172,8 +172,11 @@ Some functions are also available in the following forms:
 * [`reduce`](#reduce), [`reduceRight`](#reduceRight)
 * [`detect`](#detect), `detectSeries`
 * [`sortBy`](#sortBy)
-* [`some`](#some), [`every`](#every)
-* [`concat`](#concat), `concatSeries`
+* [`some`](#some)
+* [`someLimit`](#someLimit)
+* [`every`](#every)
+* [`concat`](#concat)
+* [`concatSeries`](#concatSeries)
 
 ### Control Flow
 
@@ -578,6 +581,27 @@ async.some(['file1','file2','file3'], fs.exists, function(result){
     // if result is true then at least one of the files exists
 });
 ```
+
+---------------------------------------
+
+<a name="someLimit" />
+### someLimit(arr, limit iterator, callback)
+
+__Alias:__ `anyLimit`
+
+The same as [`some`](#some), only no more than `limit` `iterator`s will be simultaneously 
+running at any time.
+
+__Arguments__
+
+* `arr` - An array to iterate over.
+* `limit` - The maximum number of `iterator`s to run at any time.
+* `iterator(item, callback)` - A truth test to apply to each item in the array
+  in parallel. The iterator is passed a callback(truthValue) which must be 
+  called with a boolean argument once it has completed.
+* `callback(result)` - A callback which is called as soon as any iterator returns
+  `true`, or after all the iterator functions have finished. Result will be
+  either `true` or `false` depending on the values of the async tests.
 
 ---------------------------------------
 
