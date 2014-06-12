@@ -2568,6 +2568,46 @@ exports['queue kill'] = function (test) {
     }, 600)
 };
 
+exports['queue stop'] = function (test) {
+    count = 0;
+
+    var q = async.queue(function (task, callback) {
+        setTimeout(function () {
+            count++;
+            callback();
+        }, 300);
+    }, 1);
+    q.drain = function() {
+        test.equal(count, 0);
+        test.done();
+    }
+
+    q.push(0);
+    q.stop();
+};
+
+exports['queue stop with delay'] = function (test) {
+    count = 0;
+
+    var q = async.queue(function (task, callback) {
+        setTimeout(function () {
+            count++;
+            callback();
+        }, 300);
+    }, 2);
+    q.drain = function() {
+        test.equal(count, q.concurrency);
+        test.done();
+    }
+
+    q.push(0);
+    q.push(0);
+    q.push(0);
+    setTimeout(function () {
+        q.stop();
+    }, 10);
+};
+
 exports['priorityQueue'] = function (test) {
     var call_order = [];
 
