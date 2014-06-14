@@ -619,7 +619,7 @@ exports['retry as an embedded task'] = function(test) {
     var retryResult = 'RETRY';
     var fooResults;
     var retryResults;
-    
+
     async.auto({
         foo: function(callback, results){
             fooResults = results;
@@ -2808,20 +2808,20 @@ exports['cargo bulk task'] = function (test) {
 };
 
 exports['cargo drain once'] = function (test) {
-   
+
    var c = async.cargo(function (tasks, callback) {
       callback();
     }, 3);
-    
+
     var drainCounter = 0;
     c.drain = function () {
       drainCounter++;
     }
-    
+
     for(var i = 0; i < 10; i++){
       c.push(i);
     }
-    
+
     setTimeout(function(){
       test.equal(drainCounter, 1);
       test.done();
@@ -2829,17 +2829,17 @@ exports['cargo drain once'] = function (test) {
 };
 
 exports['cargo drain twice'] = function (test) {
-    
+
     var c = async.cargo(function (tasks, callback) {
       callback();
     }, 3);
-    
+
     var loadCargo = function(){
       for(var i = 0; i < 10; i++){
         c.push(i);
       }
     };
-    
+
     var drainCounter = 0;
     c.drain = function () {
       drainCounter++;
@@ -2852,6 +2852,62 @@ exports['cargo drain twice'] = function (test) {
       test.equal(drainCounter, 2);
       test.done();
     }, 1000);
+};
+
+exports['cargoDelayed'] = function (test) {
+    var delay = 2000;
+    var offset = 500;
+
+    var c = async.cargoDelayed(function (tasks, callback) {
+      callback();
+    }, 3, delay);
+
+    var loadCargo = function(){
+      for(var i = 0; i < 10; i++){
+        c.push(i);
+      }
+    };
+
+    var drainCounter = 0;
+    c.drain = function () {
+      drainCounter++;
+    }
+
+    loadCargo();
+    test.equal(drainCounter, 0);
+
+    setTimeout(function(){
+        test.equal(drainCounter, 1);
+        test.done();
+    }, delay + offset);
+};
+
+exports['cargoDelayed without payload'] = function (test) {
+    var delay = 2000;
+    var offset = 500;
+
+    var c = async.cargoDelayed(function (tasks, callback) {
+      callback();
+    }, delay);
+
+    var loadCargo = function(){
+      for(var i = 0; i < 10; i++){
+        c.push(i);
+      }
+    };
+
+    var drainCounter = 0;
+    c.drain = function () {
+      drainCounter++;
+    }
+
+    loadCargo();
+    test.equal(drainCounter, 0);
+
+    setTimeout(function(){
+        test.equal(drainCounter, 1);
+        test.done();
+    }, delay + offset);
 };
 
 exports['memoize'] = function (test) {
@@ -3163,7 +3219,7 @@ exports['queue started'] = function(test) {
 
   var calls = [];
   var q = async.queue(function(task, cb) {});
-  
+
   test.equal(q.started, false);
   q.push([]);
   test.equal(q.started, true);
