@@ -153,6 +153,7 @@ Usage:
 * [`nextTick`](#nextTick)
 * [`times`](#times)
 * [`timesSeries`](#timesSeries)
+* [`timesLimit`](#timesLimit)
 
 ### Utils
 
@@ -1534,6 +1535,21 @@ async.times(5, function(n, next){
 The same as [`times`](#times), only the iterator is applied to each item in `arr` in
 series. The next `iterator` is only called once the current one has completed. 
 The results array will be in the same order as the original.
+
+<a name="timesLimit" />
+### timesLimit(n, limit, callback)
+
+The same as [`times`](#times), only no more than `limit` `iterator`s will be simultaneously
+running at any time.
+
+Note that the items are not processed in batches, so there is no guarantee that
+the first `limit` `iterator` functions will complete before any others are started.
+
+__Arguments__
+
+* `n` - The number of times to run the function.
+* `limit` - The maximum number of `iterator`s to run at any time.
+* `callback` - The function to call `n` times.
 
 
 ## Utils
