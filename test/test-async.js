@@ -2879,6 +2879,54 @@ exports['memoize'] = function (test) {
     });
 };
 
+exports['memoize allows expiration'] = function(test) {
+    var calls = 0;
+    var fn = function(a1, a2, callback) {
+        async.setImmediate(function() {
+            calls++;
+            callback(null,a1+a2);
+        });
+    };
+    var fn2 = async.memoize(fn, null, 100);
+    fn2(1,2, function(err,result) {
+        test.equal(result,3);
+        test.equal(calls,1);
+        fn2(1,2, function(err,result) {
+            test.equal(calls,1);
+            setTimeout(function() {
+                fn2(1,2,function(err,result) {
+                    test.equal(calls,2);
+                    test.done();
+                });
+            }, 101);
+        });
+    });
+};
+
+exports['memoize with falsey expiration is infinite'] = function(test) {
+    var calls = 0;
+    var fn = function(a1, a2, callback) {
+        async.setImmediate(function() {
+            calls++;
+            callback(null,a1+a2);
+        });
+    };
+    var fn2 = async.memoize(fn, null, 0);
+    fn2(1,2, function(err,result) {
+        test.equal(result,3);
+        test.equal(calls,1);
+        fn2(1,2, function(err,result) {
+            test.equal(calls,1);
+            setTimeout(function() {
+                fn2(1,2,function(err,result) {
+                    test.equal(calls,1);
+                    test.done();
+                });
+            }, 101);
+        });
+    });
+};
+
 exports['memoize maintains asynchrony'] = function (test) {
     test.expect(3);
     var call_order = [];
@@ -3013,7 +3061,7 @@ exports['memoize manually added memo value'] = function (test) {
     var fn = async.memoize(function(arg, callback) {
         test(false, "Function should never be called");
     });
-    fn.memo["foo"] = ["bar"];
+    fn.memo["foo"] = {result:["bar"], ts: new Date().getTime()};
     fn("foo", function(val) {
         test.equal(val, "bar");
         test.done();
