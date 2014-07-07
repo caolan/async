@@ -2855,7 +2855,7 @@ exports['cargo drain twice'] = function (test) {
 };
 
 exports['memoize'] = function (test) {
-    test.expect(4);
+    test.expect(5);
     var call_order = [];
 
     var fn = function (arg1, arg2, callback) {
@@ -2870,10 +2870,13 @@ exports['memoize'] = function (test) {
         test.equal(result, 3);
         fn2(1, 2, function (err, result) {
             test.equal(result, 3);
-            fn2(2, 2, function (err, result) {
+            fn2(1, 3, function (err, result) {
                 test.equal(result, 4);
-                test.same(call_order, [['fn',1,2], ['fn',2,2]]);
-                test.done();
+                fn2(2, 2, function (err, result) {
+                    test.equal(result, 4);
+                    test.same(call_order, [['fn',1,2], ['fn',1,3], ['fn',2,2]]);
+                    test.done();
+                });
             });
         });
     });
