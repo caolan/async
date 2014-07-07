@@ -1539,7 +1539,7 @@ The results array will be in the same order as the original.
 ## Utils
 
 <a name="memoize" />
-### memoize(fn, [hasher])
+### memoize(fn, [hasher, expirems])
 
 Caches the results of an `async` function. When creating a hash to store function
 results against, the callback is omitted from the hash and an optional hash
@@ -1554,6 +1554,7 @@ __Arguments__
 * `hasher` - Tn optional function for generating a custom hash for storing
   results. It has all the arguments applied to it apart from the callback, and
   must be synchronous.
+* `expirems` - The optional time in milliseconds after which the cached result will expire
 
 __Example__
 
