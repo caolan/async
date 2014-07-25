@@ -619,7 +619,7 @@ exports['retry as an embedded task'] = function(test) {
     var retryResult = 'RETRY';
     var fooResults;
     var retryResults;
-    
+
     async.auto({
         foo: function(callback, results){
             fooResults = results;
@@ -2808,20 +2808,20 @@ exports['cargo bulk task'] = function (test) {
 };
 
 exports['cargo drain once'] = function (test) {
-   
+
    var c = async.cargo(function (tasks, callback) {
       callback();
     }, 3);
-    
+
     var drainCounter = 0;
     c.drain = function () {
       drainCounter++;
     }
-    
+
     for(var i = 0; i < 10; i++){
       c.push(i);
     }
-    
+
     setTimeout(function(){
       test.equal(drainCounter, 1);
       test.done();
@@ -2829,17 +2829,17 @@ exports['cargo drain once'] = function (test) {
 };
 
 exports['cargo drain twice'] = function (test) {
-    
+
     var c = async.cargo(function (tasks, callback) {
       callback();
     }, 3);
-    
+
     var loadCargo = function(){
       for(var i = 0; i < 10; i++){
         c.push(i);
       }
     };
-    
+
     var drainCounter = 0;
     c.drain = function () {
       drainCounter++;
@@ -3163,7 +3163,7 @@ exports['queue started'] = function(test) {
 
   var calls = [];
   var q = async.queue(function(task, cb) {});
-  
+
   test.equal(q.started, false);
   q.push([]);
   test.equal(q.started, true);
@@ -3171,3 +3171,78 @@ exports['queue started'] = function(test) {
 
 };
 
+exports['time out happens'] = function (test) {
+    test.expect(2);
+
+    var a = 0;
+
+    async.timeout(200, function (err) {
+        if (err) {
+            test.equal(err.code, 'ETIMEDOUT');
+        }
+
+        test.equal(1, ++a);
+
+        test.done();
+    });
+};
+
+
+exports['time out happens and func called afterwards'] = function (test) {
+    test.expect(2);
+
+    var a = 0;
+
+    var timedFn = async.timeout(100, function (err) {
+        if (err) {
+            test.equal(err.code, 'ETIMEDOUT');
+        }
+
+        test.equal(1, ++a);
+
+        test.done();
+    });
+
+    setTimeout(timedFn, 200);
+};
+
+exports['time out does not happen'] = function (test) {
+    test.expect(1);
+
+    var a = 0;
+
+    var fn = function (err) {
+        if (err) {
+            return test.done(err);
+        }
+
+        test.equal(1, ++a);
+
+        test.done();
+    };
+
+    var timedFn = async.timeout(100, fn);
+
+    timedFn();
+};
+
+exports['time out does not happen and func is called multiple times'] = function (test) {
+    test.expect(1);
+
+    var a = 0;
+
+    var fn = function (err) {
+        if (err) {
+            return test.done(err);
+        }
+
+        test.equal(1, ++a);
+
+        test.done();
+    };
+
+    var timedFn = async.timeout(100, fn);
+
+    timedFn();
+    timedFn();
+};

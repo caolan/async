@@ -148,6 +148,7 @@ Usage:
 * [`cargo`](#cargo)
 * [`auto`](#auto)
 * [`retry`](#retry)
+* [`timeout`](#timeout)
 * [`iterator`](#iterator)
 * [`apply`](#apply)
 * [`nextTick`](#nextTick)
@@ -1382,6 +1383,58 @@ async.auto({
   // do something with the results
 });
 ```
+
+---------------------------------------
+
+<a name="timeout" />
+### timeout(time, fn)
+
+Make function `fn` timeout after a certain `time` if not called meanwhile. When a timeout happens, the function is called with `err` as first parameter, which contains error code `ETIMEDOUT`. This can be particularly useful for controlling callbacks that need to happen within a time window, and you just need to wrap that function with `timeout`, returning a *timed function*.
+
+If the *timed function* is called after a timeout, that call is ignored.
+
+__Arguments__
+
+* `time` - How long in miliseconds before timing out `fn`.
+* `fn` - The function that you'd like to control. An error with code `ETIMEDOUT` is passed to the function if timeout happens.
+
+Example of a function that never times out:
+
+```js
+var fn = function (err) {
+    if (err) {
+        throw err;
+
+        // note that you could even check for err.code === 'ETIMEDOUT'
+    }
+
+    console.log('called back!');
+};
+
+// function never times out because it is called before the 200 ms limit
+setTimeout(async.timeout(200, fn), 100);
+```
+
+Output would be: `'called back!'`
+
+Example of a function that times out:
+
+```js
+var fn = function (err) {
+    if (err) {
+        console.log('Ups:', err.code);
+        throw err;
+    }
+
+    console.log('this never happens')
+};
+
+
+// function times out
+setTimeout(async.timeout(100, fn), 200);
+```
+
+Output would be: `'Ups: ETIMEDOUT'`
 
 
 ---------------------------------------
