@@ -138,6 +138,7 @@ Usage:
 * [`until`](#until)
 * [`doUntil`](#doUntil)
 * [`forever`](#forever)
+* [`recursive`](recursive)
 * [`waterfall`](#waterfall)
 * [`compose`](#compose)
 * [`seq`](#seq)
@@ -889,6 +890,24 @@ async.forever(
 ```
 
 ---------------------------------------
+
+<a name="recursive" />
+### recursive (value, fn, [callback])
+
+Calls the asynchronous function `fn` with a collector-stype value and callback parameter that allows it to
+call itself again, in series, indefinitely. `value` can be used to pass a value from one iteration to the next.
+
+```js
+async.recursive(
+    function(value, next) {
+        // manipulate value asynchronous and pass it back into this function
+        // view next(null, value)
+    },
+    function (err) {
+        // if next is called with a value in its first parameter, it will appear
+        // in here as 'err', and execution will stop.
+    }
+)
 
 <a name="waterfall" />
 ### waterfall(tasks, [callback])
