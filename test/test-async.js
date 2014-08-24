@@ -84,6 +84,34 @@ exports['forever'] = function (test) {
     });
 };
 
+exports['recursive'] = function (test) {
+    test.expect(3);
+    var counter = 0;
+    var collector = {
+        foo: 0,
+        bar: 100
+    };
+
+    function calculation(value, callback) {
+        counter++;
+        value.foo++;
+        value.bar--;
+
+        if (counter === 50) {
+            return callback('too big!');
+        }
+        async.setImmediate(function () {
+            callback(null, value);
+        });
+    }
+    async.recursive(collector, calculation, function (err) {
+        test.equal(err, 'too big!');
+        test.equal(collector.foo, 50);
+        test.equal(collector.bar, 50);
+        test.done();
+    });
+};
+
 exports['applyEach'] = function (test) {
     test.expect(4);
     var call_order = [];
