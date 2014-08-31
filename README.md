@@ -147,6 +147,7 @@ Usage:
 * [`priorityQueue`](#priorityQueue)
 * [`cargo`](#cargo)
 * [`auto`](#auto)
+* [`autoInject`](#autoInject)
 * [`retry`](#retry)
 * [`iterator`](#iterator)
 * [`apply`](#apply)
@@ -1340,6 +1341,73 @@ function(err, results){
 
 For a complicated series of `async` tasks, using the [`auto`](#auto) function makes adding
 new tasks much easier (and the code more readable).
+
+
+---------------------------------------
+
+<a name="autoInject" />
+### autoInject(tasks, [callback])
+
+A dependency-injected version of the [`auto`](#auto) function. Dependent tasks are
+specified as parameters to the function, after the usual callback parameter, with the
+parameter names matching the names of the tasks it depends on. This can provide even more
+readable task graphs which can be easier to maintain.
+
+If a final callback is specified, the task results are similarly injected, specified as
+named parameters after the initial error parameter.
+
+The autoInject function is purely syntactic sugar and its semantics are otherwise
+equivalent to [`auto`](#auto).
+
+__Arguments__
+
+* `tasks` - An object, each of whose properties is a function of the form
+  'func(callback, [dependencies...]). The object's key of a property serves as the
+  name of the task defined by that property, i.e. can be used when specifying requirements
+  for other tasks.
+  The `callback` parameter is a `callback(err, result)` which must be called when finished,
+  passing an `error` (which can be `null`) and the result of the function's execution.
+  The remaining parameters name other tasks on which the task is dependent, and the results
+  from those tasks are the arguments of those parameters.
+* `callback(err, [results...])` - An optional callback which is called when all the
+  tasks have been completed. It receives the `err` argument if any `tasks` 
+  pass an error to their callback. The remaining parameters are task names whose results
+  you are interested in. This callback will only be called when all tasks have finished or
+  an error has occurred, and so do not not specify dependencies in the same way as `tasks`
+  do. If an error occurs, no further `tasks` will be performed, and `results` will only be
+  valid for those tasks which managed to complete.
+
+
+__Example__
+
+The example from [`auto`](#auto) can be rewritten as follows:
+
+```js
+async.autoInject({
+    get_data: function(callback){
+        // async code to get some data
+        callback(null, 'data', 'converted to array');
+    },
+    make_folder: function(callback){
+        // async code to create a directory to store a file in
+        // this is run at the same time as getting the data
+        callback(null, 'folder');
+    },
+    write_file: function(callback, get_data, make_folder){
+        // once there is some data and the directory exists,
+        // write the data to a file in the directory
+        callback(null, 'filename');
+    },
+    email_link: function(callback, write_file){
+        // once the file is written let's email a link to it...
+        // write_file contains the filename returned by write_file.
+        callback(null, {'file':write_file, 'email':'user@example.com'});
+    }
+}, function(err, email_link) {
+    console.log('err = ', err);
+    console.log('email_link = ', email_link);
+});
+```
 
 
 ---------------------------------------
