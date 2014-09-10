@@ -598,7 +598,7 @@ exports['retry when attempt succeeds'] = function(test) {
     });
 };
 
-exports['retry when all attempts succeeds'] = function(test) {
+exports['retry when all attempts fail'] = function(test) {
     var times = 3;
     var callCount = 0;
     var error = 'ERROR';

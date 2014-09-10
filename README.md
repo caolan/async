@@ -1359,11 +1359,10 @@ __Arguments__
   which must be called when finished, passing `err` (which can be `null`) and the `result` of
   the function's execution, and (2) a `results` object, containing the results of
   the previously executed functions (if nested inside another control flow).
-* `callback(err, results)` - An optional callback which is called when the
+* `callback(err, results)` - An __sometimes optional (see below)__ callback which is called when the
   task has succeeded, or after the final failed attempt. It receives the `err` and `result` arguments of the last attempt at completing the `task`.
 
-The [`retry`](#retry) function can be used as a stand-alone control flow by passing a
-callback, as shown below:
+__The *presence* of the `callback` argument triggers the *stand-alone control flow* behavior:__
 
 ```js
 async.retry(3, apiMethod, function(err, result) {
@@ -1371,8 +1370,17 @@ async.retry(3, apiMethod, function(err, result) {
 });
 ```
 
-It can also be embeded within other control flow functions to retry individual methods
-that are not as reliable, like this:
+To use the stand alone behavior without a callback you can do any of the following:
+
+```js
+async.retry(3, apiMethod)()
+async.retry(3, apiMethod).start()
+async.retry(3, apiMethod, noop) // just provide a noop callback
+```
+
+__The *absence* of the `callback` argument triggers the *nested control flow* behavior:__
+
+The [`retry`](#retry) function can also be nested within other control flow functions to retry individual methods that are not as reliable, like this:
 
 ```js
 async.auto({
