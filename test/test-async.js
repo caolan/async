@@ -348,6 +348,27 @@ exports['seq binding'] = function (test) {
     });
 };
 
+exports['seq without callback'] = function (test) {
+    test.expect(2);
+    var testerr = new Error('test');
+    var testcontext = {name: 'foo'};
+
+    var add2 = function (n, cb) {
+        test.equal(this, testcontext);
+        setTimeout(function () {
+            cb(null, n + 2);
+        }, 50);
+    };
+    var mul3 = function (n, cb) {
+        test.equal(this, testcontext);
+        setTimeout(function () {
+            test.done();
+        }, 15);
+    };
+    var add2mul3 = async.seq(add2, mul3);
+    add2mul3.call(testcontext, 3);
+}
+
 exports['auto'] = function(test){
     var callOrder = [];
     var testdata = [{test: 'test'}];
