@@ -522,6 +522,7 @@ exports['auto removeListener has side effect on loop iterator'] = function(test)
 exports['auto calls callback multiple times'] = function(test) {
     if (typeof process === 'undefined') {
         // node only test
+        test.done();
         return;
     }
     var finalCallCount = 0;
@@ -750,6 +751,33 @@ exports['waterfall multiple callback calls'] = function(test){
     async.waterfall(arr);
 };
 
+exports['waterfall call in another context'] = function(test) {
+    if (typeof process === 'undefined') {
+        // node only test
+        test.done();
+        return;
+    }
+
+    var vm = require('vm');
+    var sandbox = {
+        async: async,
+        test: test
+    };
+
+    var fn = "(" + (function () {
+        async.waterfall([function (callback) {
+            callback();
+        }], function (err) {
+            if (err) {
+                return test.done(err);
+            }
+            test.done();
+        });
+    }).toString() + "())";
+
+    vm.runInNewContext(fn, sandbox);
+};
+
 
 exports['parallel'] = function(test){
     var call_order = [];
@@ -901,6 +929,33 @@ exports['parallel limit object'] = function(test){
     });
 };
 
+exports['parallel call in another context'] = function(test) {
+    if (typeof process === 'undefined') {
+        // node only test
+        test.done();
+        return;
+    }
+    var vm = require('vm');
+    var sandbox = {
+        async: async,
+        test: test
+    };
+
+    var fn = "(" + (function () {
+        async.parallel([function (callback) {
+            callback();
+        }], function (err) {
+            if (err) {
+                return test.done(err);
+            }
+            test.done();
+        });
+    }).toString() + "())";
+
+    vm.runInNewContext(fn, sandbox);
+};
+
+
 exports['series'] = function(test){
     var call_order = [];
     async.series([
@@ -976,6 +1031,33 @@ exports['series object'] = function(test){
         test.done();
     });
 };
+
+exports['series call in another context'] = function(test) {
+    if (typeof process === 'undefined') {
+        // node only test
+        test.done();
+        return;
+    }
+    var vm = require('vm');
+    var sandbox = {
+        async: async,
+        test: test
+    };
+
+    var fn = "(" + (function () {
+        async.series([function (callback) {
+            callback();
+        }], function (err) {
+            if (err) {
+                return test.done(err);
+            }
+            test.done();
+        });
+    }).toString() + "())";
+
+    vm.runInNewContext(fn, sandbox);
+};
+
 
 exports['iterator'] = function(test){
     var call_order = [];
@@ -1233,6 +1315,19 @@ exports['map original untouched'] = function(test){
         test.same(results, [2,4,6]);
         test.same(a, [1,2,3]);
         test.done();
+    });
+};
+
+exports['map without main callback'] = function(test){
+    var a = [1,2,3];
+    var r = [];
+    async.map(a, function(x, callback){
+        r.push(x);
+        callback(null);
+        if (r.length >= a.length) {
+            test.same(r, a);
+            test.done();
+        }
     });
 };
 
@@ -2407,6 +2502,177 @@ exports['queue pause'] = function(test) {
     }, 800);
 }
 
+exports['queue pause with concurrency'] = function(test) {
+    var call_order = [],
+        task_timeout = 100,
+        pause_timeout = 50,
+        resume_timeout = 300,
+        tasks = [ 1, 2, 3, 4, 5, 6 ],
+
+        elapsed = (function () {
+            var start = +Date.now();
+            return function () { return Math.floor((+Date.now() - start) / 100) * 100; };
+        })();
+
+    var q = async.queue(function (task, callback) {
+        setTimeout(function () {
+            call_order.push('process ' + task);
+            call_order.push('timeout ' + elapsed());
+            callback();
+        }, task_timeout);
+    }, 2);
+
+    q.push(tasks);
+
+    setTimeout(function () {
+        q.pause();
+        test.equal(q.paused, true);
+    }, pause_timeout);
+
+    setTimeout(function () {
+        q.resume();
+        test.equal(q.paused, false);
+    }, resume_timeout);
+
+    setTimeout(function () {
+        test.same(call_order, [
+            'process 1', 'timeout 100',
+            'process 2', 'timeout 100',
+            'process 3', 'timeout 400',
+            'process 4', 'timeout 400',
+            'process 5', 'timeout 500',
+            'process 6', 'timeout 500'
+        ]);
+        test.done();
+    }, 800);
+}
+
+exports['queue kill'] = function (test) {
+    var q = async.queue(function (task, callback) {
+        setTimeout(function () {
+            test.ok(false, "Function should never be called");
+            callback();
+        }, 300);
+    }, 1);
+    q.drain = function() {
+        test.ok(false, "Function should never be called");
+    }
+
+    q.push(0);
+
+    q.kill();
+
+    setTimeout(function() {
+      test.equal(q.length(), 0);
+      test.done();
+    }, 600)
+};
+
+exports['priorityQueue'] = function (test) {
+    var call_order = [];
+
+    // order of completion: 2,1,4,3
+
+    var q = async.priorityQueue(function (task, callback) {
+      call_order.push('process ' + task);
+      callback('error', 'arg');
+    }, 1);
+
+    q.push(1, 1.4, function (err, arg) {
+        test.equal(err, 'error');
+        test.equal(arg, 'arg');
+        test.equal(q.length(), 2);
+        call_order.push('callback ' + 1);
+    });
+    q.push(2, 0.2, function (err, arg) {
+        test.equal(err, 'error');
+        test.equal(arg, 'arg');
+        test.equal(q.length(), 3);
+        call_order.push('callback ' + 2);
+    });
+    q.push(3, 3.8, function (err, arg) {
+        test.equal(err, 'error');
+        test.equal(arg, 'arg');
+        test.equal(q.length(), 0);
+        call_order.push('callback ' + 3);
+    });
+    q.push(4, 2.9, function (err, arg) {
+        test.equal(err, 'error');
+        test.equal(arg, 'arg');
+        test.equal(q.length(), 1);
+        call_order.push('callback ' + 4);
+    });
+    test.equal(q.length(), 4);
+    test.equal(q.concurrency, 1);
+
+    q.drain = function () {
+        test.same(call_order, [
+            'process 2', 'callback 2',
+            'process 1', 'callback 1',
+            'process 4', 'callback 4',
+            'process 3', 'callback 3'
+        ]);
+        test.equal(q.concurrency, 1);
+        test.equal(q.length(), 0);
+        test.done();
+    };
+};
+
+exports['priorityQueue concurrency'] = function (test) {
+    var call_order = [],
+        delays = [160,80,240,80];
+
+    // worker1: --2-3
+    // worker2: -1---4
+    // order of completion: 1,2,3,4
+
+    var q = async.priorityQueue(function (task, callback) {
+        setTimeout(function () {
+            call_order.push('process ' + task);
+            callback('error', 'arg');
+        }, delays.splice(0,1)[0]);
+    }, 2);
+
+    q.push(1, 1.4, function (err, arg) {
+        test.equal(err, 'error');
+        test.equal(arg, 'arg');
+        test.equal(q.length(), 2);
+        call_order.push('callback ' + 1);
+    });
+    q.push(2, 0.2, function (err, arg) {
+        test.equal(err, 'error');
+        test.equal(arg, 'arg');
+        test.equal(q.length(), 1);
+        call_order.push('callback ' + 2);
+    });
+    q.push(3, 3.8, function (err, arg) {
+        test.equal(err, 'error');
+        test.equal(arg, 'arg');
+        test.equal(q.length(), 0);
+        call_order.push('callback ' + 3);
+    });
+    q.push(4, 2.9, function (err, arg) {
+        test.equal(err, 'error');
+        test.equal(arg, 'arg');
+        test.equal(q.length(), 0);
+        call_order.push('callback ' + 4);
+    });
+    test.equal(q.length(), 4);
+    test.equal(q.concurrency, 2);
+
+    q.drain = function () {
+        test.same(call_order, [
+            'process 1', 'callback 1',
+            'process 2', 'callback 2',
+            'process 3', 'callback 3',
+            'process 4', 'callback 4'
+        ]);
+        test.equal(q.concurrency, 2);
+        test.equal(q.length(), 0);
+        test.done();
+    };
+};
+
 exports['cargo'] = function (test) {
     var call_order = [],
         delays = [160, 160, 80];
@@ -2892,3 +3158,16 @@ exports['queue empty'] = function(test) {
     };
     q.push([]);
 };
+
+exports['queue started'] = function(test) {
+
+  var calls = [];
+  var q = async.queue(function(task, cb) {});
+  
+  test.equal(q.started, false);
+  q.push([]);
+  test.equal(q.started, true);
+  test.done();
+
+};
+
