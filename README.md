@@ -1047,7 +1047,7 @@ async.each(
 ---------------------------------------
 
 <a name="applyEachSeries" />
-### applyEachSeries(arr, iterator, callback)
+### applyEachSeries(arr, args..., callback)
 
 The same as [`applyEach`](#applyEach) only the functions are applied in series.
 
