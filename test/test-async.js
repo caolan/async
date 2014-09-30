@@ -331,6 +331,35 @@ exports['auto'] = function(test){
     });
 };
 
+exports['auto concurrency'] = function (test) {
+    var concurrency = 2;
+    var runningTasks = [];
+    var makeCallback = function(taskName) {
+        return function(callback) {
+            runningTasks.push(taskName);
+            setTimeout(function(){
+                // Each task returns the array of running tasks as results.
+                var result = runningTasks.slice(0);
+                runningTasks.splice(runningTasks.indexOf(taskName), 1);
+                callback(null, result);
+            });
+        };
+    };
+    async.auto({
+        task1: ['task2', makeCallback('task1')],
+        task2: makeCallback('task2'),
+        task3: ['task2', makeCallback('task3')],
+        task4: ['task1', 'task2', makeCallback('task4')],
+        task5: ['task2', makeCallback('task5')],
+        task6: ['task2', makeCallback('task6')]
+    }, function(err, results){
+        Object.keys(results).forEach(function(taskName) {
+            test.ok(results[taskName].length <= concurrency);
+        });
+        test.done();
+    }, concurrency);
+};
+
 exports['auto petrify'] = function (test) {
     var callOrder = [];
     async.auto({

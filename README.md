@@ -1256,7 +1256,7 @@ cargo.push({name: 'baz'}, function (err) {
 ---------------------------------------
 
 <a name="auto" />
-### auto(tasks, [callback])
+### auto(tasks, [callback], [concurrency])
 
 Determines the best order for running the functions in `tasks`, based on their requirements. Each function can optionally depend on other functions being completed first, and each function is run as soon as its requirements are satisfied.
 
@@ -1307,6 +1307,8 @@ __Arguments__
   pass an error to their callback. Results are always returned; however, if
   an error occurs, no further `tasks` will be performed, and the results
   object will only contain partial results.
+* `concurrency` - An `integer` for determining the maximum number of tasks that
+  can be run in parallel. By default, as many as possible.
 
 
 __Example__
