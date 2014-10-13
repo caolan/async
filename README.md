@@ -990,28 +990,21 @@ __Example__
 // This example uses `seq` function to avoid overnesting and error 
 // handling clutter.
 app.get('/cats', function(request, response) {
-  function handleError(err, data, callback) {
-    if (err) {
-      console.error(err);
-      response.json({ status: 'error', message: err.message });
-    }
-    else {
-      callback(data);
-    }
-  }
   var User = request.models.User;
   async.seq(
     _.bind(User.get, User),  // 'User.get' has signature (id, callback(err, data))
-    handleError,
     function(user, fn) {
       user.getCats(fn);      // 'getCats' has signature (callback(err, data))
-    },
-    handleError,
-    function(cats) {
+    }
+  )(req.session.user_id, function (err, cats) {
+    if (err) {
+      console.error(err);
+      response.json({ status: 'error', message: err.message });
+    } else {
       response.json({ status: 'ok', message: 'Cats found', data: cats });
     }
-  )(req.session.user_id);
-  }
+  });
+}
 });
 ```
 
