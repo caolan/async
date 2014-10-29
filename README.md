@@ -536,14 +536,14 @@ By modifying the callback parameter the sorting order can be influenced:
 ```js
 //ascending order
 async.sortBy([1,9,3,5], function(x, callback){
-    callback(err, x);
+    callback(null, x);
 }, function(err,result){
     //result callback
 } );
 
 //descending order
 async.sortBy([1,9,3,5], function(x, callback){
-    callback(err, x*-1);    //<- x*-1 instead of x, turns the order around
+    callback(null, x*-1);    //<- x*-1 instead of x, turns the order around
 }, function(err,result){
     //result callback
 } );
