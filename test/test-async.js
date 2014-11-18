@@ -596,11 +596,11 @@ exports['auto prevent dead-locks due to inexistant dependencies'] = function(tes
 exports['auto prevent dead-locks due to cyclic dependencies'] = function(test) {
     test.throws(function () {
         async.auto({
-            task3: ['task4', function(callback, results){
-                callback(null, 'task3');
+            task1: ['task2', function(callback, results){
+                callback(null, 'task1');
             }],
-            task4: ['task3', function(callback, results){
-                callback(null, 'task4');
+            task2: ['task1', function(callback, results){
+                callback(null, 'task2');
             }]
         });
     }, Error);
