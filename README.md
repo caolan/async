@@ -972,7 +972,8 @@ add1mul3(4, function (err, result) {
 ### seq(fn1, fn2...)
 
 Version of the compose function that is more natural to read.
-Each following function consumes the return value of the latter function. 
+Each function consumes the return value of the previous function.
+It is the equivalent of [`compose`](#compose) with the arguments reversed.
 
 Each function is executed with the `this` binding of the composed function.
 
