@@ -1996,7 +1996,6 @@ exports['doUntil'] = function (test) {
     var count = 0;
     async.doUntil(
         function (cb) {
-            debugger
             call_order.push(['iterator', count]);
             count++;
             cb();
@@ -2024,7 +2023,6 @@ exports['doUntil callback params'] = function (test) {
     var count = 0;
     async.doUntil(
         function (cb) {
-            debugger
             call_order.push(['iterator', count]);
             count++;
             cb(null, count);
@@ -2091,7 +2089,6 @@ exports['doWhilst'] = function (test) {
             return (count < 5);
         },
         function (err) {
-            debugger
             test.same(call_order, [
                 ['iterator', 0], ['test', 1],
                 ['iterator', 1], ['test', 2],
@@ -2120,7 +2117,6 @@ exports['doWhilst callback params'] = function (test) {
             return (c < 5);
         },
         function (err) {
-            debugger
             test.same(call_order, [
                 ['iterator', 0], ['test', 1],
                 ['iterator', 1], ['test', 2],
