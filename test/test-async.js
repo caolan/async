@@ -2455,8 +2455,10 @@ exports['queue pause'] = function(test) {
         tasks = [ 1, 2, 3, 4, 5, 6 ],
 
         elapsed = (function () {
-            var start = +Date.now();
-            return function () { return Math.floor((+Date.now() - start) / 100) * 100; };
+            var start = (new Date()).valueOf();
+            return function () {
+              return Math.round(((new Date()).valueOf() - start) / 100) * 100;
+            };
         })();
 
     var q = async.queue(function (task, callback) {
@@ -2506,8 +2508,10 @@ exports['queue pause with concurrency'] = function(test) {
         tasks = [ 1, 2, 3, 4, 5, 6 ],
 
         elapsed = (function () {
-            var start = +Date.now();
-            return function () { return Math.floor((+Date.now() - start) / 100) * 100; };
+            var start = (new Date()).valueOf();
+            return function () {
+              return Math.round(((new Date()).valueOf() - start) / 100) * 100;
+            };
         })();
 
     var q = async.queue(function (task, callback) {
