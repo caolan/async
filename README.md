@@ -649,7 +649,7 @@ Same as [`concat`](#concat), but executes in series instead of parallel.
 ## Control Flow
 
 <a name="series" />
-### series(tasks, [callback])
+### series(tasks, [callback], [args...])
 
 Run the functions in the `tasks` array in series, each one running once the previous
 function has completed. If any functions in the series pass an error to its
@@ -678,6 +678,10 @@ __Arguments__
 * `callback(err, results)` - An optional callback to run once all the functions
   have completed. This function gets a results array (or object) containing all 
   the result arguments passed to the `task` callbacks.
+* `args...` - Any number of separate arguments to pass to the `tasks`
+  after the callback parameter. For passing arguments to each function without
+  defining a callback use [`applyEachSeries`](#applyEachSeries).
+
 
 __Example__
 

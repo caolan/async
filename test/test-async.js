@@ -619,7 +619,7 @@ exports['retry as an embedded task'] = function(test) {
     var retryResult = 'RETRY';
     var fooResults;
     var retryResults;
-    
+
     async.auto({
         foo: function(callback, results){
             fooResults = results;
@@ -1058,6 +1058,55 @@ exports['series call in another context'] = function(test) {
     vm.runInNewContext(fn, sandbox);
 };
 
+exports['series with arguments'] = function(test){
+    async.series([
+        function(callback, val, val2){
+            test.equal(val, 0);
+            test.equal(val2, 10);
+            callback(null, val + val2);
+        },
+        function(callback, val){
+            test.equal(val, 0);
+            callback(null, val + 1);
+        },
+        function(callback, val){
+            test.equal(val, 0);
+            callback(null, val + 2);
+        }
+        ],
+        function(err, results){
+            test.equals(err, null);
+            test.same(results, [10, 1, 2]);
+            test.done();
+        },
+        0,
+        10);
+    };
+
+exports['series with arguments object'] = function(test){
+    async.series({
+            ten: function(callback, val, val2){
+                test.equal(val, 0);
+                test.equal(val2, 10);
+                callback(null, val + val2);
+            },
+            one: function(callback, val){
+                test.equal(val, 0);
+                callback(null, val + 1);
+            },
+            two: function(callback, val){
+                test.equal(val, 0);
+                callback(null, val + 2);
+            }
+        },
+        function(err, results){
+            test.equals(err, null);
+            test.same(results, {ten: 10, one: 1, two: 2});
+            test.done();
+        },
+        0,
+        10);
+};
 
 exports['iterator'] = function(test){
     var call_order = [];
@@ -2808,20 +2857,20 @@ exports['cargo bulk task'] = function (test) {
 };
 
 exports['cargo drain once'] = function (test) {
-   
+
    var c = async.cargo(function (tasks, callback) {
       callback();
     }, 3);
-    
+
     var drainCounter = 0;
     c.drain = function () {
       drainCounter++;
     }
-    
+
     for(var i = 0; i < 10; i++){
       c.push(i);
     }
-    
+
     setTimeout(function(){
       test.equal(drainCounter, 1);
       test.done();
@@ -2829,17 +2878,17 @@ exports['cargo drain once'] = function (test) {
 };
 
 exports['cargo drain twice'] = function (test) {
-    
+
     var c = async.cargo(function (tasks, callback) {
       callback();
     }, 3);
-    
+
     var loadCargo = function(){
       for(var i = 0; i < 10; i++){
         c.push(i);
       }
     };
-    
+
     var drainCounter = 0;
     c.drain = function () {
       drainCounter++;
@@ -3163,11 +3212,10 @@ exports['queue started'] = function(test) {
 
   var calls = [];
   var q = async.queue(function(task, cb) {});
-  
+
   test.equal(q.started, false);
   q.push([]);
   test.equal(q.started, true);
   test.done();
 
 };
-
