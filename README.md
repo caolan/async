@@ -536,14 +536,14 @@ By modifying the callback parameter the sorting order can be influenced:
 ```js
 //ascending order
 async.sortBy([1,9,3,5], function(x, callback){
-    callback(err, x);
+    callback(null, x);
 }, function(err,result){
     //result callback
 } );
 
 //descending order
 async.sortBy([1,9,3,5], function(x, callback){
-    callback(err, x*-1);    //<- x*-1 instead of x, turns the order around
+    callback(null, x*-1);    //<- x*-1 instead of x, turns the order around
 }, function(err,result){
     //result callback
 } );
@@ -972,7 +972,8 @@ add1mul3(4, function (err, result) {
 ### seq(fn1, fn2...)
 
 Version of the compose function that is more natural to read.
-Each following function consumes the return value of the latter function. 
+Each function consumes the return value of the previous function.
+It is the equivalent of [`compose`](#compose) with the arguments reversed.
 
 Each function is executed with the `this` binding of the composed function.
 
@@ -989,28 +990,20 @@ __Example__
 // This example uses `seq` function to avoid overnesting and error 
 // handling clutter.
 app.get('/cats', function(request, response) {
-  function handleError(err, data, callback) {
-    if (err) {
-      console.error(err);
-      response.json({ status: 'error', message: err.message });
-    }
-    else {
-      callback(data);
-    }
-  }
   var User = request.models.User;
   async.seq(
     _.bind(User.get, User),  // 'User.get' has signature (id, callback(err, data))
-    handleError,
     function(user, fn) {
       user.getCats(fn);      // 'getCats' has signature (callback(err, data))
-    },
-    handleError,
-    function(cats) {
+    }
+  )(req.session.user_id, function (err, cats) {
+    if (err) {
+      console.error(err);
+      response.json({ status: 'error', message: err.message });
+    } else {
       response.json({ status: 'ok', message: 'Cats found', data: cats });
     }
-  )(req.session.user_id);
-  }
+  });
 });
 ```
 
@@ -1092,7 +1085,7 @@ methods:
 * `paused` - a boolean for determining whether the queue is in a paused state
 * `pause()` - a function that pauses the processing of tasks until `resume()` is called.
 * `resume()` - a function that resumes the processing of queued tasks when the queue is paused.
-* `kill()` - a function that empties remaining tasks from the queue forcing it to go idle.
+* `kill()` - a function that removes the `drain` callback and empties remaining tasks from the queue forcing it to go idle.
 
 __Example__
 
@@ -1122,7 +1115,7 @@ q.push({name: 'bar'}, function (err) {
 // add some items to the queue (batch-wise)
 
 q.push([{name: 'baz'},{name: 'bay'},{name: 'bax'}], function (err) {
-    console.log('finished processing bar');
+    console.log('finished processing item');
 });
 
 // add some items to the front of the queue

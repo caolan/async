@@ -2023,7 +2023,6 @@ exports['doUntil'] = function (test) {
     var count = 0;
     async.doUntil(
         function (cb) {
-            debugger
             call_order.push(['iterator', count]);
             count++;
             cb();
@@ -2051,7 +2050,6 @@ exports['doUntil callback params'] = function (test) {
     var count = 0;
     async.doUntil(
         function (cb) {
-            debugger
             call_order.push(['iterator', count]);
             count++;
             cb(null, count);
@@ -2118,7 +2116,6 @@ exports['doWhilst'] = function (test) {
             return (count < 5);
         },
         function (err) {
-            debugger
             test.same(call_order, [
                 ['iterator', 0], ['test', 1],
                 ['iterator', 1], ['test', 2],
@@ -2147,7 +2144,6 @@ exports['doWhilst callback params'] = function (test) {
             return (c < 5);
         },
         function (err) {
-            debugger
             test.same(call_order, [
                 ['iterator', 0], ['test', 1],
                 ['iterator', 1], ['test', 2],
@@ -2486,8 +2482,10 @@ exports['queue pause'] = function(test) {
         tasks = [ 1, 2, 3, 4, 5, 6 ],
 
         elapsed = (function () {
-            var start = +Date.now();
-            return function () { return Math.floor((+Date.now() - start) / 100) * 100; };
+            var start = (new Date()).valueOf();
+            return function () {
+              return Math.round(((new Date()).valueOf() - start) / 100) * 100;
+            };
         })();
 
     var q = async.queue(function (task, callback) {
@@ -2537,8 +2535,10 @@ exports['queue pause with concurrency'] = function(test) {
         tasks = [ 1, 2, 3, 4, 5, 6 ],
 
         elapsed = (function () {
-            var start = +Date.now();
-            return function () { return Math.floor((+Date.now() - start) / 100) * 100; };
+            var start = (new Date()).valueOf();
+            return function () {
+              return Math.round(((new Date()).valueOf() - start) / 100) * 100;
+            };
         })();
 
     var q = async.queue(function (task, callback) {
