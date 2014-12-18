@@ -1,0 +1,11 @@
+{
+  "name": "async",
+  "version": "0.9.1",
+  "homepage": "https://github.com/caolan/async",
+  "authors": [
+    "Caolan McMahon"
+  ],
+  "description": "Higher-order functions and common patterns for asynchronous code",
+  "main": "./lib/async.js",
+  "license": "MIT"
+}
