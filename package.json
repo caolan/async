@@ -18,7 +18,8 @@
     "devDependencies": {
         "nodeunit": ">0.0.0",
         "uglify-js": "1.2.x",
-        "nodelint": ">0.0.0"
+        "nodelint": ">0.0.0",
+        "lodash": ">=2.4.1"
     },
     "jam": {
         "main": "lib/async.js",
