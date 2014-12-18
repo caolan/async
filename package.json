@@ -4,6 +4,12 @@
     "main": "./lib/async",
     "author": "Caolan McMahon",
     "version": "0.9.0",
+    "keywords": [
+        "async",
+        "callback",
+        "utility",
+        "module"
+    ],
     "repository" : {
         "type" : "git",
         "url" : "https://github.com/caolan/async.git"
