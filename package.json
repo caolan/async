@@ -33,6 +33,9 @@
       "lib/async.js",
       "README.md",
       "LICENSE"
+    ],
+    "categories": [
+      "Utilities"
     ]
   },
   "scripts": {

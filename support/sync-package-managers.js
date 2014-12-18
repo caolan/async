@@ -17,7 +17,8 @@ var LICENSE_NAME = packageJson.license.type;
 
 packageJson.jam = {
   main: packageJson.main,
-  include: INCLUDES
+  include: INCLUDES,
+  categories: ['Utilities']
 };
 
 packageJson.spm = {
