@@ -97,6 +97,13 @@ __Development:__ [async.js](https://github.com/caolan/async/raw/master/lib/async
 
 ## In the Browser
 
+You can install using Bower:
+
+    bower install async
+
+__Development:__ [async.js](https://github.com/caolan/async/raw/master/lib/async.js) - 29.6kb Uncompressed
+
+
 So far it's been tested in IE6, IE7, IE8, FF3.6 and Chrome 5. 
 
 Usage:
