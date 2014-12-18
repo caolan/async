@@ -1882,15 +1882,13 @@ exports['noConflict - node only'] = function(test){
         // node only test
         test.expect(3);
         var fs = require('fs');
+        var vm = require('vm');
         var filename = __dirname + '/../lib/async.js';
         fs.readFile(filename, function(err, content){
             if(err) return test.done();
 
-            // Script -> NodeScript in node v0.6.x
-            var Script = process.binding('evals').Script || process.binding('evals').NodeScript;
-
-            var s = new Script(content, filename);
-            var s2 = new Script(
+            var s = vm.createScript(content, filename);
+            var s2 = vm.createScript(
                 content + 'this.async2 = this.async.noConflict();',
                 filename
             );
