@@ -6,7 +6,7 @@
 Async is a utility module which provides straight-forward, powerful functions
 for working with asynchronous JavaScript. Although originally designed for
 use with [Node.js](http://nodejs.org), it can also be used directly in the
-browser. Also supports [component](https://github.com/component/component).
+browser. Also supports [component](https://github.com/component/component) and [spm](http://spmjs.io/package/async).
 
 Async provides around 20 functions that include the usual 'functional'
 suspects (`map`, `reduce`, `filter`, `each`…) as well as some common patterns

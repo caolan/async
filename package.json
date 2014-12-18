@@ -32,5 +32,8 @@
     },
     "scripts": {
         "test": "nodeunit test/test-async.js"
+    },
+    "spm": {
+        "main": "lib/async.js"
     }
 }
