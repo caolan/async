@@ -210,7 +210,7 @@ async.each(openFiles, saveFile, function(err){
 ```js
 // assuming openFiles is an array of file names 
 
-async.each(openFiles, function( file, callback) {
+async.each(openFiles, function(file, callback) {
   
   // Perform operation on file here.
   console.log('Processing file ' + file);
