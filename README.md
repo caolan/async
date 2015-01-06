@@ -1475,7 +1475,7 @@ three
 ---------------------------------------
 
 <a name="nextTick" />
-### nextTick(callback)
+### nextTick(callback), setImmediate(callback)
 
 Calls `callback` on a later loop around the event loop. In Node.js this just
 calls `process.nextTick`; in the browser it falls back to `setImmediate(callback)`
