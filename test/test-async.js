@@ -619,7 +619,7 @@ exports['retry as an embedded task'] = function(test) {
     var retryResult = 'RETRY';
     var fooResults;
     var retryResults;
-    
+
     async.auto({
         foo: function(callback, results){
             fooResults = results;
@@ -687,23 +687,44 @@ exports['waterfall no callback'] = function(test){
     ]);
 };
 
-exports['waterfall async'] = function(test){
+exports['waterfall no deferral'] = function(test){
     var call_order = [];
     async.waterfall([
         function(callback){
             call_order.push(1);
             callback();
+            // the final callback will return before we get here
             call_order.push(2);
         },
         function(callback){
             call_order.push(3);
             callback();
-        },
-        function(){
-            test.same(call_order, [1,2,3]);
-            test.done();
         }
-    ]);
+    ],
+    function(){
+        test.same(call_order, [1,3]);
+        test.done();
+    });
+};
+
+
+exports['waterfall async'] = function(test){
+    var call_order = [];
+    async.waterfall([
+        function(callback){
+            call_order.push(1);
+            async.nextTick(callback);
+            call_order.push(2);
+        },
+        function(callback){
+            call_order.push(3);
+            callback();
+        }
+    ],
+    function(){
+        test.same(call_order, [1,2,3]);
+        test.done();
+    });
 };
 
 exports['waterfall error'] = function(test){
@@ -743,7 +764,7 @@ exports['waterfall multiple callback calls'] = function(test){
             call_order.push(4);
             arr[3] = function(){
                 call_order.push(4);
-                test.same(call_order, [1,2,2,3,3,4,4]);
+                test.same(call_order, [1,2,3,4,2,3,4]);
                 test.done();
             };
         }
@@ -2806,20 +2827,20 @@ exports['cargo bulk task'] = function (test) {
 };
 
 exports['cargo drain once'] = function (test) {
-   
+
    var c = async.cargo(function (tasks, callback) {
       callback();
     }, 3);
-    
+
     var drainCounter = 0;
     c.drain = function () {
       drainCounter++;
     }
-    
+
     for(var i = 0; i < 10; i++){
       c.push(i);
     }
-    
+
     setTimeout(function(){
       test.equal(drainCounter, 1);
       test.done();
@@ -2827,17 +2848,17 @@ exports['cargo drain once'] = function (test) {
 };
 
 exports['cargo drain twice'] = function (test) {
-    
+
     var c = async.cargo(function (tasks, callback) {
       callback();
     }, 3);
-    
+
     var loadCargo = function(){
       for(var i = 0; i < 10; i++){
         c.push(i);
       }
     };
-    
+
     var drainCounter = 0;
     c.drain = function () {
       drainCounter++;
@@ -3161,7 +3182,7 @@ exports['queue started'] = function(test) {
 
   var calls = [];
   var q = async.queue(function(task, cb) {});
-  
+
   test.equal(q.started, false);
   q.push([]);
   test.equal(q.started, true);
