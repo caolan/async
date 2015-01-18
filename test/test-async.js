@@ -384,7 +384,7 @@ exports['auto'] = function(test){
         }]
     },
     function(err){
-        test.same(callOrder, ['task2','task6','task3','task5','task1','task4']);
+        test.same(callOrder, ['task2','task3','task6','task5','task1','task4']);
         test.done();
     });
 };
@@ -489,6 +489,7 @@ exports['auto no callback'] = function(test){
 };
 
 exports['auto error should pass partial results'] = function(test) {
+    test.expect(3);
     async.auto({
         task1: function(callback){
             callback(false, 'result1');
@@ -501,6 +502,7 @@ exports['auto error should pass partial results'] = function(test) {
         }]
     },
     function(err, results){
+        console.log("auto error done")
         test.equals(err, 'testerror');
         test.equals(results.task1, 'result1');
         test.equals(results.task2, 'result2');
@@ -520,20 +522,9 @@ exports['auto removeListener has side effect on loop iterator'] = function(test)
 
 // Issue 410 on github: https://github.com/caolan/async/issues/410
 exports['auto calls callback multiple times'] = function(test) {
-    if (typeof process === 'undefined') {
-        // node only test
-        test.done();
-        return;
-    }
     var finalCallCount = 0;
-    var domain = require('domain').create();
-    domain.on('error', function (e) {
-        // ignore test error
-        if (!e._test_error) {
-            return test.done(e);
-        }
-    });
-    domain.run(function () {
+    // this will actually be synchronous, we can use try/catch
+    try {
         async.auto({
             task1: function(callback) { callback(null); },
             task2: ['task1', function(callback) { callback(null); }]
@@ -546,7 +537,12 @@ exports['auto calls callback multiple times'] = function(test) {
             e._test_error = true;
             throw e;
         });
-    });
+    } catch (e) {
+        // ignore test error
+        if (!e._test_error) {
+            return test.done(e);
+        }
+    }
     setTimeout(function () {
         test.equal(finalCallCount, 1,
             "Final auto callback should only be called once"
@@ -574,8 +570,10 @@ exports['auto modifying results causes final callback to run early'] = function(
         }
     },
     function(err, results){
+        debugger;
         test.equal(results.inserted, true)
-        test.ok(results.task3, 'task3')
+        test.ok(results.task2, 'task2 should be called')
+        test.ok(results.task3, 'task3 should be called')
         test.done();
     });
 };
