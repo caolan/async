@@ -119,6 +119,9 @@ Usage:
 * [`each`](#each)
 * [`eachSeries`](#eachSeries)
 * [`eachLimit`](#eachLimit)
+* [`forEachOf`](#forEachOf)
+* [`forEachOfSeries`](#forEachOfSeries)
+* [`forEachOfLimit`](#forEachOfLimit)
 * [`map`](#map)
 * [`mapSeries`](#mapSeries)
 * [`mapLimit`](#mapLimit)
@@ -279,6 +282,53 @@ async.eachLimit(documents, 20, requestApi, function(err){
     // if any of the saves produced an error, err would equal that error
 });
 ```
+
+---------------------------------------
+
+<a name="forEachOf" />
+
+### forEachOf(obj, iterator, callback)
+
+Like `each`, except that it iterates over objects, and passes the key as the second argument to the iterator.
+
+__Arguments__
+
+* `obj` - An object or array to iterate over.
+* `iterator(item, key, callback)` - A function to apply to each item in `obj`. 
+The `key` is the item's key, or index in the case of an array. The iterator is 
+passed a `callback(err)` which must be called once it has completed. If no
+error has occurred, the callback should be run without arguments or with an
+explicit `null` argument.
+* `callback(err)` - A callback which is called when all `iterator` functions have finished, or an error occurs.
+
+__Example__
+
+```js
+var obj = {a: 1, b: 2, c: 3};
+
+async.forEachOf(obj, function (value, key, callback) {
+  console.log(value + ":" + key) // 1:a, 2:b, 3:c, etc...
+  callback();
+}, function (err) {
+
+})
+```
+
+---------------------------------------
+
+<a name="forEachOfSeries" />
+
+### forEachOfSeries(obj, iterator, callback)
+
+Like [`forEachOf`](#forEachOf), except only one `iterator` is run at a time.  The order of execution is not guaranteed for objects, but it will be for arrays.
+---------------------------------------
+
+<a name="forEachOfLimit" />
+
+### forEachOfLimit(obj, limit, iterator, callback)
+
+Like [`forEachOf`](#forEachOf), except only one the number of `iterator`s running at a time is controlled by `limit`.  The order of execution is not guaranteed for objects, but it will be for arrays.
+
 
 ---------------------------------------
 
