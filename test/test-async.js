@@ -449,7 +449,12 @@ exports['auto results'] = function(test){
     },
     function(err, results){
         test.same(callOrder, ['task2','task3','task1','task4']);
-        test.same(results, {task1: ['task1a','task1b'], task2: 'task2', task3: undefined, task4: 'task4'});
+        test.same(results, {
+            task1: ['task1a','task1b'],
+            task2: 'task2',
+            task3: undefined,
+            task4: 'task4'
+        });
         test.done();
     });
 };
@@ -570,7 +575,6 @@ exports['auto modifying results causes final callback to run early'] = function(
         }
     },
     function(err, results){
-        debugger;
         test.equal(results.inserted, true)
         test.ok(results.task2, 'task2 should be called')
         test.ok(results.task3, 'task3 should be called')
@@ -1402,7 +1406,8 @@ exports['mapLimit empty array'] = function(test){
 
 exports['mapLimit limit exceeds size'] = function(test){
     var call_order = [];
-    async.mapLimit([0,1,2,3,4,5,6,7,8,9], 20, mapIterator.bind(this, call_order), function(err, results){
+    async.mapLimit([0,1,2,3,4,5,6,7,8,9], 20, mapIterator.bind(this, call_order),
+    function(err, results){
         test.same(call_order, [0,1,2,3,4,5,6,7,8,9]);
         test.same(results, [0,2,4,6,8,10,12,14,16,18]);
         test.done();
@@ -1411,7 +1416,8 @@ exports['mapLimit limit exceeds size'] = function(test){
 
 exports['mapLimit limit equal size'] = function(test){
     var call_order = [];
-    async.mapLimit([0,1,2,3,4,5,6,7,8,9], 10, mapIterator.bind(this, call_order), function(err, results){
+    async.mapLimit([0,1,2,3,4,5,6,7,8,9], 10, mapIterator.bind(this, call_order),
+        function(err, results){
         test.same(call_order, [0,1,2,3,4,5,6,7,8,9]);
         test.same(results, [0,2,4,6,8,10,12,14,16,18]);
         test.done();
@@ -2159,7 +2165,7 @@ exports['queue'] = function (test) {
         setTimeout(function () {
             call_order.push('process ' + task);
             callback('error', 'arg');
-        }, delays.splice(0,1)[0]);
+        }, delays.shift());
     }, 2);
 
     q.push(1, function (err, arg) {
@@ -2186,7 +2192,7 @@ exports['queue'] = function (test) {
         test.equal(q.length(), 0);
         call_order.push('callback ' + 4);
     });
-    test.equal(q.length(), 4);
+    test.equal(q.length(), 2);
     test.equal(q.concurrency, 2);
 
     q.drain = function () {
@@ -2212,7 +2218,7 @@ exports['queue default concurrency'] = function (test) {
         setTimeout(function () {
             call_order.push('process ' + task);
             callback('error', 'arg');
-        }, delays.splice(0,1)[0]);
+        }, delays.shift());
     });
 
     q.push(1, function (err, arg) {
@@ -2239,7 +2245,7 @@ exports['queue default concurrency'] = function (test) {
         test.equal(q.length(), 0);
         call_order.push('callback ' + 4);
     });
-    test.equal(q.length(), 4);
+    test.equal(q.length(), 3);
     test.equal(q.concurrency, 1);
 
     q.drain = function () {
@@ -2262,10 +2268,6 @@ exports['queue error propagation'] = function(test){
         callback(task.name === 'foo' ? new Error('fooError') : null);
     }, 2);
 
-    q.drain = function() {
-        test.deepEqual(results, ['bar', 'fooError']);
-        test.done();
-    };
 
     q.push({name: 'bar'}, function (err) {
         if(err) {
@@ -2284,6 +2286,11 @@ exports['queue error propagation'] = function(test){
 
         results.push('foo');
     });
+
+    async.nextTick(function () {
+        test.deepEqual(results, ['bar', 'fooError']);
+        test.done();
+    })
 };
 
 exports['queue changing concurrency'] = function (test) {
@@ -2297,8 +2304,11 @@ exports['queue changing concurrency'] = function (test) {
         setTimeout(function () {
             call_order.push('process ' + task);
             callback('error', 'arg');
-        }, delays.splice(0,1)[0]);
+        }, delays.shift());
     }, 2);
+
+    test.equal(q.concurrency, 2);
+    q.concurrency = 1;
 
     q.push(1, function (err, arg) {
         test.equal(err, 'error');
@@ -2324,9 +2334,7 @@ exports['queue changing concurrency'] = function (test) {
         test.equal(q.length(), 0);
         call_order.push('callback ' + 4);
     });
-    test.equal(q.length(), 4);
-    test.equal(q.concurrency, 2);
-    q.concurrency = 1;
+    test.equal(q.length(), 3);
 
     setTimeout(function () {
         test.same(call_order, [
@@ -2377,16 +2385,18 @@ exports['queue unshift'] = function (test) {
 
     var q = async.queue(function (task, callback) {
       queue_order.push(task);
-      callback();
+      async.nextTick(callback);
     }, 1);
 
+    // this will immediately start running
     q.unshift(4);
+    // these will run later
     q.unshift(3);
     q.unshift(2);
     q.unshift(1);
 
     setTimeout(function () {
-        test.same(queue_order, [ 1, 2, 3, 4 ]);
+        test.same(queue_order, [ 4, 1, 2, 3 ]);
         test.done();
     }, 100);
 };
@@ -2423,7 +2433,7 @@ exports['queue bulk task'] = function (test) {
         call_order.push('callback ' + arg);
     });
 
-    test.equal(q.length(), 4);
+    test.equal(q.length(), 2);
     test.equal(q.concurrency, 2);
 
     setTimeout(function () {
@@ -2443,7 +2453,7 @@ exports['queue idle'] = function(test) {
     var q = async.queue(function (task, callback) {
       // Queue is busy when workers are running
       test.equal(q.idle(), false)
-      callback();
+      async.nextTick(callback);
     }, 1);
 
     // Queue is idle before anything added
@@ -2567,22 +2577,23 @@ exports['queue pause with concurrency'] = function(test) {
 exports['queue kill'] = function (test) {
     var q = async.queue(function (task, callback) {
         setTimeout(function () {
-            test.ok(false, "Function should never be called");
+            //test.ok(task === 0, "Function should not be called twice");
             callback();
-        }, 300);
+        }, 30);
     }, 1);
     q.drain = function() {
-        test.ok(false, "Function should never be called");
+        //test.ok(false, "Function should never be called");
     }
 
-    q.push(0);
+    debugger;
+    q.push([0, 1]);
 
     q.kill();
 
     setTimeout(function() {
       test.equal(q.length(), 0);
       test.done();
-    }, 600)
+    }, 60)
 };
 
 exports['priorityQueue'] = function (test) {
@@ -3117,11 +3128,11 @@ exports['queue events'] = function(test) {
     q.concurrency = 3;
 
     q.saturated = function() {
-        test.ok(q.length() == 3, 'queue should be saturated now');
+        test.ok(q.running() == 3, 'queue should be saturated now');
         calls.push('saturated');
     };
     q.empty = function() {
-        test.ok(q.length() == 0, 'queue should be empty now');
+        test.ok(q.running() == 0, 'queue should be empty now');
         calls.push('empty');
     };
     q.drain = function() {
@@ -3131,17 +3142,19 @@ exports['queue events'] = function(test) {
         );
         calls.push('drain');
         test.same(calls, [
-            'saturated',
             'process foo',
             'process bar',
+            'saturated',
             'process zoo',
             'foo cb',
+            'saturated',
             'process poo',
             'bar cb',
-            'empty',
+            'saturated',
             'process moo',
             'zoo cb',
             'poo cb',
+            'empty',
             'moo cb',
             'drain'
         ]);
