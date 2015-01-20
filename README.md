@@ -194,7 +194,8 @@ __Arguments__
 * `iterator(item, callback)` - A function to apply to each item in `arr`.
   The iterator is passed a `callback(err)` which must be called once it has 
   completed. If no error has occurred, the `callback` should be run without 
-  arguments or with an explicit `null` argument.
+  arguments or with an explicit `null` argument.  The array index is not passed
+  to the iterator.  If you need the index, use [`forEachOf`](#forEachOf).
 * `callback(err)` - A callback which is called when all `iterator` functions
   have finished, or an error occurs.
 
@@ -286,6 +287,7 @@ async.eachLimit(documents, 20, requestApi, function(err){
 ---------------------------------------
 
 <a name="forEachOf" />
+<a name="eachOf" />
 
 ### forEachOf(obj, iterator, callback)
 
@@ -304,30 +306,43 @@ explicit `null` argument.
 __Example__
 
 ```js
-var obj = {a: 1, b: 2, c: 3};
+var obj = {dev: "/dev.json", test: "/test.json", prod: "/prod.json"};
+var configs = {};
 
 async.forEachOf(obj, function (value, key, callback) {
-  console.log(value + ":" + key) // 1:a, 2:b, 3:c, etc...
-  callback();
+  fs.readFile(__dirname + value, "utf8", function (err, data) {
+    if (err) return callback(err);
+    try {
+      configs[key] = JSON.parse(data);
+    } catch (e) {
+      return callback(e);
+    }
+    callback();
+  })
 }, function (err) {
-
+  if (err) console.error(err.message);
+  // configs is now a map of JSON data
+  doSomethingWith(configs);
 })
 ```
 
 ---------------------------------------
 
 <a name="forEachOfSeries" />
+<a name="eachOfSeries" />
 
 ### forEachOfSeries(obj, iterator, callback)
 
-Like [`forEachOf`](#forEachOf), except only one `iterator` is run at a time.  The order of execution is not guaranteed for objects, but it will be for arrays.
+Like [`forEachOf`](#forEachOf), except only one `iterator` is run at a time.  The order of execution is not guaranteed for objects, but it will be guaranteed for arrays.
+
 ---------------------------------------
 
 <a name="forEachOfLimit" />
+<a name="eachOfLimit" />
 
 ### forEachOfLimit(obj, limit, iterator, callback)
 
-Like [`forEachOf`](#forEachOf), except only one the number of `iterator`s running at a time is controlled by `limit`.  The order of execution is not guaranteed for objects, but it will be for arrays.
+Like [`forEachOf`](#forEachOf), except the number of `iterator`s running at a given time is controlled by `limit`.
 
 
 ---------------------------------------
