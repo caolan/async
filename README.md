@@ -933,7 +933,7 @@ async.waterfall([
         callback(null, 'done');
     }
 ], function (err, result) {
-   // result now equals 'done'    
+    // result now equals 'done'    
 });
 ```
 
