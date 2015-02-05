@@ -141,6 +141,7 @@ Usage:
 * [`series`](#seriestasks-callback)
 * [`parallel`](#parallel)
 * [`parallelLimit`](#parallellimittasks-limit-callback)
+* [`settle`](#settle)
 * [`whilst`](#whilst)
 * [`doWhilst`](#doWhilst)
 * [`until`](#until)
@@ -811,6 +812,68 @@ __Arguments__
   have completed. This function gets a results array (or object) containing all 
   the result arguments passed to the `task` callbacks.
 
+---------------------------------------
+
+<a name="settle" />
+### settle(tasks, [callback])
+
+Similar to [`parallel`](#parallel) only all `tasks` are allowed to finish executing before `callback` is executed. Once all tasks have completed, a results array is passed to the `callback` with `err` and `results` fields depending on the status of each individual task.
+
+Similar to parallel, `tasks` can be an array or an object. Results will be returned to the `callback` an object with each functions result object mapped to the functions original key in `tasks`.
+
+This function is primarily to be used in scenarios where logic dictates that all tasks should conclude execution even in the event that a subset fails so that the success/failure of each task can be handled individually.
+
+__Arguments__
+
+* `tasks` - An array or object containing functions to run, each function is passed
+a `callback(err, result...)` it must call on completion with an error `err` (which can  be `null`) and an optional `result` value(s).
+* `callback(results)` - An optional callback to run once all the functions have completed. This function gets a results array (or object) containing all the results in the format ```
+{
+    err: false,
+    results: [results]
+}
+``` in the case of a successful execution and ```{ err: _errObj_, results: undefined }``` in the case of an error.
+
+__Example__
+
+```js
+async.settle([
+    function(callback){
+        callback(undefined, { aVar: 'one' });
+    },
+    function(callback){
+        setTimeout(function(){
+            callback('some_error');
+        }, 100);
+    }
+],
+function(results) {
+    // The results will equal
+    // [
+    //   { err: false, results: { aVar: 'one' } },
+    //   { err: 'some_err', results: undefined }
+    // ]
+});
+
+// Using an object instead of an array
+async.settle({
+    one: function(callback){
+        callback(undefined, { aVar: 'one' });
+    },
+    two: function(callback){
+        setTimeout(function(){
+            callback('some_error');
+        }, 100);
+    }
+},
+function(results) {
+    // The results will equal
+    // {
+    //   one: { err: false, results: { aVar: 'one' } },
+    //   two: { err: 'some_err', results: undefined }
+    // }
+});
+```
 ---------------------------------------
 
 <a name="whilst" />

@@ -955,6 +955,86 @@ exports['parallel call in another context'] = function(test) {
     vm.runInNewContext(fn, sandbox);
 };
 
+exports['settle object'] = function (test) {
+    var callOrder = [];
+    var finishOrder = [];
+    async.settle({
+        one: function (callback) {
+            callOrder.push(1);
+            setTimeout(function () {
+                finishOrder.push(1);
+                callback(undefined, 1, 2);
+            }, 10)
+        },
+        two: function (callback) {
+            callOrder.push(2);
+            setTimeout(function () {
+                finishOrder.push(2);
+                callback('errTwo');
+            }, 30)
+        },
+        three: function (callback) {
+            callOrder.push(3);
+            setTimeout(function () {
+                finishOrder.push(3);
+                callback(undefined, 3);
+            }, 20)
+        }
+    }, function (results) {
+        test.deepEqual(results, {
+            one: { err: false, results: [1, 2] },
+            two: { err: 'errTwo', results: undefined },
+            three: { err: false, results: [3] }
+        });
+        test.same(callOrder, [1,2,3]);
+        test.same(finishOrder, [1,3,2]);
+        test.done();
+    });
+};
+
+exports['settle array'] = function (test) {
+    var callOrder = [];
+    var finishOrder = [];
+    async.settle([
+        function fn1 (callback) {
+            callOrder.push(1);
+            setTimeout(function () {
+                finishOrder.push(1);
+                callback(undefined, 1, 2);
+            }, 10)
+        },
+        function fn2 (callback) {
+            callOrder.push(2);
+            setTimeout(function () {
+                finishOrder.push(2);
+                callback('errTwo');
+            }, 30)
+        },
+        function fn3 (callback) {
+            callOrder.push(3);
+            setTimeout(function () {
+                finishOrder.push(3);
+                callback(undefined, 3);
+            }, 20)
+        }
+    ], function (results) {
+        test.deepEqual(results, [
+            { err: false, results: [1, 2] },
+            { err: 'errTwo', results: undefined },
+            { err: false, results: [3] }
+        ]);
+        test.same(callOrder, [1,2,3]);
+        test.same(finishOrder, [1,3,2]);
+        test.done();
+    });
+};
+
+exports['settle empty array'] = function (test) {
+    async.settle([], function (results) {
+        test.same(results, []);
+        test.done();
+    });
+};
 
 exports['series'] = function(test){
     var call_order = [];
