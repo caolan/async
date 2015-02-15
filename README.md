@@ -1350,7 +1350,7 @@ new tasks much easier (and the code more readable).
 
 Attempts to get a successful response from `task` no more than `times` times before
 returning an error. If the task is successful, the `callback` will be passed the result
-of the successfull task. If all attemps fail, the callback will be passed the error and
+of the successful task. If all attempts fail, the callback will be passed the error and
 result (if any) of the final attempt.
 
 __Arguments__
