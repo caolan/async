@@ -1,7 +1,7 @@
 # Async.js
 
 [![Build Status via Travis CI](https://travis-ci.org/caolan/async.svg?branch=master)](https://travis-ci.org/caolan/async)
-
+[![Coverage Status](https://coveralls.io/repos/justincy/async/badge.svg?branch=coverage)](https://coveralls.io/r/justincy/async?branch=coverage)
 
 Async is a utility module which provides straight-forward, powerful functions
 for working with asynchronous JavaScript. Although originally designed for
