@@ -22,10 +22,12 @@
     "url": "https://github.com/caolan/async/raw/master/LICENSE"
   },
   "devDependencies": {
-    "nodeunit": ">0.0.0",
-    "uglify-js": "1.2.x",
+    "coveralls": "^2.11.2",
+    "istanbul": "^0.3.13",
+    "lodash": ">=2.4.1",
     "nodelint": ">0.0.0",
-    "lodash": ">=2.4.1"
+    "nodeunit": ">0.0.0",
+    "uglify-js": "1.2.x"
   },
   "jam": {
     "main": "lib/async.js",
@@ -39,7 +41,9 @@
     ]
   },
   "scripts": {
-    "test": "nodeunit test/test-async.js"
+    "test": "nodeunit test/test-async.js",
+    "coverage": "istanbul cover ./node_modules/nodeunit/bin/nodeunit -- test/test-async.js",
+    "coveralls": "istanbul cover ./node_modules/nodeunit/bin/nodeunit -- test/test-async.js && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage"
   },
   "spm": {
     "main": "lib/async.js"
