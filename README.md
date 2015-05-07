@@ -1137,13 +1137,36 @@ q.unshift({name: 'bar'}, function (err) {
 ---------------------------------------
 
 <a name="priorityQueue" />
-### priorityQueue(worker, concurrency)
+### priorityQueue(worker, concurrency, blocking)
 
-The same as [`queue`](#queue) only tasks are assigned a priority and completed in ascending priority order. There are two differences between `queue` and `priorityQueue` objects:
+The same as [`queue`](#queue) only tasks are assigned a priority and completed in ascending priority order. If `concurrency > 1` and `blocking` is `true`, the process will wait until all the tasks with the current priority are over before starting tasks with a lower priority (higher value), even with available workers.
+There are two differences between `queue` and `priorityQueue` objects:
 
 * `push(task, priority, [callback])` - `priority` should be a number. If an array of
   `tasks` is given, all tasks will be assigned the same priority.
 * The `unshift` method was removed.
+
+__Example__
+
+```js
+var q = async.priorityQueue(function (task, callback) {
+    setTimeout(function(){
+      console.log('hello ' + task.name)
+      callback();
+    }, task.delay);
+}, 2, true);
+
+// add some items to the queue
+
+q.push({name: 'foo', delay: 100}, 1, function (err) {
+    console.log('finished processing foo');
+});
+q.push({name: 'bar', delay: 50}, 2, function (err) {
+    console.log('finished processing bar');
+});
+```
+
+With `blocking` set to `false`, the output order will be `bar` then `foo`, while if `blocking` is set to`true`, it'll be `foo` and then `bar`, even if `bar` task is shorter than `foo` and `concurrency` is set to 2.
 
 ---------------------------------------
 
