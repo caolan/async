@@ -17,10 +17,7 @@
   "bugs": {
     "url": "https://github.com/caolan/async/issues"
   },
-  "license": {
-    "type": "MIT",
-    "url": "https://github.com/caolan/async/raw/master/LICENSE"
-  },
+  "license": "MIT",
   "devDependencies": {
     "nodeunit": ">0.0.0",
     "uglify-js": "1.2.x",
