@@ -119,6 +119,9 @@ Usage:
 * [`each`](#each)
 * [`eachSeries`](#eachSeries)
 * [`eachLimit`](#eachLimit)
+* [`forEachOf`](#forEachOf)
+* [`forEachOfSeries`](#forEachOfSeries)
+* [`forEachOfLimit`](#forEachOfLimit)
 * [`map`](#map)
 * [`mapSeries`](#mapSeries)
 * [`mapLimit`](#mapLimit)
@@ -191,7 +194,8 @@ __Arguments__
 * `iterator(item, callback)` - A function to apply to each item in `arr`.
   The iterator is passed a `callback(err)` which must be called once it has 
   completed. If no error has occurred, the `callback` should be run without 
-  arguments or with an explicit `null` argument.
+  arguments or with an explicit `null` argument.  The array index is not passed
+  to the iterator.  If you need the index, use [`forEachOf`](#forEachOf).
 * `callback(err)` - A callback which is called when all `iterator` functions
   have finished, or an error occurs.
 
@@ -279,6 +283,67 @@ async.eachLimit(documents, 20, requestApi, function(err){
     // if any of the saves produced an error, err would equal that error
 });
 ```
+
+---------------------------------------
+
+<a name="forEachOf" />
+<a name="eachOf" />
+
+### forEachOf(obj, iterator, callback)
+
+Like `each`, except that it iterates over objects, and passes the key as the second argument to the iterator.
+
+__Arguments__
+
+* `obj` - An object or array to iterate over.
+* `iterator(item, key, callback)` - A function to apply to each item in `obj`. 
+The `key` is the item's key, or index in the case of an array. The iterator is 
+passed a `callback(err)` which must be called once it has completed. If no
+error has occurred, the callback should be run without arguments or with an
+explicit `null` argument.
+* `callback(err)` - A callback which is called when all `iterator` functions have finished, or an error occurs.
+
+__Example__
+
+```js
+var obj = {dev: "/dev.json", test: "/test.json", prod: "/prod.json"};
+var configs = {};
+
+async.forEachOf(obj, function (value, key, callback) {
+  fs.readFile(__dirname + value, "utf8", function (err, data) {
+    if (err) return callback(err);
+    try {
+      configs[key] = JSON.parse(data);
+    } catch (e) {
+      return callback(e);
+    }
+    callback();
+  })
+}, function (err) {
+  if (err) console.error(err.message);
+  // configs is now a map of JSON data
+  doSomethingWith(configs);
+})
+```
+
+---------------------------------------
+
+<a name="forEachOfSeries" />
+<a name="eachOfSeries" />
+
+### forEachOfSeries(obj, iterator, callback)
+
+Like [`forEachOf`](#forEachOf), except only one `iterator` is run at a time.  The order of execution is not guaranteed for objects, but it will be guaranteed for arrays.
+
+---------------------------------------
+
+<a name="forEachOfLimit" />
+<a name="eachOfLimit" />
+
+### forEachOfLimit(obj, limit, iterator, callback)
+
+Like [`forEachOf`](#forEachOf), except the number of `iterator`s running at a given time is controlled by `limit`.
+
 
 ---------------------------------------
 

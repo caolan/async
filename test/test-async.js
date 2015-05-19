@@ -17,6 +17,13 @@ function eachIterator(args, x, callback) {
     }, x*25);
 }
 
+function forEachOfIterator(args, value, key, callback) {
+    setTimeout(function(){
+        args.push(key, value);
+        callback();
+    }, value*25);
+}
+
 function mapIterator(call_order, x, callback) {
     setTimeout(function(){
         call_order.push(x);
@@ -39,6 +46,13 @@ function detectIterator(call_order, x, callback) {
 
 function eachNoCallbackIterator(test, x, callback) {
     test.equal(x, 1);
+    callback();
+    test.done();
+}
+
+function forEachOfNoCallbackIterator(test, x, key, callback) {
+    test.equal(x, 1);
+    test.equal(key, "a");
     callback();
     test.done();
 }
@@ -619,7 +633,7 @@ exports['retry as an embedded task'] = function(test) {
     var retryResult = 'RETRY';
     var fooResults;
     var retryResults;
-    
+
     async.auto({
         foo: function(callback, results){
             fooResults = results;
@@ -1165,6 +1179,47 @@ exports['forEach alias'] = function (test) {
     test.done();
 };
 
+exports['forEachOf'] = function(test){
+    var args = [];
+    async.forEachOf({ a: 1, b: 2 }, forEachOfIterator.bind(this, args), function(err){
+        test.same(args, ["a", 1, "b", 2]);
+        test.done();
+    });
+};
+
+exports['forEachOf empty object'] = function(test){
+    test.expect(1);
+    async.forEachOf({}, function(value, key, callback){
+        test.ok(false, 'iterator should not be called');
+        callback();
+    }, function(err) {
+        test.ok(true, 'should call callback');
+    });
+    setTimeout(test.done, 25);
+};
+
+exports['forEachOf error'] = function(test){
+    test.expect(1);
+    async.forEachOf({ a: 1, b: 2 }, function(value, key, callback) {
+        callback('error');
+    }, function(err){
+        test.equals(err, 'error');
+    });
+    setTimeout(test.done, 50);
+};
+
+exports['forEachOf no callback'] = function(test){
+    async.forEachOf({ a: 1 }, forEachOfNoCallbackIterator.bind(this, test));
+};
+
+exports['forEachOf with array'] = function(test){
+    var args = [];
+    async.forEachOf([ "a", "b" ], forEachOfIterator.bind(this, args), function(err){
+        test.same(args, [0, "a", 1, "b"]);
+        test.done();
+    });
+};
+
 exports['eachSeries'] = function(test){
     var args = [];
     async.eachSeries([1,3,2], eachIterator.bind(this, args), function(err){
@@ -1201,10 +1256,6 @@ exports['eachSeries no callback'] = function(test){
     async.eachSeries([1], eachNoCallbackIterator.bind(this, test));
 };
 
-exports['forEachSeries alias'] = function (test) {
-    test.strictEqual(async.eachSeries, async.forEachSeries);
-    test.done();
-};
 
 exports['eachLimit'] = function(test){
     var args = [];
@@ -1293,9 +1344,151 @@ exports['eachLimit synchronous'] = function(test){
     });
 };
 
+exports['forEachSeries alias'] = function (test) {
+    test.strictEqual(async.eachSeries, async.forEachSeries);
+    test.done();
+};
+
+exports['forEachOfSeries'] = function(test){
+    var args = [];
+    async.forEachOfSeries({ a: 1, b: 2 }, forEachOfIterator.bind(this, args), function(err){
+        test.same(args, [ "a", 1, "b", 2 ]);
+        test.done();
+    });
+};
+
+exports['forEachOfSeries empty object'] = function(test){
+    test.expect(1);
+    async.forEachOfSeries({}, function(x, callback){
+        test.ok(false, 'iterator should not be called');
+        callback();
+    }, function(err){
+        test.ok(true, 'should call callback');
+    });
+    setTimeout(test.done, 25);
+};
+
+exports['forEachOfSeries error'] = function(test){
+    test.expect(2);
+    var call_order = [];
+    async.forEachOfSeries({ a: 1, b: 2 }, function(value, key, callback){
+        call_order.push(value, key);
+        callback('error');
+    }, function(err){
+        test.same(call_order, [ 1, "a" ]);
+        test.equals(err, 'error');
+    });
+    setTimeout(test.done, 50);
+};
+
+exports['forEachOfSeries no callback'] = function(test){
+    async.forEachOfSeries({ a: 1 }, forEachOfNoCallbackIterator.bind(this, test));
+};
+
+exports['forEachOfSeries with array'] = function(test){
+    var args = [];
+    async.forEachOfSeries([ "a", "b" ], forEachOfIterator.bind(this, args), function(err){
+        test.same(args, [ 0, "a", 1, "b" ]);
+        test.done();
+    });
+};
+
 exports['forEachLimit alias'] = function (test) {
     test.strictEqual(async.eachLimit, async.forEachLimit);
     test.done();
+};
+
+exports['forEachOfLimit'] = function(test){
+    var args = [];
+    var obj = { a: 1, b: 2, c: 3, d: 4 };
+    async.forEachOfLimit(obj, 2, function(value, key, callback){
+        setTimeout(function(){
+            args.push(value, key);
+            callback();
+        }, value * 5);
+    }, function(err){
+        test.same(args, [ 1, "a", 2, "b", 3, "c", 4, "d" ]);
+        test.done();
+    });
+};
+
+exports['forEachOfLimit empty object'] = function(test){
+    test.expect(1);
+    async.forEachOfLimit({}, 2, function(value, key, callback){
+        test.ok(false, 'iterator should not be called');
+        callback();
+    }, function(err){
+        test.ok(true, 'should call callback');
+    });
+    setTimeout(test.done, 25);
+};
+
+exports['forEachOfLimit limit exceeds size'] = function(test){
+    var args = [];
+    var obj = { a: 1, b: 2, c: 3, d: 4, e: 5 };
+    async.forEachOfLimit(obj, 10, forEachOfIterator.bind(this, args), function(err){
+        test.same(args, [ "a", 1, "b", 2, "c", 3, "d", 4, "e", 5 ]);
+        test.done();
+    });
+};
+
+exports['forEachOfLimit limit equal size'] = function(test){
+    var args = [];
+    var obj = { a: 1, b: 2, c: 3, d: 4, e: 5 };
+    async.forEachOfLimit(obj, 5, forEachOfIterator.bind(this, args), function(err){
+        test.same(args, [ "a", 1, "b", 2, "c", 3, "d", 4, "e", 5 ]);
+        test.done();
+    });
+};
+
+exports['forEachOfLimit zero limit'] = function(test){
+    test.expect(1);
+    async.forEachOfLimit({ a: 1, b: 2 }, 0, function(x, callback){
+        test.ok(false, 'iterator should not be called');
+        callback();
+    }, function(err){
+        test.ok(true, 'should call callback');
+    });
+    setTimeout(test.done, 25);
+};
+
+exports['forEachOfLimit error'] = function(test){
+    test.expect(2);
+    var obj = { a: 1, b: 2, c: 3, d: 4, e: 5 };
+    var call_order = [];
+
+    async.forEachOfLimit(obj, 3, function(value, key, callback){
+        call_order.push(value, key);
+        if (value === 2) {
+            callback('error');
+        }
+    }, function(err){
+        test.same(call_order, [ 1, "a", 2, "b" ]);
+        test.equals(err, 'error');
+    });
+    setTimeout(test.done, 25);
+};
+
+exports['forEachOfLimit no callback'] = function(test){
+    async.forEachOfLimit({ a: 1 }, 1, forEachOfNoCallbackIterator.bind(this, test));
+};
+
+exports['forEachOfLimit synchronous'] = function(test){
+    var args = [];
+    var obj = { a: 1, b: 2 };
+    async.forEachOfLimit(obj, 5, forEachOfIterator.bind(this, args), function(err){
+        test.same(args, [ "a", 1, "b", 2 ]);
+        test.done();
+    });
+};
+
+exports['forEachOfLimit with array'] = function(test){
+    var args = [];
+    var arr = [ "a", "b" ]
+    async.forEachOfLimit(arr, 1, forEachOfIterator.bind(this, args), function (err) {
+        test.same(args, [ 0, "a", 1, "b" ]);
+        test.done();
+    });
 };
 
 exports['map'] = function(test){
@@ -2806,20 +2999,20 @@ exports['cargo bulk task'] = function (test) {
 };
 
 exports['cargo drain once'] = function (test) {
-   
+
    var c = async.cargo(function (tasks, callback) {
       callback();
     }, 3);
-    
+
     var drainCounter = 0;
     c.drain = function () {
       drainCounter++;
     }
-    
+
     for(var i = 0; i < 10; i++){
       c.push(i);
     }
-    
+
     setTimeout(function(){
       test.equal(drainCounter, 1);
       test.done();
@@ -2827,17 +3020,17 @@ exports['cargo drain once'] = function (test) {
 };
 
 exports['cargo drain twice'] = function (test) {
-    
+
     var c = async.cargo(function (tasks, callback) {
       callback();
     }, 3);
-    
+
     var loadCargo = function(){
       for(var i = 0; i < 10; i++){
         c.push(i);
       }
     };
-    
+
     var drainCounter = 0;
     c.drain = function () {
       drainCounter++;
@@ -3161,7 +3354,7 @@ exports['queue started'] = function(test) {
 
   var calls = [];
   var q = async.queue(function(task, cb) {});
-  
+
   test.equal(q.started, false);
   q.push([]);
   test.equal(q.started, true);
