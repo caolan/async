@@ -1612,6 +1612,8 @@ Caches the results of an `async` function. When creating a hash to store functio
 results against, the callback is omitted from the hash and an optional hash
 function can be used.
 
+If no hash function is specified, the first argument is used as a hash key, which may work reasonably if it is a string or a data type that converts to a distinct string. Note that objects and arrays will not behave reasonably. Neither will cases where the other arguments are significant. In such cases, specify your own hash function.
+
 The cache of results is exposed as the `memo` property of the function returned
 by `memoize`.
 
