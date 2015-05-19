@@ -1,6 +1,7 @@
 # Async.js
 
 [![Build Status via Travis CI](https://travis-ci.org/caolan/async.svg?branch=master)](https://travis-ci.org/caolan/async)
+[![NPM version](http://img.shields.io/npm/v/async.svg)](https://www.npmjs.org/package/async)
 
 
 Async is a utility module which provides straight-forward, powerful functions
