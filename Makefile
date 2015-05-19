@@ -1,6 +1,6 @@
 PACKAGE = asyncjs
 NODEJS = $(if $(shell test -f /usr/bin/nodejs && echo "true"),nodejs,node)
-CWD := $(shell pwd)
+CWD := "$(shell pwd)"
 NODEUNIT = $(CWD)/node_modules/nodeunit/bin/nodeunit
 UGLIFY = $(CWD)/node_modules/uglify-js/bin/uglifyjs
 NODELINT = $(CWD)/node_modules/nodelint/nodelint
