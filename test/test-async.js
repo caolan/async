@@ -594,6 +594,33 @@ exports['auto modifying results causes final callback to run early'] = function(
     });
 };
 
+// Issue 263 on github: https://github.com/caolan/async/issues/263
+exports['auto prevent dead-locks due to inexistant dependencies'] = function(test) {
+    test.throws(function () {
+        async.auto({
+            task1: ['noexist', function(callback, results){
+                callback(null, 'task1');
+            }]
+        });
+    }, Error);
+    test.done();
+};
+
+// Issue 263 on github: https://github.com/caolan/async/issues/263
+exports['auto prevent dead-locks due to cyclic dependencies'] = function(test) {
+    test.throws(function () {
+        async.auto({
+            task1: ['task2', function(callback, results){
+                callback(null, 'task1');
+            }],
+            task2: ['task1', function(callback, results){
+                callback(null, 'task2');
+            }]
+        });
+    }, Error);
+    test.done();
+};
+
 // Issue 306 on github: https://github.com/caolan/async/issues/306
 exports['retry when attempt succeeds'] = function(test) {
     var failed = 3
