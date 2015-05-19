@@ -1574,7 +1574,8 @@ you would use with [`map`](#map).
 __Arguments__
 
 * `n` - The number of times to run the function.
-* `callback` - The function to call `n` times.
+* `iterator` - The function to call `n` times.
+* `callback` - see [`map`](#map)
 
 __Example__
 
