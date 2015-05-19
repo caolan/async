@@ -1617,7 +1617,7 @@ by `memoize`.
 __Arguments__
 
 * `fn` - The function to proxy and cache results from.
-* `hasher` - Tn optional function for generating a custom hash for storing
+* `hasher` - An optional function for generating a custom hash for storing
   results. It has all the arguments applied to it apart from the callback, and
   must be synchronous.
 
