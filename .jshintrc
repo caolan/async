@@ -1,0 +1,19 @@
+{
+    // Enforcing options
+    "eqeqeq": false,
+    "forin": true,
+    "indent": 4,
+    "noarg": true,
+    "undef": true,
+    "unused": true,
+    "trailing": true,
+
+    // Relaxing options
+    "asi": false,
+    "eqnull": true,
+    "evil": true,
+    "expr": false,
+    "laxcomma": true,
+    "loopfunc": true,
+    "sub": true
+}
