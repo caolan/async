@@ -89,10 +89,14 @@ async.map([1, 2, 3], AsyncSquaringLibrary.square.bind(AsyncSquaringLibrary), fun
 ## Download
 
 The source is available for download from
-[GitHub](http://github.com/caolan/async).
+[GitHub](https://github.com/caolan/async/blob/master/lib/async.js).
 Alternatively, you can install using Node Package Manager (`npm`):
 
     npm install async
+
+As well as using Bower: 
+
+    bower install async
 
 __Development:__ [async.js](https://github.com/caolan/async/raw/master/lib/async.js) - 29.6kb Uncompressed
 
