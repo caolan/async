@@ -555,6 +555,41 @@ exports['auto calls callback multiple times'] = function(test) {
     }, 10);
 };
 
+exports['auto calls callback multiple times with parallel functions'] = function(test) {
+  if (typeof process === 'undefined') {
+    // node only test
+    test.done();
+    return;
+  }
+  var finalCallCount = 0;
+  var domain = require('domain').create();
+  domain.on('error', function (e) {
+    // ignore test error
+    if (!e._test_error) {
+      return test.done(e);
+    }
+  });
+  domain.run(function () {
+    async.auto({
+        task1: function(callback) { setTimeout(callback,0,"err"); },
+        task2: function(callback) { setTimeout(callback,0,"err"); }
+      },
+      // Error throwing final callback. This should only run once
+      function(err) {
+        finalCallCount++;
+        var e = new Error("An error");
+        e._test_error = true;
+        throw e;
+      });
+  });
+  setTimeout(function () {
+    test.equal(finalCallCount, 1,
+      "Final auto callback should only be called once"
+    );
+    test.done();
+  }, 50);
+};
+
 // Issue 462 on github: https://github.com/caolan/async/issues/462
 exports['auto modifying results causes final callback to run early'] = function(test) {
     async.auto({
@@ -750,6 +785,7 @@ exports['waterfall multiple callback calls'] = function(test){
     ];
     async.waterfall(arr);
 };
+
 
 exports['waterfall call in another context'] = function(test) {
     if (typeof process === 'undefined') {
@@ -1156,6 +1192,34 @@ exports['each error'] = function(test){
     setTimeout(test.done, 50);
 };
 
+exports['each error with callback error'] = function(test){
+  var finalCallCount = 0;
+  var domain = require('domain').create();
+  domain.on('error', function (e) {
+    // ignore test error
+    if (!e._test_error) {
+      return test.done(e);
+    }
+  });
+  domain.run(function () {
+    async.each([1,2,3], function(x, callback){
+      setTimeout(callback,x,'error');
+    },
+    function(){
+      finalCallCount++;
+      var e = new Error("An error");
+      e._test_error = true;
+      throw e;
+    });
+  });
+  setTimeout(function () {
+    test.equal(finalCallCount, 1,
+      "Final each callback should only be called once"
+    );
+    test.done();
+  }, 50);
+};
+
 exports['each no callback'] = function(test){
     async.each([1], eachNoCallbackIterator.bind(this, test));
 };
@@ -1275,6 +1339,34 @@ exports['eachLimit error'] = function(test){
         test.equals(err, 'error');
     });
     setTimeout(test.done, 25);
+};
+
+exports['eachLimit error with callback error'] = function(test){
+  var finalCallCount = 0;
+  var domain = require('domain').create();
+  domain.on('error', function (e) {
+    // ignore test error
+    if (!e._test_error) {
+      return test.done(e);
+    }
+  });
+  domain.run(function () {
+    async.eachLimit([1,2,3], 2, function(x, callback){
+        setTimeout(callback, x, 'error');
+      },
+      function(){
+        finalCallCount++;
+        var e = new Error("An error");
+        e._test_error = true;
+        throw e;
+      });
+  });
+  setTimeout(function () {
+    test.equal(finalCallCount, 1,
+      "Final eachLimit callback should only be called once"
+    );
+    test.done();
+  }, 50);
 };
 
 exports['eachLimit no callback'] = function(test){
@@ -1583,6 +1675,33 @@ exports['some early return'] = function(test){
     }, 100);
 };
 
+exports['some true with callback error'] = function(test){
+  var finalCallCount = 0;
+  var domain = require('domain').create();
+  domain.on('error', function (e) {
+    // ignore test error
+    if (!e._test_error) {
+      return test.done(e);
+    }
+  });
+  domain.run(function () {
+    async.some([3,1,1,2], function(x, callback) {
+      setTimeout(callback, 0, (x === 1));
+    }, function(){
+        finalCallCount++;
+        var e = new Error("An error");
+        e._test_error = true;
+        throw e;
+      });
+  });
+  setTimeout(function () {
+    test.equal(finalCallCount, 1,
+      "Final some callback should only be called once"
+    );
+    test.done();
+  }, 100);
+};
+
 exports['any alias'] = function(test){
     test.equals(async.any, async.some);
     test.done();
@@ -1622,6 +1741,33 @@ exports['every early return'] = function(test){
     }, 100);
 };
 
+exports['every with callback error'] = function(test){
+  var finalCallCount = 0;
+  var domain = require('domain').create();
+  domain.on('error', function (e) {
+    // ignore test error
+    if (!e._test_error) {
+      return test.done(e);
+    }
+  });
+  domain.run(function () {
+    async.every([3,1,2], function(x, callback) {
+      setTimeout(callback, 0, false);
+    }, function(){
+      finalCallCount++;
+      var e = new Error("An error");
+      e._test_error = true;
+      throw e;
+    });
+  });
+  setTimeout(function () {
+    test.equal(finalCallCount, 1,
+      "Final every callback should only be called once"
+    );
+    test.done();
+  }, 100);
+};
+
 exports['all alias'] = function(test){
     test.equals(async.all, async.every);
     test.done();
@@ -1649,6 +1795,35 @@ exports['detect - mulitple matches'] = function(test){
         test.same(call_order, [1,2,'callback',2,2,3]);
         test.done();
     }, 100);
+};
+
+exports['detect multiple matches with callback error'] = function(test){
+  var finalCallCount = 0;
+  var domain = require('domain').create();
+  domain.on('error', function (e) {
+    // ignore test error
+    if (!e._test_error) {
+      return test.done(e);
+    }
+  });
+  domain.run(function () {
+    var call_order = [];
+    async.detect([3,2,2,1,2], detectIterator.bind(this, call_order), function(result){
+        //call_order.push('callback');
+        //test.equals(result, 2);
+        finalCallCount++;
+        var e = new Error("An error");
+        e._test_error = true;
+        throw e;
+        //setTimeout(callback,x,'error');
+      });
+  });
+  setTimeout(function () {
+    test.equal(finalCallCount, 1,
+      "Final each callback should only be called once"
+    );
+    test.done();
+  }, 50);
 };
 
 exports['detectSeries'] = function(test){
