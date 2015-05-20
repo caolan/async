@@ -2453,6 +2453,13 @@ exports['queue default concurrency'] = function (test) {
     };
 };
 
+exports['queue zero concurrency'] = function(test){
+    test.throws(function () {
+        async.queue(function (task, callback) {}, 0);
+    });
+    test.done();
+};
+
 exports['queue error propagation'] = function(test){
     var results = [];
 
