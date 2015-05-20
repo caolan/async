@@ -358,7 +358,7 @@ Like [`forEachOf`](#forEachOf), except the number of `iterator`s running at a gi
 Produces a new array of values by mapping each value in `arr` through
 the `iterator` function. The `iterator` is called with an item from `arr` and a
 callback for when it has finished processing. Each of these callback takes 2 arguments: 
-an `error`, and the transformed item from `arr`. If `iterator` passes an error to his 
+an `error`, and the transformed item from `arr`. If `iterator` passes an error to its 
 callback, the main `callback` (for the `map` function) is immediately called with the error.
 
 Note, that since this function applies the `iterator` to each item in parallel,
