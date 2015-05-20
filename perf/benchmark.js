@@ -19,8 +19,9 @@
  * Compare the current working version with the latest tagged version.
  */
 
+var _ = require("lodash");
 var Benchmark = require("benchmark");
-var benchOptions = {defer: true, minSamples: 7};
+var benchOptions = {defer: true, minSamples: 1, maxTime: 1};
 var exec = require("child_process").exec;
 var fs = require("fs");
 var path = require("path");
@@ -28,13 +29,15 @@ var mkdirp = require("mkdirp");
 var async = require("../");
 var suiteConfigs = require("./suites");
 
-var version1 = process.argv[2] || require("../package.json").version;
-var version2 = process.argv[3] || "current";
-var versionNames = [version1, version2];
+var version0 = process.argv[2] || require("../package.json").version;
+var version1 = process.argv[3] || "current";
+var versionNames = [version0, version1];
 var versions;
-var wins = [0, 0];
+var wins = {};
+wins[version0] = 0;
+wins[version1] = 0;
 
-console.log("Comparing " + version1 + " with " + version2);
+console.log("Comparing " + version0 + " with " + version1);
 console.log("--------------------------------------");
 
 
@@ -44,14 +47,14 @@ async.eachSeries(versionNames, cloneVersion, function (err) {
   var suites = suiteConfigs.map(createSuite);
 
   async.eachSeries(suites, runSuite, function () {
-    var wins0 = wins[0].length;
-    var wins1 = wins[1].length;
+    var wins0 = wins[version0];
+    var wins1 = wins[version1];
 
     if (wins0 > wins1) {
-      console.log(versionNames[0] + " faster overall " +
+      console.log(version0 + " faster overall " +
         "(" + wins0 + " wins vs. " + wins1  +" wins)");
     } else if (wins1 > wins0) {
-      console.log(versionNames[1] + " faster overall " +
+      console.log(version1 + " faster overall " +
         "(" + wins1 + " wins vs. " + wins0  +" wins)");
     } else {
       console.log("Both versions are equal");
@@ -71,24 +74,30 @@ function createSuite(suiteConfig) {
   function addBench(version, versionName) {
     var title = suiteConfig.name + " " + versionName;
     suite.add(title, function (deferred) {
-      suiteConfig.fn(versions[0], deferred);
-    }, benchOptions);
+      suiteConfig.fn(versions[0], function () {
+        deferred.resolve();
+      });
+    }, _.extend({
+      versionName: versionName,
+      setup: suiteConfig.setup
+    }, benchOptions));
   }
 
   addBench(versions[0], versionNames[0]);
   addBench(versions[1], versionNames[1]);
 
   return suite.on('cycle', function(event) {
-    console.log(event.target + "");
+    var mean = event.target.stats.mean * 1000;
+    console.log(event.target + ", " + mean.toFixed(1) + "ms per sample");
   })
   .on('complete', function() {
     var fastest = this.filter('fastest');
     if (fastest.length === 2) {
       console.log("Tie");
     } else {
-      console.log(fastest[0].name + ' is faster');
-      var index = this.indexOf("fastest");
-      wins[index]++;
+      var winner = fastest[0].options.versionName;
+      console.log(winner + ' is faster');
+      wins[winner]++;
     }
     console.log("--------------------------------------");
   });
