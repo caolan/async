@@ -1,14 +1,14 @@
 var _ = require("lodash");
-var parallel1000Funcs = _.range(1000).map(function () {
-  return function (cb) { cb(); };
-});
-var parallel10Funcs = _.range(10).map(function () {
-  return function (cb) { cb(); };
-});
+var tasks;
 
 module.exports = [
   {
-    name: "each(10)",
+    name: "each",
+    // args lists are passed to the setup function
+    args: [[10], [300], [10000]],
+    setup: function(count) {
+      tasks = Array(count);
+    },
     fn: function (async, done) {
       async.each(Array(10), function (num, cb) {
         async.setImmediate(cb);
@@ -16,93 +16,77 @@ module.exports = [
     }
   },
   {
-    name: "each(10000)",
+    name: "eachSeries",
+    args: [[10], [300], [10000]],
+    setup: function(count) {
+      tasks = Array(count);
+    },
     fn: function (async, done) {
-      async.each(Array(10000), function (num, cb) {
+      async.eachSeries(tasks, function (num, cb) {
         async.setImmediate(cb);
       }, done);
     }
   },
   {
-    name: "eachSeries(10)",
+    name: "eachLimit",
+    args: [[10], [300], [10000]],
+    setup: function(count) {
+      tasks = Array(count);
+    },
     fn: function (async, done) {
-      async.eachSeries(Array(10), function (num, cb) {
+      async.eachLimit(tasks, 4, function (num, cb) {
         async.setImmediate(cb);
       }, done);
     }
   },
   {
-    name: "eachSeries(10000)",
+    name: "parallel",
+    args: [[10], [100], [1000]],
+    setup: function (count) {
+      tasks = _.range(count).map(function () {
+        return function (cb) { cb(); };
+      });
+    },
     fn: function (async, done) {
-      async.eachSeries(Array(10000), function (num, cb) {
-        async.setImmediate(cb);
-      }, done);
+      async.parallel(tasks, done);
     }
   },
   {
-    name: "parallel(10)",
+    name: "series",
+    args: [[10], [100], [1000]],
+    setup: function (count) {
+      tasks = _.range(count).map(function () {
+        return function (cb) { cb(); };
+      });
+    },
     fn: function (async, done) {
-      async.parallel(parallel10Funcs, done);
+      async.series(tasks, done);
     }
   },
   {
-    name: "parallel(1000)",
+    name: "waterfall",
+    args: [[10], [100], [1000]],
+    setup: function (count) {
+      tasks = [
+          function (cb) {
+            return cb(null, 1);
+          }
+        ].concat(_.range(count).map(function (i) {
+          return function (arg, cb) { cb(null, i); };
+        }));
+    },
     fn: function (async, done) {
-      async.parallel(parallel1000Funcs, done);
+      async.waterfall(tasks, done);
     }
   },
   {
-    name: "queue(1000)",
+    name: "queue",
+    args: [[1000], [30000], [100000], [200000]],
+    setup: function (count) {
+      tasks = count;
+    },
     fn: function (async, done) {
-      var numEntries = 1000;
-      var q = async.queue(worker, 1);
-      for (var i = 1; i <= numEntries; i++) {
-        q.push({num: i});
-      }
-      function worker(task, callback) {
-        if (task.num === numEntries) {
-          return done();
-        }
-        setImmediate(callback);
-      }
-    }
-  },
-  {
-    name: "queue(30000)",
-    fn: function (async, done) {
-      var numEntries = 30000;
-      var q = async.queue(worker, 1);
-      for (var i = 1; i <= numEntries; i++) {
-        q.push({num: i});
-      }
-      function worker(task, callback) {
-        if (task.num === numEntries) {
-          return done();
-        }
-        setImmediate(callback);
-      }
-    }
-  },
-  {
-    name: "queue(100000)",
-    fn: function (async, done) {
-      var numEntries = 100000;
-      var q = async.queue(worker, 1);
-      for (var i = 1; i <= numEntries; i++) {
-        q.push({num: i});
-      }
-      function worker(task, callback) {
-        if (task.num === numEntries) {
-          return done();
-        }
-        setImmediate(callback);
-      }
-    }
-  },
-  {
-    name: "queue(200000)",
-    fn: function (async, done) {
-      var numEntries = 200000;
+      var numEntries = tasks;
       var q = async.queue(worker, 1);
       for (var i = 1; i <= numEntries; i++) {
         q.push({num: i});
