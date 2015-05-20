@@ -6,7 +6,7 @@ if (!Function.prototype.bind) {
         var self = this;
         return function () {
             self.apply(thisArg, args.concat(Array.prototype.slice.call(arguments)));
-        }
+        };
     };
 }
 
@@ -526,7 +526,7 @@ exports['auto error should pass partial results'] = function(test) {
 // Issue 76 on github: https://github.com/caolan/async/issues#issue/76
 exports['auto removeListener has side effect on loop iterator'] = function(test) {
     async.auto({
-        task1: ['task3', function(callback) { test.done() }],
+        task1: ['task3', function(callback) { test.done(); }],
         task2: ['task3', function(callback) { /* by design: DON'T call callback */ }],
         task3: function(callback) { callback(); }
     });
@@ -573,7 +573,7 @@ exports['auto calls callback multiple times'] = function(test) {
 exports['auto modifying results causes final callback to run early'] = function(test) {
     async.auto({
         task1: function(callback, results){
-            results.inserted = true
+            results.inserted = true;
             callback(null, 'task1');
         },
         task2: function(callback){
@@ -588,8 +588,8 @@ exports['auto modifying results causes final callback to run early'] = function(
         }
     },
     function(err, results){
-        test.equal(results.inserted, true)
-        test.ok(results.task3, 'task3')
+        test.equal(results.inserted, true);
+        test.ok(results.task3, 'task3');
         test.done();
     });
 };
@@ -623,18 +623,18 @@ exports['auto prevent dead-locks due to cyclic dependencies'] = function(test) {
 
 // Issue 306 on github: https://github.com/caolan/async/issues/306
 exports['retry when attempt succeeds'] = function(test) {
-    var failed = 3
-    var callCount = 0
-    var expectedResult = 'success'
+    var failed = 3;
+    var callCount = 0;
+    var expectedResult = 'success';
     function fn(callback, results) {
-        callCount++
-        failed--
-        if (!failed) callback(null, expectedResult)
-        else callback(true) // respond with error
+        callCount++;
+        failed--;
+        if (!failed) callback(null, expectedResult);
+        else callback(true); // respond with error
     }
     async.retry(fn, function(err, result){
-        test.equal(callCount, 3, 'did not retry the correct number of times')
-        test.equal(result, expectedResult, 'did not return the expected result')
+        test.equal(callCount, 3, 'did not retry the correct number of times');
+        test.equal(result, expectedResult, 'did not return the expected result');
         test.done();
     });
 };
@@ -647,7 +647,7 @@ exports['retry when all attempts succeeds'] = function(test) {
     function fn(callback, results) {
         callCount++;
         callback(error + callCount, erroredResult + callCount); // respond with indexed values
-    };
+    }
     async.retry(times, fn, function(err, result){
         test.equal(callCount, 3, "did not retry the correct number of times");
         test.equal(err, error + times, "Incorrect error was returned");
@@ -1511,7 +1511,7 @@ exports['forEachOfLimit synchronous'] = function(test){
 
 exports['forEachOfLimit with array'] = function(test){
     var args = [];
-    var arr = [ "a", "b" ]
+    var arr = [ "a", "b" ];
     async.forEachOfLimit(arr, 1, forEachOfIterator.bind(this, args), function (err) {
         test.same(args, [ 0, "a", 1, "b" ]);
         test.done();
@@ -1663,7 +1663,7 @@ exports['reduce'] = function(test){
 
 exports['reduce async with non-reference memo'] = function(test){
     async.reduce([1,3,2], 0, function(a, x, callback){
-        setTimeout(function(){callback(null, a + x)}, Math.random()*100);
+        setTimeout(function(){callback(null, a + x);}, Math.random()*100);
     }, function(err, result){
         test.equals(result, 6);
         test.done();
@@ -1916,7 +1916,7 @@ exports['sortBy inverted'] = function(test){
 exports['apply'] = function(test){
     test.expect(6);
     var fn = function(){
-        test.same(Array.prototype.slice.call(arguments), [1,2,3,4])
+        test.same(Array.prototype.slice.call(arguments), [1,2,3,4]);
     };
     async.apply(fn, 1, 2, 3, 4)();
     async.apply(fn, 1, 2, 3)(4);
@@ -1924,7 +1924,7 @@ exports['apply'] = function(test){
     async.apply(fn, 1)(2, 3, 4);
     async.apply(fn)(1, 2, 3, 4);
     test.equals(
-        async.apply(function(name){return 'hello ' + name}, 'world')(),
+        async.apply(function(name){return 'hello ' + name;}, 'world')(),
         'hello world'
     );
     test.done();
@@ -1994,14 +1994,14 @@ var console_fn_tests = function(name){
 
 
 exports['times'] = function(test) {
-  var indices = []
+  var indices = [];
   async.times(5, function(n, next) {
-    next(null, n)
+    next(null, n);
   }, function(err, results) {
-    test.same(results, [0,1,2,3,4])
-    test.done()
-  })
-}
+    test.same(results, [0,1,2,3,4]);
+    test.done();
+  });
+};
 
 exports['times'] = function(test){
     var args = [];
@@ -2089,9 +2089,6 @@ exports['nextTick in the browser'] = function(test){
 
     call_order.push('one');
     setTimeout(function(){
-        if (typeof process !== 'undefined') {
-            process.nextTick = _nextTick;
-        }
         test.same(call_order, ['one','two']);
     }, 50);
     setTimeout(test.done, 100);
@@ -2643,12 +2640,12 @@ exports['queue bulk task'] = function (test) {
 exports['queue idle'] = function(test) {
     var q = async.queue(function (task, callback) {
       // Queue is busy when workers are running
-      test.equal(q.idle(), false)
+      test.equal(q.idle(), false);
       callback();
     }, 1);
 
     // Queue is idle before anything added
-    test.equal(q.idle(), true)
+    test.equal(q.idle(), true);
 
     q.unshift(4);
     q.unshift(3);
@@ -2656,14 +2653,14 @@ exports['queue idle'] = function(test) {
     q.unshift(1);
 
     // Queue is busy when tasks added
-    test.equal(q.idle(), false)
+    test.equal(q.idle(), false);
 
     q.drain = function() {
         // Queue is idle after drain
         test.equal(q.idle(), true);
         test.done();
-    }
-}
+    };
+};
 
 exports['queue pause'] = function(test) {
     var call_order = [],
@@ -2716,7 +2713,7 @@ exports['queue pause'] = function(test) {
         ]);
         test.done();
     }, 800);
-}
+};
 
 exports['queue pause with concurrency'] = function(test) {
     var call_order = [],
@@ -2763,7 +2760,7 @@ exports['queue pause with concurrency'] = function(test) {
         ]);
         test.done();
     }, 800);
-}
+};
 
 exports['queue kill'] = function (test) {
     var q = async.queue(function (task, callback) {
@@ -2774,7 +2771,7 @@ exports['queue kill'] = function (test) {
     }, 1);
     q.drain = function() {
         test.ok(false, "Function should never be called");
-    }
+    };
 
     q.push(0);
 
@@ -2783,7 +2780,7 @@ exports['queue kill'] = function (test) {
     setTimeout(function() {
       test.equal(q.length(), 0);
       test.done();
-    }, 600)
+    }, 600);
 };
 
 exports['priorityQueue'] = function (test) {
@@ -3034,7 +3031,7 @@ exports['cargo drain once'] = function (test) {
     var drainCounter = 0;
     c.drain = function () {
       drainCounter++;
-    }
+    };
 
     for(var i = 0; i < 10; i++){
       c.push(i);
@@ -3061,7 +3058,7 @@ exports['cargo drain twice'] = function (test) {
     var drainCounter = 0;
     c.drain = function () {
       drainCounter++;
-    }
+    };
 
     loadCargo();
     setTimeout(loadCargo, 500);
@@ -3160,7 +3157,7 @@ exports['unmemoize'] = function(test) {
             });
         });
     });
-}
+};
 
 exports['unmemoize a not memoized function'] = function(test) {
     test.expect(1);
@@ -3175,7 +3172,7 @@ exports['unmemoize a not memoized function'] = function(test) {
     });
 
     test.done();
-}
+};
 
 exports['memoize error'] = function (test) {
     test.expect(1);
@@ -3244,22 +3241,22 @@ exports['falsy return values in series'] = function (test) {
         async.nextTick(function() {
             callback(null, false);
         });
-    };
+    }
     function taskUndefined(callback) {
         async.nextTick(function() {
             callback(null, undefined);
         });
-    };
+    }
     function taskEmpty(callback) {
         async.nextTick(function() {
             callback(null);
         });
-    };
+    }
     function taskNull(callback) {
         async.nextTick(function() {
             callback(null, null);
         });
-    };
+    }
     async.series(
         [taskFalse, taskUndefined, taskEmpty, taskNull],
         function(err, results) {
@@ -3279,22 +3276,22 @@ exports['falsy return values in parallel'] = function (test) {
         async.nextTick(function() {
             callback(null, false);
         });
-    };
+    }
     function taskUndefined(callback) {
         async.nextTick(function() {
             callback(null, undefined);
         });
-    };
+    }
     function taskEmpty(callback) {
         async.nextTick(function() {
             callback(null);
         });
-    };
+    }
     function taskNull(callback) {
         async.nextTick(function() {
             callback(null, null);
         });
-    };
+    }
     async.parallel(
         [taskFalse, taskUndefined, taskEmpty, taskNull],
         function(err, results) {
@@ -3322,12 +3319,12 @@ exports['queue events'] = function(test) {
         calls.push('saturated');
     };
     q.empty = function() {
-        test.ok(q.length() == 0, 'queue should be empty now');
+        test.ok(q.length() === 0, 'queue should be empty now');
         calls.push('empty');
     };
     q.drain = function() {
         test.ok(
-            q.length() == 0 && q.running() == 0,
+            q.length() === 0 && q.running() === 0,
             'queue should be empty now and no more workers should be running'
         );
         calls.push('drain');
@@ -3365,7 +3362,7 @@ exports['queue empty'] = function(test) {
 
     q.drain = function() {
         test.ok(
-            q.length() == 0 && q.running() == 0,
+            q.length() === 0 && q.running() === 0,
             'queue should be empty now and no more workers should be running'
         );
         calls.push('drain');

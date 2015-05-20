@@ -5,15 +5,20 @@
     "indent": 4,
     "noarg": true,
     "undef": true,
-    "unused": true,
     "trailing": true,
+    "evil": true,
+    "laxcomma": true,
 
     // Relaxing options
+    "onevar": false,
     "asi": false,
     "eqnull": true,
-    "evil": true,
     "expr": false,
-    "laxcomma": true,
     "loopfunc": true,
-    "sub": true
+    "sub": true,
+    "browser": true,
+    "node": true,
+    "globals": {
+        "define": true
+    }
 }
