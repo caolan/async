@@ -9,6 +9,8 @@ Changes:
 - Detect deadlocks in `auto` (#663)
 - Better support for require.js (#527)
 - Throw if queue created with concurrency `0` (#714)
-- Doc fixes (#542 #596 #615 #628 #631 #690)
+- Fix unneeded iteration in `queue.resume()` (#758)
+- Guard against timer mocking overriding `setImmediate` (#609 #611)
+- Miscellaneous doc fixes (#542 #596 #615 #628 #631 #690 #729)
 - Use single noop function internally (#546)
 - Optimize internal `_each`, `_map` and `_keys` functions.
