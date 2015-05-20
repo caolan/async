@@ -11,6 +11,7 @@
   "license": "MIT",
   "main": "lib/async.js",
   "repository": "caolan/async",
+  "main": "lib/async.js",
   "scripts": [
     "lib/async.js"
   ]
