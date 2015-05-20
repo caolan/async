@@ -1,8 +1,14 @@
-# v0.10
+# v1.0.0
 
-- Started using a changelog!
-- Added `forEachOf` for iterating over Objects (or to iterate Arrays with indexes) (#168 #704 #321)
+No known breaking changes, we are simply complying with semver from here on out.
+
+Changes:
+
+- Start using a changelog!
+- Add `forEachOf` for iterating over Objects (or to iterate Arrays with indexes available) (#168 #704 #321)
 - Detect deadlocks in `auto` (#663)
 - Better support for require.js (#527)
+- Throw if queue created with concurrency `0` (#714)
 - Doc fixes (#542 #596 #615 #628 #631 #690)
 - Use single noop function internally (#546)
+- Optimize internal `_each`, `_map` and `_keys` functions.

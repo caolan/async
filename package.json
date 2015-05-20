@@ -39,7 +39,7 @@
   },
   "scripts": {
     "test": "npm run-script lint && nodeunit test/test-async.js",
-    "lint": "jshint lib/async.js test/test-async.js"
+    "lint": "jshint lib/*.js test/*.js perf/*.js"
   },
   "spm": {
     "main": "lib/async.js"
@@ -51,7 +51,8 @@
       "node_modules",
       "bower_components",
       "test",
-      "tests"
+      "tests",
+      "perf"
     ]
   }
 }

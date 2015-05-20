@@ -19,6 +19,6 @@ clean:
 	rm -rf $(BUILDDIR)
 
 lint:
-	$(JSHINT) lib/*.js test/*.js
+	$(JSHINT) lib/*.js test/*.js perf/*.js
 
 .PHONY: test lint build all clean
