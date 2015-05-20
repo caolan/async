@@ -1,9 +1,29 @@
 #!/usr/bin/env node
 
+/**
+ * Compare the performance of any two tagged versions of async.  Can also
+ * compare any tag with what is in the current working directory.
+ *
+ * Usage:
+ *
+ *     perf/benchmark.js 0.9.2 0.9.0
+ *
+ * Compare version 0.9.0 with version 0.9.2
+ *
+ *     perf/benchmark.js 0.6.0
+ *
+ * Compare version 0.6.0 with the current working version
+ *
+ *     perf/benchmark.js
+ *
+ * Compare the current working version with the latest tagged version.
+ */
+
 var Benchmark = require("benchmark");
 var benchOptions = {defer: true, minSamples: 7};
 var exec = require("child_process").exec;
 var fs = require("fs");
+var path = require("path");
 var mkdirp = require("mkdirp");
 var async = require("../");
 var suiteConfigs = require("./suites");
@@ -95,7 +115,9 @@ function cloneVersion(tag, callback) {
       return callback();
     }
 
-    var cmd = "git clone --branch " + tag + " ../ " + versionDir;
+    var repoPath = path.join(__dirname, "..");
+
+    var cmd = "git clone --branch " + tag + " " + repoPath + " " + versionDir;
 
     exec(cmd, function (err, stdout, stderr) {
       if (err) {
