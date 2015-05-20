@@ -21,7 +21,6 @@
   "devDependencies": {
     "jshint": "~2.7.0",
     "lodash": ">=2.4.1",
-    "nodelint": ">0.0.0",
     "nodeunit": ">0.0.0",
     "uglify-js": "1.2.x"
   },
