@@ -1,9 +1,9 @@
 {
-  "name": "async",
-  "description": "Higher-order functions and common patterns for asynchronous code",
+  "name": "myasync",
+  "description": "extend utility for https://github.com/caolan/async",
   "main": "lib/async.js",
-  "author": "Caolan McMahon",
-  "version": "1.0.0",
+  "author": "Lu Tao",
+  "version": "0.0.1",
   "keywords": [
     "async",
     "callback",
@@ -12,7 +12,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/caolan/async.git"
+    "url": "https://github.com/lutaoact/myasync.git"
   },
   "bugs": {
     "url": "https://github.com/caolan/async/issues"
