@@ -99,7 +99,7 @@ function createSuite(suiteConfig) {
   function addBench(version, versionName) {
     var name = suiteConfig.name + " " + versionName;
     suite.add(name, function (deferred) {
-      suiteConfig.fn(versions[0], function () {
+      suiteConfig.fn(version, function () {
         deferred.resolve();
       });
     }, _.extend({
