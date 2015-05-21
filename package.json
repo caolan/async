@@ -3,7 +3,7 @@
   "description": "extend utility for https://github.com/caolan/async",
   "main": "lib/async.js",
   "author": "Lu Tao",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "keywords": [
     "async",
     "callback",

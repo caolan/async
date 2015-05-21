@@ -1,6 +1,6 @@
 # Async.js
 
-## extension
+## This Is My Extension
 ```js
 myasync = require('myasync');
 
