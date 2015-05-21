@@ -2791,6 +2791,10 @@ exports['queue pause with concurrency'] = function(test) {
     }, resume_timeout);
 
     setTimeout(function () {
+        test.equal(q.running(), 2);
+    }, resume_timeout + 10);
+
+    setTimeout(function () {
         test.same(call_order, [
             'process 1', 'timeout 100',
             'process 2', 'timeout 100',
@@ -2801,6 +2805,30 @@ exports['queue pause with concurrency'] = function(test) {
         ]);
         test.done();
     }, 800);
+};
+
+exports['queue start paused'] = function (test) {
+    var q = async.queue(function (task, callback) {
+        setTimeout(function () {
+            callback();
+        }, 10);
+    }, 2);
+    q.pause();
+
+    q.push([1, 2, 3]);
+
+    setTimeout(function () {
+        q.resume();
+    }, 10);
+
+    setTimeout(function () {
+        test.equal(q.running(), 2);
+        q.resume();
+    }, 15);
+
+    q.drain = function () {
+        test.done();
+    };
 };
 
 exports['queue kill'] = function (test) {
