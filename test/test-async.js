@@ -3391,6 +3391,25 @@ exports['queue empty'] = function(test) {
     q.push([]);
 };
 
+exports['queue saturated'] = function (test) {
+    var saturatedCalled = false;
+    var q = async.queue(function(task, cb) {
+        async.setImmediate(cb);
+    }, 2);
+
+    q.saturated = function () {
+        saturatedCalled = true;
+    };
+    q.drain = function () {
+        test.ok(saturatedCalled, "saturated not called");
+        test.done();
+    };
+
+    setTimeout(function () {
+        q.push(['foo', 'bar', 'baz', 'moo']);
+    }, 10);
+};
+
 exports['queue started'] = function(test) {
 
   var calls = [];
