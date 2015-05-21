@@ -1128,7 +1128,7 @@ The same as [`applyEach`](#applyEach) only the functions are applied in series.
 ---------------------------------------
 
 <a name="queue" />
-### queue(worker, concurrency)
+### queue(worker, [concurrency])
 
 Creates a `queue` object with the specified `concurrency`. Tasks added to the
 `queue` are processed in parallel (up to the `concurrency` limit). If all
@@ -1139,9 +1139,9 @@ __Arguments__
 
 * `worker(task, callback)` - An asynchronous function for processing a queued
   task, which must call its `callback(err)` argument when finished, with an 
-  optional `error` as an argument.
+  optional `error` as an argument.  If you want to handle errors from an individual task, pass a callback to `q.push()`.
 * `concurrency` - An `integer` for determining how many `worker` functions should be
-  run in parallel.
+  run in parallel.  If omitted, the concurrency defaults to `1`.  If the concurrency is `0`, an error is thrown.
 
 __Queue objects__
 
