@@ -55,6 +55,9 @@ async.eachSeries(versionNames, cloneVersion, function (err) {
     var totalTime0 = Math.round(totalTime[version0]);
     var totalTime1 = Math.round(totalTime[version1]);
 
+    var wins0 = Math.round(wins[version0]);
+    var wins1 = Math.round(wins[version1]);
+
     if ( Math.abs((totalTime0 / totalTime1) - 1) < 0.01) {
       // if < 1% difference, we're likely within the margins of error
       console.log("Both versions are about equal " +
@@ -65,6 +68,17 @@ async.eachSeries(versionNames, cloneVersion, function (err) {
     } else if (totalTime1 < totalTime0) {
       console.log(version1 + " faster overall " +
         "(" + totalTime1 + "ms total vs. " + totalTime0  + "ms total)");
+    }
+
+    if (wins0 > wins1) {
+      console.log(version0 + " won more benchmarks " +
+        "(" + wins0 + " vs. " + wins1  + ")");
+    } else if (wins1 > wins0) {
+      console.log(version1 + " won more benchmarks " +
+        "(" + wins1 + " vs. " + wins0  + ")");
+    } else {
+      console.log("Both versions won the same number of benchmarks " +
+        "(" + wins0 + " vs. " + wins1  + ")");
     }
   });
 });
