@@ -552,11 +552,11 @@ __Arguments__
 * `arr` - An array to iterate over.
 * `iterator(item, callback)` - A truth test to apply to each item in `arr`.
   The iterator is passed a `callback(truthValue)` which must be called with a 
-  boolean argument once it has completed.
+  boolean argument once it has completed. **Note: this callback does not take an error as its first argument.**
 * `callback(result)` - A callback which is called as soon as any iterator returns
   `true`, or after all the `iterator` functions have finished. Result will be
   the first item in the array that passes the truth test (iterator) or the
-  value `undefined` if none passed.
+  value `undefined` if none passed.  **Note: this callback does not take an error as its first argument.**
 
 __Example__
 
@@ -644,12 +644,13 @@ __Arguments__
 
 * `arr` - An array to iterate over.
 * `iterator(item, callback)` - A truth test to apply to each item in the array
-  in parallel. The iterator is passed a callback(truthValue) which must be 
+  in parallel. The iterator is passed a `callback(truthValue)`` which must be 
   called with a boolean argument once it has completed.
 * `callback(result)` - A callback which is called as soon as any iterator returns
   `true`, or after all the iterator functions have finished. Result will be
   either `true` or `false` depending on the values of the async tests.
 
+ **Note: the callbacks do not take an error as their first argument.**
 __Example__
 
 ```js
@@ -674,11 +675,13 @@ __Arguments__
 
 * `arr` - An array to iterate over.
 * `iterator(item, callback)` - A truth test to apply to each item in the array
-  in parallel. The iterator is passed a callback(truthValue) which must be 
+  in parallel. The iterator is passed a `callback(truthValue)` which must be 
   called with a  boolean argument once it has completed.
 * `callback(result)` - A callback which is called after all the `iterator`
   functions have finished. Result will be either `true` or `false` depending on
   the values of the async tests.
+
+ **Note: the callbacks do not take an error as their first argument.**
 
 __Example__
 

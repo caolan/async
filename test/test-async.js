@@ -1895,6 +1895,16 @@ exports['detectSeries - multiple matches'] = function(test){
     }, 200);
 };
 
+exports['detectSeries - ensure stop'] = function (test) {
+    async.detectSeries([1, 2, 3, 4, 5], function (num, cb) {
+        if (num > 3) throw new Error("detectSeries did not stop iterating");
+        cb(num === 3);
+    }, function (result) {
+        test.equals(result, 3);
+        test.done();
+    });
+};
+
 exports['sortBy'] = function(test){
     async.sortBy([{a:1},{a:15},{a:6}], function(x, callback){
         setTimeout(function(){callback(null, x.a);}, 0);
