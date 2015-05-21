@@ -1,12 +1,36 @@
 # Async.js
 
+## This Is My Extension
+```js
+myasync = require('myasync');
+
+myasync.mySeries({
+  one: function(next) {
+    next(null, 'one');
+  },
+  two: function(next, res) {
+    console.log(res);//{ one: 'one' }
+    next(null, 'two');
+  },
+  three: function(next, res) {
+    console.log(res);//{ one: 'one', two: 'two' }
+    next(null, 'three');
+  },
+}, function(err, res) {
+  if (err) {
+    return console.log(err);
+  }
+  console.log(res);//{ one: 'one', two: 'two', three: 'three' }
+});
+```
+
 [![Build Status via Travis CI](https://travis-ci.org/caolan/async.svg?branch=master)](https://travis-ci.org/caolan/async)
 [![NPM version](http://img.shields.io/npm/v/async.svg)](https://www.npmjs.org/package/async)
 
 
 Async is a utility module which provides straight-forward, powerful functions
 for working with asynchronous JavaScript. Although originally designed for
-use with [Node.js](http://nodejs.org) and installable via `npm install async`,
+use with [Node.js](http://nodejs.org) and installable via `npm install myasync`,
 it can also be used directly in the browser.
 
 Async is also installable via:
@@ -92,7 +116,7 @@ The source is available for download from
 [GitHub](https://github.com/caolan/async/blob/master/lib/async.js).
 Alternatively, you can install using Node Package Manager (`npm`):
 
-    npm install async
+    npm install myasync
 
 As well as using Bower: 
 
