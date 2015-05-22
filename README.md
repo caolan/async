@@ -1573,9 +1573,9 @@ call_order.push('one')
 ```
 
 <a name="times" />
-### times(n, callback)
+### times(n, iterator, callback)
 
-Calls the `callback` function `n` times, and accumulates results in the same manner
+Calls the `iterator` function `n` times, and accumulates results in the same manner
 you would use with [`map`](#map).
 
 __Arguments__
@@ -1604,7 +1604,7 @@ async.times(5, function(n, next){
 ```
 
 <a name="timesSeries" />
-### timesSeries(n, callback)
+### timesSeries(n, iterator, callback)
 
 The same as [`times`](#times), only the iterator is applied to each item in `arr` in
 series. The next `iterator` is only called once the current one has completed. 
