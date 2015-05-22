@@ -684,7 +684,9 @@ exports['retry as an embedded task'] = function(test) {
     });
 };
 
-exports['waterfall'] = function(test){
+exports['waterfall'] = {
+
+'basic': function(test){
     test.expect(7);
     var call_order = [];
     async.waterfall([
@@ -714,29 +716,29 @@ exports['waterfall'] = function(test){
         test.ok(err === null, err + " passed instead of 'null'");
         test.done();
     });
-};
+},
 
-exports['waterfall empty array'] = function(test){
+'empty array': function(test){
     async.waterfall([], function(err){
         test.done();
     });
-};
+},
 
-exports['waterfall non-array'] = function(test){
+'non-array': function(test){
     async.waterfall({}, function(err){
         test.equals(err.message, 'First argument to waterfall must be an array of functions');
         test.done();
     });
-};
+},
 
-exports['waterfall no callback'] = function(test){
+'no callback': function(test){
     async.waterfall([
         function(callback){callback();},
         function(callback){callback(); test.done();}
     ]);
-};
+},
 
-exports['waterfall async'] = function(test){
+'async': function(test){
     var call_order = [];
     async.waterfall([
         function(callback){
@@ -753,9 +755,9 @@ exports['waterfall async'] = function(test){
             test.done();
         }
     ]);
-};
+},
 
-exports['waterfall error'] = function(test){
+'error': function(test){
     test.expect(1);
     async.waterfall([
         function(callback){
@@ -769,9 +771,9 @@ exports['waterfall error'] = function(test){
         test.equals(err, 'error');
     });
     setTimeout(test.done, 50);
-};
+},
 
-exports['waterfall multiple callback calls'] = function(test){
+'multiple callback calls': function(test){
     var call_order = [];
     var arr = [
         function(callback){
@@ -798,9 +800,9 @@ exports['waterfall multiple callback calls'] = function(test){
         }
     ];
     async.waterfall(arr);
-};
+},
 
-exports['waterfall call in another context'] = function(test) {
+'call in another context': function(test) {
     if (typeof process === 'undefined') {
         // node only test
         test.done();
@@ -825,8 +827,9 @@ exports['waterfall call in another context'] = function(test) {
     }).toString() + "())";
 
     vm.runInNewContext(fn, sandbox);
-};
+}
 
+};
 
 exports['parallel'] = function(test){
     var call_order = [];
