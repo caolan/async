@@ -55,11 +55,11 @@ async.eachSeries(versionNames, cloneVersion, function (err) {
     .map(createSuite);
 
   async.eachSeries(suites, runSuite, function () {
-    var totalTime0 = Math.round(totalTime[version0]);
-    var totalTime1 = Math.round(totalTime[version1]);
+    var totalTime0 = +totalTime[version0].toPrecision(3);
+    var totalTime1 = +totalTime[version1].toPrecision(3);
 
-    var wins0 = Math.round(wins[version0]);
-    var wins1 = Math.round(wins[version1]);
+    var wins0 = wins[version0];
+    var wins1 = wins[version1];
 
     if ( Math.abs((totalTime0 / totalTime1) - 1) < 0.01) {
       // if < 1% difference, we're likely within the margins of error
@@ -139,7 +139,7 @@ function createSuite(suiteConfig) {
 
   return suite.on('cycle', function(event) {
     var mean = event.target.stats.mean * 1000;
-    console.log(event.target + ", " + mean.toFixed(1) + "ms per sample");
+    console.log(event.target + ", " + (+mean.toPrecision(2)) + "ms per run");
     var version = event.target.options.versionName;
     totalTime[version] += mean;
   })

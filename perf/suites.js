@@ -7,7 +7,7 @@ module.exports = [
     // args lists are passed to the setup function
     args: [[10], [300], [10000]],
     setup: function(count) {
-      tasks = Array(count);
+      tasks = _.range(count);
     },
     fn: function (async, done) {
       async.each(tasks, function (num, cb) {
@@ -19,7 +19,7 @@ module.exports = [
     name: "eachSeries",
     args: [[10], [300], [10000]],
     setup: function(count) {
-      tasks = Array(count);
+      tasks = _.range(count);
     },
     fn: function (async, done) {
       async.eachSeries(tasks, function (num, cb) {
@@ -31,7 +31,7 @@ module.exports = [
     name: "eachLimit",
     args: [[10], [300], [10000]],
     setup: function(count) {
-      tasks = Array(count);
+      tasks = _.range(count);
     },
     fn: function (async, done) {
       async.eachLimit(tasks, 4, function (num, cb) {
@@ -44,10 +44,10 @@ module.exports = [
     // args lists are passed to the setup function
     args: [[10], [300], [10000]],
     setup: function(count) {
-      tasks = Array(count);
+      tasks = _.range(count);
     },
     fn: function (async, done) {
-      async.map(Array(10), function (num, cb) {
+      async.map(tasks, function (num, cb) {
         async.setImmediate(cb);
       }, done);
     }
@@ -56,7 +56,7 @@ module.exports = [
     name: "mapSeries",
     args: [[10], [300], [10000]],
     setup: function(count) {
-      tasks = Array(count);
+      tasks = _.range(count);
     },
     fn: function (async, done) {
       async.mapSeries(tasks, function (num, cb) {
@@ -68,7 +68,7 @@ module.exports = [
     name: "mapLimit",
     args: [[10], [300], [10000]],
     setup: function(count) {
-      tasks = Array(count);
+      tasks = _.range(count);
     },
     fn: function (async, done) {
       async.mapLimit(tasks, 4, function (num, cb) {
@@ -118,7 +118,9 @@ module.exports = [
     args: [[10], [100], [1000]],
     setup: function (count) {
       tasks = _.range(count).map(function () {
-        return function (cb) { cb(); };
+        return function (cb) {
+          setImmediate(cb);
+        };
       });
     },
     fn: function (async, done) {
@@ -130,7 +132,7 @@ module.exports = [
     args: [[10], [100], [1000]],
     setup: function (count) {
       tasks = _.range(count).map(function () {
-        return function (cb) { cb(); };
+        return function (cb) { setImmediate(cb); };
       });
     },
     fn: function (async, done) {
