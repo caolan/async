@@ -19,7 +19,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "benchmark": "~1.0.0",
+    "benchmark": "bestiejs/benchmark.js",
     "jshint": "~2.7.0",
     "lodash": ">=2.4.1",
     "mkdirp": "~0.5.1",

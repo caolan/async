@@ -174,12 +174,6 @@ module.exports = [
     }
   },
   {
-    name: "defer none",
-    fn: function (async, done) {
-      done();
-    }
-  },
-  {
     name: "defer nextTick",
     fn: function (async, done) {
       process.nextTick(done);
