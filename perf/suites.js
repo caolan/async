@@ -10,7 +10,7 @@ module.exports = [
       tasks = Array(count);
     },
     fn: function (async, done) {
-      async.each(Array(10), function (num, cb) {
+      async.each(tasks, function (num, cb) {
         async.setImmediate(cb);
       }, done);
     }
@@ -35,6 +35,80 @@ module.exports = [
     },
     fn: function (async, done) {
       async.eachLimit(tasks, 4, function (num, cb) {
+        async.setImmediate(cb);
+      }, done);
+    }
+  },
+  {
+    name: "map",
+    // args lists are passed to the setup function
+    args: [[10], [300], [10000]],
+    setup: function(count) {
+      tasks = Array(count);
+    },
+    fn: function (async, done) {
+      async.map(Array(10), function (num, cb) {
+        async.setImmediate(cb);
+      }, done);
+    }
+  },
+  {
+    name: "mapSeries",
+    args: [[10], [300], [10000]],
+    setup: function(count) {
+      tasks = Array(count);
+    },
+    fn: function (async, done) {
+      async.mapSeries(tasks, function (num, cb) {
+        async.setImmediate(cb);
+      }, done);
+    }
+  },
+  {
+    name: "mapLimit",
+    args: [[10], [300], [10000]],
+    setup: function(count) {
+      tasks = Array(count);
+    },
+    fn: function (async, done) {
+      async.mapLimit(tasks, 4, function (num, cb) {
+        async.setImmediate(cb);
+      }, done);
+    }
+  },
+  {
+    name: "eachOf",
+    // args lists are passed to the setup function
+    args: [[10], [300], [10000]],
+    setup: function(count) {
+      tasks = _.range(count);
+    },
+    fn: function (async, done) {
+      async.eachOf(tasks, function (num, i, cb) {
+        async.setImmediate(cb);
+      }, done);
+    }
+  },
+  {
+    name: "eachOfSeries",
+    args: [[10], [300], [10000]],
+    setup: function(count) {
+      tasks = _.range(count);
+    },
+    fn: function (async, done) {
+      async.eachOfSeries(tasks, function (num, i, cb) {
+        async.setImmediate(cb);
+      }, done);
+    }
+  },
+  {
+    name: "eachOfLimit",
+    args: [[10], [300], [10000]],
+    setup: function(count) {
+      tasks = _.range(count);
+    },
+    fn: function (async, done) {
+      async.eachOfLimit(tasks, 4, function (num, i, cb) {
         async.setImmediate(cb);
       }, done);
     }
