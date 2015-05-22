@@ -1007,6 +1007,42 @@ exports['parallel call in another context'] = function(test) {
     vm.runInNewContext(fn, sandbox);
 };
 
+exports['parallel does not continue replenishing after error'] = function (test) {
+    var started = 0;
+    var arr = [
+        funcToCall,
+        funcToCall,
+        funcToCall,
+        funcToCall,
+        funcToCall,
+        funcToCall,
+        funcToCall,
+        funcToCall,
+        funcToCall,
+    ];
+    var delay = 10;
+    var limit = 3;
+    var maxTime = 10 * arr.length;
+    function funcToCall(callback) {
+       started ++;
+        if (started === 3) {
+            return callback(new Error ("Test Error"));
+        }
+        setTimeout(function(){
+            callback();
+        }, delay); 
+    }
+
+    async.parallelLimit(arr, limit, function(x, callback) {
+
+    }, function(err){}); 
+
+    setTimeout(function(){
+        test.equal(started, 3);
+        test.done();
+    }, maxTime);
+};
+
 
 exports['series'] = function(test){
     var call_order = [];
@@ -1386,6 +1422,30 @@ exports['eachLimit synchronous'] = function(test){
     });
 };
 
+
+exports['eachLimit does not continue replenishing after error'] = function (test) {
+    var started = 0;
+    var arr = [0,1,2,3,4,5,6,7,8,9];
+    var delay = 10;
+    var limit = 3;
+    var maxTime = 10 * arr.length;
+
+    async.eachLimit(arr, limit, function(x, callback) {
+        started ++;
+        if (started === 3) {
+            return callback(new Error ("Test Error"));
+        }
+        setTimeout(function(){
+            callback();
+        }, delay);
+    }, function(err){}); 
+
+    setTimeout(function(){
+        test.equal(started, 3);
+        test.done();
+    }, maxTime);
+};
+
 exports['forEachSeries alias'] = function (test) {
     test.strictEqual(async.eachSeries, async.forEachSeries);
     test.done();
@@ -1666,6 +1726,29 @@ exports['mapLimit error'] = function(test){
         test.equals(err, 'error');
     });
     setTimeout(test.done, 25);
+};
+
+exports['mapLimit does not continue replenishing after error'] = function (test) {
+    var started = 0;
+    var arr = [0,1,2,3,4,5,6,7,8,9];
+    var delay = 10;
+    var limit = 3;
+    var maxTime = 10 * arr.length;
+
+    async.mapLimit(arr, limit, function(x, callback) {
+        started ++;
+        if (started === 3) {
+            return callback(new Error ("Test Error"));
+        }
+        setTimeout(function(){
+            callback();
+        }, delay);
+    }, function(err){}); 
+
+    setTimeout(function(){
+        test.equal(started, 3);
+        test.done();
+    }, maxTime);
 };
 
 
