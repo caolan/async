@@ -172,6 +172,42 @@ module.exports = [
         setImmediate(callback);
       }
     }
+  },
+  {
+    name: "defer none",
+    fn: function (async, done) {
+      done();
+    }
+  },
+  {
+    name: "defer nextTick",
+    fn: function (async, done) {
+      process.nextTick(done);
+    }
+  },
+  {
+    name: "defer setImmediate",
+    fn: function (async, done) {
+      setImmediate(done);
+    }
+  },
+  {
+    name: "defer async.nextTick",
+    fn: function (async, done) {
+      async.nextTick(done);
+    }
+  },
+  {
+    name: "defer async.setImmediate",
+    fn: function (async, done) {
+      async.setImmediate(done);
+    }
+  },
+  {
+    name: "defer setTimeout",
+    fn: function (async, done) {
+      setTimeout(done, 0);
+    }
   }
 ];
 
