@@ -1,7 +1,7 @@
 deps
 dist
 test
-nodelint.cfg
+perf
 .npmignore
 .gitmodules
 Makefile

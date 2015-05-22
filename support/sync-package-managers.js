@@ -13,8 +13,6 @@ var IGNORES = ['**/.*', 'node_modules', 'bower_components', 'test', 'tests'];
 var INCLUDES = ['lib/async.js', 'README.md', 'LICENSE'];
 var REPOSITORY_NAME = 'caolan/async';
 
-var LICENSE_NAME = packageJson.license.type;
-
 packageJson.jam = {
   main: packageJson.main,
   include: INCLUDES,
@@ -32,21 +30,20 @@ packageJson.volo = {
 
 var bowerSpecific = {
   moduleType: ['amd', 'globals', 'node'],
-  license: LICENSE_NAME,
   ignore: IGNORES,
   authors: [packageJson.author]
 };
 
 var bowerInclude = ['name', 'description', 'version', 'main', 'keywords',
-  'homepage', 'repository', 'devDependencies'];
+  'license', 'homepage', 'repository', 'devDependencies'];
 
 var componentSpecific = {
-  license: LICENSE_NAME,
   repository: REPOSITORY_NAME,
   scripts: [packageJson.main]
 };
 
-var componentInclude = ['name', 'description', 'version', 'keywords'];
+var componentInclude = ['name', 'description', 'version', 'keywords',
+  'license', 'main'];
 
 var bowerJson = _.merge({}, _.pick(packageJson, bowerInclude), bowerSpecific);
 var componentJson = _.merge({}, _.pick(packageJson, componentInclude), componentSpecific);

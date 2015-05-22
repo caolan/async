@@ -6,7 +6,7 @@ if (!Function.prototype.bind) {
         var self = this;
         return function () {
             self.apply(thisArg, args.concat(Array.prototype.slice.call(arguments)));
-        }
+        };
     };
 }
 
@@ -15,6 +15,13 @@ function eachIterator(args, x, callback) {
         args.push(x);
         callback();
     }, x*25);
+}
+
+function forEachOfIterator(args, value, key, callback) {
+    setTimeout(function(){
+        args.push(key, value);
+        callback();
+    }, value*25);
 }
 
 function mapIterator(call_order, x, callback) {
@@ -39,6 +46,13 @@ function detectIterator(call_order, x, callback) {
 
 function eachNoCallbackIterator(test, x, callback) {
     test.equal(x, 1);
+    callback();
+    test.done();
+}
+
+function forEachOfNoCallbackIterator(test, x, key, callback) {
+    test.equal(x, 1);
+    test.equal(key, "a");
     callback();
     test.done();
 }
@@ -85,7 +99,7 @@ exports['forever'] = function (test) {
 };
 
 exports['applyEach'] = function (test) {
-    test.expect(4);
+    test.expect(5);
     var call_order = [];
     var one = function (val, cb) {
         test.equal(val, 5);
@@ -109,13 +123,14 @@ exports['applyEach'] = function (test) {
         }, 150);
     };
     async.applyEach([one, two, three], 5, function (err) {
+        test.ok(err === null, err + " passed instead of 'null'");
         test.same(call_order, ['two', 'one', 'three']);
         test.done();
     });
 };
 
 exports['applyEachSeries'] = function (test) {
-    test.expect(4);
+    test.expect(5);
     var call_order = [];
     var one = function (val, cb) {
         test.equal(val, 5);
@@ -139,6 +154,7 @@ exports['applyEachSeries'] = function (test) {
         }, 150);
     };
     async.applyEachSeries([one, two, three], 5, function (err) {
+        test.ok(err === null, err + " passed instead of 'null'");
         test.same(call_order, ['one', 'two', 'three']);
         test.done();
     });
@@ -175,7 +191,7 @@ exports['applyEach partial application'] = function (test) {
 };
 
 exports['compose'] = function (test) {
-    test.expect(4);
+    test.expect(5);
     var add2 = function (n, cb) {
         test.equal(n, 3);
         setTimeout(function () {
@@ -199,6 +215,7 @@ exports['compose'] = function (test) {
         if (err) {
             return test.done(err);
         }
+        test.ok(err === null, err + " passed instead of 'null'");
         test.equal(result, 16);
         test.done();
     });
@@ -262,7 +279,7 @@ exports['compose binding'] = function (test) {
 };
 
 exports['seq'] = function (test) {
-    test.expect(4);
+    test.expect(5);
     var add2 = function (n, cb) {
         test.equal(n, 3);
         setTimeout(function () {
@@ -286,6 +303,7 @@ exports['seq'] = function (test) {
         if (err) {
             return test.done(err);
         }
+        test.ok(err === null, err + " passed instead of 'null'");
         test.equal(result, 16);
         test.done();
     });
@@ -384,6 +402,7 @@ exports['auto'] = function(test){
         }]
     },
     function(err){
+        test.ok(err === null, err + " passed instead of 'null'");
         test.same(callOrder, ['task2','task6','task3','task5','task1','task4']);
         test.done();
     });
@@ -457,6 +476,7 @@ exports['auto results'] = function(test){
 
 exports['auto empty object'] = function(test){
     async.auto({}, function(err){
+        test.ok(err === null, err + " passed instead of 'null'");
         test.done();
     });
 };
@@ -512,7 +532,7 @@ exports['auto error should pass partial results'] = function(test) {
 // Issue 76 on github: https://github.com/caolan/async/issues#issue/76
 exports['auto removeListener has side effect on loop iterator'] = function(test) {
     async.auto({
-        task1: ['task3', function(callback) { test.done() }],
+        task1: ['task3', function(callback) { test.done(); }],
         task2: ['task3', function(callback) { /* by design: DON'T call callback */ }],
         task3: function(callback) { callback(); }
     });
@@ -559,7 +579,7 @@ exports['auto calls callback multiple times'] = function(test) {
 exports['auto modifying results causes final callback to run early'] = function(test) {
     async.auto({
         task1: function(callback, results){
-            results.inserted = true
+            results.inserted = true;
             callback(null, 'task1');
         },
         task2: function(callback){
@@ -574,26 +594,54 @@ exports['auto modifying results causes final callback to run early'] = function(
         }
     },
     function(err, results){
-        test.equal(results.inserted, true)
-        test.ok(results.task3, 'task3')
+        test.equal(results.inserted, true);
+        test.ok(results.task3, 'task3');
         test.done();
     });
 };
 
+// Issue 263 on github: https://github.com/caolan/async/issues/263
+exports['auto prevent dead-locks due to inexistant dependencies'] = function(test) {
+    test.throws(function () {
+        async.auto({
+            task1: ['noexist', function(callback, results){
+                callback(null, 'task1');
+            }]
+        });
+    }, Error);
+    test.done();
+};
+
+// Issue 263 on github: https://github.com/caolan/async/issues/263
+exports['auto prevent dead-locks due to cyclic dependencies'] = function(test) {
+    test.throws(function () {
+        async.auto({
+            task1: ['task2', function(callback, results){
+                callback(null, 'task1');
+            }],
+            task2: ['task1', function(callback, results){
+                callback(null, 'task2');
+            }]
+        });
+    }, Error);
+    test.done();
+};
+
 // Issue 306 on github: https://github.com/caolan/async/issues/306
 exports['retry when attempt succeeds'] = function(test) {
-    var failed = 3
-    var callCount = 0
-    var expectedResult = 'success'
+    var failed = 3;
+    var callCount = 0;
+    var expectedResult = 'success';
     function fn(callback, results) {
-        callCount++
-        failed--
-        if (!failed) callback(null, expectedResult)
-        else callback(true) // respond with error
+        callCount++;
+        failed--;
+        if (!failed) callback(null, expectedResult);
+        else callback(true); // respond with error
     }
     async.retry(fn, function(err, result){
-        test.equal(callCount, 3, 'did not retry the correct number of times')
-        test.equal(result, expectedResult, 'did not return the expected result')
+        test.ok(err === null, err + " passed instead of 'null'");
+        test.equal(callCount, 3, 'did not retry the correct number of times');
+        test.equal(result, expectedResult, 'did not return the expected result');
         test.done();
     });
 };
@@ -606,7 +654,7 @@ exports['retry when all attempts succeeds'] = function(test) {
     function fn(callback, results) {
         callCount++;
         callback(error + callCount, erroredResult + callCount); // respond with indexed values
-    };
+    }
     async.retry(times, fn, function(err, result){
         test.equal(callCount, 3, "did not retry the correct number of times");
         test.equal(err, error + times, "Incorrect error was returned");
@@ -619,7 +667,7 @@ exports['retry as an embedded task'] = function(test) {
     var retryResult = 'RETRY';
     var fooResults;
     var retryResults;
-    
+
     async.auto({
         foo: function(callback, results){
             fooResults = results;
@@ -636,8 +684,10 @@ exports['retry as an embedded task'] = function(test) {
     });
 };
 
-exports['waterfall'] = function(test){
-    test.expect(6);
+exports['waterfall'] = {
+
+'basic': function(test){
+    test.expect(7);
     var call_order = [];
     async.waterfall([
         function(callback){
@@ -663,31 +713,32 @@ exports['waterfall'] = function(test){
             callback(null, 'test');
         }
     ], function(err){
+        test.ok(err === null, err + " passed instead of 'null'");
         test.done();
     });
-};
+},
 
-exports['waterfall empty array'] = function(test){
+'empty array': function(test){
     async.waterfall([], function(err){
         test.done();
     });
-};
+},
 
-exports['waterfall non-array'] = function(test){
+'non-array': function(test){
     async.waterfall({}, function(err){
         test.equals(err.message, 'First argument to waterfall must be an array of functions');
         test.done();
     });
-};
+},
 
-exports['waterfall no callback'] = function(test){
+'no callback': function(test){
     async.waterfall([
         function(callback){callback();},
         function(callback){callback(); test.done();}
     ]);
-};
+},
 
-exports['waterfall async'] = function(test){
+'async': function(test){
     var call_order = [];
     async.waterfall([
         function(callback){
@@ -704,9 +755,9 @@ exports['waterfall async'] = function(test){
             test.done();
         }
     ]);
-};
+},
 
-exports['waterfall error'] = function(test){
+'error': function(test){
     test.expect(1);
     async.waterfall([
         function(callback){
@@ -720,9 +771,9 @@ exports['waterfall error'] = function(test){
         test.equals(err, 'error');
     });
     setTimeout(test.done, 50);
-};
+},
 
-exports['waterfall multiple callback calls'] = function(test){
+'multiple callback calls': function(test){
     var call_order = [];
     var arr = [
         function(callback){
@@ -749,9 +800,9 @@ exports['waterfall multiple callback calls'] = function(test){
         }
     ];
     async.waterfall(arr);
-};
+},
 
-exports['waterfall call in another context'] = function(test) {
+'call in another context': function(test) {
     if (typeof process === 'undefined') {
         // node only test
         test.done();
@@ -776,8 +827,9 @@ exports['waterfall call in another context'] = function(test) {
     }).toString() + "())";
 
     vm.runInNewContext(fn, sandbox);
-};
+}
 
+};
 
 exports['parallel'] = function(test){
     var call_order = [];
@@ -802,7 +854,7 @@ exports['parallel'] = function(test){
         }
     ],
     function(err, results){
-        test.equals(err, null);
+        test.ok(err === null, err + " passed instead of 'null'");
         test.same(call_order, [3,1,2]);
         test.same(results, [1,2,[3,3]]);
         test.done();
@@ -811,7 +863,7 @@ exports['parallel'] = function(test){
 
 exports['parallel empty array'] = function(test){
     async.parallel([], function(err, results){
-        test.equals(err, null);
+        test.ok(err === null, err + " passed instead of 'null'");
         test.same(results, []);
         test.done();
     });
@@ -877,7 +929,7 @@ exports['parallel limit'] = function(test){
     ],
     2,
     function(err, results){
-        test.equals(err, null);
+        test.ok(err === null, err + " passed instead of 'null'");
         test.same(call_order, [1,3,2]);
         test.same(results, [1,2,[3,3]]);
         test.done();
@@ -886,7 +938,7 @@ exports['parallel limit'] = function(test){
 
 exports['parallel limit empty array'] = function(test){
     async.parallelLimit([], 2, function(err, results){
-        test.equals(err, null);
+        test.ok(err === null, err + " passed instead of 'null'");
         test.same(results, []);
         test.done();
     });
@@ -979,7 +1031,7 @@ exports['series'] = function(test){
         }
     ],
     function(err, results){
-        test.equals(err, null);
+        test.ok(err === null, err + " passed instead of 'null'");
         test.same(results, [1,2,[3,3]]);
         test.same(call_order, [1,2,3]);
         test.done();
@@ -1118,6 +1170,7 @@ exports['iterator.next'] = function(test){
 exports['each'] = function(test){
     var args = [];
     async.each([1,3,2], eachIterator.bind(this, args), function(err){
+        test.ok(err === null, err + " passed instead of 'null'");
         test.same(args, [1,2,3]);
         test.done();
     });
@@ -1165,9 +1218,52 @@ exports['forEach alias'] = function (test) {
     test.done();
 };
 
+exports['forEachOf'] = function(test){
+    var args = [];
+    async.forEachOf({ a: 1, b: 2 }, forEachOfIterator.bind(this, args), function(err){
+        test.ok(err === null, err + " passed instead of 'null'");
+        test.same(args, ["a", 1, "b", 2]);
+        test.done();
+    });
+};
+
+exports['forEachOf empty object'] = function(test){
+    test.expect(1);
+    async.forEachOf({}, function(value, key, callback){
+        test.ok(false, 'iterator should not be called');
+        callback();
+    }, function(err) {
+        test.ok(true, 'should call callback');
+    });
+    setTimeout(test.done, 25);
+};
+
+exports['forEachOf error'] = function(test){
+    test.expect(1);
+    async.forEachOf({ a: 1, b: 2 }, function(value, key, callback) {
+        callback('error');
+    }, function(err){
+        test.equals(err, 'error');
+    });
+    setTimeout(test.done, 50);
+};
+
+exports['forEachOf no callback'] = function(test){
+    async.forEachOf({ a: 1 }, forEachOfNoCallbackIterator.bind(this, test));
+};
+
+exports['forEachOf with array'] = function(test){
+    var args = [];
+    async.forEachOf([ "a", "b" ], forEachOfIterator.bind(this, args), function(err){
+        test.same(args, [0, "a", 1, "b"]);
+        test.done();
+    });
+};
+
 exports['eachSeries'] = function(test){
     var args = [];
     async.eachSeries([1,3,2], eachIterator.bind(this, args), function(err){
+        test.ok(err === null, err + " passed instead of 'null'");
         test.same(args, [1,3,2]);
         test.done();
     });
@@ -1201,10 +1297,6 @@ exports['eachSeries no callback'] = function(test){
     async.eachSeries([1], eachNoCallbackIterator.bind(this, test));
 };
 
-exports['forEachSeries alias'] = function (test) {
-    test.strictEqual(async.eachSeries, async.forEachSeries);
-    test.done();
-};
 
 exports['eachLimit'] = function(test){
     var args = [];
@@ -1215,6 +1307,7 @@ exports['eachLimit'] = function(test){
             callback();
         }, x*5);
     }, function(err){
+        test.ok(err === null, err + " passed instead of 'null'");
         test.same(args, arr);
         test.done();
     });
@@ -1293,14 +1386,159 @@ exports['eachLimit synchronous'] = function(test){
     });
 };
 
+exports['forEachSeries alias'] = function (test) {
+    test.strictEqual(async.eachSeries, async.forEachSeries);
+    test.done();
+};
+
+exports['forEachOfSeries'] = function(test){
+    var args = [];
+    async.forEachOfSeries({ a: 1, b: 2 }, forEachOfIterator.bind(this, args), function(err){
+        test.ok(err === null, err + " passed instead of 'null'");
+        test.same(args, [ "a", 1, "b", 2 ]);
+        test.done();
+    });
+};
+
+exports['forEachOfSeries empty object'] = function(test){
+    test.expect(1);
+    async.forEachOfSeries({}, function(x, callback){
+        test.ok(false, 'iterator should not be called');
+        callback();
+    }, function(err){
+        test.ok(true, 'should call callback');
+    });
+    setTimeout(test.done, 25);
+};
+
+exports['forEachOfSeries error'] = function(test){
+    test.expect(2);
+    var call_order = [];
+    async.forEachOfSeries({ a: 1, b: 2 }, function(value, key, callback){
+        call_order.push(value, key);
+        callback('error');
+    }, function(err){
+        test.same(call_order, [ 1, "a" ]);
+        test.equals(err, 'error');
+    });
+    setTimeout(test.done, 50);
+};
+
+exports['forEachOfSeries no callback'] = function(test){
+    async.forEachOfSeries({ a: 1 }, forEachOfNoCallbackIterator.bind(this, test));
+};
+
+exports['forEachOfSeries with array'] = function(test){
+    var args = [];
+    async.forEachOfSeries([ "a", "b" ], forEachOfIterator.bind(this, args), function(err){
+        test.same(args, [ 0, "a", 1, "b" ]);
+        test.done();
+    });
+};
+
 exports['forEachLimit alias'] = function (test) {
     test.strictEqual(async.eachLimit, async.forEachLimit);
     test.done();
 };
 
+exports['forEachOfLimit'] = function(test){
+    var args = [];
+    var obj = { a: 1, b: 2, c: 3, d: 4 };
+    async.forEachOfLimit(obj, 2, function(value, key, callback){
+        setTimeout(function(){
+            args.push(value, key);
+            callback();
+        }, value * 5);
+    }, function(err){
+        test.ok(err === null, err + " passed instead of 'null'");
+        test.same(args, [ 1, "a", 2, "b", 3, "c", 4, "d" ]);
+        test.done();
+    });
+};
+
+exports['forEachOfLimit empty object'] = function(test){
+    test.expect(1);
+    async.forEachOfLimit({}, 2, function(value, key, callback){
+        test.ok(false, 'iterator should not be called');
+        callback();
+    }, function(err){
+        test.ok(true, 'should call callback');
+    });
+    setTimeout(test.done, 25);
+};
+
+exports['forEachOfLimit limit exceeds size'] = function(test){
+    var args = [];
+    var obj = { a: 1, b: 2, c: 3, d: 4, e: 5 };
+    async.forEachOfLimit(obj, 10, forEachOfIterator.bind(this, args), function(err){
+        test.same(args, [ "a", 1, "b", 2, "c", 3, "d", 4, "e", 5 ]);
+        test.done();
+    });
+};
+
+exports['forEachOfLimit limit equal size'] = function(test){
+    var args = [];
+    var obj = { a: 1, b: 2, c: 3, d: 4, e: 5 };
+    async.forEachOfLimit(obj, 5, forEachOfIterator.bind(this, args), function(err){
+        test.same(args, [ "a", 1, "b", 2, "c", 3, "d", 4, "e", 5 ]);
+        test.done();
+    });
+};
+
+exports['forEachOfLimit zero limit'] = function(test){
+    test.expect(1);
+    async.forEachOfLimit({ a: 1, b: 2 }, 0, function(x, callback){
+        test.ok(false, 'iterator should not be called');
+        callback();
+    }, function(err){
+        test.ok(true, 'should call callback');
+    });
+    setTimeout(test.done, 25);
+};
+
+exports['forEachOfLimit error'] = function(test){
+    test.expect(2);
+    var obj = { a: 1, b: 2, c: 3, d: 4, e: 5 };
+    var call_order = [];
+
+    async.forEachOfLimit(obj, 3, function(value, key, callback){
+        call_order.push(value, key);
+        if (value === 2) {
+            callback('error');
+        }
+    }, function(err){
+        test.same(call_order, [ 1, "a", 2, "b" ]);
+        test.equals(err, 'error');
+    });
+    setTimeout(test.done, 25);
+};
+
+exports['forEachOfLimit no callback'] = function(test){
+    async.forEachOfLimit({ a: 1 }, 1, forEachOfNoCallbackIterator.bind(this, test));
+};
+
+exports['forEachOfLimit synchronous'] = function(test){
+    var args = [];
+    var obj = { a: 1, b: 2 };
+    async.forEachOfLimit(obj, 5, forEachOfIterator.bind(this, args), function(err){
+        test.same(args, [ "a", 1, "b", 2 ]);
+        test.done();
+    });
+};
+
+exports['forEachOfLimit with array'] = function(test){
+    var args = [];
+    var arr = [ "a", "b" ];
+    async.forEachOfLimit(arr, 1, forEachOfIterator.bind(this, args), function (err) {
+        test.same(args, [ 0, "a", 1, "b" ]);
+        test.done();
+    });
+};
+
 exports['map'] = function(test){
     var call_order = [];
     async.map([1,3,2], mapIterator.bind(this, call_order), function(err, results){
+        test.ok(err === null, err + " passed instead of 'null'");
         test.same(call_order, [1,2,3]);
         test.same(results, [2,6,4]);
         test.done();
@@ -1344,6 +1582,7 @@ exports['map error'] = function(test){
 exports['mapSeries'] = function(test){
     var call_order = [];
     async.mapSeries([1,3,2], mapIterator.bind(this, call_order), function(err, results){
+        test.ok(err === null, err + " passed instead of 'null'");
         test.same(call_order, [1,3,2]);
         test.same(results, [2,6,4]);
         test.done();
@@ -1364,6 +1603,7 @@ exports['mapSeries error'] = function(test){
 exports['mapLimit'] = function(test){
     var call_order = [];
     async.mapLimit([2,4,3], 2, mapIterator.bind(this, call_order), function(err, results){
+        test.ok(err === null, err + " passed instead of 'null'");
         test.same(call_order, [2,4,3]);
         test.same(results, [4,8,6]);
         test.done();
@@ -1435,6 +1675,7 @@ exports['reduce'] = function(test){
         call_order.push(x);
         callback(null, a + x);
     }, function(err, result){
+        test.ok(err === null, err + " passed instead of 'null'");
         test.equals(result, 6);
         test.same(call_order, [1,2,3]);
         test.done();
@@ -1443,7 +1684,7 @@ exports['reduce'] = function(test){
 
 exports['reduce async with non-reference memo'] = function(test){
     async.reduce([1,3,2], 0, function(a, x, callback){
-        setTimeout(function(){callback(null, a + x)}, Math.random()*100);
+        setTimeout(function(){callback(null, a + x);}, Math.random()*100);
     }, function(err, result){
         test.equals(result, 6);
         test.done();
@@ -1675,10 +1916,21 @@ exports['detectSeries - multiple matches'] = function(test){
     }, 200);
 };
 
+exports['detectSeries - ensure stop'] = function (test) {
+    async.detectSeries([1, 2, 3, 4, 5], function (num, cb) {
+        if (num > 3) throw new Error("detectSeries did not stop iterating");
+        cb(num === 3);
+    }, function (result) {
+        test.equals(result, 3);
+        test.done();
+    });
+};
+
 exports['sortBy'] = function(test){
     async.sortBy([{a:1},{a:15},{a:6}], function(x, callback){
         setTimeout(function(){callback(null, x.a);}, 0);
     }, function(err, result){
+        test.ok(err === null, err + " passed instead of 'null'");
         test.same(result, [{a:1},{a:6},{a:15}]);
         test.done();
     });
@@ -1696,7 +1948,7 @@ exports['sortBy inverted'] = function(test){
 exports['apply'] = function(test){
     test.expect(6);
     var fn = function(){
-        test.same(Array.prototype.slice.call(arguments), [1,2,3,4])
+        test.same(Array.prototype.slice.call(arguments), [1,2,3,4]);
     };
     async.apply(fn, 1, 2, 3, 4)();
     async.apply(fn, 1, 2, 3)(4);
@@ -1704,7 +1956,7 @@ exports['apply'] = function(test){
     async.apply(fn, 1)(2, 3, 4);
     async.apply(fn)(1, 2, 3, 4);
     test.equals(
-        async.apply(function(name){return 'hello ' + name}, 'world')(),
+        async.apply(function(name){return 'hello ' + name;}, 'world')(),
         'hello world'
     );
     test.done();
@@ -1774,14 +2026,15 @@ var console_fn_tests = function(name){
 
 
 exports['times'] = function(test) {
-  var indices = []
+  var indices = [];
   async.times(5, function(n, next) {
-    next(null, n)
+    next(null, n);
   }, function(err, results) {
-    test.same(results, [0,1,2,3,4])
-    test.done()
-  })
-}
+    test.ok(err === null, err + " passed instead of 'null'");
+    test.same(results, [0,1,2,3,4]);
+    test.done();
+  });
+};
 
 exports['times'] = function(test){
     var args = [];
@@ -1869,9 +2122,6 @@ exports['nextTick in the browser'] = function(test){
 
     call_order.push('one');
     setTimeout(function(){
-        if (typeof process !== 'undefined') {
-            process.nextTick = _nextTick;
-        }
         test.same(call_order, ['one','two']);
     }, 50);
     setTimeout(test.done, 100);
@@ -1924,7 +2174,7 @@ exports['concat'] = function(test){
     async.concat([1,3,2], iterator, function(err, results){
         test.same(results, [1,2,1,3,2,1]);
         test.same(call_order, [1,2,3]);
-        test.ok(!err);
+        test.ok(err === null, err + " passed instead of 'null'");
         test.done();
     });
 };
@@ -1955,7 +2205,7 @@ exports['concatSeries'] = function(test){
     async.concatSeries([1,3,2], iterator, function(err, results){
         test.same(results, [1,3,2,1,2,1]);
         test.same(call_order, [1,3,2]);
-        test.ok(!err);
+        test.ok(err === null, err + " passed instead of 'null'");
         test.done();
     });
 };
@@ -1975,6 +2225,7 @@ exports['until'] = function (test) {
             cb();
         },
         function (err) {
+            test.ok(err === null, err + " passed instead of 'null'");
             test.same(call_order, [
                 ['test', 0],
                 ['iterator', 0], ['test', 1],
@@ -2003,6 +2254,7 @@ exports['doUntil'] = function (test) {
             return (count == 5);
         },
         function (err) {
+            test.ok(err === null, err + " passed instead of 'null'");
             test.same(call_order, [
                 ['iterator', 0], ['test', 1],
                 ['iterator', 1], ['test', 2],
@@ -2058,6 +2310,7 @@ exports['whilst'] = function (test) {
             cb();
         },
         function (err) {
+            test.ok(err === null, err + " passed instead of 'null'");
             test.same(call_order, [
                 ['test', 0],
                 ['iterator', 0], ['test', 1],
@@ -2087,6 +2340,7 @@ exports['doWhilst'] = function (test) {
             return (count < 5);
         },
         function (err) {
+            test.ok(err === null, err + " passed instead of 'null'");
             test.same(call_order, [
                 ['iterator', 0], ['test', 1],
                 ['iterator', 1], ['test', 2],
@@ -2234,6 +2488,13 @@ exports['queue default concurrency'] = function (test) {
         test.equal(q.length(), 0);
         test.done();
     };
+};
+
+exports['queue zero concurrency'] = function(test){
+    test.throws(function () {
+        async.queue(function (task, callback) {}, 0);
+    });
+    test.done();
 };
 
 exports['queue error propagation'] = function(test){
@@ -2423,12 +2684,12 @@ exports['queue bulk task'] = function (test) {
 exports['queue idle'] = function(test) {
     var q = async.queue(function (task, callback) {
       // Queue is busy when workers are running
-      test.equal(q.idle(), false)
+      test.equal(q.idle(), false);
       callback();
     }, 1);
 
     // Queue is idle before anything added
-    test.equal(q.idle(), true)
+    test.equal(q.idle(), true);
 
     q.unshift(4);
     q.unshift(3);
@@ -2436,14 +2697,14 @@ exports['queue idle'] = function(test) {
     q.unshift(1);
 
     // Queue is busy when tasks added
-    test.equal(q.idle(), false)
+    test.equal(q.idle(), false);
 
     q.drain = function() {
         // Queue is idle after drain
         test.equal(q.idle(), true);
         test.done();
-    }
-}
+    };
+};
 
 exports['queue pause'] = function(test) {
     var call_order = [],
@@ -2496,7 +2757,7 @@ exports['queue pause'] = function(test) {
         ]);
         test.done();
     }, 800);
-}
+};
 
 exports['queue pause with concurrency'] = function(test) {
     var call_order = [],
@@ -2533,6 +2794,10 @@ exports['queue pause with concurrency'] = function(test) {
     }, resume_timeout);
 
     setTimeout(function () {
+        test.equal(q.running(), 2);
+    }, resume_timeout + 10);
+
+    setTimeout(function () {
         test.same(call_order, [
             'process 1', 'timeout 100',
             'process 2', 'timeout 100',
@@ -2543,7 +2808,31 @@ exports['queue pause with concurrency'] = function(test) {
         ]);
         test.done();
     }, 800);
-}
+};
+
+exports['queue start paused'] = function (test) {
+    var q = async.queue(function (task, callback) {
+        setTimeout(function () {
+            callback();
+        }, 10);
+    }, 2);
+    q.pause();
+
+    q.push([1, 2, 3]);
+
+    setTimeout(function () {
+        q.resume();
+    }, 10);
+
+    setTimeout(function () {
+        test.equal(q.running(), 2);
+        q.resume();
+    }, 15);
+
+    q.drain = function () {
+        test.done();
+    };
+};
 
 exports['queue kill'] = function (test) {
     var q = async.queue(function (task, callback) {
@@ -2554,7 +2843,7 @@ exports['queue kill'] = function (test) {
     }, 1);
     q.drain = function() {
         test.ok(false, "Function should never be called");
-    }
+    };
 
     q.push(0);
 
@@ -2563,7 +2852,7 @@ exports['queue kill'] = function (test) {
     setTimeout(function() {
       test.equal(q.length(), 0);
       test.done();
-    }, 600)
+    }, 600);
 };
 
 exports['priorityQueue'] = function (test) {
@@ -2806,20 +3095,20 @@ exports['cargo bulk task'] = function (test) {
 };
 
 exports['cargo drain once'] = function (test) {
-   
+
    var c = async.cargo(function (tasks, callback) {
       callback();
     }, 3);
-    
+
     var drainCounter = 0;
     c.drain = function () {
       drainCounter++;
-    }
-    
+    };
+
     for(var i = 0; i < 10; i++){
       c.push(i);
     }
-    
+
     setTimeout(function(){
       test.equal(drainCounter, 1);
       test.done();
@@ -2827,21 +3116,21 @@ exports['cargo drain once'] = function (test) {
 };
 
 exports['cargo drain twice'] = function (test) {
-    
+
     var c = async.cargo(function (tasks, callback) {
       callback();
     }, 3);
-    
+
     var loadCargo = function(){
       for(var i = 0; i < 10; i++){
         c.push(i);
       }
     };
-    
+
     var drainCounter = 0;
     c.drain = function () {
       drainCounter++;
-    }
+    };
 
     loadCargo();
     setTimeout(loadCargo, 500);
@@ -2853,7 +3142,7 @@ exports['cargo drain twice'] = function (test) {
 };
 
 exports['memoize'] = function (test) {
-    test.expect(4);
+    test.expect(5);
     var call_order = [];
 
     var fn = function (arg1, arg2, callback) {
@@ -2865,6 +3154,7 @@ exports['memoize'] = function (test) {
 
     var fn2 = async.memoize(fn);
     fn2(1, 2, function (err, result) {
+        test.ok(err === null, err + " passed instead of 'null'");
         test.equal(result, 3);
         fn2(1, 2, function (err, result) {
             test.equal(result, 3);
@@ -2940,7 +3230,7 @@ exports['unmemoize'] = function(test) {
             });
         });
     });
-}
+};
 
 exports['unmemoize a not memoized function'] = function(test) {
     test.expect(1);
@@ -2955,7 +3245,7 @@ exports['unmemoize a not memoized function'] = function(test) {
     });
 
     test.done();
-}
+};
 
 exports['memoize error'] = function (test) {
     test.expect(1);
@@ -3024,22 +3314,22 @@ exports['falsy return values in series'] = function (test) {
         async.nextTick(function() {
             callback(null, false);
         });
-    };
+    }
     function taskUndefined(callback) {
         async.nextTick(function() {
             callback(null, undefined);
         });
-    };
+    }
     function taskEmpty(callback) {
         async.nextTick(function() {
             callback(null);
         });
-    };
+    }
     function taskNull(callback) {
         async.nextTick(function() {
             callback(null, null);
         });
-    };
+    }
     async.series(
         [taskFalse, taskUndefined, taskEmpty, taskNull],
         function(err, results) {
@@ -3059,22 +3349,22 @@ exports['falsy return values in parallel'] = function (test) {
         async.nextTick(function() {
             callback(null, false);
         });
-    };
+    }
     function taskUndefined(callback) {
         async.nextTick(function() {
             callback(null, undefined);
         });
-    };
+    }
     function taskEmpty(callback) {
         async.nextTick(function() {
             callback(null);
         });
-    };
+    }
     function taskNull(callback) {
         async.nextTick(function() {
             callback(null, null);
         });
-    };
+    }
     async.parallel(
         [taskFalse, taskUndefined, taskEmpty, taskNull],
         function(err, results) {
@@ -3102,12 +3392,12 @@ exports['queue events'] = function(test) {
         calls.push('saturated');
     };
     q.empty = function() {
-        test.ok(q.length() == 0, 'queue should be empty now');
+        test.ok(q.length() === 0, 'queue should be empty now');
         calls.push('empty');
     };
     q.drain = function() {
         test.ok(
-            q.length() == 0 && q.running() == 0,
+            q.length() === 0 && q.running() === 0,
             'queue should be empty now and no more workers should be running'
         );
         calls.push('drain');
@@ -3145,7 +3435,7 @@ exports['queue empty'] = function(test) {
 
     q.drain = function() {
         test.ok(
-            q.length() == 0 && q.running() == 0,
+            q.length() === 0 && q.running() === 0,
             'queue should be empty now and no more workers should be running'
         );
         calls.push('drain');
@@ -3157,11 +3447,30 @@ exports['queue empty'] = function(test) {
     q.push([]);
 };
 
+exports['queue saturated'] = function (test) {
+    var saturatedCalled = false;
+    var q = async.queue(function(task, cb) {
+        async.setImmediate(cb);
+    }, 2);
+
+    q.saturated = function () {
+        saturatedCalled = true;
+    };
+    q.drain = function () {
+        test.ok(saturatedCalled, "saturated not called");
+        test.done();
+    };
+
+    setTimeout(function () {
+        q.push(['foo', 'bar', 'baz', 'moo']);
+    }, 10);
+};
+
 exports['queue started'] = function(test) {
 
   var calls = [];
   var q = async.queue(function(task, cb) {});
-  
+
   test.equal(q.started, false);
   q.push([]);
   test.equal(q.started, true);

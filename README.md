@@ -1,6 +1,7 @@
 # Async.js
 
 [![Build Status via Travis CI](https://travis-ci.org/caolan/async.svg?branch=master)](https://travis-ci.org/caolan/async)
+[![NPM version](http://img.shields.io/npm/v/async.svg)](https://www.npmjs.org/package/async)
 
 
 Async is a utility module which provides straight-forward, powerful functions
@@ -88,10 +89,14 @@ async.map([1, 2, 3], AsyncSquaringLibrary.square.bind(AsyncSquaringLibrary), fun
 ## Download
 
 The source is available for download from
-[GitHub](http://github.com/caolan/async).
+[GitHub](https://github.com/caolan/async/blob/master/lib/async.js).
 Alternatively, you can install using Node Package Manager (`npm`):
 
     npm install async
+
+As well as using Bower: 
+
+    bower install async
 
 __Development:__ [async.js](https://github.com/caolan/async/raw/master/lib/async.js) - 29.6kb Uncompressed
 
@@ -119,6 +124,9 @@ Usage:
 * [`each`](#each)
 * [`eachSeries`](#eachSeries)
 * [`eachLimit`](#eachLimit)
+* [`forEachOf`](#forEachOf)
+* [`forEachOfSeries`](#forEachOfSeries)
+* [`forEachOfLimit`](#forEachOfLimit)
 * [`map`](#map)
 * [`mapSeries`](#mapSeries)
 * [`mapLimit`](#mapLimit)
@@ -191,7 +199,8 @@ __Arguments__
 * `iterator(item, callback)` - A function to apply to each item in `arr`.
   The iterator is passed a `callback(err)` which must be called once it has 
   completed. If no error has occurred, the `callback` should be run without 
-  arguments or with an explicit `null` argument.
+  arguments or with an explicit `null` argument.  The array index is not passed
+  to the iterator.  If you need the index, use [`forEachOf`](#forEachOf).
 * `callback(err)` - A callback which is called when all `iterator` functions
   have finished, or an error occurs.
 
@@ -282,13 +291,74 @@ async.eachLimit(documents, 20, requestApi, function(err){
 
 ---------------------------------------
 
+<a name="forEachOf" />
+<a name="eachOf" />
+
+### forEachOf(obj, iterator, callback)
+
+Like `each`, except that it iterates over objects, and passes the key as the second argument to the iterator.
+
+__Arguments__
+
+* `obj` - An object or array to iterate over.
+* `iterator(item, key, callback)` - A function to apply to each item in `obj`. 
+The `key` is the item's key, or index in the case of an array. The iterator is 
+passed a `callback(err)` which must be called once it has completed. If no
+error has occurred, the callback should be run without arguments or with an
+explicit `null` argument.
+* `callback(err)` - A callback which is called when all `iterator` functions have finished, or an error occurs.
+
+__Example__
+
+```js
+var obj = {dev: "/dev.json", test: "/test.json", prod: "/prod.json"};
+var configs = {};
+
+async.forEachOf(obj, function (value, key, callback) {
+  fs.readFile(__dirname + value, "utf8", function (err, data) {
+    if (err) return callback(err);
+    try {
+      configs[key] = JSON.parse(data);
+    } catch (e) {
+      return callback(e);
+    }
+    callback();
+  })
+}, function (err) {
+  if (err) console.error(err.message);
+  // configs is now a map of JSON data
+  doSomethingWith(configs);
+})
+```
+
+---------------------------------------
+
+<a name="forEachOfSeries" />
+<a name="eachOfSeries" />
+
+### forEachOfSeries(obj, iterator, callback)
+
+Like [`forEachOf`](#forEachOf), except only one `iterator` is run at a time.  The order of execution is not guaranteed for objects, but it will be guaranteed for arrays.
+
+---------------------------------------
+
+<a name="forEachOfLimit" />
+<a name="eachOfLimit" />
+
+### forEachOfLimit(obj, limit, iterator, callback)
+
+Like [`forEachOf`](#forEachOf), except the number of `iterator`s running at a given time is controlled by `limit`.
+
+
+---------------------------------------
+
 <a name="map" />
 ### map(arr, iterator, callback)
 
 Produces a new array of values by mapping each value in `arr` through
 the `iterator` function. The `iterator` is called with an item from `arr` and a
 callback for when it has finished processing. Each of these callback takes 2 arguments: 
-an `error`, and the transformed item from `arr`. If `iterator` passes an error to his 
+an `error`, and the transformed item from `arr`. If `iterator` passes an error to its 
 callback, the main `callback` (for the `map` function) is immediately called with the error.
 
 Note, that since this function applies the `iterator` to each item in parallel,
@@ -482,11 +552,11 @@ __Arguments__
 * `arr` - An array to iterate over.
 * `iterator(item, callback)` - A truth test to apply to each item in `arr`.
   The iterator is passed a `callback(truthValue)` which must be called with a 
-  boolean argument once it has completed.
+  boolean argument once it has completed. **Note: this callback does not take an error as its first argument.**
 * `callback(result)` - A callback which is called as soon as any iterator returns
   `true`, or after all the `iterator` functions have finished. Result will be
   the first item in the array that passes the truth test (iterator) or the
-  value `undefined` if none passed.
+  value `undefined` if none passed.  **Note: this callback does not take an error as its first argument.**
 
 __Example__
 
@@ -574,12 +644,13 @@ __Arguments__
 
 * `arr` - An array to iterate over.
 * `iterator(item, callback)` - A truth test to apply to each item in the array
-  in parallel. The iterator is passed a callback(truthValue) which must be 
+  in parallel. The iterator is passed a `callback(truthValue)`` which must be 
   called with a boolean argument once it has completed.
 * `callback(result)` - A callback which is called as soon as any iterator returns
   `true`, or after all the iterator functions have finished. Result will be
   either `true` or `false` depending on the values of the async tests.
 
+ **Note: the callbacks do not take an error as their first argument.**
 __Example__
 
 ```js
@@ -604,11 +675,13 @@ __Arguments__
 
 * `arr` - An array to iterate over.
 * `iterator(item, callback)` - A truth test to apply to each item in the array
-  in parallel. The iterator is passed a callback(truthValue) which must be 
+  in parallel. The iterator is passed a `callback(truthValue)` which must be 
   called with a  boolean argument once it has completed.
 * `callback(result)` - A callback which is called after all the `iterator`
   functions have finished. Result will be either `true` or `false` depending on
   the values of the async tests.
+
+ **Note: the callbacks do not take an error as their first argument.**
 
 __Example__
 
@@ -1048,14 +1121,14 @@ async.each(
 ---------------------------------------
 
 <a name="applyEachSeries" />
-### applyEachSeries(arr, iterator, callback)
+### applyEachSeries(arr, args..., callback)
 
 The same as [`applyEach`](#applyEach) only the functions are applied in series.
 
 ---------------------------------------
 
 <a name="queue" />
-### queue(worker, concurrency)
+### queue(worker, [concurrency])
 
 Creates a `queue` object with the specified `concurrency`. Tasks added to the
 `queue` are processed in parallel (up to the `concurrency` limit). If all
@@ -1066,9 +1139,9 @@ __Arguments__
 
 * `worker(task, callback)` - An asynchronous function for processing a queued
   task, which must call its `callback(err)` argument when finished, with an 
-  optional `error` as an argument.
+  optional `error` as an argument.  If you want to handle errors from an individual task, pass a callback to `q.push()`.
 * `concurrency` - An `integer` for determining how many `worker` functions should be
-  run in parallel.
+  run in parallel.  If omitted, the concurrency defaults to `1`.  If the concurrency is `0`, an error is thrown.
 
 __Queue objects__
 
@@ -1154,7 +1227,7 @@ Creates a `cargo` object with the specified payload. Tasks added to the
 cargo will be processed altogether (up to the `payload` limit). If the
 `worker` is in progress, the task is queued until it becomes available. Once
 the `worker` has completed some tasks, each callback of those tasks is called.
-Check out [this animation](https://camo.githubusercontent.com/6bbd36f4cf5b35a0f11a96dcd2e97711ffc2fb37/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313637363837312f36383130382f62626330636662302d356632392d313165322d393734662d3333393763363464633835382e676966) for how `cargo` and `queue` work.
+Check out [these](https://camo.githubusercontent.com/6bbd36f4cf5b35a0f11a96dcd2e97711ffc2fb37/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313637363837312f36383130382f62626330636662302d356632392d313165322d393734662d3333393763363464633835382e676966) [animations](https://camo.githubusercontent.com/f4810e00e1c5f5f8addbe3e9f49064fd5d102699/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313637363837312f36383130312f38346339323036362d356632392d313165322d383134662d3964336430323431336266642e676966) for how `cargo` and `queue` work.
 
 While [queue](#queue) passes only one task to one of a group of workers
 at a time, cargo passes an array of tasks to a single worker, repeating
@@ -1508,7 +1581,8 @@ you would use with [`map`](#map).
 __Arguments__
 
 * `n` - The number of times to run the function.
-* `callback` - The function to call `n` times.
+* `iterator` - The function to call `n` times.
+* `callback` - see [`map`](#map)
 
 __Example__
 
@@ -1546,13 +1620,15 @@ Caches the results of an `async` function. When creating a hash to store functio
 results against, the callback is omitted from the hash and an optional hash
 function can be used.
 
+If no hash function is specified, the first argument is used as a hash key, which may work reasonably if it is a string or a data type that converts to a distinct string. Note that objects and arrays will not behave reasonably. Neither will cases where the other arguments are significant. In such cases, specify your own hash function.
+
 The cache of results is exposed as the `memo` property of the function returned
 by `memoize`.
 
 __Arguments__
 
 * `fn` - The function to proxy and cache results from.
-* `hasher` - Tn optional function for generating a custom hash for storing
+* `hasher` - An optional function for generating a custom hash for storing
   results. It has all the arguments applied to it apart from the callback, and
   must be synchronous.
 
