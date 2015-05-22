@@ -24,7 +24,8 @@
     "lodash": ">=2.4.1",
     "mkdirp": "~0.5.1",
     "nodeunit": ">0.0.0",
-    "uglify-js": "1.2.x"
+    "uglify-js": "1.2.x",
+    "yargs": "~3.9.1"
   },
   "jam": {
     "main": "lib/async.js",

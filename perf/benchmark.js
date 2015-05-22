@@ -1,24 +1,5 @@
 #!/usr/bin/env node
 
-/**
- * Compare the performance of any two tagged versions of async.  Can also
- * compare any tag with what is in the current working directory.
- *
- * Usage:
- *
- *     perf/benchmark.js 0.9.2 0.9.0
- *
- * Compare version 0.9.0 with version 0.9.2
- *
- *     perf/benchmark.js 0.6.0
- *
- * Compare version 0.6.0 with the current working version
- *
- *     perf/benchmark.js
- *
- * Compare the current working version with the latest tagged version.
- */
-
 var _ = require("lodash");
 var Benchmark = require("benchmark");
 var benchOptions = {defer: true, minSamples: 1, maxTime: 2};
@@ -29,8 +10,28 @@ var mkdirp = require("mkdirp");
 var async = require("../");
 var suiteConfigs = require("./suites");
 
-var version0 = process.argv[2] || require("../package.json").version;
-var version1 = process.argv[3] || "current";
+var args = require("yargs")
+  .usage("Usage: $0 [options] [tag1] [tag2]")
+  .describe("g", "run only benchmarks whose names match this regex")
+  .alias("g", "grep")
+  .default("g", ".*")
+  .describe("i", "skip benchmarks whose names match this regex")
+  .alias("g", "reject")
+  .default("i", "^$")
+  .help('h')
+  .alias('h', 'help')
+  .example('$0 0.9.2 0.9.0', 'Compare v0.9.2 with v0.9.0')
+  .example('$0 0.9.2', 'Compare v0.9.2 with the current working version')
+  .example('$0', 'Compare the latest tag with the current working version')
+  .example('$0 -g each', 'only run the each(), eachLimit() and  eachSeries() benchmarks')
+  .example('')
+  .argv;
+
+var grep = new RegExp(args.g, "i");
+var reject = new RegExp(args.i, "i");
+
+var version0 = args._[0] || require("../package.json").version;
+var version1 = args._[1] || "current";
 var versionNames = [version0, version1];
 var versions;
 var wins = {};
@@ -49,6 +50,8 @@ async.eachSeries(versionNames, cloneVersion, function (err) {
     .map(setDefaultOptions)
     .reduce(handleMultipleArgs, [])
     .map(setName)
+    .filter(matchesGrep)
+    .filter(doesNotMatch)
     .map(createSuite);
 
   async.eachSeries(suites, runSuite, function () {
@@ -104,6 +107,14 @@ function handleMultipleArgs(list, suiteConfig) {
 function setName(suiteConfig) {
   suiteConfig.name = suiteConfig.name + "(" + suiteConfig.args.join(",") + ")";
   return suiteConfig;
+}
+
+function matchesGrep(suiteConfig) {
+  return !!grep.exec(suiteConfig.name);
+}
+
+function doesNotMatch(suiteConfig) {
+  return !reject.exec(suiteConfig.name);
 }
 
 function createSuite(suiteConfig) {
