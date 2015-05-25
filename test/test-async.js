@@ -1030,12 +1030,12 @@ exports['parallel does not continue replenishing after error'] = function (test)
         }
         setTimeout(function(){
             callback();
-        }, delay); 
+        }, delay);
     }
 
     async.parallelLimit(arr, limit, function(x, callback) {
 
-    }, function(err){}); 
+    }, function(err){});
 
     setTimeout(function(){
         test.equal(started, 3);
@@ -1438,7 +1438,7 @@ exports['eachLimit does not continue replenishing after error'] = function (test
         setTimeout(function(){
             callback();
         }, delay);
-    }, function(err){}); 
+    }, function(err){});
 
     setTimeout(function(){
         test.equal(started, 3);
@@ -1743,7 +1743,7 @@ exports['mapLimit does not continue replenishing after error'] = function (test)
         setTimeout(function(){
             callback();
         }, delay);
-    }, function(err){}); 
+    }, function(err){});
 
     setTimeout(function(){
         test.equal(started, 3);
@@ -3561,3 +3561,55 @@ exports['queue started'] = function(test) {
 
 };
 
+exports['ensureAsync'] = {
+    'defer sync functions': function (test) {
+        var sync = true;
+        async.ensureAsync(function (arg1, arg2, cb) {
+            test.equal(arg1, 1);
+            test.equal(arg2, 2);
+            cb(null, 4, 5);
+        })(1, 2, function (err, arg4, arg5) {
+            test.equal(err, null);
+            test.equal(arg4, 4);
+            test.equal(arg5, 5);
+            test.ok(!sync, 'callback called on same tick');
+            test.done();
+        });
+        sync = false;
+    },
+
+    'do not defer async functions': function (test) {
+        var sync = false;
+        async.ensureAsync(function (arg1, arg2, cb) {
+            test.equal(arg1, 1);
+            test.equal(arg2, 2);
+            async.setImmediate(function () {
+                sync = true;
+                cb(null, 4, 5);
+                sync = false;
+            });
+        })(1, 2, function (err, arg4, arg5) {
+            test.equal(err, null);
+            test.equal(arg4, 4);
+            test.equal(arg5, 5);
+            test.ok(sync, 'callback called on next tick');
+            test.done();
+        });
+    },
+
+    'double wrapping': function (test) {
+        var sync = true;
+        async.ensureAsync(async.ensureAsync(function (arg1, arg2, cb) {
+            test.equal(arg1, 1);
+            test.equal(arg2, 2);
+            cb(null, 4, 5);
+        }))(1, 2, function (err, arg4, arg5) {
+            test.equal(err, null);
+            test.equal(arg4, 4);
+            test.equal(arg5, 5);
+            test.ok(!sync, 'callback called on same tick');
+            test.done();
+        });
+        sync = false;
+    }
+};

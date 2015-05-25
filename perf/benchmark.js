@@ -129,7 +129,10 @@ function createSuite(suiteConfig) {
       });
     }, _.extend({
       versionName: versionName,
-      setup: _.partial.apply(null, [suiteConfig.setup].concat(args))
+      setup: _.partial.apply(null, [suiteConfig.setup].concat(args)),
+      onError: function (err) {
+        console.log(err.stack);
+      }
     }, benchOptions));
   }
 
@@ -143,6 +146,7 @@ function createSuite(suiteConfig) {
     var version = event.target.options.versionName;
     totalTime[version] += mean;
   })
+  .on('error', function (err) { console.error(err); })
   .on('complete', function() {
     var fastest = this.filter('fastest');
     if (fastest.length === 2) {
