@@ -80,8 +80,10 @@ function getFunctionsObject(call_order) {
     };
 }
 
-exports['forever'] = function (test) {
-    test.expect(1);
+exports['forever'] = {
+
+'async': function (test) {
+    test.expect(2);
     var counter = 0;
     function addOne(callback) {
         counter++;
@@ -94,8 +96,28 @@ exports['forever'] = function (test) {
     }
     async.forever(addOne, function (err) {
         test.equal(err, 'too big!');
+        test.equal(counter, 50);
         test.done();
     });
+},
+
+'sync': function (test) {
+    test.expect(2);
+    var counter = 0;
+    function addOne(callback) {
+        counter++;
+        if (counter === 50000) {
+            return callback('too big!');
+        }
+        callback();
+    }
+    async.forever(addOne, function (err) {
+        test.equal(err, 'too big!');
+        test.equal(counter, 50000);
+        test.done();
+    });
+}
+
 };
 
 exports['applyEach'] = function (test) {
