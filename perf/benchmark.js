@@ -2,7 +2,6 @@
 
 var _ = require("lodash");
 var Benchmark = require("benchmark");
-var benchOptions = {defer: true, minSamples: 1, maxTime: 2};
 var exec = require("child_process").exec;
 var fs = require("fs");
 var path = require("path");
@@ -16,8 +15,11 @@ var args = require("yargs")
   .alias("g", "grep")
   .default("g", ".*")
   .describe("i", "skip benchmarks whose names match this regex")
-  .alias("g", "reject")
+  .alias("i", "reject")
   .default("i", "^$")
+  .describe("l", "maximum running time per test (in seconds)")
+  .alias("l", "limit")
+  .default("l", 2)
   .help('h')
   .alias('h', 'help')
   .example('$0 0.9.2 0.9.0', 'Compare v0.9.2 with v0.9.0')
@@ -33,6 +35,7 @@ var reject = new RegExp(args.i, "i");
 var version0 = args._[0] || require("../package.json").version;
 var version1 = args._[1] || "current";
 var versionNames = [version0, version1];
+var benchOptions = {defer: true, minSamples: 1, maxTime: +args.l};
 var versions;
 var wins = {};
 var totalTime = {};
@@ -120,16 +123,30 @@ function doesNotMatch(suiteConfig) {
 function createSuite(suiteConfig) {
   var suite = new Benchmark.Suite();
   var args = suiteConfig.args;
+  var errored = false;
 
   function addBench(version, versionName) {
     var name = suiteConfig.name + " " + versionName;
+
+    try {
+      suiteConfig.setup(1);
+      suiteConfig.fn(version, function () {});
+    } catch (e) {
+      console.error(name + " Errored");
+      errored = true;
+      return;
+    }
+
     suite.add(name, function (deferred) {
       suiteConfig.fn(version, function () {
         deferred.resolve();
       });
     }, _.extend({
       versionName: versionName,
-      setup: _.partial.apply(null, [suiteConfig.setup].concat(args))
+      setup: _.partial.apply(null, [suiteConfig.setup].concat(args)),
+      onError: function (err) {
+        console.log(err.stack);
+      }
     }, benchOptions));
   }
 
@@ -139,18 +156,22 @@ function createSuite(suiteConfig) {
 
   return suite.on('cycle', function(event) {
     var mean = event.target.stats.mean * 1000;
-    console.log(event.target + ", " + (+mean.toPrecision(2)) + "ms per run");
+    console.log(event.target + ", " + (+mean.toPrecision(3)) + "ms per run");
     var version = event.target.options.versionName;
+    if (errored) return;
     totalTime[version] += mean;
   })
+  .on('error', function (err) { console.error(err); })
   .on('complete', function() {
-    var fastest = this.filter('fastest');
-    if (fastest.length === 2) {
-      console.log("Tie");
-    } else {
-      var winner = fastest[0].options.versionName;
-      console.log(winner + ' is faster');
-      wins[winner]++;
+    if (!errored) {
+      var fastest = this.filter('fastest');
+      if (fastest.length === 2) {
+        console.log("Tie");
+      } else {
+        var winner = fastest[0].options.versionName;
+        console.log(winner + ' is faster');
+        wins[winner]++;
+      }
     }
     console.log("--------------------------------------");
   });

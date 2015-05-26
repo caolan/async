@@ -204,6 +204,30 @@ module.exports = [
     fn: function (async, done) {
       setTimeout(done, 0);
     }
+  },
+  {
+    name: "ensureAsync sync",
+    fn: function (async, done) {
+      async.ensureAsync(function (cb) {
+        cb();
+      })(done);
+    }
+  },
+  {
+    name: "ensureAsync async",
+    fn: function (async, done) {
+      async.ensureAsync(function (cb) {
+        setImmediate(cb);
+      })(done);
+    }
+  },
+  {
+    name: "ensureAsync async noWrap",
+    fn: function (async, done) {
+      (function (cb) {
+        setImmediate(cb);
+      }(done));
+    }
   }
 ];
 
