@@ -1100,7 +1100,9 @@ exports['parallel does not continue replenishing after error'] = function (test)
 };
 
 
-exports['series'] = function(test){
+exports['series'] = {
+
+'series': function(test){
     var call_order = [];
     async.series([
         function(callback){
@@ -1128,17 +1130,17 @@ exports['series'] = function(test){
         test.same(call_order, [1,2,3]);
         test.done();
     });
-};
+},
 
-exports['series empty array'] = function(test){
+'empty array': function(test){
     async.series([], function(err, results){
         test.equals(err, null);
         test.same(results, []);
         test.done();
     });
-};
+},
 
-exports['series error'] = function(test){
+'error': function(test){
     test.expect(1);
     async.series([
         function(callback){
@@ -1153,16 +1155,16 @@ exports['series error'] = function(test){
         test.equals(err, 'error');
     });
     setTimeout(test.done, 100);
-};
+},
 
-exports['series no callback'] = function(test){
+'no callback': function(test){
     async.series([
         function(callback){callback();},
         function(callback){callback(); test.done();},
     ]);
-};
+},
 
-exports['series object'] = function(test){
+'object': function(test){
     var call_order = [];
     async.series(getFunctionsObject(call_order), function(err, results){
         test.equals(err, null);
@@ -1174,9 +1176,9 @@ exports['series object'] = function(test){
         test.same(call_order, [1,2,3]);
         test.done();
     });
-};
+},
 
-exports['series call in another context'] = function(test) {
+'call in another context': function(test) {
     if (typeof process === 'undefined') {
         // node only test
         test.done();
@@ -1200,10 +1202,10 @@ exports['series call in another context'] = function(test) {
     }).toString() + "())";
 
     vm.runInNewContext(fn, sandbox);
-};
+},
 
 // Issue 10 on github: https://github.com/caolan/async/issues#issue/10
-exports['series falsy return values'] = function (test) {
+'falsy return values': function (test) {
     function taskFalse(callback) {
         async.nextTick(function() {
             callback(null, false);
@@ -1235,6 +1237,8 @@ exports['series falsy return values'] = function (test) {
             test.done();
         }
     );
+}
+
 };
 
 
