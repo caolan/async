@@ -927,6 +927,42 @@ exports['parallel object'] = function(test){
     });
 };
 
+// Issue 10 on github: https://github.com/caolan/async/issues#issue/10
+exports['paralel falsy return values'] = function (test) {
+    function taskFalse(callback) {
+        async.nextTick(function() {
+            callback(null, false);
+        });
+    }
+    function taskUndefined(callback) {
+        async.nextTick(function() {
+            callback(null, undefined);
+        });
+    }
+    function taskEmpty(callback) {
+        async.nextTick(function() {
+            callback(null);
+        });
+    }
+    function taskNull(callback) {
+        async.nextTick(function() {
+            callback(null, null);
+        });
+    }
+    async.parallel(
+        [taskFalse, taskUndefined, taskEmpty, taskNull],
+        function(err, results) {
+            test.equal(results.length, 4);
+            test.strictEqual(results[0], false);
+            test.strictEqual(results[1], undefined);
+            test.strictEqual(results[2], undefined);
+            test.strictEqual(results[3], null);
+            test.done();
+        }
+    );
+};
+
+
 exports['parallel limit'] = function(test){
     var call_order = [];
     async.parallelLimit([
@@ -1164,6 +1200,41 @@ exports['series call in another context'] = function(test) {
     }).toString() + "())";
 
     vm.runInNewContext(fn, sandbox);
+};
+
+// Issue 10 on github: https://github.com/caolan/async/issues#issue/10
+exports['series falsy return values'] = function (test) {
+    function taskFalse(callback) {
+        async.nextTick(function() {
+            callback(null, false);
+        });
+    }
+    function taskUndefined(callback) {
+        async.nextTick(function() {
+            callback(null, undefined);
+        });
+    }
+    function taskEmpty(callback) {
+        async.nextTick(function() {
+            callback(null);
+        });
+    }
+    function taskNull(callback) {
+        async.nextTick(function() {
+            callback(null, null);
+        });
+    }
+    async.series(
+        [taskFalse, taskUndefined, taskEmpty, taskNull],
+        function(err, results) {
+            test.equal(results.length, 4);
+            test.strictEqual(results[0], false);
+            test.strictEqual(results[1], undefined);
+            test.strictEqual(results[2], undefined);
+            test.strictEqual(results[3], null);
+            test.done();
+        }
+    );
 };
 
 
@@ -3541,76 +3612,6 @@ exports['memoize manually added memo value'] = function (test) {
         test.equal(val, "bar");
         test.done();
     });
-};
-
-// Issue 10 on github: https://github.com/caolan/async/issues#issue/10
-exports['falsy return values in series'] = function (test) {
-    function taskFalse(callback) {
-        async.nextTick(function() {
-            callback(null, false);
-        });
-    }
-    function taskUndefined(callback) {
-        async.nextTick(function() {
-            callback(null, undefined);
-        });
-    }
-    function taskEmpty(callback) {
-        async.nextTick(function() {
-            callback(null);
-        });
-    }
-    function taskNull(callback) {
-        async.nextTick(function() {
-            callback(null, null);
-        });
-    }
-    async.series(
-        [taskFalse, taskUndefined, taskEmpty, taskNull],
-        function(err, results) {
-            test.equal(results.length, 4);
-            test.strictEqual(results[0], false);
-            test.strictEqual(results[1], undefined);
-            test.strictEqual(results[2], undefined);
-            test.strictEqual(results[3], null);
-            test.done();
-        }
-    );
-};
-
-// Issue 10 on github: https://github.com/caolan/async/issues#issue/10
-exports['falsy return values in parallel'] = function (test) {
-    function taskFalse(callback) {
-        async.nextTick(function() {
-            callback(null, false);
-        });
-    }
-    function taskUndefined(callback) {
-        async.nextTick(function() {
-            callback(null, undefined);
-        });
-    }
-    function taskEmpty(callback) {
-        async.nextTick(function() {
-            callback(null);
-        });
-    }
-    function taskNull(callback) {
-        async.nextTick(function() {
-            callback(null, null);
-        });
-    }
-    async.parallel(
-        [taskFalse, taskUndefined, taskEmpty, taskNull],
-        function(err, results) {
-            test.equal(results.length, 4);
-            test.strictEqual(results[0], false);
-            test.strictEqual(results[1], undefined);
-            test.strictEqual(results[2], undefined);
-            test.strictEqual(results[3], null);
-            test.done();
-        }
-    );
 };
 
 
