@@ -5,6 +5,7 @@
     "indent": 4,
     "noarg": true,
     "undef": true,
+    "unused": true,
     "trailing": true,
     "evil": true,
     "laxcomma": true,

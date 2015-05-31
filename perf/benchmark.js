@@ -47,6 +47,7 @@ console.log("--------------------------------------");
 
 
 async.eachSeries(versionNames, cloneVersion, function (err) {
+  if (err) { throw err; }
   versions = versionNames.map(requireVersion);
 
   var suites = suiteConfigs
@@ -202,7 +203,7 @@ function cloneVersion(tag, callback) {
 
     var cmd = "git clone --branch " + tag + " " + repoPath + " " + versionDir;
 
-    exec(cmd, function (err, stdout, stderr) {
+    exec(cmd, function (err) {
       if (err) {
         throw err;
       }
