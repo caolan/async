@@ -2510,7 +2510,9 @@ exports['doWhilst callback params'] = function (test) {
     );
 };
 
-exports['queue'] = function (test) {
+exports['queue'] = {
+
+'queue': function (test) {
     var call_order = [],
         delays = [160,80,240,80];
 
@@ -2563,9 +2565,9 @@ exports['queue'] = function (test) {
         test.equal(q.length(), 0);
         test.done();
     };
-};
+},
 
-exports['queue default concurrency'] = function (test) {
+'queue default concurrency': function (test) {
     var call_order = [],
         delays = [160,80,240,80];
 
@@ -2616,18 +2618,18 @@ exports['queue default concurrency'] = function (test) {
         test.equal(q.length(), 0);
         test.done();
     };
-};
+},
 
-exports['queue zero concurrency'] = function(test){
+'queue zero concurrency': function(test){
     test.throws(function () {
         async.queue(function (task, callback) {
             callback(null, task);
         }, 0);
     });
     test.done();
-};
+},
 
-exports['queue error propagation'] = function(test){
+'queue error propagation': function(test){
     var results = [];
 
     var q = async.queue(function (task, callback) {
@@ -2656,9 +2658,9 @@ exports['queue error propagation'] = function(test){
 
         results.push('foo');
     });
-};
+},
 
-exports['queue changing concurrency'] = function (test) {
+'queue changing concurrency': function (test) {
     var call_order = [],
         delays = [40,20,60,20];
 
@@ -2711,9 +2713,9 @@ exports['queue changing concurrency'] = function (test) {
         test.equal(q.length(), 0);
         test.done();
     }, 250);
-};
+},
 
-exports['queue push without callback'] = function (test) {
+'queue push without callback': function (test) {
     var call_order = [],
         delays = [160,80,240,80];
 
@@ -2742,9 +2744,9 @@ exports['queue push without callback'] = function (test) {
         ]);
         test.done();
     }, 800);
-};
+},
 
-exports['queue unshift'] = function (test) {
+'queue unshift': function (test) {
     var queue_order = [];
 
     var q = async.queue(function (task, callback) {
@@ -2761,9 +2763,9 @@ exports['queue unshift'] = function (test) {
         test.same(queue_order, [ 1, 2, 3, 4 ]);
         test.done();
     }, 100);
-};
+},
 
-exports['queue too many callbacks'] = function (test) {
+'queue too many callbacks': function (test) {
     var q = async.queue(function (task, callback) {
         callback();
         test.throws(function() {
@@ -2773,9 +2775,9 @@ exports['queue too many callbacks'] = function (test) {
     }, 2);
 
     q.push(1);
-};
+},
 
-exports['queue bulk task'] = function (test) {
+'queue bulk task': function (test) {
     var call_order = [],
         delays = [160,80,240,80];
 
@@ -2809,9 +2811,9 @@ exports['queue bulk task'] = function (test) {
         test.equal(q.length(), 0);
         test.done();
     }, 800);
-};
+},
 
-exports['queue idle'] = function(test) {
+'queue idle': function(test) {
     var q = async.queue(function (task, callback) {
       // Queue is busy when workers are running
       test.equal(q.idle(), false);
@@ -2834,9 +2836,9 @@ exports['queue idle'] = function(test) {
         test.equal(q.idle(), true);
         test.done();
     };
-};
+},
 
-exports['queue pause'] = function(test) {
+'queue pause': function(test) {
     var call_order = [],
         task_timeout = 100,
         pause_timeout = 300,
@@ -2887,9 +2889,9 @@ exports['queue pause'] = function(test) {
         ]);
         test.done();
     }, 800);
-};
+},
 
-exports['queue pause with concurrency'] = function(test) {
+'queue pause with concurrency': function(test) {
     var call_order = [],
         task_timeout = 100,
         pause_timeout = 50,
@@ -2938,9 +2940,9 @@ exports['queue pause with concurrency'] = function(test) {
         ]);
         test.done();
     }, 800);
-};
+},
 
-exports['queue start paused'] = function (test) {
+'queue start paused': function (test) {
     var q = async.queue(function (task, callback) {
         setTimeout(function () {
             callback();
@@ -2962,9 +2964,9 @@ exports['queue start paused'] = function (test) {
     q.drain = function () {
         test.done();
     };
-};
+},
 
-exports['queue kill'] = function (test) {
+'queue kill': function (test) {
     var q = async.queue(function (task, callback) {
         setTimeout(function () {
             test.ok(false, "Function should never be called");
@@ -2983,6 +2985,109 @@ exports['queue kill'] = function (test) {
       test.equal(q.length(), 0);
       test.done();
     }, 600);
+},
+
+'queue events': function(test) {
+    var calls = [];
+    var q = async.queue(function(task, cb) {
+        // nop
+        calls.push('process ' + task);
+        async.setImmediate(cb);
+    }, 10);
+    q.concurrency = 3;
+
+    q.saturated = function() {
+        test.ok(q.length() == 3, 'queue should be saturated now');
+        calls.push('saturated');
+    };
+    q.empty = function() {
+        test.ok(q.length() === 0, 'queue should be empty now');
+        calls.push('empty');
+    };
+    q.drain = function() {
+        test.ok(
+            q.length() === 0 && q.running() === 0,
+            'queue should be empty now and no more workers should be running'
+        );
+        calls.push('drain');
+        test.same(calls, [
+            'saturated',
+            'process foo',
+            'process bar',
+            'process zoo',
+            'foo cb',
+            'process poo',
+            'bar cb',
+            'empty',
+            'process moo',
+            'zoo cb',
+            'poo cb',
+            'moo cb',
+            'drain'
+        ]);
+        test.done();
+    };
+    q.push('foo', function () {calls.push('foo cb');});
+    q.push('bar', function () {calls.push('bar cb');});
+    q.push('zoo', function () {calls.push('zoo cb');});
+    q.push('poo', function () {calls.push('poo cb');});
+    q.push('moo', function () {calls.push('moo cb');});
+},
+
+'queue empty': function(test) {
+    var calls = [];
+    var q = async.queue(function(task, cb) {
+        // nop
+        calls.push('process ' + task);
+        async.setImmediate(cb);
+    }, 3);
+
+    q.drain = function() {
+        test.ok(
+            q.length() === 0 && q.running() === 0,
+            'queue should be empty now and no more workers should be running'
+        );
+        calls.push('drain');
+        test.same(calls, [
+            'drain'
+        ]);
+        test.done();
+    };
+    q.push([]);
+},
+
+'queue saturated': function (test) {
+    var saturatedCalled = false;
+    var q = async.queue(function(task, cb) {
+        async.setImmediate(cb);
+    }, 2);
+
+    q.saturated = function () {
+        saturatedCalled = true;
+    };
+    q.drain = function () {
+        test.ok(saturatedCalled, "saturated not called");
+        test.done();
+    };
+
+    setTimeout(function () {
+        q.push(['foo', 'bar', 'baz', 'moo']);
+    }, 10);
+},
+
+'queue started': function(test) {
+
+  var q = async.queue(function(task, cb) {
+    cb(null, task);
+  });
+
+  test.equal(q.started, false);
+  q.push([]);
+  test.equal(q.started, true);
+  test.done();
+
+}
+
 };
 
 exports['priorityQueue'] = function (test) {
@@ -3508,106 +3613,6 @@ exports['falsy return values in parallel'] = function (test) {
     );
 };
 
-exports['queue events'] = function(test) {
-    var calls = [];
-    var q = async.queue(function(task, cb) {
-        // nop
-        calls.push('process ' + task);
-        async.setImmediate(cb);
-    }, 10);
-    q.concurrency = 3;
-
-    q.saturated = function() {
-        test.ok(q.length() == 3, 'queue should be saturated now');
-        calls.push('saturated');
-    };
-    q.empty = function() {
-        test.ok(q.length() === 0, 'queue should be empty now');
-        calls.push('empty');
-    };
-    q.drain = function() {
-        test.ok(
-            q.length() === 0 && q.running() === 0,
-            'queue should be empty now and no more workers should be running'
-        );
-        calls.push('drain');
-        test.same(calls, [
-            'saturated',
-            'process foo',
-            'process bar',
-            'process zoo',
-            'foo cb',
-            'process poo',
-            'bar cb',
-            'empty',
-            'process moo',
-            'zoo cb',
-            'poo cb',
-            'moo cb',
-            'drain'
-        ]);
-        test.done();
-    };
-    q.push('foo', function () {calls.push('foo cb');});
-    q.push('bar', function () {calls.push('bar cb');});
-    q.push('zoo', function () {calls.push('zoo cb');});
-    q.push('poo', function () {calls.push('poo cb');});
-    q.push('moo', function () {calls.push('moo cb');});
-};
-
-exports['queue empty'] = function(test) {
-    var calls = [];
-    var q = async.queue(function(task, cb) {
-        // nop
-        calls.push('process ' + task);
-        async.setImmediate(cb);
-    }, 3);
-
-    q.drain = function() {
-        test.ok(
-            q.length() === 0 && q.running() === 0,
-            'queue should be empty now and no more workers should be running'
-        );
-        calls.push('drain');
-        test.same(calls, [
-            'drain'
-        ]);
-        test.done();
-    };
-    q.push([]);
-};
-
-exports['queue saturated'] = function (test) {
-    var saturatedCalled = false;
-    var q = async.queue(function(task, cb) {
-        async.setImmediate(cb);
-    }, 2);
-
-    q.saturated = function () {
-        saturatedCalled = true;
-    };
-    q.drain = function () {
-        test.ok(saturatedCalled, "saturated not called");
-        test.done();
-    };
-
-    setTimeout(function () {
-        q.push(['foo', 'bar', 'baz', 'moo']);
-    }, 10);
-};
-
-exports['queue started'] = function(test) {
-
-  var q = async.queue(function(task, cb) {
-    cb(null, task);
-  });
-
-  test.equal(q.started, false);
-  q.push([]);
-  test.equal(q.started, true);
-  test.done();
-
-};
 
 exports['ensureAsync'] = {
     'defer sync functions': function (test) {
