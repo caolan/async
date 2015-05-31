@@ -2638,7 +2638,7 @@ exports['queue'] = {
     };
 },
 
-'queue default concurrency': function (test) {
+'default concurrency': function (test) {
     var call_order = [],
         delays = [160,80,240,80];
 
@@ -2691,7 +2691,7 @@ exports['queue'] = {
     };
 },
 
-'queue zero concurrency': function(test){
+'zero concurrency': function(test){
     test.throws(function () {
         async.queue(function (task, callback) {
             callback(null, task);
@@ -2700,7 +2700,7 @@ exports['queue'] = {
     test.done();
 },
 
-'queue error propagation': function(test){
+'error propagation': function(test){
     var results = [];
 
     var q = async.queue(function (task, callback) {
@@ -2731,7 +2731,7 @@ exports['queue'] = {
     });
 },
 
-'queue changing concurrency': function (test) {
+'changing concurrency': function (test) {
     var call_order = [],
         delays = [40,20,60,20];
 
@@ -2786,7 +2786,7 @@ exports['queue'] = {
     }, 250);
 },
 
-'queue push without callback': function (test) {
+'push without callback': function (test) {
     var call_order = [],
         delays = [160,80,240,80];
 
@@ -2817,7 +2817,7 @@ exports['queue'] = {
     }, 800);
 },
 
-'queue unshift': function (test) {
+'unshift': function (test) {
     var queue_order = [];
 
     var q = async.queue(function (task, callback) {
@@ -2836,7 +2836,7 @@ exports['queue'] = {
     }, 100);
 },
 
-'queue too many callbacks': function (test) {
+'too many callbacks': function (test) {
     var q = async.queue(function (task, callback) {
         callback();
         test.throws(function() {
@@ -2848,7 +2848,7 @@ exports['queue'] = {
     q.push(1);
 },
 
-'queue bulk task': function (test) {
+'bulk task': function (test) {
     var call_order = [],
         delays = [160,80,240,80];
 
@@ -2884,7 +2884,7 @@ exports['queue'] = {
     }, 800);
 },
 
-'queue idle': function(test) {
+'idle': function(test) {
     var q = async.queue(function (task, callback) {
       // Queue is busy when workers are running
       test.equal(q.idle(), false);
@@ -2909,7 +2909,7 @@ exports['queue'] = {
     };
 },
 
-'queue pause': function(test) {
+'pause': function(test) {
     var call_order = [],
         task_timeout = 100,
         pause_timeout = 300,
@@ -2962,7 +2962,7 @@ exports['queue'] = {
     }, 800);
 },
 
-'queue pause with concurrency': function(test) {
+'pause with concurrency': function(test) {
     var call_order = [],
         task_timeout = 100,
         pause_timeout = 50,
@@ -3013,7 +3013,7 @@ exports['queue'] = {
     }, 800);
 },
 
-'queue start paused': function (test) {
+'start paused': function (test) {
     var q = async.queue(function (task, callback) {
         setTimeout(function () {
             callback();
@@ -3037,7 +3037,7 @@ exports['queue'] = {
     };
 },
 
-'queue kill': function (test) {
+'kill': function (test) {
     var q = async.queue(function (task, callback) {
         setTimeout(function () {
             test.ok(false, "Function should never be called");
@@ -3058,7 +3058,7 @@ exports['queue'] = {
     }, 600);
 },
 
-'queue events': function(test) {
+'events': function(test) {
     var calls = [];
     var q = async.queue(function(task, cb) {
         // nop
@@ -3105,7 +3105,7 @@ exports['queue'] = {
     q.push('moo', function () {calls.push('moo cb');});
 },
 
-'queue empty': function(test) {
+'empty': function(test) {
     var calls = [];
     var q = async.queue(function(task, cb) {
         // nop
@@ -3127,7 +3127,7 @@ exports['queue'] = {
     q.push([]);
 },
 
-'queue saturated': function (test) {
+'saturated': function (test) {
     var saturatedCalled = false;
     var q = async.queue(function(task, cb) {
         async.setImmediate(cb);
@@ -3146,7 +3146,7 @@ exports['queue'] = {
     }, 10);
 },
 
-'queue started': function(test) {
+'started': function(test) {
 
   var q = async.queue(function(task, cb) {
     cb(null, task);
@@ -3161,7 +3161,10 @@ exports['queue'] = {
 
 };
 
-exports['priorityQueue'] = function (test) {
+
+exports['priorityQueue'] = {
+
+'priorityQueue': function (test) {
     var call_order = [];
 
     // order of completion: 2,1,4,3
@@ -3209,9 +3212,9 @@ exports['priorityQueue'] = function (test) {
         test.equal(q.length(), 0);
         test.done();
     };
-};
+},
 
-exports['priorityQueue concurrency'] = function (test) {
+' concurrency': function (test) {
     var call_order = [],
         delays = [160,80,240,80];
 
@@ -3264,9 +3267,14 @@ exports['priorityQueue concurrency'] = function (test) {
         test.equal(q.length(), 0);
         test.done();
     };
+}
+
 };
 
-exports['cargo'] = function (test) {
+
+exports['cargo'] = {
+
+'cargo': function (test) {
     var call_order = [],
         delays = [160, 160, 80];
 
@@ -3330,9 +3338,9 @@ exports['cargo'] = function (test) {
         test.equal(c.length(), 0);
         test.done();
     }, 800);
-};
+},
 
-exports['cargo without callback'] = function (test) {
+'without callback': function (test) {
     var call_order = [],
         delays = [160,80,240,80];
 
@@ -3366,9 +3374,9 @@ exports['cargo without callback'] = function (test) {
         ]);
         test.done();
     }, 800);
-};
+},
 
-exports['cargo bulk task'] = function (test) {
+'bulk task': function (test) {
     var call_order = [],
         delays = [120,40];
 
@@ -3398,9 +3406,9 @@ exports['cargo bulk task'] = function (test) {
         test.equal(c.length(), 0);
         test.done();
     }, 800);
-};
+},
 
-exports['cargo drain once'] = function (test) {
+'drain once': function (test) {
 
    var c = async.cargo(function (tasks, callback) {
       callback();
@@ -3419,9 +3427,9 @@ exports['cargo drain once'] = function (test) {
       test.equal(drainCounter, 1);
       test.done();
     }, 500);
-};
+},
 
-exports['cargo drain twice'] = function (test) {
+'drain twice': function (test) {
 
     var c = async.cargo(function (tasks, callback) {
       callback();
@@ -3445,9 +3453,15 @@ exports['cargo drain twice'] = function (test) {
       test.equal(drainCounter, 2);
       test.done();
     }, 1000);
+}
+
 };
 
-exports['memoize'] = function (test) {
+
+
+exports['memoize'] = {
+
+'memoize': function (test) {
     test.expect(5);
     var call_order = [];
 
@@ -3471,9 +3485,9 @@ exports['memoize'] = function (test) {
             });
         });
     });
-};
+},
 
-exports['memoize maintains asynchrony'] = function (test) {
+'maintains asynchrony': function (test) {
     test.expect(3);
     var call_order = [];
 
@@ -3510,9 +3524,9 @@ exports['memoize maintains asynchrony'] = function (test) {
         test.same(call_order, async_call_order);
         test.done();
     }
-};
+},
 
-exports['unmemoize'] = function(test) {
+'unmemoize': function(test) {
     test.expect(4);
     var call_order = [];
 
@@ -3536,9 +3550,9 @@ exports['unmemoize'] = function(test) {
             });
         });
     });
-};
+},
 
-exports['unmemoize a not memoized function'] = function(test) {
+'unmemoize a not memoized function': function(test) {
     test.expect(1);
 
     var fn = function (arg1, arg2, callback) {
@@ -3551,9 +3565,9 @@ exports['unmemoize a not memoized function'] = function(test) {
     });
 
     test.done();
-};
+},
 
-exports['memoize error'] = function (test) {
+'error': function (test) {
     test.expect(1);
     var testerr = new Error('test');
     var fn = function (arg1, arg2, callback) {
@@ -3563,9 +3577,9 @@ exports['memoize error'] = function (test) {
         test.equal(err, testerr);
     });
     test.done();
-};
+},
 
-exports['memoize multiple calls'] = function (test) {
+'multiple calls': function (test) {
     test.expect(3);
     var fn = function (arg1, arg2, callback) {
         test.ok(true);
@@ -3581,9 +3595,9 @@ exports['memoize multiple calls'] = function (test) {
         test.equal(result, 1, 2);
         test.done();
     });
-};
+},
 
-exports['memoize custom hash function'] = function (test) {
+'custom hash function': function (test) {
     test.expect(2);
     var testerr = new Error('test');
 
@@ -3600,9 +3614,9 @@ exports['memoize custom hash function'] = function (test) {
             test.done();
         });
     });
-};
+},
 
-exports['memoize manually added memo value'] = function (test) {
+'manually added memo value': function (test) {
     test.expect(1);
     var fn = async.memoize(function() {
         test(false, "Function should never be called");
@@ -3612,6 +3626,8 @@ exports['memoize manually added memo value'] = function (test) {
         test.equal(val, "bar");
         test.done();
     });
+}
+
 };
 
 
