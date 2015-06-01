@@ -1780,6 +1780,27 @@ exports['map'] = {
     setTimeout(test.done, 50);
 },
 
+'map undefined array': function(test){
+    test.expect(2);
+    async.map(undefined, function(x, callback){
+        callback();
+    }, function(err, result){
+        test.equals(err, null);
+        test.same(result, []);
+    });
+    setTimeout(test.done, 50);
+},
+
+'map object': function (test) {
+    async.map({a: 1, b: 2, c: 3}, function (val, callback) {
+        callback(null, val * 2);
+    }, function (err, result) {
+        if (err) throw err;
+        test.same(result, {a: 2, b: 4, c: 6});
+        test.done();
+    });
+},
+
 'mapSeries': function(test){
     var call_order = [];
     async.mapSeries([1,3,2], mapIterator.bind(this, call_order), function(err, results){
@@ -1800,6 +1821,26 @@ exports['map'] = {
     setTimeout(test.done, 50);
 },
 
+'mapSeries undefined array': function(test){
+    test.expect(2);
+    async.mapSeries(undefined, function(x, callback){
+        callback();
+    }, function(err, result){
+        test.equals(err, null);
+        test.same(result, []);
+    });
+    setTimeout(test.done, 50);
+},
+
+'mapSeries object': function (test) {
+    async.mapSeries({a: 1, b: 2, c: 3}, function (val, callback) {
+        callback(null, val * 2);
+    }, function (err, result) {
+        if (err) throw err;
+        test.same(result, {a: 2, b: 4, c: 6});
+        test.done();
+    });
+},
 
 'mapLimit': function(test){
     var call_order = [];
@@ -1821,6 +1862,17 @@ exports['map'] = {
         test.ok(true, 'should call callback');
     });
     setTimeout(test.done, 25);
+},
+
+'mapLimit undefined array': function(test){
+    test.expect(2);
+    async.mapLimit(undefined, 2, function(x, callback){
+        callback();
+    }, function(err, result){
+        test.equals(err, null);
+        test.same(result, []);
+    });
+    setTimeout(test.done, 50);
 },
 
 'mapLimit limit exceeds size': function(test){

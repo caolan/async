@@ -5,6 +5,7 @@ New Features:
 - `cargo` now supports all of the same methods and event callbacks as `queue`.
 - Added `ensureAsync` - A wrapper that ensures an async function calls its callback on a later tick. (#769)
 - Optimized `map`, `eachOf`, and `waterfall` families of functions
+- Passing a `null` or `undefined` array to `map`, `each`, `parallel` and families will be treated as an empty array (#667).
 - Reduced file size by 4kb, (minified version by 1kb) 
 - Added code coverage through `nyc` and `coveralls` (#768)
 
