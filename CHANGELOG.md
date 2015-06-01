@@ -16,6 +16,7 @@ Bug Fixes:
 - Ensure proper conditions when calling `drain()` after pushing an empty data set to a queue (#668)
 - `each` and family will properly handle an empty array (#578)
 - `eachSeries` and family will finish if the underlying array is modified during execution (#557)
+- `queue` will throw if a non-function is passed to `q.push()` (#593)
 - Doc fixes (#766)
 
 

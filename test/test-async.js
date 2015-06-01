@@ -2848,6 +2848,14 @@ exports['queue'] = {
     }, 800);
 },
 
+'push with non-function': function (test) {
+    var q = async.queue(function () {}, 1);
+    test.throws(function () {
+        q.push({}, 1);
+    });
+    test.done();
+},
+
 'unshift': function (test) {
     var queue_order = [];
 
