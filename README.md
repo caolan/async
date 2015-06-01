@@ -1257,6 +1257,7 @@ methods:
 * `saturated` - A callback that is called when the `queue.length()` hits the concurrency and further tasks will be queued.
 * `empty` - A callback that is called when the last item from the `queue` is given to a `worker`.
 * `drain` - A callback that is called when the last item from the `queue` has returned from the `worker`.
+* `idle()`, `pause()`, `resume()`, `kill()` - cargo inherits all of the same methods and event calbacks as [`queue`](#queue)
 
 __Example__
 

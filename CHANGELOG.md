@@ -2,6 +2,7 @@
 
 New Features:
 
+- `cargo` now supports all of the same methods and event callbacks as `queue`.
 - Added `ensureAsync` - A wrapper that ensures an async function calls its callback on a later tick. (#769)
 - Optimized `map`, `eachOf`, and `waterfall` families of functions
 - Reduced file size by 4kb, (minified version by 1kb) 

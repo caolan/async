@@ -3457,7 +3457,54 @@ exports['cargo'] = {
       test.equal(drainCounter, 2);
       test.done();
     }, 1000);
-}
+},
+
+'events': function(test) {
+    var calls = [];
+    var q = async.cargo(function(task, cb) {
+        // nop
+        calls.push('process ' + task);
+        async.setImmediate(cb);
+    }, 1);
+    q.concurrency = 3;
+
+    q.saturated = function() {
+        test.ok(q.length() == 3, 'cargo should be saturated now');
+        calls.push('saturated');
+    };
+    q.empty = function() {
+        test.ok(q.length() === 0, 'cargo should be empty now');
+        calls.push('empty');
+    };
+    q.drain = function() {
+        test.ok(
+            q.length() === 0 && q.running() === 0,
+            'cargo should be empty now and no more workers should be running'
+        );
+        calls.push('drain');
+        test.same(calls, [
+            'saturated',
+            'process foo',
+            'process bar',
+            'process zoo',
+            'foo cb',
+            'process poo',
+            'bar cb',
+            'empty',
+            'process moo',
+            'zoo cb',
+            'poo cb',
+            'moo cb',
+            'drain'
+        ]);
+        test.done();
+    };
+    q.push('foo', function () {calls.push('foo cb');});
+    q.push('bar', function () {calls.push('bar cb');});
+    q.push('zoo', function () {calls.push('zoo cb');});
+    q.push('poo', function () {calls.push('poo cb');});
+    q.push('moo', function () {calls.push('moo cb');});
+},
 
 };
 
