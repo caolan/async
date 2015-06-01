@@ -1371,6 +1371,18 @@ exports['forEachOf empty object'] = function(test){
     setTimeout(test.done, 25);
 };
 
+exports['forEachOf empty array'] = function(test){
+    test.expect(1);
+    async.forEachOf([], function(value, key, callback){
+        test.ok(false, 'iterator should not be called');
+        callback();
+    }, function(err) {
+        if (err) throw err;
+        test.ok(true, 'should call callback');
+    });
+    setTimeout(test.done, 25);
+};
+
 exports['forEachOf error'] = function(test){
     test.expect(1);
     async.forEachOf({ a: 1, b: 2 }, function(value, key, callback) {
