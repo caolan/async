@@ -148,7 +148,11 @@ module.exports = [
             return cb(null, 1);
           }
         ].concat(_.range(count).map(function (i) {
-          return function (arg, cb) { cb(null, i); };
+          return function (arg, cb) {
+            setImmediate(function () {
+              cb(null, i);
+            });
+          };
         }));
     },
     fn: function (async, done) {
