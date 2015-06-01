@@ -11,10 +11,11 @@ New Features:
 Bug Fixes:
 
 - `forever` will no longer stack overflow with a synchronous iterator (#622)
-- `eachLimit` and others limit functions will stop iterating once an error occurs (#754)
+- `eachLimit` and other limit functions will stop iterating once an error occurs (#754)
 - Always pass `null` in callbacks when there is no error (#439)
 - Ensure proper conditions when calling `drain()` after pushing an empty data set to a queue (#668)
 - `each` and family will properly handle an empty array (#578)
+- `eachSeries` and family will finish if the underlying array is modified during execution (#557)
 - Doc fixes (#766)
 
 

@@ -1427,6 +1427,21 @@ exports['eachSeries empty array'] = function(test){
     setTimeout(test.done, 25);
 };
 
+exports['eachSeries array modification'] = function(test) {
+    test.expect(1);
+    var arr = [1, 2, 3, 4];
+    async.eachSeries(arr, function (x, callback) {
+        async.setImmediate(callback);
+    }, function () {
+        test.ok(true, 'should call callback');
+    });
+
+    arr.pop();
+    arr.splice(0, 1);
+
+    setTimeout(test.done, 25);
+};
+
 exports['eachSeries error'] = function(test){
     test.expect(2);
     var call_order = [];
