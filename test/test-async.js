@@ -80,6 +80,11 @@ function getFunctionsObject(call_order) {
     };
 }
 
+function isBrowser() {
+    return (typeof process === "undefined") ||
+        (process + "" !== "[object process]"); // browserify
+}
+
 exports['forever'] = {
 
 'async': function (test) {
@@ -102,11 +107,15 @@ exports['forever'] = {
 },
 
 'sync': function (test) {
+    if (isBrowser()) {
+        // this will take forever in a browser
+        return test.done();
+    }
     test.expect(2);
     var counter = 0;
     function addOne(callback) {
         counter++;
-        if (counter === 50000) {
+        if (counter === 50000) { // needs to be huge to potentially overflow stack in node
             return callback('too big!');
         }
         callback();
@@ -581,7 +590,7 @@ exports['auto removeListener has side effect on loop iterator'] = function(test)
 
 // Issue 410 on github: https://github.com/caolan/async/issues/410
 exports['auto calls callback multiple times'] = function(test) {
-    if (typeof process === 'undefined') {
+    if (isBrowser()) {
         // node only test
         test.done();
         return;
@@ -860,7 +869,7 @@ exports['waterfall'] = {
 },
 
 'call in another context': function(test) {
-    if (typeof process === 'undefined') {
+    if (isBrowser()) {
         // node only test
         test.done();
         return;
@@ -1075,7 +1084,7 @@ exports['parallel limit object'] = function(test){
 };
 
 exports['parallel call in another context'] = function(test) {
-    if (typeof process === 'undefined') {
+    if (isBrowser()) {
         // node only test
         test.done();
         return;
@@ -1214,7 +1223,7 @@ exports['series'] = {
 },
 
 'call in another context': function(test) {
-    if (typeof process === 'undefined') {
+    if (isBrowser()) {
         // node only test
         test.done();
         return;
@@ -1474,7 +1483,7 @@ exports['eachSeries array modification'] = function(test) {
     arr.pop();
     arr.splice(0, 1);
 
-    setTimeout(test.done, 25);
+    setTimeout(test.done, 50);
 };
 
 exports['eachSeries error'] = function(test){
@@ -2426,7 +2435,7 @@ exports['nextTick'] = function(test){
 };
 
 exports['nextTick in the browser'] = function(test){
-    if (typeof process !== 'undefined') {
+    if (!isBrowser()) {
         // skip this test in node
         return test.done();
     }
@@ -2443,7 +2452,7 @@ exports['nextTick in the browser'] = function(test){
 };
 
 exports['noConflict - node only'] = function(test){
-    if (typeof process !== 'undefined') {
+    if (!isBrowser()) {
         // node only test
         test.expect(3);
         var fs = require('fs');
@@ -3143,7 +3152,7 @@ exports['queue'] = {
     var q = async.queue(function (task, callback) {
         setTimeout(function () {
             callback();
-        }, 10);
+        }, 20);
     }, 2);
     q.pause();
 
@@ -3151,12 +3160,13 @@ exports['queue'] = {
 
     setTimeout(function () {
         q.resume();
-    }, 10);
+    }, 5);
 
     setTimeout(function () {
+        test.equal(q.tasks.length, 1);
         test.equal(q.running(), 2);
         q.resume();
-    }, 15);
+    }, 10);
 
     q.drain = function () {
         test.done();
