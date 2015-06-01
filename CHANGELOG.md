@@ -19,7 +19,7 @@ Bug Fixes:
 - `each` and family will properly handle an empty array (#578)
 - `eachSeries` and family will finish if the underlying array is modified during execution (#557)
 - `queue` will throw if a non-function is passed to `q.push()` (#593)
-- Doc fixes (#766)
+- Doc fixes (#629, #766)
 
 
 # v1.0.0

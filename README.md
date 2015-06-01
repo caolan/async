@@ -221,7 +221,7 @@ Usage:
 
 <a name="forEach" />
 <a name="each" />
-### each(arr, iterator, callback)
+### each(arr, iterator, [callback])
 
 Applies the function `iterator` to each item in `arr`, in parallel.
 The `iterator` is called with an item from the list, and a callback for when it
@@ -239,7 +239,7 @@ __Arguments__
   completed. If no error has occurred, the `callback` should be run without
   arguments or with an explicit `null` argument.  The array index is not passed
   to the iterator.  If you need the index, use [`forEachOf`](#forEachOf).
-* `callback(err)` - A callback which is called when all `iterator` functions
+* `callback(err)` - *Optional* A callback which is called when all `iterator` functions
   have finished, or an error occurs.
 
 __Examples__
@@ -286,7 +286,7 @@ async.each(openFiles, function(file, callback) {
 
 <a name="forEachSeries" />
 <a name="eachSeries" />
-### eachSeries(arr, iterator, callback)
+### eachSeries(arr, iterator, [callback])
 
 The same as [`each`](#each), only `iterator` is applied to each item in `arr` in
 series. The next `iterator` is only called once the current one has completed.
@@ -297,7 +297,7 @@ This means the `iterator` functions will complete in order.
 
 <a name="forEachLimit" />
 <a name="eachLimit" />
-### eachLimit(arr, limit, iterator, callback)
+### eachLimit(arr, limit, iterator, [callback])
 
 The same as [`each`](#each), only no more than `limit` `iterator`s will be simultaneously
 running at any time.
@@ -313,7 +313,7 @@ __Arguments__
   The iterator is passed a `callback(err)` which must be called once it has
   completed. If no error has occurred, the callback should be run without
   arguments or with an explicit `null` argument.
-* `callback(err)` - A callback which is called when all `iterator` functions
+* `callback(err)` - *Optional* A callback which is called when all `iterator` functions
   have finished, or an error occurs.
 
 __Example__
@@ -332,7 +332,7 @@ async.eachLimit(documents, 20, requestApi, function(err){
 <a name="forEachOf" />
 <a name="eachOf" />
 
-### forEachOf(obj, iterator, callback)
+### forEachOf(obj, iterator, [callback])
 
 Like `each`, except that it iterates over objects, and passes the key as the second argument to the iterator.
 
@@ -344,7 +344,7 @@ The `key` is the item's key, or index in the case of an array. The iterator is
 passed a `callback(err)` which must be called once it has completed. If no
 error has occurred, the callback should be run without arguments or with an
 explicit `null` argument.
-* `callback(err)` - A callback which is called when all `iterator` functions have finished, or an error occurs.
+* `callback(err)` - *Optional* A callback which is called when all `iterator` functions have finished, or an error occurs.
 
 __Example__
 
@@ -374,7 +374,7 @@ async.forEachOf(obj, function (value, key, callback) {
 <a name="forEachOfSeries" />
 <a name="eachOfSeries" />
 
-### forEachOfSeries(obj, iterator, callback)
+### forEachOfSeries(obj, iterator, [callback])
 
 Like [`forEachOf`](#forEachOf), except only one `iterator` is run at a time.  The order of execution is not guaranteed for objects, but it will be guaranteed for arrays.
 
@@ -383,7 +383,7 @@ Like [`forEachOf`](#forEachOf), except only one `iterator` is run at a time.  Th
 <a name="forEachOfLimit" />
 <a name="eachOfLimit" />
 
-### forEachOfLimit(obj, limit, iterator, callback)
+### forEachOfLimit(obj, limit, iterator, [callback])
 
 Like [`forEachOf`](#forEachOf), except the number of `iterator`s running at a given time is controlled by `limit`.
 
@@ -391,7 +391,7 @@ Like [`forEachOf`](#forEachOf), except the number of `iterator`s running at a gi
 ---------------------------------------
 
 <a name="map" />
-### map(arr, iterator, callback)
+### map(arr, iterator, [callback])
 
 Produces a new array of values by mapping each value in `arr` through
 the `iterator` function. The `iterator` is called with an item from `arr` and a
@@ -409,7 +409,7 @@ __Arguments__
 * `iterator(item, callback)` - A function to apply to each item in `arr`.
   The iterator is passed a `callback(err, transformed)` which must be called once
   it has completed with an error (which can be `null`) and a transformed item.
-* `callback(err, results)` - A callback which is called when all `iterator`
+* `callback(err, results)` - *Optional* A callback which is called when all `iterator`
   functions have finished, or an error occurs. Results is an array of the
   transformed items from the `arr`.
 
@@ -424,7 +424,7 @@ async.map(['file1','file2','file3'], fs.stat, function(err, results){
 ---------------------------------------
 
 <a name="mapSeries" />
-### mapSeries(arr, iterator, callback)
+### mapSeries(arr, iterator, [callback])
 
 The same as [`map`](#map), only the `iterator` is applied to each item in `arr` in
 series. The next `iterator` is only called once the current one has completed.
@@ -434,7 +434,7 @@ The results array will be in the same order as the original.
 ---------------------------------------
 
 <a name="mapLimit" />
-### mapLimit(arr, limit, iterator, callback)
+### mapLimit(arr, limit, iterator, [callback])
 
 The same as [`map`](#map), only no more than `limit` `iterator`s will be simultaneously
 running at any time.
@@ -465,7 +465,7 @@ async.mapLimit(['file1','file2','file3'], 1, fs.stat, function(err, results){
 
 <a name="select" />
 <a name="filter" />
-### filter(arr, iterator, callback)
+### filter(arr, iterator, [callback])
 
 __Alias:__ `select`
 
@@ -482,7 +482,7 @@ __Arguments__
 * `iterator(item, callback)` - A truth test to apply to each item in `arr`.
   The `iterator` is passed a `callback(truthValue)`, which must be called with a
   boolean argument once it has completed.
-* `callback(results)` - A callback which is called after all the `iterator`
+* `callback(results)` - *Optional* A callback which is called after all the `iterator`
   functions have finished.
 
 __Example__
@@ -497,7 +497,7 @@ async.filter(['file1','file2','file3'], fs.exists, function(results){
 
 <a name="selectSeries" />
 <a name="filterSeries" />
-### filterSeries(arr, iterator, callback)
+### filterSeries(arr, iterator, [callback])
 
 __Alias:__ `selectSeries`
 
@@ -508,14 +508,14 @@ The results array will be in the same order as the original.
 ---------------------------------------
 
 <a name="reject" />
-### reject(arr, iterator, callback)
+### reject(arr, iterator, [callback])
 
 The opposite of [`filter`](#filter). Removes values that pass an `async` truth test.
 
 ---------------------------------------
 
 <a name="rejectSeries" />
-### rejectSeries(arr, iterator, callback)
+### rejectSeries(arr, iterator, [callback])
 
 The same as [`reject`](#reject), only the `iterator` is applied to each item in `arr`
 in series.
@@ -524,7 +524,7 @@ in series.
 ---------------------------------------
 
 <a name="reduce" />
-### reduce(arr, memo, iterator, callback)
+### reduce(arr, memo, iterator, [callback])
 
 __Aliases:__ `inject`, `foldl`
 
@@ -547,7 +547,7 @@ __Arguments__
   argument, and the state of the reduction as the second. If an error is
   passed to the callback, the reduction is stopped and the main `callback` is
   immediately called with the error.
-* `callback(err, result)` - A callback which is called after all the `iterator`
+* `callback(err, result)` - *Optional* A callback which is called after all the `iterator`
   functions have finished. Result is the reduced value.
 
 __Example__
@@ -566,7 +566,7 @@ async.reduce([1,2,3], 0, function(memo, item, callback){
 ---------------------------------------
 
 <a name="reduceRight" />
-### reduceRight(arr, memo, iterator, callback)
+### reduceRight(arr, memo, iterator, [callback])
 
 __Alias:__ `foldr`
 
@@ -576,7 +576,7 @@ Same as [`reduce`](#reduce), only operates on `arr` in reverse order.
 ---------------------------------------
 
 <a name="detect" />
-### detect(arr, iterator, callback)
+### detect(arr, iterator, [callback])
 
 Returns the first value in `arr` that passes an async truth test. The
 `iterator` is applied in parallel, meaning the first iterator to return `true` will
@@ -591,7 +591,7 @@ __Arguments__
 * `iterator(item, callback)` - A truth test to apply to each item in `arr`.
   The iterator is passed a `callback(truthValue)` which must be called with a
   boolean argument once it has completed. **Note: this callback does not take an error as its first argument.**
-* `callback(result)` - A callback which is called as soon as any iterator returns
+* `callback(result)` - *Optional* A callback which is called as soon as any iterator returns
   `true`, or after all the `iterator` functions have finished. Result will be
   the first item in the array that passes the truth test (iterator) or the
   value `undefined` if none passed.  **Note: this callback does not take an error as its first argument.**
@@ -607,7 +607,7 @@ async.detect(['file1','file2','file3'], fs.exists, function(result){
 ---------------------------------------
 
 <a name="detectSeries" />
-### detectSeries(arr, iterator, callback)
+### detectSeries(arr, iterator, [callback])
 
 The same as [`detect`](#detect), only the `iterator` is applied to each item in `arr`
 in series. This means the result is always the first in the original `arr` (in
@@ -617,7 +617,7 @@ terms of array order) that passes the truth test.
 ---------------------------------------
 
 <a name="sortBy" />
-### sortBy(arr, iterator, callback)
+### sortBy(arr, iterator, [callback])
 
 Sorts a list by the results of running each `arr` value through an async `iterator`.
 
@@ -628,7 +628,7 @@ __Arguments__
   The iterator is passed a `callback(err, sortValue)` which must be called once it
   has completed with an error (which can be `null`) and a value to use as the sort
   criteria.
-* `callback(err, results)` - A callback which is called after all the `iterator`
+* `callback(err, results)` - *Optional* A callback which is called after all the `iterator`
   functions have finished, or an error occurs. Results is the items from
   the original `arr` sorted by the values returned by the `iterator` calls.
 
@@ -668,7 +668,7 @@ async.sortBy([1,9,3,5], function(x, callback){
 ---------------------------------------
 
 <a name="some" />
-### some(arr, iterator, callback)
+### some(arr, iterator, [callback])
 
 __Alias:__ `any`
 
@@ -684,7 +684,7 @@ __Arguments__
 * `iterator(item, callback)` - A truth test to apply to each item in the array
   in parallel. The iterator is passed a `callback(truthValue)`` which must be
   called with a boolean argument once it has completed.
-* `callback(result)` - A callback which is called as soon as any iterator returns
+* `callback(result)` - *Optional* A callback which is called as soon as any iterator returns
   `true`, or after all the iterator functions have finished. Result will be
   either `true` or `false` depending on the values of the async tests.
 
@@ -700,7 +700,7 @@ async.some(['file1','file2','file3'], fs.exists, function(result){
 ---------------------------------------
 
 <a name="every" />
-### every(arr, iterator, callback)
+### every(arr, iterator, [callback])
 
 __Alias:__ `all`
 
@@ -715,7 +715,7 @@ __Arguments__
 * `iterator(item, callback)` - A truth test to apply to each item in the array
   in parallel. The iterator is passed a `callback(truthValue)` which must be
   called with a  boolean argument once it has completed.
-* `callback(result)` - A callback which is called after all the `iterator`
+* `callback(result)` - *Optional* A callback which is called after all the `iterator`
   functions have finished. Result will be either `true` or `false` depending on
   the values of the async tests.
 
@@ -732,7 +732,7 @@ async.every(['file1','file2','file3'], fs.exists, function(result){
 ---------------------------------------
 
 <a name="concat" />
-### concat(arr, iterator, callback)
+### concat(arr, iterator, [callback])
 
 Applies `iterator` to each item in `arr`, concatenating the results. Returns the
 concatenated list. The `iterator`s are called in parallel, and the results are
@@ -745,7 +745,7 @@ __Arguments__
 * `iterator(item, callback)` - A function to apply to each item in `arr`.
   The iterator is passed a `callback(err, results)` which must be called once it
   has completed with an error (which can be `null`) and an array of results.
-* `callback(err, results)` - A callback which is called after all the `iterator`
+* `callback(err, results)` - *Optional* A callback which is called after all the `iterator`
   functions have finished, or an error occurs. Results is an array containing
   the concatenated results of the `iterator` function.
 
@@ -760,7 +760,7 @@ async.concat(['dir1','dir2','dir3'], fs.readdir, function(err, files){
 ---------------------------------------
 
 <a name="concatSeries" />
-### concatSeries(arr, iterator, callback)
+### concatSeries(arr, iterator, [callback])
 
 Same as [`concat`](#concat), but executes in series instead of parallel.
 
@@ -986,7 +986,7 @@ Like [`doWhilst`](#doWhilst), except the `test` is inverted. Note the argument o
 ---------------------------------------
 
 <a name="forever" />
-### forever(fn, errback)
+### forever(fn, [errback])
 
 Calls the asynchronous function `fn` with a callback parameter that allows it to
 call itself again, in series, indefinitely.
@@ -1612,7 +1612,7 @@ call_order.push('one')
 ```
 
 <a name="times" />
-### times(n, iterator, callback)
+### times(n, iterator, [callback])
 
 Calls the `iterator` function `n` times, and accumulates results in the same manner
 you would use with [`map`](#map).
@@ -1643,7 +1643,7 @@ async.times(5, function(n, next){
 ```
 
 <a name="timesSeries" />
-### timesSeries(n, iterator, callback)
+### timesSeries(n, iterator, [callback])
 
 The same as [`times`](#times), only the iterator is applied to each item in `arr` in
 series. The next `iterator` is only called once the current one has completed.
