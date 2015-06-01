@@ -596,6 +596,21 @@ exports['auto calls callback multiple times'] = function(test) {
     }, 10);
 };
 
+
+exports['auto calls callback multiple times with parallel functions'] = function(test) {
+    test.expect(1);
+    async.auto({
+        task1: function(callback) { setTimeout(callback,0,"err"); },
+        task2: function(callback) { setTimeout(callback,0,"err"); }
+    },
+    // Error throwing final callback. This should only run once
+    function(err) {
+        test.equal(err, "err");
+        test.done();
+    });
+};
+
+
 // Issue 462 on github: https://github.com/caolan/async/issues/462
 exports['auto modifying results causes final callback to run early'] = function(test) {
     async.auto({
