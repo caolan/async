@@ -52,6 +52,43 @@ missing please create a GitHub issue for it.
 
 ## Common Pitfalls
 
+<a name="stack-overflow">
+### Synchronous iteration functions
+
+If you get an error like `RangeError: Maximum call stack size exceeded.` or other stack overflow issues when using async, you are likely using a synchronous iterator.  By *synchronous* we mean a function that calls its callback on the same tick in the javascript event loop, without doing any I/O or using any timers.  Calling many callbacks iteratively will quickly overflow the stack. If you run into this issue, just defer your callback with `async.nextTick` to start a new call stack on the next tick of the event loop.
+
+This can also arise by accident if you callback early in certain cases:
+
+```js
+async.eachSeries(hugeArray, function iterator(item, callback) {
+  if (inCache(item)) {
+    callback(null, cache[item]); // if many items are cached, you'll overflow 
+  } else {
+    doSomeIO(item, callback);
+  }
+}, function done() { 
+  //... 
+});
+```
+
+Just change it to:
+
+```js
+async.eachSeries(hugeArray, function iterator(item, callback) {
+  if (inCache(item)) {
+    async.setImmediate(function () {
+      callback(null, cache[item]);
+    });
+  } else {
+    doSomeIO(item, callback);
+  //...
+```
+
+Async guards against synchronous functions in some, but not all, cases.  If you are still running into stack overflows, you can defer as suggested above, or wrap functions with [`async.ensureAsync`](#ensureAsync)  Functions that are asynchronous by their nature do not have this problem and don't need the extra callback deferral.
+
+If javascript's event loop is still a bit nebulous, check out [this article](http://blog.carbonfive.com/2013/10/27/the-javascript-event-loop-explained/) or [this talk](http://2014.jsconf.eu/speakers/philip-roberts-what-the-heck-is-the-event-loop-anyway.html) for more detailed information about how it works.
+
+
 ### Binding a context to an iterator
 
 This section is really about `bind`, not about `async`. If you are wondering how to
