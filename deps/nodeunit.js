@@ -171,9 +171,7 @@ nodeunit = (function(){
 // Create a JSON object only if one does not already exist. We create the
 // methods in a closure to avoid creating global variables.
 
-if (!this.JSON) {
-    this.JSON = {};
-}
+var JSON = {};
 
 (function () {
     "use strict";
@@ -579,14 +577,19 @@ var reporter = {};
     //// exported async module functions ////
 
     //// nextTick implementation with browser-compatible fallback ////
-    async.nextTick = function (fn) {
-        if (typeof process === 'undefined' || !(process.nextTick)) {
+    if (typeof setImmediate === 'function') {
+        async.nextTick = function (fn) {
+            setImmediate(fn);
+        };
+    }
+    else if (typeof process !== 'undefined' && process.nextTick) {
+        async.nextTick = process.nextTick;
+    }
+    else {
+        async.nextTick = function (fn) {
             setTimeout(fn, 0);
-        }
-        else {
-            process.nextTick(fn);
-        }
-    };
+        };
+    }
 
     async.forEach = function (arr, iterator, callback) {
         if (!arr.length) {
@@ -1099,6 +1102,27 @@ var reporter = {};
     async.warn = _console_fn('warn');
     async.error = _console_fn('error');*/
 
+    async.memoize = function (fn, hasher) {
+        var memo = {};
+        hasher = hasher || function (x) {
+            return x;
+        };
+        return function () {
+            var args = Array.prototype.slice.call(arguments);
+            var callback = args.pop();
+            var key = hasher.apply(null, args);
+            if (key in memo) {
+                callback.apply(null, memo[key]);
+            }
+            else {
+                fn.apply(null, args.concat([function () {
+                    memo[key] = arguments;
+                    callback.apply(null, arguments);
+                }]));
+            }
+        };
+    };
+
 }());
 (function(exports){
 /**
@@ -1114,6 +1138,9 @@ var reporter = {};
 
 var _keys = function(obj){
     if(Object.keys) return Object.keys(obj);
+    if (typeof obj != 'object' && typeof obj != 'function') {
+        throw new TypeError('-');
+    }
     var keys = [];
     for(var k in obj){
         if(obj.hasOwnProperty(k)) keys.push(k);
@@ -1187,9 +1214,9 @@ assert.AssertionError.prototype.toString = function() {
     return [this.name+":", this.message].join(' ');
   } else {
     return [ this.name+":"
-           , JSON.stringify(this.expected )
+           , typeof this.expected !== 'undefined' ? JSON.stringify(this.expected) : 'undefined'
            , this.operator
-           , JSON.stringify(this.actual)
+           , typeof this.actual !== 'undefined' ? JSON.stringify(this.actual) : 'undefined'
            ].join(" ");
   }
 };
@@ -1259,6 +1286,17 @@ assert.deepEqual = function deepEqual(actual, expected, message) {
   }
 };
 
+var Buffer = null;
+if (typeof require !== 'undefined' && typeof process !== 'undefined') {
+    try {
+        Buffer = require('buffer').Buffer;
+    }
+    catch (e) {
+        // May be a CommonJS environment other than Node.js
+        Buffer = null;
+    }
+}
+
 function _deepEqual(actual, expected) {
   // 7.1. All identical values are equivalent, as determined by ===.
   if (actual === expected) {
@@ -1268,6 +1306,25 @@ function _deepEqual(actual, expected) {
   } else if (actual instanceof Date && expected instanceof Date) {
     return actual.getTime() === expected.getTime();
 
+  // 7.2.1 If the expcted value is a RegExp object, the actual value is
+  // equivalent if it is also a RegExp object that refers to the same source and options
+  } else if (actual instanceof RegExp && expected instanceof RegExp) {
+    return actual.source === expected.source &&
+           actual.global === expected.global &&
+           actual.ignoreCase === expected.ignoreCase &&
+           actual.multiline === expected.multiline;
+
+  } else if (Buffer && actual instanceof Buffer && expected instanceof Buffer) {
+    return (function() {
+      var i, len;
+
+      for (i = 0, len = expected.length; i < len; i++) {
+        if (actual[i] !== expected[i]) {
+          return false;
+        }
+      }
+      return actual.length === expected.length;
+    })();
   // 7.3. Other pairs that do not both pass typeof value == "object",
   // equivalence is determined by ==.
   } else if (typeof actual != 'object' && typeof expected != 'object') {
@@ -1362,47 +1419,52 @@ assert.notStrictEqual = function notStrictEqual(actual, expected, message) {
   }
 };
 
-function _throws (shouldThrow, block, err, message) {
-  var exception = null,
-      threw = false,
-      typematters = true;
+function expectedException(actual, expected) {
+  if (!actual || !expected) {
+    return false;
+  }
 
-  message = message || "";
+  if (expected instanceof RegExp) {
+    return expected.test(actual.message || actual);
+  } else if (actual instanceof expected) {
+    return true;
+  } else if (expected.call({}, actual) === true) {
+    return true;
+  }
 
-  //handle optional arguments
-  if (arguments.length == 3) {
-    if (typeof(err) == "string") {
-      message = err;
-      typematters = false;
-    }
-  } else if (arguments.length == 2) {
-    typematters = false;
+  return false;
+}
+
+function _throws(shouldThrow, block, expected, message) {
+  var actual;
+
+  if (typeof expected === 'string') {
+    message = expected;
+    expected = null;
   }
 
   try {
     block();
   } catch (e) {
-    threw = true;
-    exception = e;
+    actual = e;
   }
 
-  if (shouldThrow && !threw) {
-    fail( "Missing expected exception"
-        + (err && err.name ? " ("+err.name+")." : '.')
-        + (message ? " " + message : "")
-        );
+  message = (expected && expected.name ? ' (' + expected.name + ').' : '.') +
+            (message ? ' ' + message : '.');
+
+  if (shouldThrow && !actual) {
+    fail('Missing expected exception' + message);
   }
-  if (!shouldThrow && threw && typematters && exception instanceof err) {
-    fail( "Got unwanted exception"
-        + (err && err.name ? " ("+err.name+")." : '.')
-        + (message ? " " + message : "")
-        );
+
+  if (!shouldThrow && expectedException(actual, expected)) {
+    fail('Got unwanted exception' + message);
   }
-  if ((shouldThrow && threw && typematters && !(exception instanceof err)) ||
-      (!shouldThrow && threw)) {
-    throw exception;
+
+  if ((shouldThrow && actual && expected &&
+      !expectedException(actual, expected)) || (!shouldThrow && actual)) {
+    throw actual;
   }
-};
+}
 
 // 11. Expected to throw an error:
 // assert.throws(block, Error_opt, message_opt);
@@ -1425,7 +1487,7 @@ assert.ifError = function (err) { if (err) {throw err;}};
  * MIT Licensed
  *
  * THIS FILE SHOULD BE BROWSER-COMPATIBLE JS!
- * Only code on that line will be removed, its mostly to avoid requiring code
+ * Only code on that line will be removed, it's mostly to avoid requiring code
  * that is node specific
  */
 
@@ -1470,8 +1532,10 @@ exports.assertionList = function (arr, duration) {
     var that = arr || [];
     that.failures = function () {
         var failures = 0;
-        for (var i=0; i<this.length; i++) {
-            if (this[i].failed()) failures++;
+        for (var i = 0; i < this.length; i += 1) {
+            if (this[i].failed()) {
+                failures += 1;
+            }
         }
         return failures;
     };
@@ -1484,7 +1548,7 @@ exports.assertionList = function (arr, duration) {
 
 /**
  * Create a wrapper function for assert module methods. Executes a callback
- * after the it's complete with an assertion object representing the result.
+ * after it's complete with an assertion object representing the result.
  *
  * @param {Function} callback
  * @api private
@@ -1493,7 +1557,7 @@ exports.assertionList = function (arr, duration) {
 var assertWrapper = function (callback) {
     return function (new_method, assert_method, arity) {
         return function () {
-            var message = arguments[arity-1];
+            var message = arguments[arity - 1];
             var a = exports.assertion({method: new_method, message: message});
             try {
                 assert[assert_method].apply(null, arguments);
@@ -1596,6 +1660,7 @@ exports.options = function (opt) {
     optionalCallback('moduleStart');
     optionalCallback('moduleDone');
     optionalCallback('testStart');
+    optionalCallback('testReady');
     optionalCallback('testDone');
     //optionalCallback('log');
 
@@ -1611,7 +1676,7 @@ exports.options = function (opt) {
  * MIT Licensed
  *
  * THIS FILE SHOULD BE BROWSER-COMPATIBLE JS!
- * Only code on that line will be removed, its mostly to avoid requiring code
+ * Only code on that line will be removed, it's mostly to avoid requiring code
  * that is node specific
  */
 
@@ -1625,13 +1690,27 @@ exports.options = function (opt) {
  * Added for browser compatibility
  */
 
-var _keys = function(obj){
-    if(Object.keys) return Object.keys(obj);
+var _keys = function (obj) {
+    if (Object.keys) {
+        return Object.keys(obj);
+    }
     var keys = [];
-    for(var k in obj){
-        if(obj.hasOwnProperty(k)) keys.push(k);
+    for (var k in obj) {
+        if (obj.hasOwnProperty(k)) {
+            keys.push(k);
+        }
     }
     return keys;
+};
+
+
+var _copy = function (obj) {
+    var nobj = {};
+    var keys = _keys(obj);
+    for (var i = 0; i <  keys.length; i += 1) {
+        nobj[keys[i]] = obj[keys[i]];
+    }
+    return nobj;
 };
 
 
@@ -1654,6 +1733,7 @@ exports.runTest = function (name, fn, opt, callback) {
     var start = new Date().getTime();
     var test = types.test(name, start, options, callback);
 
+    options.testReady(test);
     try {
         fn(test);
     }
@@ -1678,20 +1758,36 @@ exports.runTest = function (name, fn, opt, callback) {
  */
 
 exports.runSuite = function (name, suite, opt, callback) {
+    suite = wrapGroup(suite);
     var keys = _keys(suite);
 
     async.concatSeries(keys, function (k, cb) {
         var prop = suite[k], _name;
 
         _name = name ? [].concat(name, k) : [k];
-
         _name.toString = function () {
             // fallback for old one
             return this.join(' - ');
         };
 
         if (typeof prop === 'function') {
-            exports.runTest(_name, suite[k], opt, cb);
+            var in_name = false,
+                in_specific_test = (_name.toString() === opt.testFullSpec) ? true : false;
+            for (var i = 0; i < _name.length; i += 1) {
+                if (_name[i] === opt.testspec) {
+                    in_name = true;
+                }
+            }
+
+            if ((!opt.testFullSpec || in_specific_test) && (!opt.testspec || in_name)) {
+                if (opt.moduleStart) {
+                    opt.moduleStart();
+                }
+                exports.runTest(_name, suite[k], opt, cb);
+            }
+            else {
+                return cb();
+            }
         }
         else {
             exports.runSuite(_name, suite[k], opt, cb);
@@ -1710,15 +1806,30 @@ exports.runSuite = function (name, suite, opt, callback) {
  */
 
 exports.runModule = function (name, mod, opt, callback) {
-    var options = types.options(opt);
+    var options = _copy(types.options(opt));
 
-    options.moduleStart(name);
+    var _run = false;
+    var _moduleStart = options.moduleStart;
+
+    mod = wrapGroup(mod);
+
+    function run_once() {
+        if (!_run) {
+            _run = true;
+            _moduleStart(name);
+        }
+    }
+    options.moduleStart = run_once;
+
     var start = new Date().getTime();
 
-    exports.runSuite(null, mod, opt, function (err, a_list) {
+    exports.runSuite(null, mod, options, function (err, a_list) {
         var end = new Date().getTime();
         var assertion_list = types.assertionList(a_list, end - start);
         options.moduleDone(name, assertion_list);
+        if (nodeunit.complete) {
+            nodeunit.complete(name, assertion_list);
+        }
         callback(null, a_list);
     });
 };
@@ -1792,7 +1903,34 @@ var wrapTest = function (setUp, tearDown, fn) {
         else {
             fn.call(context, test);
         }
+    };
+};
+
+
+/**
+ * Returns a serial callback from two functions.
+ *
+ * @param {Function} funcFirst
+ * @param {Function} funcSecond
+ * @api private
+ */
+
+var getSerialCallback = function (fns) {
+    if (!fns.length) {
+        return null;
     }
+    return function (callback) {
+        var that = this;
+        var bound_fns = [];
+        for (var i = 0, len = fns.length; i < len; i++) {
+            (function (j) {
+                bound_fns.push(function () {
+                    return fns[j].apply(that, arguments);
+                });
+            })(i);
+        }
+        return async.series(bound_fns, callback);
+    };
 };
 
 
@@ -1800,43 +1938,52 @@ var wrapTest = function (setUp, tearDown, fn) {
  * Wraps a group of tests with setUp and tearDown functions.
  * Used by testCase.
  *
- * @param {Function} setUp
- * @param {Function} tearDown
  * @param {Object} group
+ * @param {Array} setUps - parent setUp functions
+ * @param {Array} tearDowns - parent tearDown functions
  * @api private
  */
 
-var wrapGroup = function (setUp, tearDown, group) {
+var wrapGroup = function (group, setUps, tearDowns) {
     var tests = {};
+
+    var setUps = setUps ? setUps.slice(): [];
+    var tearDowns = tearDowns ? tearDowns.slice(): [];
+
+    if (group.setUp) {
+        setUps.push(group.setUp);
+        delete group.setUp;
+    }
+    if (group.tearDown) {
+        tearDowns.unshift(group.tearDown);
+        delete group.tearDown;
+    }
+
     var keys = _keys(group);
-    for (var i=0; i<keys.length; i++) {
+
+    for (var i = 0; i < keys.length; i += 1) {
         var k = keys[i];
         if (typeof group[k] === 'function') {
-            tests[k] = wrapTest(setUp, tearDown, group[k]);
+            tests[k] = wrapTest(
+                getSerialCallback(setUps),
+                getSerialCallback(tearDowns),
+                group[k]
+            );
         }
         else if (typeof group[k] === 'object') {
-            tests[k] = wrapGroup(setUp, tearDown, group[k]);
+            tests[k] = wrapGroup(group[k], setUps, tearDowns);
         }
     }
     return tests;
-}
+};
 
 
 /**
- * Utility for wrapping a suite of test functions with setUp and tearDown
- * functions.
- *
- * @param {Object} suite
- * @return {Object}
- * @api public
+ * Backwards compatibility for test suites using old testCase API
  */
 
 exports.testCase = function (suite) {
-    var setUp = suite.setUp;
-    var tearDown = suite.tearDown;
-    delete suite.setUp;
-    delete suite.tearDown;
-    return wrapGroup(setUp, tearDown, suite);
+    return suite;
 };
 })(core);
 (function(exports){
@@ -1871,8 +2018,10 @@ exports.info = "Browser-based test reporter";
  * @api public
  */
 
-exports.run = function (modules, options) {
-    var start = new Date().getTime();
+exports.run = function (modules, options, callback) {
+    var start = new Date().getTime(), div;
+	options = options || {};
+	div = options.div || document.body;
 
     function setText(el, txt) {
         if ('innerText' in el) {
@@ -1888,7 +2037,7 @@ exports.run = function (modules, options) {
         if (!el) {
             el = document.createElement(tag);
             el.id = id;
-            document.body.appendChild(el);
+            div.appendChild(el);
         }
         return el;
     };
@@ -1955,6 +2104,8 @@ exports.run = function (modules, options) {
                 assertions.passes() + '</span> assertions of ' +
                 '<span class="all">' + assertions.length + '<span> passed, ' +
                 assertions.failures() + ' failed.';
+
+            if (callback) callback(assertions.failures() ? new Error('We have got test failures.') : undefined);
         }
     });
 };
