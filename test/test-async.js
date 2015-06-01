@@ -2849,59 +2849,39 @@ exports['queue'] = {
     });
 },
 
+// The original queue implementation allowed the concurrency to be changed only
+// on the same event loop during which a task was added to the queue. This
+// test attempts to be a more rubust test.
+// Start with a concurrency of 1. Wait until a leter event loop and change
+// the concurrency to 2. Wait again for a later loop then verify the concurrency.
+// Repeat that one more time by chaning the concurrency to 5.
 'changing concurrency': function (test) {
-    var call_order = [],
-        delays = [40,20,60,20];
-
-    // worker1: --1-2---3-4
-    // order of completion: 1,2,3,4
-
-    var q = async.queue(function (task, callback) {
-        setTimeout(function () {
-            call_order.push('process ' + task);
-            callback('error', 'arg');
-        }, delays.splice(0,1)[0]);
-    }, 2);
-
-    q.push(1, function (err, arg) {
-        test.equal(err, 'error');
-        test.equal(arg, 'arg');
-        test.equal(q.length(), 3);
-        call_order.push('callback ' + 1);
-    });
-    q.push(2, function (err, arg) {
-        test.equal(err, 'error');
-        test.equal(arg, 'arg');
-        test.equal(q.length(), 2);
-        call_order.push('callback ' + 2);
-    });
-    q.push(3, function (err, arg) {
-        test.equal(err, 'error');
-        test.equal(arg, 'arg');
-        test.equal(q.length(), 1);
-        call_order.push('callback ' + 3);
-    });
-    q.push(4, function (err, arg) {
-        test.equal(err, 'error');
-        test.equal(arg, 'arg');
-        test.equal(q.length(), 0);
-        call_order.push('callback ' + 4);
-    });
-    test.equal(q.length(), 4);
-    test.equal(q.concurrency, 2);
-    q.concurrency = 1;
-
-    setTimeout(function () {
-        test.same(call_order, [
-            'process 1', 'callback 1',
-            'process 2', 'callback 2',
-            'process 3', 'callback 3',
-            'process 4', 'callback 4'
-        ]);
-        test.equal(q.concurrency, 1);
-        test.equal(q.length(), 0);
+    
+    var q = async.queue(function(task, callback){
+        setTimeout(function(){
+            callback();
+        }, 100);
+    }, 1);
+    
+    for(var i = 0; i < 50; i++){
+        q.push('');
+    }
+    
+    q.drain = function(){
         test.done();
-    }, 250);
+    };
+    
+    setTimeout(function(){
+        test.equal(q.concurrency, 1);
+        q.concurrency = 2;
+        setTimeout(function(){
+            test.equal(q.running(), 2);
+            q.concurrency = 5;
+            setTimeout(function(){
+                test.equal(q.running(), 5);
+            }, 500);
+        }, 500);
+    }, 500);
 },
 
 'push without callback': function (test) {
