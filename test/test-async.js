@@ -3152,7 +3152,7 @@ exports['queue'] = {
     var q = async.queue(function (task, callback) {
         setTimeout(function () {
             callback();
-        }, 20);
+        }, 40);
     }, 2);
     q.pause();
 
@@ -3166,7 +3166,7 @@ exports['queue'] = {
         test.equal(q.tasks.length, 1);
         test.equal(q.running(), 2);
         q.resume();
-    }, 10);
+    }, 15);
 
     q.drain = function () {
         test.done();
