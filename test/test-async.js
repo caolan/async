@@ -2073,6 +2073,16 @@ exports['filter original untouched'] = function(test){
     });
 };
 
+exports['filter error'] = function(test){
+    async.filter([3,1,2], function(x, callback){
+        callback('error');
+    } , function(err, results){
+        test.equals(err, 'error');
+        test.equals(results, null);
+        test.done();
+    });
+};
+
 exports['filterSeries'] = function(test){
     async.filterSeries([3,1,2], filterIterator, function(err, results){
         test.equals(err, null);
@@ -2107,6 +2117,16 @@ exports['reject original untouched'] = function(test){
         test.equals(err, null);
         test.same(results, [2]);
         test.same(a, [3,1,2]);
+        test.done();
+    });
+};
+
+exports['reject error'] = function(test){
+    async.reject([3,1,2], function(x, callback){
+        callback('error');
+    } , function(err, results){
+        test.equals(err, 'error');
+        test.equals(results, null);
         test.done();
     });
 };
@@ -2155,6 +2175,16 @@ exports['some early return'] = function(test){
     }, 100);
 };
 
+exports['some error'] = function(test){
+    async.some([3,1,2], function(x, callback){
+        setTimeout(function(){callback('error');}, 0);
+    }, function(err, result){
+        test.equals(err, 'error');
+        test.equals(result, null);
+        test.done();
+    });
+};
+
 exports['any alias'] = function(test){
     test.equals(async.any, async.some);
     test.done();
@@ -2194,6 +2224,16 @@ exports['every early return'] = function(test){
         test.same(call_order, [1,2,'callback',3]);
         test.done();
     }, 100);
+};
+
+exports['every error'] = function(test){
+    async.every([1,2,3], function(x, callback){
+        setTimeout(function(){callback('error');}, 0);
+    }, function(err, result){
+        test.equals(err, 'error');
+        test.equals(result, null);
+        test.done();
+    });
 };
 
 exports['all alias'] = function(test){
