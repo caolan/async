@@ -40,7 +40,7 @@ function filterIterator(x, callback) {
 function detectIterator(call_order, x, callback) {
     setTimeout(function(){
         call_order.push(x);
-        callback(x == 2);
+        callback(null, x == 2);
     }, x*25);
 }
 
@@ -2243,8 +2243,9 @@ exports['all alias'] = function(test){
 
 exports['detect'] = function(test){
     var call_order = [];
-    async.detect([3,2,1], detectIterator.bind(this, call_order), function(result){
+    async.detect([3,2,1], detectIterator.bind(this, call_order), function(err, result){
         call_order.push('callback');
+        test.equals(err, null);
         test.equals(result, 2);
     });
     setTimeout(function(){
@@ -2255,8 +2256,9 @@ exports['detect'] = function(test){
 
 exports['detect - mulitple matches'] = function(test){
     var call_order = [];
-    async.detect([3,2,2,1,2], detectIterator.bind(this, call_order), function(result){
+    async.detect([3,2,2,1,2], detectIterator.bind(this, call_order), function(err, result){
         call_order.push('callback');
+        test.equals(err, null);
         test.equals(result, 2);
     });
     setTimeout(function(){
@@ -2267,8 +2269,9 @@ exports['detect - mulitple matches'] = function(test){
 
 exports['detectSeries'] = function(test){
     var call_order = [];
-    async.detectSeries([3,2,1], detectIterator.bind(this, call_order), function(result){
+    async.detectSeries([3,2,1], detectIterator.bind(this, call_order), function(err, result){
         call_order.push('callback');
+        test.equals(err, null);
         test.equals(result, 2);
     });
     setTimeout(function(){
@@ -2279,8 +2282,9 @@ exports['detectSeries'] = function(test){
 
 exports['detectSeries - multiple matches'] = function(test){
     var call_order = [];
-    async.detectSeries([3,2,2,1,2], detectIterator.bind(this, call_order), function(result){
+    async.detectSeries([3,2,2,1,2], detectIterator.bind(this, call_order), function(err, result){
         call_order.push('callback');
+        test.equals(err, null);
         test.equals(result, 2);
     });
     setTimeout(function(){
@@ -2292,8 +2296,9 @@ exports['detectSeries - multiple matches'] = function(test){
 exports['detectSeries - ensure stop'] = function (test) {
     async.detectSeries([1, 2, 3, 4, 5], function (num, cb) {
         if (num > 3) throw new Error("detectSeries did not stop iterating");
-        cb(num === 3);
-    }, function (result) {
+        cb(null, num === 3);
+    }, function (err, result) {
+        test.equals(err, null);
         test.equals(result, 3);
         test.done();
     });

@@ -31,7 +31,7 @@ async.map(['file1','file2','file3'], fs.stat, function(err, results){
     // results is now an array of stats for each file
 });
 
-async.filter(['file1','file2','file3'], fs.exists, function(results){
+async.filter(['file1','file2','file3'], fs.access, function(err, results){
     // results now equals an array of the existing files
 });
 
@@ -62,12 +62,12 @@ This can also arise by accident if you callback early in certain cases:
 ```js
 async.eachSeries(hugeArray, function iterator(item, callback) {
   if (inCache(item)) {
-    callback(null, cache[item]); // if many items are cached, you'll overflow 
+    callback(null, cache[item]); // if many items are cached, you'll overflow
   } else {
     doSomeIO(item, callback);
   }
-}, function done() { 
-  //... 
+}, function done() {
+  //...
 });
 ```
 
@@ -470,25 +470,22 @@ async.mapLimit(['file1','file2','file3'], 1, fs.stat, function(err, results){
 __Alias:__ `select`
 
 Returns a new array of all the values in `arr` which pass an async truth test.
-_The callback for each `iterator` call only accepts a single argument of `true` or
-`false`; it does not accept an error argument first!_ This is in-line with the
-way node libraries work with truth tests like `fs.exists`. This operation is
-performed in parallel, but the results array will be in the same order as the
-original.
+This operation is performed in parallel,
+but the results array will be in the same order as the original.
 
 __Arguments__
 
 * `arr` - An array to iterate over.
 * `iterator(item, callback)` - A truth test to apply to each item in `arr`.
-  The `iterator` is passed a `callback(truthValue)`, which must be called with a
+  The `iterator` is passed a `callback(err, truthValue)`, which must be called with a
   boolean argument once it has completed.
-* `callback(results)` - *Optional* A callback which is called after all the `iterator`
+* `callback(err, results)` - *Optional* A callback which is called after all the `iterator`
   functions have finished.
 
 __Example__
 
 ```js
-async.filter(['file1','file2','file3'], fs.exists, function(results){
+async.filter(['file1','file2','file3'], fs.access, function(err, results){
     // results now equals an array of the existing files
 });
 ```
@@ -589,17 +586,17 @@ __Arguments__
 
 * `arr` - An array to iterate over.
 * `iterator(item, callback)` - A truth test to apply to each item in `arr`.
-  The iterator is passed a `callback(truthValue)` which must be called with a
-  boolean argument once it has completed. **Note: this callback does not take an error as its first argument.**
-* `callback(result)` - *Optional* A callback which is called as soon as any iterator returns
+  The iterator is passed a `callback(err, truthValue)` which must be called with a
+  boolean argument once it has completed.
+* `callback(err, result)` - *Optional* A callback which is called as soon as any iterator returns
   `true`, or after all the `iterator` functions have finished. Result will be
   the first item in the array that passes the truth test (iterator) or the
-  value `undefined` if none passed.  **Note: this callback does not take an error as its first argument.**
+  value `undefined` if none passed.
 
 __Example__
 
 ```js
-async.detect(['file1','file2','file3'], fs.exists, function(result){
+async.detect(['file1','file2','file3'], fs.access, function(result){
     // result now equals the first file in the list that exists
 });
 ```
@@ -673,10 +670,7 @@ async.sortBy([1,9,3,5], function(x, callback){
 __Alias:__ `any`
 
 Returns `true` if at least one element in the `arr` satisfies an async test.
-_The callback for each iterator call only accepts a single argument of `true` or
-`false`; it does not accept an error argument first!_ This is in-line with the
-way node libraries work with truth tests like `fs.exists`. Once any iterator
-call returns `true`, the main `callback` is immediately called.
+If any iterator call returns `true`, the main `callback` is immediately called.
 
 __Arguments__
 
@@ -684,15 +678,14 @@ __Arguments__
 * `iterator(item, callback)` - A truth test to apply to each item in the array
   in parallel. The iterator is passed a `callback(truthValue)`` which must be
   called with a boolean argument once it has completed.
-* `callback(result)` - *Optional* A callback which is called as soon as any iterator returns
+* `callback(err, result)` - *Optional* A callback which is called as soon as any iterator returns
   `true`, or after all the iterator functions have finished. Result will be
   either `true` or `false` depending on the values of the async tests.
 
- **Note: the callbacks do not take an error as their first argument.**
 __Example__
 
 ```js
-async.some(['file1','file2','file3'], fs.exists, function(result){
+async.some(['file1','file2','file3'], fs.access, function(result){
     // if result is true then at least one of the files exists
 });
 ```
@@ -705,26 +698,22 @@ async.some(['file1','file2','file3'], fs.exists, function(result){
 __Alias:__ `all`
 
 Returns `true` if every element in `arr` satisfies an async test.
-_The callback for each `iterator` call only accepts a single argument of `true` or
-`false`; it does not accept an error argument first!_ This is in-line with the
-way node libraries work with truth tests like `fs.exists`.
+If any iterator call returns `false`, the main `callback` is immediately called.
 
 __Arguments__
 
 * `arr` - An array to iterate over.
 * `iterator(item, callback)` - A truth test to apply to each item in the array
-  in parallel. The iterator is passed a `callback(truthValue)` which must be
+  in parallel. The iterator is passed a `callback(err, truthValue)` which must be
   called with a  boolean argument once it has completed.
-* `callback(result)` - *Optional* A callback which is called after all the `iterator`
+* `callback(err, result)` - *Optional* A callback which is called after all the `iterator`
   functions have finished. Result will be either `true` or `false` depending on
   the values of the async tests.
-
- **Note: the callbacks do not take an error as their first argument.**
 
 __Example__
 
 ```js
-async.every(['file1','file2','file3'], fs.exists, function(result){
+async.every(['file1','file2','file3'], fs.access, function(err, result){
     // if result is true then every file exists
 });
 ```
@@ -1721,9 +1710,9 @@ function sometimesAsync(arg, callback) {
 }
 
 // this has a risk of stack overflows if many results are cached in a row
-async.mapSeries(args, sometimesAsync, done); 
+async.mapSeries(args, sometimesAsync, done);
 
-// this will defer sometimesAsync's callback if necessary, 
+// this will defer sometimesAsync's callback if necessary,
 // preventing stack overflows
 async.mapSeries(args, async.ensureAsync(sometimesAsync), done);
 
