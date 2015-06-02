@@ -1375,6 +1375,22 @@ exports['each empty array'] = function(test){
     setTimeout(test.done, 25);
 };
 
+
+exports['each empty array, with other property on the array'] = function(test){
+    test.expect(1);
+    var myArray = [];
+    myArray.myProp = "anything";
+    async.each(myArray, function(x, callback){
+        test.ok(false, 'iterator should not be called');
+        callback();
+    }, function(err){
+        if (err) throw err;
+        test.ok(true, 'should call callback');
+    });
+    setTimeout(test.done, 25);
+};
+
+
 exports['each error'] = function(test){
     test.expect(1);
     async.each([1,2,3], function(x, callback){
