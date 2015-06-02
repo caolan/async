@@ -2347,8 +2347,9 @@ var console_fn_tests = function(name){
 };
 
 
+exports['times'] = {
 
-exports['times'] = function(test) {
+'times': function(test) {
   async.times(5, function(n, next) {
     next(null, n);
   }, function(err, results) {
@@ -2356,9 +2357,9 @@ exports['times'] = function(test) {
     test.same(results, [0,1,2,3,4]);
     test.done();
   });
-};
+},
 
-exports['times'] = function(test){
+'times 3': function(test){
     var args = [];
     async.times(3, function(n, callback){
         setTimeout(function(){
@@ -2370,9 +2371,9 @@ exports['times'] = function(test){
         test.same(args, [0,1,2]);
         test.done();
     });
-};
+},
 
-exports['times 0'] = function(test){
+'times 0': function(test){
     test.expect(1);
     async.times(0, function(n, callback){
         test.ok(false, 'iterator should not be called');
@@ -2382,9 +2383,9 @@ exports['times 0'] = function(test){
         test.ok(true, 'should call callback');
     });
     setTimeout(test.done, 25);
-};
+},
 
-exports['times error'] = function(test){
+'times error': function(test){
     test.expect(1);
     async.times(3, function(n, callback){
         callback('error');
@@ -2392,9 +2393,9 @@ exports['times error'] = function(test){
         test.equals(err, 'error');
     });
     setTimeout(test.done, 50);
-};
+},
 
-exports['timesSeries'] = function(test){
+'timesSeries': function(test){
     var call_order = [];
     async.timesSeries(5, function(n, callback){
         setTimeout(function(){
@@ -2406,9 +2407,9 @@ exports['timesSeries'] = function(test){
         test.same(results, [0,1,2,3,4]);
         test.done();
     });
-};
+},
 
-exports['timesSeries error'] = function(test){
+'timesSeries error': function(test){
     test.expect(1);
     async.timesSeries(5, function(n, callback){
         callback('error');
@@ -2416,6 +2417,25 @@ exports['timesSeries error'] = function(test){
         test.equals(err, 'error');
     });
     setTimeout(test.done, 50);
+},
+
+'timesLimit': function(test){
+    var limit = 2;
+    var running = 0;
+    async.timesLimit(5, limit, function (i, next) {
+        running++;
+        test.ok(running <= limit && running > 0, running);
+        setTimeout(function () {
+            running--;
+            next(null, i * 2);
+        }, (3 - i) * 10);
+    }, function(err, results){
+        test.ok(err === null, err + " passed instead of 'null'");
+        test.same(results, [0, 2, 4, 6, 8]);
+        test.done();
+    });
+}
+
 };
 
 console_fn_tests('log');
