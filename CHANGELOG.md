@@ -1,3 +1,14 @@
+# v1.2.0
+
+New Features:
+
+- Added `timesLimit` (#743)
+- `concurrency` can be changed in `async.queue` by setting `q.concurrency`.  The concurrency will be reflected the next time a task it processed. (#747, #772)
+
+Bug Fixes:
+
+- Fixed a regression in `each` and family with empty arrays that have additional properties. (#775, #777)
+
 # v1.1.0
 
 New Features:
