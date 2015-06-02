@@ -3,7 +3,7 @@
 New Features:
 
 - Added `timesLimit` (#743)
-- `concurrency` can be changed in `async.queue` by setting `q.concurrency`.  The concurrency will be reflected the next time a task it processed. (#747, #772)
+- `concurrency` can be changed after initialization in `queue` by setting `q.concurrency`.  The new concurrency will be reflected the next time a task is processed. (#747, #772)
 
 Bug Fixes:
 
