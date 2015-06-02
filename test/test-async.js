@@ -33,7 +33,7 @@ function mapIterator(call_order, x, callback) {
 
 function filterIterator(x, callback) {
     setTimeout(function(){
-        callback(x % 2);
+        callback(null, x % 2);
     }, x*25);
 }
 
@@ -2054,7 +2054,8 @@ exports['foldr alias'] = function(test){
 };
 
 exports['filter'] = function(test){
-    async.filter([3,1,2], filterIterator, function(results){
+    async.filter([3,1,2], filterIterator, function(err, results){
+        test.equals(err, null);
         test.same(results, [3,1]);
         test.done();
     });
@@ -2063,8 +2064,9 @@ exports['filter'] = function(test){
 exports['filter original untouched'] = function(test){
     var a = [3,1,2];
     async.filter(a, function(x, callback){
-        callback(x % 2);
-    }, function(results){
+        callback(null, x % 2);
+    }, function(err, results){
+        test.equals(err, null);
         test.same(results, [3,1]);
         test.same(a, [3,1,2]);
         test.done();
@@ -2072,7 +2074,8 @@ exports['filter original untouched'] = function(test){
 };
 
 exports['filterSeries'] = function(test){
-    async.filterSeries([3,1,2], filterIterator, function(results){
+    async.filterSeries([3,1,2], filterIterator, function(err, results){
+        test.equals(err, null);
         test.same(results, [3,1]);
         test.done();
     });
@@ -2089,7 +2092,8 @@ exports['selectSeries alias'] = function(test){
 };
 
 exports['reject'] = function(test){
-    async.reject([3,1,2], filterIterator, function(results){
+    async.reject([3,1,2], filterIterator, function(err, results){
+        test.equals(err, null);
         test.same(results, [2]);
         test.done();
     });
@@ -2098,8 +2102,9 @@ exports['reject'] = function(test){
 exports['reject original untouched'] = function(test){
     var a = [3,1,2];
     async.reject(a, function(x, callback){
-        callback(x % 2);
-    }, function(results){
+        callback(null, x % 2);
+    }, function(err, results){
+        test.equals(err, null);
         test.same(results, [2]);
         test.same(a, [3,1,2]);
         test.done();
@@ -2107,7 +2112,8 @@ exports['reject original untouched'] = function(test){
 };
 
 exports['rejectSeries'] = function(test){
-    async.rejectSeries([3,1,2], filterIterator, function(results){
+    async.rejectSeries([3,1,2], filterIterator, function(err, results){
+        test.equals(err, null);
         test.same(results, [2]);
         test.done();
     });
@@ -2115,8 +2121,9 @@ exports['rejectSeries'] = function(test){
 
 exports['some true'] = function(test){
     async.some([3,1,2], function(x, callback){
-        setTimeout(function(){callback(x === 1);}, 0);
-    }, function(result){
+        setTimeout(function(){callback(null, x === 1);}, 0);
+    }, function(err, result){
+        test.equals(err, null);
         test.equals(result, true);
         test.done();
     });
@@ -2124,8 +2131,9 @@ exports['some true'] = function(test){
 
 exports['some false'] = function(test){
     async.some([3,1,2], function(x, callback){
-        setTimeout(function(){callback(x === 10);}, 0);
-    }, function(result){
+        setTimeout(function(){callback(null, x === 10);}, 0);
+    }, function(err, result){
+        test.equals(err, null);
         test.equals(result, false);
         test.done();
     });
@@ -2136,7 +2144,7 @@ exports['some early return'] = function(test){
     async.some([1,2,3], function(x, callback){
         setTimeout(function(){
             call_order.push(x);
-            callback(x === 1);
+            callback(null, x === 1);
         }, x*25);
     }, function(){
         call_order.push('callback');
@@ -2154,8 +2162,9 @@ exports['any alias'] = function(test){
 
 exports['every true'] = function(test){
     async.every([1,2,3], function(x, callback){
-        setTimeout(function(){callback(true);}, 0);
-    }, function(result){
+        setTimeout(function(){callback(null, true);}, 0);
+    }, function(err, result){
+        test.equals(err, null);
         test.equals(result, true);
         test.done();
     });
@@ -2163,8 +2172,9 @@ exports['every true'] = function(test){
 
 exports['every false'] = function(test){
     async.every([1,2,3], function(x, callback){
-        setTimeout(function(){callback(x % 2);}, 0);
-    }, function(result){
+        setTimeout(function(){callback(null, x % 2);}, 0);
+    }, function(err, result){
+        test.equals(err, null);
         test.equals(result, false);
         test.done();
     });
@@ -2175,7 +2185,7 @@ exports['every early return'] = function(test){
     async.every([1,2,3], function(x, callback){
         setTimeout(function(){
             call_order.push(x);
-            callback(x === 1);
+            callback(null, x === 1);
         }, x*25);
     }, function(){
         call_order.push('callback');
