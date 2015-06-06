@@ -897,6 +897,34 @@ exports['waterfall'] = {
 
 };
 
+exports['contextSeries'] = function(test) {
+    var tasks = [
+        [
+            't1', function(r, cb) {
+                test.same(r, {});
+                cb(null, 'v1');
+            }
+        ],
+        [
+            't2', function(r, cb) {
+                test.same(r, {'t1': 'v1'});
+                setTimeout(function() {
+                    cb(null, 'v2');
+                }, 25);
+            }
+        ],
+        function(r, cb) {
+            test.same(r, {'t1': 'v1', 't2': 'v2'});
+            cb(null, 'last');
+        }
+    ];
+    async.contextSeries(tasks, function(err, results) {
+        test.ok(err === null, err + " passed instead of 'null'");
+        test.same(results, {'t1': 'v1', 't2': 'v2', '$2': 'last'});
+        test.done();
+    });
+};
+
 exports['parallel'] = function(test){
     var call_order = [];
     async.parallel([
