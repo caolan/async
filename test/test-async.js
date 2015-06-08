@@ -1515,6 +1515,19 @@ exports['eachSeries single item'] = function (test) {
     test.done();
 };
 
+// bug #782.  Remove in next major release
+exports['eachSeries single item'] = function (test) {
+    test.expect(1);
+    var sync = true;
+    async.eachSeries([1], function (i, cb) {
+        cb(null);
+    }, function () {
+        test.ok(sync, "callback not called on same tick");
+    });
+    sync = false;
+    test.done();
+};
+
 exports['eachSeries error'] = function(test){
     test.expect(2);
     var call_order = [];
