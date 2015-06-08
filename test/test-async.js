@@ -1502,6 +1502,19 @@ exports['eachSeries array modification'] = function(test) {
     setTimeout(test.done, 50);
 };
 
+// bug #782.  Remove in next major release
+exports['eachSeries single item'] = function (test) {
+    test.expect(1);
+    var sync = true;
+    async.eachSeries([1], function (i, cb) {
+        cb(null);
+    }, function () {
+        test.ok(sync, "callback not called on same tick");
+    });
+    sync = false;
+    test.done();
+};
+
 exports['eachSeries error'] = function(test){
     test.expect(2);
     var call_order = [];
@@ -2901,21 +2914,21 @@ exports['queue'] = {
 // the concurrency to 2. Wait again for a later loop then verify the concurrency.
 // Repeat that one more time by chaning the concurrency to 5.
 'changing concurrency': function (test) {
-    
+
     var q = async.queue(function(task, callback){
         setTimeout(function(){
             callback();
         }, 100);
     }, 1);
-    
+
     for(var i = 0; i < 50; i++){
         q.push('');
     }
-    
+
     q.drain = function(){
         test.done();
     };
-    
+
     setTimeout(function(){
         test.equal(q.concurrency, 1);
         q.concurrency = 2;
