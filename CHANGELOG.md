@@ -1,3 +1,9 @@
+# v1.2.1
+
+Bug Fix:
+
+- Small regression with synchronous iterator behavior in `eachSeries` with a 1-element array.  Before 1.1.0, `eachSeries`'s callback was called on the same tick, which this patch restores.  In 2.0.0, it will be called on the next tick.  (#782)
+
 # v1.2.0
 
 New Features:
@@ -12,7 +18,8 @@ Bug Fixes:
 
 # v1.1.1
 
-Bug Fix
+Bug Fix:
+
 - Small regression with synchronous iterator behavior in `eachSeries` with a 1-element array.  Before 1.1.0, `eachSeries`'s callback was called on the same tick, which this patch restores.  In 2.0.0, it will be called on the next tick.  (#782) 
 
 
