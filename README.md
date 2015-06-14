@@ -1646,8 +1646,8 @@ async.times(5, function(n, next){
 <a name="timesSeries" />
 ### timesSeries(n, iterator, [callback])
 
-The same as [`times`](#times), only the iterator is applied to each item in `arr` in
-series. The next `iterator` is only called once the current one has completed.
+The same as [`times`](#times), only the iterator is applied in series. 
+The next `iterator` is only called once the current one has completed.
 The results array will be in the same order as the original.
 
 <a name="timesLimit" />
