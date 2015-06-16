@@ -1459,7 +1459,7 @@ new tasks much easier (and the code more readable).
 ---------------------------------------
 
 <a name="retry" />
-### retry([times = 5], task, [callback])
+### retry([times = 5], task, [callback, interval = 0])
 
 Attempts to get a successful response from `task` no more than `times` times before
 returning an error. If the task is successful, the `callback` will be passed the result
@@ -1475,6 +1475,7 @@ __Arguments__
   the previously executed functions (if nested inside another control flow).
 * `callback(err, results)` - An optional callback which is called when the
   task has succeeded, or after the final failed attempt. It receives the `err` and `result` arguments of the last attempt at completing the `task`.
+* `interval` - How long to wait before making another attempt. Defaults to 0 (aka don't wait).
 
 The [`retry`](#retry) function can be used as a stand-alone control flow by passing a
 callback, as shown below:

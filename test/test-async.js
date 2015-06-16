@@ -728,6 +728,28 @@ exports['retry when all attempts succeeds'] = function(test) {
     });
 };
 
+exports['retry with interval when all attempts succeeds'] = function(test) {
+    var times = 3;
+    var interval = 500;
+    var callCount = 0;
+    var error = 'ERROR';
+    var erroredResult = 'RESULT';
+    function fn(callback) {
+        callCount++;
+        callback(error + callCount, erroredResult + callCount); // respond with indexed values
+    }
+    var start = new Date().getTime();
+    async.retry(times, fn, function(err, result){
+        var now = new Date().getTime();
+        var duration = now - start;
+        test.ok(duration > (interval * (times -1)),  'did not include interval');
+        test.equal(callCount, 3, "did not retry the correct number of times");
+        test.equal(err, error + times, "Incorrect error was returned");
+        test.equal(result, erroredResult + times, "Incorrect result was returned");
+        test.done();
+    }, interval);
+};
+
 exports['retry as an embedded task'] = function(test) {
     var retryResult = 'RETRY';
     var fooResults;
