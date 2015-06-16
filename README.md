@@ -62,12 +62,12 @@ This can also arise by accident if you callback early in certain cases:
 ```js
 async.eachSeries(hugeArray, function iterator(item, callback) {
   if (inCache(item)) {
-    callback(null, cache[item]); // if many items are cached, you'll overflow 
+    callback(null, cache[item]); // if many items are cached, you'll overflow
   } else {
     doSomeIO(item, callback);
   }
-}, function done() { 
-  //... 
+}, function done() {
+  //...
 });
 ```
 
@@ -1475,7 +1475,7 @@ __Arguments__
   the previously executed functions (if nested inside another control flow).
 * `callback(err, results)` - An optional callback which is called when the
   task has succeeded, or after the final failed attempt. It receives the `err` and `result` arguments of the last attempt at completing the `task`.
-* `interval` - How long to wait before making another attempt. Defaults to 0 (aka don't wait).
+* `interval` - How long to wait in milliseconds before making another attempt. Defaults to 0 (aka don't wait).
 
 The [`retry`](#retry) function can be used as a stand-alone control flow by passing a
 callback, as shown below:
@@ -1647,7 +1647,7 @@ async.times(5, function(n, next){
 <a name="timesSeries" />
 ### timesSeries(n, iterator, [callback])
 
-The same as [`times`](#times), only the iterator is applied in series. 
+The same as [`times`](#times), only the iterator is applied in series.
 The next `iterator` is only called once the current one has completed.
 The results array will be in the same order as the original.
 
@@ -1728,9 +1728,9 @@ function sometimesAsync(arg, callback) {
 }
 
 // this has a risk of stack overflows if many results are cached in a row
-async.mapSeries(args, sometimesAsync, done); 
+async.mapSeries(args, sometimesAsync, done);
 
-// this will defer sometimesAsync's callback if necessary, 
+// this will defer sometimesAsync's callback if necessary,
 // preventing stack overflows
 async.mapSeries(args, async.ensureAsync(sometimesAsync), done);
 
