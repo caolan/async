@@ -1459,7 +1459,7 @@ new tasks much easier (and the code more readable).
 ---------------------------------------
 
 <a name="retry" />
-### retry([times = 5], task, [callback, interval = 0])
+### retry([opts = {times: 5, interval: 0}| 5], task, [callback])
 
 Attempts to get a successful response from `task` no more than `times` times before
 returning an error. If the task is successful, the `callback` will be passed the result
@@ -1468,20 +1468,26 @@ result (if any) of the final attempt.
 
 __Arguments__
 
-* `times` - An integer indicating how many times to attempt the `task` before giving up. Defaults to 5.
+* `opts` - Can be either an object with `times` and `interval` or a number. `times` is how many attempts should be made before giving up. `interval` is how long to wait inbetween attempts. Defaults to {times: 5, interval: 0}
+  * if a number is passed in it sets `times` only (with `interval` defaulting to 0).
 * `task(callback, results)` - A function which receives two arguments: (1) a `callback(err, result)`
   which must be called when finished, passing `err` (which can be `null`) and the `result` of
   the function's execution, and (2) a `results` object, containing the results of
   the previously executed functions (if nested inside another control flow).
 * `callback(err, results)` - An optional callback which is called when the
   task has succeeded, or after the final failed attempt. It receives the `err` and `result` arguments of the last attempt at completing the `task`.
-* `interval` - How long to wait in milliseconds before making another attempt. Defaults to 0 (aka don't wait).
 
 The [`retry`](#retry) function can be used as a stand-alone control flow by passing a
 callback, as shown below:
 
 ```js
 async.retry(3, apiMethod, function(err, result) {
+    // do something with the result
+});
+```
+
+```js
+async.retry({times: 3, interval: 200}, apiMethod, function(err, result) {
     // do something with the result
 });
 ```

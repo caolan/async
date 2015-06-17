@@ -739,7 +739,7 @@ exports['retry with interval when all attempts succeeds'] = function(test) {
         callback(error + callCount, erroredResult + callCount); // respond with indexed values
     }
     var start = new Date().getTime();
-    async.retry(times, fn, function(err, result){
+    async.retry({ times: times, interval: interval}, fn, function(err, result){
         var now = new Date().getTime();
         var duration = now - start;
         test.ok(duration > (interval * (times -1)),  'did not include interval');
@@ -747,7 +747,7 @@ exports['retry with interval when all attempts succeeds'] = function(test) {
         test.equal(err, error + times, "Incorrect error was returned");
         test.equal(result, erroredResult + times, "Incorrect result was returned");
         test.done();
-    }, interval);
+    });
 };
 
 exports['retry as an embedded task'] = function(test) {
@@ -767,6 +767,24 @@ exports['retry as an embedded task'] = function(test) {
     }, function(err, results){
         test.equal(results.retry, retryResult, "Incorrect result was returned from retry function");
         test.equal(fooResults, retryResults, "Incorrect results were passed to retry function");
+        test.done();
+    });
+};
+
+exports['retry as an embedded task with interval'] = function(test) {
+    var start = new Date().getTime();
+    var opts = {times: 5, interval: 100};
+
+    async.auto({
+        foo: function(callback){
+            callback(null, 'FOO');
+        },
+        retry: async.retry(opts, function(callback) {
+            callback('err');
+        })
+    }, function(){
+        var duration = new Date().getTime() - start;
+        test.ok(duration > ((opts.times -1) * opts.interval), "The duration should have been greater than ((times -1) * interval)");
         test.done();
     });
 };
