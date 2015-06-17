@@ -1375,6 +1375,22 @@ exports['each empty array'] = function(test){
     setTimeout(test.done, 25);
 };
 
+
+exports['each empty array, with other property on the array'] = function(test){
+    test.expect(1);
+    var myArray = [];
+    myArray.myProp = "anything";
+    async.each(myArray, function(x, callback){
+        test.ok(false, 'iterator should not be called');
+        callback();
+    }, function(err){
+        if (err) throw err;
+        test.ok(true, 'should call callback');
+    });
+    setTimeout(test.done, 25);
+};
+
+
 exports['each error'] = function(test){
     test.expect(1);
     async.each([1,2,3], function(x, callback){
@@ -1484,6 +1500,32 @@ exports['eachSeries array modification'] = function(test) {
     arr.splice(0, 1);
 
     setTimeout(test.done, 50);
+};
+
+// bug #782.  Remove in next major release
+exports['eachSeries single item'] = function (test) {
+    test.expect(1);
+    var sync = true;
+    async.eachSeries([1], function (i, cb) {
+        cb(null);
+    }, function () {
+        test.ok(sync, "callback not called on same tick");
+    });
+    sync = false;
+    test.done();
+};
+
+// bug #782.  Remove in next major release
+exports['eachSeries single item'] = function (test) {
+    test.expect(1);
+    var sync = true;
+    async.eachSeries([1], function (i, cb) {
+        cb(null);
+    }, function () {
+        test.ok(sync, "callback not called on same tick");
+    });
+    sync = false;
+    test.done();
 };
 
 exports['eachSeries error'] = function(test){
@@ -2402,8 +2444,9 @@ var console_fn_tests = function(name){
 };
 
 
+exports['times'] = {
 
-exports['times'] = function(test) {
+'times': function(test) {
   async.times(5, function(n, next) {
     next(null, n);
   }, function(err, results) {
@@ -2411,9 +2454,9 @@ exports['times'] = function(test) {
     test.same(results, [0,1,2,3,4]);
     test.done();
   });
-};
+},
 
-exports['times'] = function(test){
+'times 3': function(test){
     var args = [];
     async.times(3, function(n, callback){
         setTimeout(function(){
@@ -2425,9 +2468,9 @@ exports['times'] = function(test){
         test.same(args, [0,1,2]);
         test.done();
     });
-};
+},
 
-exports['times 0'] = function(test){
+'times 0': function(test){
     test.expect(1);
     async.times(0, function(n, callback){
         test.ok(false, 'iterator should not be called');
@@ -2437,9 +2480,9 @@ exports['times 0'] = function(test){
         test.ok(true, 'should call callback');
     });
     setTimeout(test.done, 25);
-};
+},
 
-exports['times error'] = function(test){
+'times error': function(test){
     test.expect(1);
     async.times(3, function(n, callback){
         callback('error');
@@ -2447,9 +2490,9 @@ exports['times error'] = function(test){
         test.equals(err, 'error');
     });
     setTimeout(test.done, 50);
-};
+},
 
-exports['timesSeries'] = function(test){
+'timesSeries': function(test){
     var call_order = [];
     async.timesSeries(5, function(n, callback){
         setTimeout(function(){
@@ -2461,9 +2504,9 @@ exports['timesSeries'] = function(test){
         test.same(results, [0,1,2,3,4]);
         test.done();
     });
-};
+},
 
-exports['timesSeries error'] = function(test){
+'timesSeries error': function(test){
     test.expect(1);
     async.timesSeries(5, function(n, callback){
         callback('error');
@@ -2471,6 +2514,25 @@ exports['timesSeries error'] = function(test){
         test.equals(err, 'error');
     });
     setTimeout(test.done, 50);
+},
+
+'timesLimit': function(test){
+    var limit = 2;
+    var running = 0;
+    async.timesLimit(5, limit, function (i, next) {
+        running++;
+        test.ok(running <= limit && running > 0, running);
+        setTimeout(function () {
+            running--;
+            next(null, i * 2);
+        }, (3 - i) * 10);
+    }, function(err, results){
+        test.ok(err === null, err + " passed instead of 'null'");
+        test.same(results, [0, 2, 4, 6, 8]);
+        test.done();
+    });
+}
+
 };
 
 console_fn_tests('log');
@@ -2913,59 +2975,39 @@ exports['queue'] = {
     });
 },
 
+// The original queue implementation allowed the concurrency to be changed only
+// on the same event loop during which a task was added to the queue. This
+// test attempts to be a more rubust test.
+// Start with a concurrency of 1. Wait until a leter event loop and change
+// the concurrency to 2. Wait again for a later loop then verify the concurrency.
+// Repeat that one more time by chaning the concurrency to 5.
 'changing concurrency': function (test) {
-    var call_order = [],
-        delays = [40,20,60,20];
 
-    // worker1: --1-2---3-4
-    // order of completion: 1,2,3,4
+    var q = async.queue(function(task, callback){
+        setTimeout(function(){
+            callback();
+        }, 100);
+    }, 1);
 
-    var q = async.queue(function (task, callback) {
-        setTimeout(function () {
-            call_order.push('process ' + task);
-            callback('error', 'arg');
-        }, delays.splice(0,1)[0]);
-    }, 2);
+    for(var i = 0; i < 50; i++){
+        q.push('');
+    }
 
-    q.push(1, function (err, arg) {
-        test.equal(err, 'error');
-        test.equal(arg, 'arg');
-        test.equal(q.length(), 3);
-        call_order.push('callback ' + 1);
-    });
-    q.push(2, function (err, arg) {
-        test.equal(err, 'error');
-        test.equal(arg, 'arg');
-        test.equal(q.length(), 2);
-        call_order.push('callback ' + 2);
-    });
-    q.push(3, function (err, arg) {
-        test.equal(err, 'error');
-        test.equal(arg, 'arg');
-        test.equal(q.length(), 1);
-        call_order.push('callback ' + 3);
-    });
-    q.push(4, function (err, arg) {
-        test.equal(err, 'error');
-        test.equal(arg, 'arg');
-        test.equal(q.length(), 0);
-        call_order.push('callback ' + 4);
-    });
-    test.equal(q.length(), 4);
-    test.equal(q.concurrency, 2);
-    q.concurrency = 1;
-
-    setTimeout(function () {
-        test.same(call_order, [
-            'process 1', 'callback 1',
-            'process 2', 'callback 2',
-            'process 3', 'callback 3',
-            'process 4', 'callback 4'
-        ]);
-        test.equal(q.concurrency, 1);
-        test.equal(q.length(), 0);
+    q.drain = function(){
         test.done();
-    }, 250);
+    };
+
+    setTimeout(function(){
+        test.equal(q.concurrency, 1);
+        q.concurrency = 2;
+        setTimeout(function(){
+            test.equal(q.running(), 2);
+            q.concurrency = 5;
+            setTimeout(function(){
+                test.equal(q.running(), 5);
+            }, 500);
+        }, 500);
+    }, 500);
 },
 
 'push without callback': function (test) {

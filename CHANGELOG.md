@@ -1,3 +1,28 @@
+# v1.2.1
+
+Bug Fix:
+
+- Small regression with synchronous iterator behavior in `eachSeries` with a 1-element array.  Before 1.1.0, `eachSeries`'s callback was called on the same tick, which this patch restores.  In 2.0.0, it will be called on the next tick.  (#782)
+
+# v1.2.0
+
+New Features:
+
+- Added `timesLimit` (#743)
+- `concurrency` can be changed after initialization in `queue` by setting `q.concurrency`.  The new concurrency will be reflected the next time a task is processed. (#747, #772)
+
+Bug Fixes:
+
+- Fixed a regression in `each` and family with empty arrays that have additional properties. (#775, #777)
+
+
+# v1.1.1
+
+Bug Fix:
+
+- Small regression with synchronous iterator behavior in `eachSeries` with a 1-element array.  Before 1.1.0, `eachSeries`'s callback was called on the same tick, which this patch restores.  In 2.0.0, it will be called on the next tick.  (#782) 
+
+
 # v1.1.0
 
 New Features:

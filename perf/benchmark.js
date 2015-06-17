@@ -42,7 +42,8 @@ var totalTime = {};
 totalTime[version0] = wins[version0] = 0;
 totalTime[version1] = wins[version1] = 0;
 
-console.log("Comparing " + version0 + " with " + version1);
+console.log("Comparing " + version0 + " with " + version1 +
+  " on Node " + process.version);
 console.log("--------------------------------------");
 
 
