@@ -605,7 +605,7 @@ __Arguments__
 __Example__
 
 ```js
-async.detect(['file1','file2','file3'],function(filePath, callback) {
+async.detect(['file1','file2','file3'], function(filePath, callback) {
   fs.access(filePath, function(err) {
     callback(filepath, !err)
   });
@@ -1655,7 +1655,7 @@ async.times(5, function(n, next){
 <a name="timesSeries" />
 ### timesSeries(n, iterator, [callback])
 
-The same as [`times`](#times), only the iterator is applied in series. 
+The same as [`times`](#times), only the iterator is applied in series.
 The next `iterator` is only called once the current one has completed.
 The results array will be in the same order as the original.
 
