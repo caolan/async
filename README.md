@@ -1099,7 +1099,7 @@ Each function is executed with the `this` binding of the composed function.
 
 __Arguments__
 
-* functions... - the asynchronous functions to compose
+* `functions...` - the asynchronous functions to compose
 
 
 __Example__
