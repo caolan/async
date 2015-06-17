@@ -784,7 +784,8 @@ exports['retry as an embedded task with interval'] = function(test) {
         })
     }, function(){
         var duration = new Date().getTime() - start;
-        test.ok(duration > ((opts.times -1) * opts.interval), "The duration should have been greater than ((times -1) * interval)");
+        var expectedMinimumDuration = (opts.times -1) * opts.interval;
+        test.ok(duration >= expectedMinimumDuration, "The duration should have been greater than " + expectedMinimumDuration + ", but was " + duration);
         test.done();
     });
 };
