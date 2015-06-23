@@ -2811,6 +2811,65 @@ exports['doWhilst callback params'] = function (test) {
     );
 };
 
+exports['during'] = function (test) {
+    var call_order = [];
+
+    var count = 0;
+    async.during(
+        function (cb) {
+            call_order.push(['test', count]);
+            cb(count < 5);
+        },
+        function (cb) {
+            call_order.push(['iterator', count]);
+            count++;
+            cb();
+        },
+        function (err) {
+            test.ok(err === null, err + " passed instead of 'null'");
+            test.same(call_order, [
+                ['test', 0],
+                ['iterator', 0], ['test', 1],
+                ['iterator', 1], ['test', 2],
+                ['iterator', 2], ['test', 3],
+                ['iterator', 3], ['test', 4],
+                ['iterator', 4], ['test', 5],
+            ]);
+            test.equals(count, 5);
+            test.done();
+        }
+    );
+};
+
+exports['doDuring'] = function (test) {
+    var call_order = [];
+
+    var count = 0;
+    async.doDuring(
+        function (cb) {
+            call_order.push(['iterator', count]);
+            count++;
+            cb();
+        },
+        function (cb) {
+            call_order.push(['test', count]);
+            cb(count < 5);
+        },
+        function (err) {
+            test.ok(err === null, err + " passed instead of 'null'");
+            test.same(call_order, [
+                ['iterator', 0], ['test', 1],
+                ['iterator', 1], ['test', 2],
+                ['iterator', 2], ['test', 3],
+                ['iterator', 3], ['test', 4],
+                ['iterator', 4], ['test', 5],
+            ]);
+            test.equals(count, 5);
+            test.done();
+        }
+    );
+};
+
 exports['queue'] = {
 
 'queue': function (test) {
