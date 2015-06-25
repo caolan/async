@@ -27,5 +27,6 @@ lint:
 
 .PHONY: release-major release-minor release-patch
 release-major release-minor release-patch: all
+	./support/sync-package-managers.js
 	git add --force dist
-  @$(XYZ) --increment $(@:release-%=%)
+	@$(XYZ) --increment $(@:release-%=%)
