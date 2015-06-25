@@ -21,12 +21,12 @@
   "devDependencies": {
     "benchmark": "bestiejs/benchmark.js",
     "coveralls": "^2.11.2",
-    "jshint": "~2.7.0",
-    "lodash": ">=2.4.1",
+    "jshint": "~2.8.0",
+    "lodash": "^3.9.0",
     "mkdirp": "~0.5.1",
     "nodeunit": ">0.0.0",
     "nyc": "^2.1.0",
-    "uglify-js": "1.2.x",
+    "uglify-js": "~2.4.0",
     "yargs": "~3.9.1"
   },
   "jam": {

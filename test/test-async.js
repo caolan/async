@@ -2185,6 +2185,7 @@ exports['selectSeries alias'] = function(test){
 };
 
 exports['reject'] = function(test){
+    test.expect(2);
     async.reject([3,1,2], filterIterator, function(err, results){
         test.equals(err, null);
         test.same(results, [2]);
@@ -2193,6 +2194,7 @@ exports['reject'] = function(test){
 };
 
 exports['reject original untouched'] = function(test){
+    test.expect(3);
     var a = [3,1,2];
     async.reject(a, function(x, callback){
         callback(null, x % 2);
@@ -2205,6 +2207,7 @@ exports['reject original untouched'] = function(test){
 };
 
 exports['reject error'] = function(test){
+    test.expect(2);
     async.reject([3,1,2], function(x, callback){
         callback('error');
     } , function(err, results){
@@ -2215,6 +2218,7 @@ exports['reject error'] = function(test){
 };
 
 exports['rejectSeries'] = function(test){
+    test.expect(2);
     async.rejectSeries([3,1,2], filterIterator, function(err, results){
         test.equals(err, null);
         test.same(results, [2]);
@@ -2223,6 +2227,7 @@ exports['rejectSeries'] = function(test){
 };
 
 exports['some true'] = function(test){
+    test.expect(2);
     async.some([3,1,2], function(x, callback){
         setTimeout(function(){callback(null, x === 1);}, 0);
     }, function(err, result){
@@ -2233,6 +2238,7 @@ exports['some true'] = function(test){
 };
 
 exports['some false'] = function(test){
+    test.expect(2);
     async.some([3,1,2], function(x, callback){
         setTimeout(function(){callback(null, x === 10);}, 0);
     }, function(err, result){
@@ -2243,6 +2249,7 @@ exports['some false'] = function(test){
 };
 
 exports['some early return'] = function(test){
+    test.expect(1);
     var call_order = [];
     async.some([1,2,3], function(x, callback){
         setTimeout(function(){
@@ -2259,6 +2266,7 @@ exports['some early return'] = function(test){
 };
 
 exports['some error'] = function(test){
+    test.expect(2);
     async.some([3,1,2], function(x, callback){
         setTimeout(function(){callback('error');}, 0);
     }, function(err, result){
@@ -2274,6 +2282,7 @@ exports['any alias'] = function(test){
 };
 
 exports['every true'] = function(test){
+    test.expect(2);
     async.every([1,2,3], function(x, callback){
         setTimeout(function(){callback(null, true);}, 0);
     }, function(err, result){
@@ -2284,6 +2293,7 @@ exports['every true'] = function(test){
 };
 
 exports['every false'] = function(test){
+    test.expect(2);
     async.every([1,2,3], function(x, callback){
         setTimeout(function(){callback(null, x % 2);}, 0);
     }, function(err, result){
@@ -2294,6 +2304,7 @@ exports['every false'] = function(test){
 };
 
 exports['every early return'] = function(test){
+    test.expect(1);
     var call_order = [];
     async.every([1,2,3], function(x, callback){
         setTimeout(function(){
@@ -2325,6 +2336,7 @@ exports['all alias'] = function(test){
 };
 
 exports['detect'] = function(test){
+    test.expect(3);
     var call_order = [];
     async.detect([3,2,1], detectIterator.bind(this, call_order), function(err, result){
         call_order.push('callback');
@@ -2338,6 +2350,7 @@ exports['detect'] = function(test){
 };
 
 exports['detect - mulitple matches'] = function(test){
+    test.expect(3);
     var call_order = [];
     async.detect([3,2,2,1,2], detectIterator.bind(this, call_order), function(err, result){
         call_order.push('callback');
@@ -2350,7 +2363,19 @@ exports['detect - mulitple matches'] = function(test){
     }, 100);
 };
 
+exports['detect error'] = function(test){
+    test.expect(2);
+    async.detect([3,2,1], function(x, callback) {
+        setTimeout(function(){callback('error');}, 0);
+    }, function(err, result){
+        test.equals(err, 'error');
+        test.equals(result, null);
+        test.done();
+    });
+};
+
 exports['detectSeries'] = function(test){
+    test.expect(3);
     var call_order = [];
     async.detectSeries([3,2,1], detectIterator.bind(this, call_order), function(err, result){
         call_order.push('callback');
@@ -2364,6 +2389,7 @@ exports['detectSeries'] = function(test){
 };
 
 exports['detectSeries - multiple matches'] = function(test){
+    test.expect(3);
     var call_order = [];
     async.detectSeries([3,2,2,1,2], detectIterator.bind(this, call_order), function(err, result){
         call_order.push('callback');
@@ -2377,6 +2403,7 @@ exports['detectSeries - multiple matches'] = function(test){
 };
 
 exports['detectSeries - ensure stop'] = function (test) {
+    test.expect(2);
     async.detectSeries([1, 2, 3, 4, 5], function (num, cb) {
         if (num > 3) throw new Error("detectSeries did not stop iterating");
         cb(null, num === 3);
@@ -2388,6 +2415,8 @@ exports['detectSeries - ensure stop'] = function (test) {
 };
 
 exports['sortBy'] = function(test){
+    test.expect(2);
+
     async.sortBy([{a:1},{a:15},{a:6}], function(x, callback){
         setTimeout(function(){callback(null, x.a);}, 0);
     }, function(err, result){
@@ -2398,6 +2427,8 @@ exports['sortBy'] = function(test){
 };
 
 exports['sortBy inverted'] = function(test){
+    test.expect(1);
+
     async.sortBy([{a:1},{a:15},{a:6}], function(x, callback){
         setTimeout(function(){callback(null, x.a*-1);}, 0);
     }, function(err, result){
@@ -2455,6 +2486,7 @@ var console_fn_tests = function(name){
         };
 
         exports[name + ' with multiple result params'] = function(test){
+            test.expect(1);
             var fn = function(callback){callback(null,'one','two','three');};
             var _console_fn = console[name];
             var called_with = [];
@@ -2488,16 +2520,18 @@ var console_fn_tests = function(name){
 exports['times'] = {
 
 'times': function(test) {
-  async.times(5, function(n, next) {
-    next(null, n);
-  }, function(err, results) {
-    test.ok(err === null, err + " passed instead of 'null'");
-    test.same(results, [0,1,2,3,4]);
-    test.done();
-  });
+    test.expect(2);
+    async.times(5, function(n, next) {
+        next(null, n);
+    }, function(err, results) {
+        test.ok(err === null, err + " passed instead of 'null'");
+        test.same(results, [0,1,2,3,4]);
+        test.done();
+    });
 },
 
 'times 3': function(test){
+    test.expect(1);
     var args = [];
     async.times(3, function(n, callback){
         setTimeout(function(){
@@ -2534,6 +2568,7 @@ exports['times'] = {
 },
 
 'timesSeries': function(test){
+    test.expect(2);
     var call_order = [];
     async.timesSeries(5, function(n, callback){
         setTimeout(function(){
@@ -2558,6 +2593,8 @@ exports['times'] = {
 },
 
 'timesLimit': function(test){
+    test.expect(7);
+
     var limit = 2;
     var running = 0;
     async.timesLimit(5, limit, function (i, next) {
@@ -2583,6 +2620,7 @@ console_fn_tests('warn');
 console_fn_tests('error');*/
 
 exports['nextTick'] = function(test){
+    test.expect(1);
     var call_order = [];
     async.nextTick(function(){call_order.push('two');});
     call_order.push('one');
@@ -2641,6 +2679,7 @@ exports['noConflict - node only'] = function(test){
 };
 
 exports['concat'] = function(test){
+    test.expect(3);
     var call_order = [];
     var iterator = function (x, cb) {
         setTimeout(function(){
@@ -2662,6 +2701,7 @@ exports['concat'] = function(test){
 };
 
 exports['concat error'] = function(test){
+    test.expect(1);
     var iterator = function (x, cb) {
         cb(new Error('test error'));
     };
@@ -2672,6 +2712,7 @@ exports['concat error'] = function(test){
 };
 
 exports['concatSeries'] = function(test){
+    test.expect(3);
     var call_order = [];
     var iterator = function (x, cb) {
         setTimeout(function(){
@@ -2693,8 +2734,9 @@ exports['concatSeries'] = function(test){
 };
 
 exports['until'] = function (test) {
-    var call_order = [];
+    test.expect(3);
 
+    var call_order = [];
     var count = 0;
     async.until(
         function () {
@@ -2723,6 +2765,8 @@ exports['until'] = function (test) {
 };
 
 exports['doUntil'] = function (test) {
+    test.expect(3);
+
     var call_order = [];
     var count = 0;
     async.doUntil(
@@ -2751,6 +2795,8 @@ exports['doUntil'] = function (test) {
 };
 
 exports['doUntil callback params'] = function (test) {
+    test.expect(2);
+
     var call_order = [];
     var count = 0;
     async.doUntil(
@@ -2779,6 +2825,8 @@ exports['doUntil callback params'] = function (test) {
 };
 
 exports['whilst'] = function (test) {
+    test.expect(3);
+
     var call_order = [];
 
     var count = 0;
@@ -2809,6 +2857,7 @@ exports['whilst'] = function (test) {
 };
 
 exports['doWhilst'] = function (test) {
+    test.expect(3);
     var call_order = [];
 
     var count = 0;
@@ -2838,8 +2887,8 @@ exports['doWhilst'] = function (test) {
 };
 
 exports['doWhilst callback params'] = function (test) {
+    test.expect(2);
     var call_order = [];
-
     var count = 0;
     async.doWhilst(
         function (cb) {
@@ -2869,6 +2918,8 @@ exports['doWhilst callback params'] = function (test) {
 exports['queue'] = {
 
 'queue': function (test) {
+    test.expect(17);
+
     var call_order = [],
         delays = [160,80,240,80];
 
@@ -2924,6 +2975,7 @@ exports['queue'] = {
 },
 
 'default concurrency': function (test) {
+    test.expect(17);
     var call_order = [],
         delays = [160,80,240,80];
 
@@ -2977,6 +3029,7 @@ exports['queue'] = {
 },
 
 'zero concurrency': function(test){
+    test.expect(1);
     test.throws(function () {
         async.queue(function (task, callback) {
             callback(null, task);
@@ -2986,6 +3039,7 @@ exports['queue'] = {
 },
 
 'error propagation': function(test){
+    test.expect(1);
     var results = [];
 
     var q = async.queue(function (task, callback) {
@@ -3018,11 +3072,12 @@ exports['queue'] = {
 
 // The original queue implementation allowed the concurrency to be changed only
 // on the same event loop during which a task was added to the queue. This
-// test attempts to be a more rubust test.
+// test attempts to be a more robust test.
 // Start with a concurrency of 1. Wait until a leter event loop and change
 // the concurrency to 2. Wait again for a later loop then verify the concurrency.
 // Repeat that one more time by chaning the concurrency to 5.
 'changing concurrency': function (test) {
+    test.expect(3);
 
     var q = async.queue(function(task, callback){
         setTimeout(function(){
@@ -3052,6 +3107,7 @@ exports['queue'] = {
 },
 
 'push without callback': function (test) {
+    test.expect(1);
     var call_order = [],
         delays = [160,80,240,80];
 
@@ -3083,6 +3139,7 @@ exports['queue'] = {
 },
 
 'push with non-function': function (test) {
+    test.expect(1);
     var q = async.queue(function () {}, 1);
     test.throws(function () {
         q.push({}, 1);
@@ -3091,6 +3148,7 @@ exports['queue'] = {
 },
 
 'unshift': function (test) {
+    test.expect(1);
     var queue_order = [];
 
     var q = async.queue(function (task, callback) {
@@ -3110,6 +3168,7 @@ exports['queue'] = {
 },
 
 'too many callbacks': function (test) {
+    test.expect(1);
     var q = async.queue(function (task, callback) {
         callback();
         test.throws(function() {
@@ -3122,6 +3181,7 @@ exports['queue'] = {
 },
 
 'bulk task': function (test) {
+    test.expect(9);
     var call_order = [],
         delays = [160,80,240,80];
 
@@ -3158,6 +3218,7 @@ exports['queue'] = {
 },
 
 'idle': function(test) {
+    test.expect(7);
     var q = async.queue(function (task, callback) {
       // Queue is busy when workers are running
       test.equal(q.idle(), false);
@@ -3183,6 +3244,7 @@ exports['queue'] = {
 },
 
 'pause': function(test) {
+    test.expect(3);
     var call_order = [],
         task_timeout = 100,
         pause_timeout = 300,
@@ -3236,6 +3298,7 @@ exports['queue'] = {
 },
 
 'pause with concurrency': function(test) {
+    test.expect(4);
     var call_order = [],
         task_timeout = 100,
         pause_timeout = 50,
@@ -3287,6 +3350,7 @@ exports['queue'] = {
 },
 
 'start paused': function (test) {
+    test.expect(2);
     var q = async.queue(function (task, callback) {
         setTimeout(function () {
             callback();
@@ -3312,6 +3376,7 @@ exports['queue'] = {
 },
 
 'kill': function (test) {
+    test.expect(1);
     var q = async.queue(function (task, callback) {
         setTimeout(function () {
             test.ok(false, "Function should never be called");
@@ -3333,6 +3398,7 @@ exports['queue'] = {
 },
 
 'events': function(test) {
+    test.expect(4);
     var calls = [];
     var q = async.queue(function(task, cb) {
         // nop
@@ -3380,6 +3446,7 @@ exports['queue'] = {
 },
 
 'empty': function(test) {
+    test.expect(2);
     var calls = [];
     var q = async.queue(function(task, cb) {
         // nop
@@ -3402,6 +3469,7 @@ exports['queue'] = {
 },
 
 'saturated': function (test) {
+    test.expect(1);
     var saturatedCalled = false;
     var q = async.queue(function(task, cb) {
         async.setImmediate(cb);
@@ -3421,16 +3489,16 @@ exports['queue'] = {
 },
 
 'started': function(test) {
+    test.expect(2);
 
-  var q = async.queue(function(task, cb) {
+    var q = async.queue(function(task, cb) {
     cb(null, task);
-  });
+    });
 
-  test.equal(q.started, false);
-  q.push([]);
-  test.equal(q.started, true);
-  test.done();
-
+    test.equal(q.started, false);
+    q.push([]);
+    test.equal(q.started, true);
+    test.done();
 }
 
 };
@@ -3439,6 +3507,7 @@ exports['queue'] = {
 exports['priorityQueue'] = {
 
 'priorityQueue': function (test) {
+    test.expect(17);
     var call_order = [];
 
     // order of completion: 2,1,4,3
@@ -3488,7 +3557,8 @@ exports['priorityQueue'] = {
     };
 },
 
-' concurrency': function (test) {
+'concurrency': function (test) {
+    test.expect(17);
     var call_order = [],
         delays = [160,80,240,80];
 
@@ -3549,6 +3619,7 @@ exports['priorityQueue'] = {
 exports['cargo'] = {
 
 'cargo': function (test) {
+    test.expect(19);
     var call_order = [],
         delays = [160, 160, 80];
 
@@ -3615,6 +3686,7 @@ exports['cargo'] = {
 },
 
 'without callback': function (test) {
+    test.expect(1);
     var call_order = [],
         delays = [160,80,240,80];
 
@@ -3651,6 +3723,7 @@ exports['cargo'] = {
 },
 
 'bulk task': function (test) {
+    test.expect(7);
     var call_order = [],
         delays = [120,40];
 
@@ -3683,41 +3756,43 @@ exports['cargo'] = {
 },
 
 'drain once': function (test) {
-
-   var c = async.cargo(function (tasks, callback) {
-      callback();
-    }, 3);
-
-    var drainCounter = 0;
-    c.drain = function () {
-      drainCounter++;
-    };
-
-    for(var i = 0; i < 10; i++){
-      c.push(i);
-    }
-
-    setTimeout(function(){
-      test.equal(drainCounter, 1);
-      test.done();
-    }, 500);
-},
-
-'drain twice': function (test) {
+    test.expect(1);
 
     var c = async.cargo(function (tasks, callback) {
       callback();
     }, 3);
 
-    var loadCargo = function(){
-      for(var i = 0; i < 10; i++){
+    var drainCounter = 0;
+    c.drain = function () {
+        drainCounter++;
+    };
+
+    for(var i = 0; i < 10; i++){
         c.push(i);
-      }
+    }
+
+    setTimeout(function(){
+        test.equal(drainCounter, 1);
+        test.done();
+    }, 500);
+},
+
+'drain twice': function (test) {
+    test.expect(1);
+
+    var c = async.cargo(function (tasks, callback) {
+        callback();
+    }, 3);
+
+    var loadCargo = function(){
+        for(var i = 0; i < 10; i++){
+            c.push(i);
+        }
     };
 
     var drainCounter = 0;
     c.drain = function () {
-      drainCounter++;
+        drainCounter++;
     };
 
     loadCargo();
@@ -3730,6 +3805,7 @@ exports['cargo'] = {
 },
 
 'events': function(test) {
+    test.expect(4);
     var calls = [];
     var q = async.cargo(function(task, cb) {
         // nop
@@ -3954,6 +4030,7 @@ exports['memoize'] = {
 
 exports['ensureAsync'] = {
     'defer sync functions': function (test) {
+        test.expect(6);
         var sync = true;
         async.ensureAsync(function (arg1, arg2, cb) {
             test.equal(arg1, 1);
@@ -3970,6 +4047,7 @@ exports['ensureAsync'] = {
     },
 
     'do not defer async functions': function (test) {
+        test.expect(6);
         var sync = false;
         async.ensureAsync(function (arg1, arg2, cb) {
             test.equal(arg1, 1);
@@ -3989,6 +4067,7 @@ exports['ensureAsync'] = {
     },
 
     'double wrapping': function (test) {
+        test.expect(6);
         var sync = true;
         async.ensureAsync(async.ensureAsync(function (arg1, arg2, cb) {
             test.equal(arg1, 1);
