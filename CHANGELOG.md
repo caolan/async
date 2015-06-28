@@ -3,6 +3,7 @@
 New Features:
 - Added `constant`
 - Added `asyncify`/`wrapSync` for making sync functions work with callbacks. (#671, #806)
+- Added `during` and `doDuring`, which are like `whilst` with an async truth test. (#800)
 - `retry` now accepts an `interval` parameter to specify a delay between retries. (#793)
 - `async` should work better in Web Workers due to better `root` detection (#804)
 - Callbacks are now optional in `whilst`, `doWhilst`, `until`, and `doUntil` (#642)
