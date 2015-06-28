@@ -2854,7 +2854,7 @@ exports['during'] = function (test) {
     async.during(
         function (cb) {
             call_order.push(['test', count]);
-            cb(count < 5);
+            cb(null, count < 5);
         },
         function (cb) {
             call_order.push(['iterator', count]);
@@ -2889,7 +2889,7 @@ exports['doDuring'] = function (test) {
         },
         function (cb) {
             call_order.push(['test', count]);
-            cb(count < 5);
+            cb(null, count < 5);
         },
         function (err) {
             test.ok(err === null, err + " passed instead of 'null'");
