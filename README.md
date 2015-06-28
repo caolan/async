@@ -204,17 +204,18 @@ Usage:
 * [`auto`](#auto)
 * [`retry`](#retry)
 * [`iterator`](#iterator)
-* [`apply`](#apply)
-* [`nextTick`](#nextTick)
 * [`times`](#times)
 * [`timesSeries`](#timesSeries)
 * [`timesLimit`](#timesLimit)
 
 ### Utils
 
+* [`apply`](#apply)
+* [`nextTick`](#nextTick)
 * [`memoize`](#memoize)
 * [`unmemoize`](#unmemoize)
 * [`ensureAsync`](#ensureAsync)
+* [`constant`](#constant)
 * [`log`](#log)
 * [`dir`](#dir)
 * [`noConflict`](#noConflict)
@@ -1741,6 +1742,44 @@ async.mapSeries(args, sometimesAsync, done);
 // this will defer sometimesAsync's callback if necessary,
 // preventing stack overflows
 async.mapSeries(args, async.ensureAsync(sometimesAsync), done);
+
+```
+
+---------------------------------------
+
+<a name="constant">
+### constant(values...)
+
+Returns a function that when called, calls-back with the values provided.  Useful as the first function in a `waterfall`, or for plugging values in to `auto`.
+
+__Example__
+
+```js
+async.waterfall([
+  async.constant(42),
+  function (value, next) {
+    // value === 42
+  },
+  //...
+], callback);
+
+async.waterfall([
+  async.constant(filename, "utf8"),
+  fs.readFile,
+  function (fileData, next) {
+    //...
+  }
+  //...
+], callback);
+
+async.auto({
+  hostname: async.constant("https://server.net/"),
+  port: findFreePort,
+  launchServer: ["hostname", "port", function (cb, options) {
+    startServer(options, cb);
+  }],
+  //...
+}, callback);
 
 ```
 

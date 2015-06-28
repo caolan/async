@@ -4056,3 +4056,16 @@ exports['ensureAsync'] = {
         sync = false;
     }
 };
+
+exports['constant'] = function (test) {
+    test.expect(5);
+    var f = async.constant(42, 1, 2, 3);
+    f(function (err, value, a, b, c) {
+        test.ok(!err);
+        test.ok(value === 42);
+        test.ok(a === 1);
+        test.ok(b === 2);
+        test.ok(c === 3);
+        test.done();
+    });
+};
