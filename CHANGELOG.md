@@ -1,8 +1,18 @@
+# v1.3.0
+
+New Features:
+- `retry` now accepts an `interval` parameter to specify a delay between retries. (#793)
+- `async` should work better in Web Workers due to better `root` detection (#804)
+- Various internal updates (#786, #801, #802, #803)
+- Various doc fixes (#790, #794)
+
+
 # v1.2.1
 
 Bug Fix:
 
 - Small regression with synchronous iterator behavior in `eachSeries` with a 1-element array.  Before 1.1.0, `eachSeries`'s callback was called on the same tick, which this patch restores.  In 2.0.0, it will be called on the next tick.  (#782)
+
 
 # v1.2.0
 
