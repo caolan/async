@@ -192,6 +192,8 @@ Usage:
 * [`doWhilst`](#doWhilst)
 * [`until`](#until)
 * [`doUntil`](#doUntil)
+* [`during`](#during)
+* [`doDuring`](#doDuring)
 * [`forever`](#forever)
 * [`waterfall`](#waterfall)
 * [`compose`](#compose)
@@ -988,6 +990,42 @@ The inverse of [`whilst`](#whilst).
 ### doUntil(fn, test, callback)
 
 Like [`doWhilst`](#doWhilst), except the `test` is inverted. Note the argument ordering differs from `until`.
+
+---------------------------------------
+
+<a name="during" />
+### during(test, fn, callback)
+
+Like [`whilst`](#whilst), except the `test` is an asynchronous function that is passed a callback in the form of `function (err, truth)`. If error is passed to `test` or `fn`, the main callback is immediately called with the value of the error.
+
+__Example__
+
+```js
+var count = 0;
+
+async.during(
+    function (callback) { 
+      return callback(null, count < 5); 
+    },
+    function (callback) {
+        count++;
+        setTimeout(callback, 1000);
+    },
+    function (err) {
+        // 5 seconds have passed
+    }
+);
+```
+
+---------------------------------------
+
+<a name="doDuring" />
+### doDuring(fn, test, callback)
+
+The post-check version of [`during`](#during). To reflect the difference in
+the order of operations, the arguments `test` and `fn` are switched.
+
+Also a version of [`doWhilst`](#doWhilst) with asynchronous `test` function.
 
 ---------------------------------------
 
