@@ -216,6 +216,8 @@ Usage:
 * [`unmemoize`](#unmemoize)
 * [`ensureAsync`](#ensureAsync)
 * [`constant`](#constant)
+* [`asyncify`](#asyncify)
+* [`wrapSync`](#wrapSync)
 * [`log`](#log)
 * [`dir`](#dir)
 * [`noConflict`](#noConflict)
@@ -1781,6 +1783,29 @@ async.auto({
   //...
 }, callback);
 
+```
+
+---------------------------------------
+
+<a name="asyncify">
+<a name="wrapSync">
+### asyncify(func)
+
+*Alias: wrapSync*
+
+Take a sync function and make it async, passing its return value to a callback. This is useful for plugging sync functions into a waterfall, series, or other async functions. Any arguments passed to the generated function will be passed to the wrapped function (except for the final callback argument). Errors thrown will be passed to the callback.
+
+__Example__
+
+```js
+async.waterfall([
+  async.apply(fs.readFile, filename, "utf8"),
+  async.asyncify(JSON.parse),
+  function (data, next) {
+    // data is the result of parsing the text.
+    // If there was a parsing error, it would have been caught.
+  }
+], callback)
 ```
 
 ---------------------------------------

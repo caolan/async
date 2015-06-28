@@ -4069,3 +4069,48 @@ exports['constant'] = function (test) {
         test.done();
     });
 };
+
+exports['asyncify'] = {
+    'asyncify': function (test) {
+        var parse = async.asyncify(JSON.parse);
+        parse("{\"a\":1}", function (err, result) {
+          test.ok(!err);
+          test.ok(result.a === 1);
+          test.done();
+        });
+    },
+
+    'variable numbers of arguments': function (test) {
+        async.asyncify(function (x, y, z) {
+          test.ok(arguments.length === 3);
+          test.ok(x === 1);
+          test.ok(y === 2);
+          test.ok(z === 3);
+        })(1, 2, 3, function () {});
+        test.done();
+    },
+
+    'catch errors': function (test) {
+        async.asyncify(function () {
+          throw new Error("foo");
+        })(function (err) {
+          test.ok(err);
+          test.ok(err.message === "foo");
+          test.done();
+        });
+    },
+
+    'dont catch errors in the callback': function (test) {
+        try {
+          async.asyncify(function () {})(function (err) {
+            if (err) {
+                return test.done(new Error("should not get an error here"));
+            }
+            throw new Error("callback error");
+          });
+        } catch (e) {
+          test.ok(e.message === "callback error");
+          test.done();
+        }
+    }
+};
