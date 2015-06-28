@@ -2847,6 +2847,19 @@ exports['doWhilst callback params'] = function (test) {
     );
 };
 
+exports['whilst optional callback'] = function (test) {
+    var counter = 0;
+    async.whilst(
+        function () { return counter < 2; },
+        function (cb) {
+            counter++;
+            cb();
+        }
+    );
+    test.equal(counter, 2);
+    test.done();
+};
+
 exports['queue'] = {
 
 'queue': function (test) {

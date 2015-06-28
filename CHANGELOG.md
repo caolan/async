@@ -3,6 +3,7 @@
 New Features:
 - `retry` now accepts an `interval` parameter to specify a delay between retries. (#793)
 - `async` should work better in Web Workers due to better `root` detection (#804)
+- Callbacks are now optional in `whilst`, `doWhilst`, `until`, and `doUntil` (#642)
 - Various internal updates (#786, #801, #802, #803)
 - Various doc fixes (#790, #794)
 
