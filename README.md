@@ -3,6 +3,8 @@
 [![Build Status via Travis CI](https://travis-ci.org/caolan/async.svg?branch=master)](https://travis-ci.org/caolan/async)
 [![NPM version](http://img.shields.io/npm/v/async.svg)](https://www.npmjs.org/package/async)
 [![Coverage Status](https://coveralls.io/repos/caolan/async/badge.svg?branch=master)](https://coveralls.io/r/caolan/async?branch=master)
+[![Join the chat at https://gitter.im/caolan/async](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/caolan/async?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 
 Async is a utility module which provides straight-forward, powerful functions
 for working with asynchronous JavaScript. Although originally designed for
@@ -202,17 +204,20 @@ Usage:
 * [`auto`](#auto)
 * [`retry`](#retry)
 * [`iterator`](#iterator)
-* [`apply`](#apply)
-* [`nextTick`](#nextTick)
 * [`times`](#times)
 * [`timesSeries`](#timesSeries)
 * [`timesLimit`](#timesLimit)
 
 ### Utils
 
+* [`apply`](#apply)
+* [`nextTick`](#nextTick)
 * [`memoize`](#memoize)
 * [`unmemoize`](#unmemoize)
 * [`ensureAsync`](#ensureAsync)
+* [`constant`](#constant)
+* [`asyncify`](#asyncify)
+* [`wrapSync`](#wrapSync)
 * [`log`](#log)
 * [`dir`](#dir)
 * [`noConflict`](#noConflict)
@@ -1740,6 +1745,67 @@ async.mapSeries(args, sometimesAsync, done);
 // preventing stack overflows
 async.mapSeries(args, async.ensureAsync(sometimesAsync), done);
 
+```
+
+---------------------------------------
+
+<a name="constant">
+### constant(values...)
+
+Returns a function that when called, calls-back with the values provided.  Useful as the first function in a `waterfall`, or for plugging values in to `auto`.
+
+__Example__
+
+```js
+async.waterfall([
+  async.constant(42),
+  function (value, next) {
+    // value === 42
+  },
+  //...
+], callback);
+
+async.waterfall([
+  async.constant(filename, "utf8"),
+  fs.readFile,
+  function (fileData, next) {
+    //...
+  }
+  //...
+], callback);
+
+async.auto({
+  hostname: async.constant("https://server.net/"),
+  port: findFreePort,
+  launchServer: ["hostname", "port", function (cb, options) {
+    startServer(options, cb);
+  }],
+  //...
+}, callback);
+
+```
+
+---------------------------------------
+
+<a name="asyncify">
+<a name="wrapSync">
+### asyncify(func)
+
+*Alias: wrapSync*
+
+Take a sync function and make it async, passing its return value to a callback. This is useful for plugging sync functions into a waterfall, series, or other async functions. Any arguments passed to the generated function will be passed to the wrapped function (except for the final callback argument). Errors thrown will be passed to the callback.
+
+__Example__
+
+```js
+async.waterfall([
+  async.apply(fs.readFile, filename, "utf8"),
+  async.asyncify(JSON.parse),
+  function (data, next) {
+    // data is the result of parsing the text.
+    // If there was a parsing error, it would have been caught.
+  }
+], callback)
 ```
 
 ---------------------------------------
