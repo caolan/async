@@ -7,6 +7,8 @@ New Features:
 - Various internal updates (#786, #801, #802, #803)
 - Various doc fixes (#790, #794)
 
+Bug Fixes:
+- `cargo` now exposes the `payload` size, and `cargo.payload` can be changed on the fly after the `cargo` is created. (#740, #744, #783)
 
 # v1.2.1
 

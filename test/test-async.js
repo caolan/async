@@ -3797,6 +3797,34 @@ exports['cargo'] = {
     q.push('moo', function () {calls.push('moo cb');});
 },
 
+'expose payload': function (test) {
+    test.expect(5);
+    var called_once = false;
+    var cargo= async.cargo(function(tasks, cb) {
+        if (!called_once) {
+            test.equal(cargo.payload, 1);
+            test.ok(tasks.length === 1, 'should start with payload = 1');
+        } else {
+            test.equal(cargo.payload, 2);
+            test.ok(tasks.length === 2, 'next call shold have payload = 2');
+        }
+        called_once = true;
+        setTimeout(cb, 25);
+    }, 1);
+
+    cargo.drain = function () {
+        test.done();
+    };
+
+    test.equals(cargo.payload, 1);
+
+    cargo.push([1, 2, 3]);
+
+    setTimeout(function () {
+        cargo.payload = 2;
+    }, 15);
+}
+
 };
 
 
