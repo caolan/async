@@ -11,7 +11,7 @@ all: clean test build
 
 build: $(wildcard  lib/*.js)
 	mkdir -p $(BUILDDIR)
-	$(UGLIFY) lib/async.js > $(BUILDDIR)/async.min.js
+	$(UGLIFY) lib/async.js -mc > $(BUILDDIR)/async.min.js
 
 test:
 	$(NODEUNIT) test
