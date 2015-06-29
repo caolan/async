@@ -1673,7 +1673,7 @@ async.auto({
 <a name="wrapSync">
 ### asyncify(func)
 
-*Alias: wrapSync*
+__Alias:__ `wrapSync`
 
 Take a sync function and make it async, passing its return value to a callback. This is useful for plugging sync functions into a waterfall, series, or other async functions. Any arguments passed to the generated function will be passed to the wrapped function (except for the final callback argument). Errors thrown will be passed to the callback.
 
