@@ -5,7 +5,7 @@ UGLIFY = "$(CWD)/node_modules/.bin/uglifyjs"
 JSHINT = "$(CWD)/node_modules/.bin/jshint"
 XYZ = node_modules/.bin/xyz --repo git@github.com:caolan/async.git
 
-BUILDDIR = dist
+BUILDDIR = lib
 
 all: clean test build
 
@@ -28,6 +28,6 @@ lint:
 .PHONY: release-major release-minor release-patch
 release-major release-minor release-patch: all
 	./support/sync-package-managers.js
-	git add --force dist
+	git add --force $(BUILDDIR)
 	git ci -am "update minified build"
 	@$(XYZ) --increment $(@:release-%=%)
