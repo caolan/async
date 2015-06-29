@@ -170,7 +170,7 @@ Some functions are also available in the following forms:
 * [`filter`](#filter), `filterSeries`
 * [`reject`](#reject), `rejectSeries`
 * [`reduce`](#reduce), [`reduceRight`](#reduceRight)
-* [`detect`](#detect)
+* [`detect`](#detect), `detectSeries`
 * [`sortBy`](#sortBy)
 * [`some`](#some), [`every`](#every)
 * [`concat`](#concat), `concatSeries`
