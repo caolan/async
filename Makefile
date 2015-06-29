@@ -29,4 +29,5 @@ lint:
 release-major release-minor release-patch: all
 	./support/sync-package-managers.js
 	git add --force dist
+	git ci -am "update minified build"
 	@$(XYZ) --increment $(@:release-%=%)
