@@ -181,6 +181,7 @@ Some functions are also available in the following forms:
 * [`parallel`](#parallel), `parallelLimit`
 * [`whilst`](#whilst), [`doWhilst`](#doWhilst)
 * [`until`](#until), [`doUntil`](#doUntil)
+* [`during`](#during), [`doDuring`](#doDuring)
 * [`forever`](#forever)
 * [`waterfall`](#waterfall)
 * [`compose`](#compose)
@@ -191,15 +192,18 @@ Some functions are also available in the following forms:
 * [`auto`](#auto)
 * [`retry`](#retry)
 * [`iterator`](#iterator)
-* [`apply`](#apply)
-* [`nextTick`](#nextTick)
 * [`times`](#times), `timesSeries`, `timesLimit`
 
 ### Utils
 
+* [`apply`](#apply)
+* [`nextTick`](#nextTick)
 * [`memoize`](#memoize)
 * [`unmemoize`](#unmemoize)
 * [`ensureAsync`](#ensureAsync)
+* [`constant`](#constant)
+* [`asyncify`](#asyncify)
+* [`wrapSync`](#wrapSync)
 * [`log`](#log)
 * [`dir`](#dir)
 * [`noConflict`](#noConflict)
@@ -840,6 +844,42 @@ The inverse of [`whilst`](#whilst).
 ### doUntil(fn, test, callback)
 
 Like [`doWhilst`](#doWhilst), except the `test` is inverted. Note the argument ordering differs from `until`.
+
+---------------------------------------
+
+<a name="during" />
+### during(test, fn, callback)
+
+Like [`whilst`](#whilst), except the `test` is an asynchronous function that is passed a callback in the form of `function (err, truth)`. If error is passed to `test` or `fn`, the main callback is immediately called with the value of the error.
+
+__Example__
+
+```js
+var count = 0;
+
+async.during(
+    function (callback) {
+      return callback(null, count < 5);
+    },
+    function (callback) {
+        count++;
+        setTimeout(callback, 1000);
+    },
+    function (err) {
+        // 5 seconds have passed
+    }
+);
+```
+
+---------------------------------------
+
+<a name="doDuring" />
+### doDuring(fn, test, callback)
+
+The post-check version of [`during`](#during). To reflect the difference in
+the order of operations, the arguments `test` and `fn` are switched.
+
+Also a version of [`doWhilst`](#doWhilst) with asynchronous `test` function.
 
 ---------------------------------------
 
@@ -1587,6 +1627,67 @@ async.mapSeries(args, sometimesAsync, done);
 // preventing stack overflows
 async.mapSeries(args, async.ensureAsync(sometimesAsync), done);
 
+```
+
+---------------------------------------
+
+<a name="constant">
+### constant(values...)
+
+Returns a function that when called, calls-back with the values provided.  Useful as the first function in a `waterfall`, or for plugging values in to `auto`.
+
+__Example__
+
+```js
+async.waterfall([
+  async.constant(42),
+  function (value, next) {
+    // value === 42
+  },
+  //...
+], callback);
+
+async.waterfall([
+  async.constant(filename, "utf8"),
+  fs.readFile,
+  function (fileData, next) {
+    //...
+  }
+  //...
+], callback);
+
+async.auto({
+  hostname: async.constant("https://server.net/"),
+  port: findFreePort,
+  launchServer: ["hostname", "port", function (cb, options) {
+    startServer(options, cb);
+  }],
+  //...
+}, callback);
+
+```
+
+---------------------------------------
+
+<a name="asyncify">
+<a name="wrapSync">
+### asyncify(func)
+
+*Alias: wrapSync*
+
+Take a sync function and make it async, passing its return value to a callback. This is useful for plugging sync functions into a waterfall, series, or other async functions. Any arguments passed to the generated function will be passed to the wrapped function (except for the final callback argument). Errors thrown will be passed to the callback.
+
+__Example__
+
+```js
+async.waterfall([
+  async.apply(fs.readFile, filename, "utf8"),
+  async.asyncify(JSON.parse),
+  function (data, next) {
+    // data is the result of parsing the text.
+    // If there was a parsing error, it would have been caught.
+  }
+], callback)
 ```
 
 ---------------------------------------

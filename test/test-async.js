@@ -2847,6 +2847,78 @@ exports['doWhilst callback params'] = function (test) {
     );
 };
 
+exports['during'] = function (test) {
+    var call_order = [];
+
+    var count = 0;
+    async.during(
+        function (cb) {
+            call_order.push(['test', count]);
+            cb(null, count < 5);
+        },
+        function (cb) {
+            call_order.push(['iterator', count]);
+            count++;
+            cb();
+        },
+        function (err) {
+            test.ok(err === null, err + " passed instead of 'null'");
+            test.same(call_order, [
+                ['test', 0],
+                ['iterator', 0], ['test', 1],
+                ['iterator', 1], ['test', 2],
+                ['iterator', 2], ['test', 3],
+                ['iterator', 3], ['test', 4],
+                ['iterator', 4], ['test', 5],
+            ]);
+            test.equals(count, 5);
+            test.done();
+        }
+    );
+};
+
+exports['doDuring'] = function (test) {
+    var call_order = [];
+
+    var count = 0;
+    async.doDuring(
+        function (cb) {
+            call_order.push(['iterator', count]);
+            count++;
+            cb();
+        },
+        function (cb) {
+            call_order.push(['test', count]);
+            cb(null, count < 5);
+        },
+        function (err) {
+            test.ok(err === null, err + " passed instead of 'null'");
+            test.same(call_order, [
+                ['iterator', 0], ['test', 1],
+                ['iterator', 1], ['test', 2],
+                ['iterator', 2], ['test', 3],
+                ['iterator', 3], ['test', 4],
+                ['iterator', 4], ['test', 5],
+            ]);
+            test.equals(count, 5);
+            test.done();
+        }
+    );
+};
+
+exports['whilst optional callback'] = function (test) {
+    var counter = 0;
+    async.whilst(
+        function () { return counter < 2; },
+        function (cb) {
+            counter++;
+            cb();
+        }
+    );
+    test.equal(counter, 2);
+    test.done();
+};
+
 exports['queue'] = {
 
 'queue': function (test) {
@@ -3784,6 +3856,34 @@ exports['cargo'] = {
     q.push('moo', function () {calls.push('moo cb');});
 },
 
+'expose payload': function (test) {
+    test.expect(5);
+    var called_once = false;
+    var cargo= async.cargo(function(tasks, cb) {
+        if (!called_once) {
+            test.equal(cargo.payload, 1);
+            test.ok(tasks.length === 1, 'should start with payload = 1');
+        } else {
+            test.equal(cargo.payload, 2);
+            test.ok(tasks.length === 2, 'next call shold have payload = 2');
+        }
+        called_once = true;
+        setTimeout(cb, 25);
+    }, 1);
+
+    cargo.drain = function () {
+        test.done();
+    };
+
+    test.equals(cargo.payload, 1);
+
+    cargo.push([1, 2, 3]);
+
+    setTimeout(function () {
+        cargo.payload = 2;
+    }, 15);
+}
+
 };
 
 
@@ -4013,5 +4113,63 @@ exports['ensureAsync'] = {
             test.done();
         });
         sync = false;
+    }
+};
+
+exports['constant'] = function (test) {
+    test.expect(5);
+    var f = async.constant(42, 1, 2, 3);
+    f(function (err, value, a, b, c) {
+        test.ok(!err);
+        test.ok(value === 42);
+        test.ok(a === 1);
+        test.ok(b === 2);
+        test.ok(c === 3);
+        test.done();
+    });
+};
+
+exports['asyncify'] = {
+    'asyncify': function (test) {
+        var parse = async.asyncify(JSON.parse);
+        parse("{\"a\":1}", function (err, result) {
+          test.ok(!err);
+          test.ok(result.a === 1);
+          test.done();
+        });
+    },
+
+    'variable numbers of arguments': function (test) {
+        async.asyncify(function (x, y, z) {
+          test.ok(arguments.length === 3);
+          test.ok(x === 1);
+          test.ok(y === 2);
+          test.ok(z === 3);
+        })(1, 2, 3, function () {});
+        test.done();
+    },
+
+    'catch errors': function (test) {
+        async.asyncify(function () {
+          throw new Error("foo");
+        })(function (err) {
+          test.ok(err);
+          test.ok(err.message === "foo");
+          test.done();
+        });
+    },
+
+    'dont catch errors in the callback': function (test) {
+        try {
+          async.asyncify(function () {})(function (err) {
+            if (err) {
+                return test.done(new Error("should not get an error here"));
+            }
+            throw new Error("callback error");
+          });
+        } catch (e) {
+          test.ok(e.message === "callback error");
+          test.done();
+        }
     }
 };
