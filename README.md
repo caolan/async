@@ -158,57 +158,41 @@ Usage:
 
 ## Documentation
 
+Some functions are also available in the following forms:
+* `<name>Series` - the same as `<name>` but runs only a single async operation at a time
+* `<name>Limit` - the same as `<name>` but runs a maximum of `limit` async operations at a time
+
 ### Collections
 
-* [`each`](#each)
-* [`eachSeries`](#eachSeries)
-* [`eachLimit`](#eachLimit)
-* [`forEachOf`](#forEachOf)
-* [`forEachOfSeries`](#forEachOfSeries)
-* [`forEachOfLimit`](#forEachOfLimit)
-* [`map`](#map)
-* [`mapSeries`](#mapSeries)
-* [`mapLimit`](#mapLimit)
-* [`filter`](#filter)
-* [`filterSeries`](#filterSeries)
-* [`reject`](#reject)
-* [`rejectSeries`](#rejectSeries)
-* [`reduce`](#reduce)
-* [`reduceRight`](#reduceRight)
+* [`each`](#each), `eachSeries`, `eachLimit`
+* [`forEachOf`](#forEachOf), `forEachOfSeries`, `forEachOfLimit`
+* [`map`](#map), `mapSeries`, `mapLimit`
+* [`filter`](#filter), `filterSeries`
+* [`reject`](#reject), `rejectSeries`
+* [`reduce`](#reduce), [`reduceRight`](#reduceRight)
 * [`detect`](#detect)
-* [`detectSeries`](#detectSeries)
 * [`sortBy`](#sortBy)
-* [`some`](#some)
-* [`every`](#every)
-* [`concat`](#concat)
-* [`concatSeries`](#concatSeries)
+* [`some`](#some), [`every`](#every)
+* [`concat`](#concat), `concatSeries`
 
 ### Control Flow
 
 * [`series`](#seriestasks-callback)
-* [`parallel`](#parallel)
-* [`parallelLimit`](#parallellimittasks-limit-callback)
-* [`whilst`](#whilst)
-* [`doWhilst`](#doWhilst)
-* [`until`](#until)
-* [`doUntil`](#doUntil)
-* [`during`](#during)
-* [`doDuring`](#doDuring)
+* [`parallel`](#parallel), `parallelLimit`
+* [`whilst`](#whilst), [`doWhilst`](#doWhilst)
+* [`until`](#until), [`doUntil`](#doUntil)
+* [`during`](#during), [`doDuring`](#doDuring)
 * [`forever`](#forever)
 * [`waterfall`](#waterfall)
 * [`compose`](#compose)
 * [`seq`](#seq)
-* [`applyEach`](#applyEach)
-* [`applyEachSeries`](#applyEachSeries)
-* [`queue`](#queue)
-* [`priorityQueue`](#priorityQueue)
+* [`applyEach`](#applyEach), `applyEachSeries`
+* [`queue`](#queue), [`priorityQueue`](#priorityQueue)
 * [`cargo`](#cargo)
 * [`auto`](#auto)
 * [`retry`](#retry)
 * [`iterator`](#iterator)
-* [`times`](#times)
-* [`timesSeries`](#timesSeries)
-* [`timesLimit`](#timesLimit)
+* [`times`](#times), `timesSeries`, `timesLimit`
 
 ### Utils
 
@@ -223,7 +207,6 @@ Usage:
 * [`log`](#log)
 * [`dir`](#dir)
 * [`noConflict`](#noConflict)
-
 
 ## Collections
 
@@ -290,50 +273,10 @@ async.each(openFiles, function(file, callback) {
 });
 ```
 
----------------------------------------
+__Related__
 
-<a name="forEachSeries" />
-<a name="eachSeries" />
-### eachSeries(arr, iterator, [callback])
-
-The same as [`each`](#each), only `iterator` is applied to each item in `arr` in
-series. The next `iterator` is only called once the current one has completed.
-This means the `iterator` functions will complete in order.
-
-
----------------------------------------
-
-<a name="forEachLimit" />
-<a name="eachLimit" />
-### eachLimit(arr, limit, iterator, [callback])
-
-The same as [`each`](#each), only no more than `limit` `iterator`s will be simultaneously
-running at any time.
-
-Note that the items in `arr` are not processed in batches, so there is no guarantee that
-the first `limit` `iterator` functions will complete before any others are started.
-
-__Arguments__
-
-* `arr` - An array to iterate over.
-* `limit` - The maximum number of `iterator`s to run at any time.
-* `iterator(item, callback)` - A function to apply to each item in `arr`.
-  The iterator is passed a `callback(err)` which must be called once it has
-  completed. If no error has occurred, the callback should be run without
-  arguments or with an explicit `null` argument.
-* `callback(err)` - *Optional* A callback which is called when all `iterator` functions
-  have finished, or an error occurs.
-
-__Example__
-
-```js
-// Assume documents is an array of JSON objects and requestApi is a
-// function that interacts with a rate-limited REST api.
-
-async.eachLimit(documents, 20, requestApi, function(err){
-    // if any of the saves produced an error, err would equal that error
-});
-```
+* eachSeries(arr, iterator, [callback])
+* eachLimit(arr, limit, iterator, [callback])
 
 ---------------------------------------
 
@@ -377,24 +320,10 @@ async.forEachOf(obj, function (value, key, callback) {
 })
 ```
 
----------------------------------------
+__Related__
 
-<a name="forEachOfSeries" />
-<a name="eachOfSeries" />
-
-### forEachOfSeries(obj, iterator, [callback])
-
-Like [`forEachOf`](#forEachOf), except only one `iterator` is run at a time.  The order of execution is not guaranteed for objects, but it will be guaranteed for arrays.
-
----------------------------------------
-
-<a name="forEachOfLimit" />
-<a name="eachOfLimit" />
-
-### forEachOfLimit(obj, limit, iterator, [callback])
-
-Like [`forEachOf`](#forEachOf), except the number of `iterator`s running at a given time is controlled by `limit`.
-
+* forEachOfSeries(obj, iterator, [callback])
+* forEachOfLimit(obj, limit, iterator, [callback])
 
 ---------------------------------------
 
@@ -429,45 +358,9 @@ async.map(['file1','file2','file3'], fs.stat, function(err, results){
 });
 ```
 
----------------------------------------
-
-<a name="mapSeries" />
-### mapSeries(arr, iterator, [callback])
-
-The same as [`map`](#map), only the `iterator` is applied to each item in `arr` in
-series. The next `iterator` is only called once the current one has completed.
-The results array will be in the same order as the original.
-
-
----------------------------------------
-
-<a name="mapLimit" />
-### mapLimit(arr, limit, iterator, [callback])
-
-The same as [`map`](#map), only no more than `limit` `iterator`s will be simultaneously
-running at any time.
-
-Note that the items are not processed in batches, so there is no guarantee that
-the first `limit` `iterator` functions will complete before any others are started.
-
-__Arguments__
-
-* `arr` - An array to iterate over.
-* `limit` - The maximum number of `iterator`s to run at any time.
-* `iterator(item, callback)` - A function to apply to each item in `arr`.
-  The iterator is passed a `callback(err, transformed)` which must be called once
-  it has completed with an error (which can be `null`) and a transformed item.
-* `callback(err, results)` - A callback which is called when all `iterator`
-  calls have finished, or an error occurs. The result is an array of the
-  transformed items from the original `arr`.
-
-__Example__
-
-```js
-async.mapLimit(['file1','file2','file3'], 1, fs.stat, function(err, results){
-    // results is now an array of stats for each file
-});
-```
+__Related__
+* mapSeries(arr, iterator, [callback])
+* mapLimit(arr, limit, iterator, [callback])
 
 ---------------------------------------
 
@@ -501,17 +394,9 @@ async.filter(['file1','file2','file3'], fs.exists, function(results){
 });
 ```
 
----------------------------------------
+__Related__
 
-<a name="selectSeries" />
-<a name="filterSeries" />
-### filterSeries(arr, iterator, [callback])
-
-__Alias:__ `selectSeries`
-
-The same as [`filter`](#filter) only the `iterator` is applied to each item in `arr` in
-series. The next `iterator` is only called once the current one has completed.
-The results array will be in the same order as the original.
+* filterSeries(arr, iterator, [callback])
 
 ---------------------------------------
 
@@ -520,14 +405,9 @@ The results array will be in the same order as the original.
 
 The opposite of [`filter`](#filter). Removes values that pass an `async` truth test.
 
----------------------------------------
+__Related__
 
-<a name="rejectSeries" />
-### rejectSeries(arr, iterator, [callback])
-
-The same as [`reject`](#reject), only the `iterator` is applied to each item in `arr`
-in series.
-
+* rejectSeries(arr, iterator, [callback])
 
 ---------------------------------------
 
@@ -612,15 +492,9 @@ async.detect(['file1','file2','file3'], fs.exists, function(result){
 });
 ```
 
----------------------------------------
+__Related__
 
-<a name="detectSeries" />
-### detectSeries(arr, iterator, [callback])
-
-The same as [`detect`](#detect), only the `iterator` is applied to each item in `arr`
-in series. This means the result is always the first in the original `arr` (in
-terms of array order) that passes the truth test.
-
+* detectSeries(arr, iterator, [callback])
 
 ---------------------------------------
 
@@ -765,12 +639,9 @@ async.concat(['dir1','dir2','dir3'], fs.readdir, function(err, files){
 });
 ```
 
----------------------------------------
+__Related__
 
-<a name="concatSeries" />
-### concatSeries(arr, iterator, [callback])
-
-Same as [`concat`](#concat), but executes in series instead of parallel.
+* concatSeries(arr, iterator, [callback])
 
 
 ## Control Flow
@@ -909,26 +780,9 @@ function(err, results) {
 });
 ```
 
----------------------------------------
+__Related__
 
-<a name="parallelLimit" />
-### parallelLimit(tasks, limit, [callback])
-
-The same as [`parallel`](#parallel), only `tasks` are executed in parallel
-with a maximum of `limit` tasks executing at any time.
-
-Note that the `tasks` are not executed in batches, so there is no guarantee that
-the first `limit` tasks will complete before any others are started.
-
-__Arguments__
-
-* `tasks` - An array or object containing functions to run, each function is passed
-  a `callback(err, result)` it must call on completion with an error `err` (which can
-  be `null`) and an optional `result` value.
-* `limit` - The maximum number of `tasks` to run at any time.
-* `callback(err, results)` - An optional callback to run once all the functions
-  have completed. This function gets a results array (or object) containing all
-  the result arguments passed to the `task` callbacks.
+* parallelLimit(tasks, limit, [callback])
 
 ---------------------------------------
 
@@ -1004,8 +858,8 @@ __Example__
 var count = 0;
 
 async.during(
-    function (callback) { 
-      return callback(null, count < 5); 
+    function (callback) {
+      return callback(null, count < 5);
     },
     function (callback) {
         count++;
@@ -1200,12 +1054,9 @@ async.each(
 );
 ```
 
----------------------------------------
+__Related__
 
-<a name="applyEachSeries" />
-### applyEachSeries(arr, args..., callback)
-
-The same as [`applyEach`](#applyEach) only the functions are applied in series.
+* applyEachSeries(tasks, args..., [callback])
 
 ---------------------------------------
 
@@ -1693,17 +1544,10 @@ async.times(5, function(n, next){
 });
 ```
 
-<a name="timesSeries" />
-### timesSeries(n, iterator, [callback])
+__Related__
 
-The same as [`times`](#times), only the iterator is applied in series.
-The next `iterator` is only called once the current one has completed.
-The results array will be in the same order as the original.
-
-<a name="timesLimit" />
-### timesLimit(n, limit, iterator, [callback])
-
-The same as [`times`](#times), except a maximum of `limit` iterators are run at a given time, similar to [`mapLimit`](#mapLimit).
+* timesSeries(n, iterator, [callback])
+* timesLimit(n, limit, iterator, [callback])
 
 
 ## Utils
