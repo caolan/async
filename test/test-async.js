@@ -2254,6 +2254,24 @@ exports['someLimit false'] = function(test){
     });
 };
 
+exports['every true'] = function(test){
+    async.everyLimit([3,1,2], 1, function(x, callback){
+        setTimeout(function(){callback(x > 1);}, 0);
+    }, function(result){
+        test.equals(result, true);
+        test.done();
+    });
+};
+
+exports['everyLimit false'] = function(test){
+    async.everyLimit([3,1,2], 2, function(x, callback){
+        setTimeout(function(){callback(x === 2);}, 0);
+    }, function(result){
+        test.equals(result, false);
+        test.done();
+    });
+};
+
 exports['any alias'] = function(test){
     test.equals(async.any, async.some);
     test.done();
