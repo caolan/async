@@ -2272,6 +2272,33 @@ exports['everyLimit false'] = function(test){
     });
 };
 
+exports['everyLimit short-circuit'] = function(test){
+    test.expect(2);
+    var calls = 0;
+    async.everyLimit([3,1,2], 1, function(x, callback){
+        calls++;
+        callback(x === 1);
+    }, function(result){
+        test.equals(result, false);
+        test.equals(calls, 1);
+        test.done();
+    });
+};
+
+
+exports['someLimit short-circuit'] = function(test){
+    test.expect(2);
+    var calls = 0;
+    async.someLimit([3,1,2], 1, function(x, callback){
+        calls++;
+        callback(x === 1);
+    }, function(result){
+        test.equals(result, true);
+        test.equals(calls, 2);
+        test.done();
+    });
+};
+
 exports['any alias'] = function(test){
     test.equals(async.any, async.some);
     test.done();
