@@ -180,6 +180,66 @@ module.exports = [
     }
   },
   {
+    name: "some - no short circuit- false",
+    // args lists are passed to the setup function
+    args: [[500]],
+    setup: function(count) {
+      tasks = _.range(count);
+    },
+    fn: function (async, done) {
+      async.some(tasks, function(i, cb) {
+        async.setImmediate(function() {
+          cb(i >= 600);
+        });
+      }, done);
+    }
+  },
+  {
+    name: "some - short circuit - true",
+    // args lists are passed to the setup function
+    args: [[500]],
+    setup: function(count) {
+      tasks = _.range(count);
+    },
+    fn: function (async, done) {
+      async.some(tasks, function(i, cb) {
+        async.setImmediate(function() {
+          cb(i >= 60);
+        });
+      }, done);
+    }
+  },
+  {
+    name: "every - no short circuit- true",
+    // args lists are passed to the setup function
+    args: [[500]],
+    setup: function(count) {
+      tasks = _.range(count);
+    },
+    fn: function (async, done) {
+      async.every(tasks, function(i, cb) {
+        async.setImmediate(function() {
+          cb(i <= 600);
+        });
+      }, done);
+    }
+  },
+  {
+    name: "every - short circuit - false",
+    // args lists are passed to the setup function
+    args: [[500]],
+    setup: function(count) {
+      tasks = _.range(count);
+    },
+    fn: function (async, done) {
+      async.every(tasks, function(i, cb) {
+        async.setImmediate(function() {
+          cb(i <= 60);
+        });
+      }, done);
+    }
+  },
+  {
     name: "defer nextTick",
     fn: function (async, done) {
       process.nextTick(done);

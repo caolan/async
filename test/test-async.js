@@ -2236,6 +2236,69 @@ exports['some early return'] = function(test){
     }, 100);
 };
 
+exports['someLimit true'] = function(test){
+    async.someLimit([3,1,2], 2, function(x, callback){
+        setTimeout(function(){callback(x === 2);}, 0);
+    }, function(result){
+        test.equals(result, true);
+        test.done();
+    });
+};
+
+exports['someLimit false'] = function(test){
+    async.someLimit([3,1,2], 2, function(x, callback){
+        setTimeout(function(){callback(x === 10);}, 0);
+    }, function(result){
+        test.equals(result, false);
+        test.done();
+    });
+};
+
+exports['every true'] = function(test){
+    async.everyLimit([3,1,2], 1, function(x, callback){
+        setTimeout(function(){callback(x > 1);}, 0);
+    }, function(result){
+        test.equals(result, true);
+        test.done();
+    });
+};
+
+exports['everyLimit false'] = function(test){
+    async.everyLimit([3,1,2], 2, function(x, callback){
+        setTimeout(function(){callback(x === 2);}, 0);
+    }, function(result){
+        test.equals(result, false);
+        test.done();
+    });
+};
+
+exports['everyLimit short-circuit'] = function(test){
+    test.expect(2);
+    var calls = 0;
+    async.everyLimit([3,1,2], 1, function(x, callback){
+        calls++;
+        callback(x === 1);
+    }, function(result){
+        test.equals(result, false);
+        test.equals(calls, 1);
+        test.done();
+    });
+};
+
+
+exports['someLimit short-circuit'] = function(test){
+    test.expect(2);
+    var calls = 0;
+    async.someLimit([3,1,2], 1, function(x, callback){
+        calls++;
+        callback(x === 1);
+    }, function(result){
+        test.equals(result, true);
+        test.equals(calls, 2);
+        test.done();
+    });
+};
+
 exports['any alias'] = function(test){
     test.equals(async.any, async.some);
     test.done();
