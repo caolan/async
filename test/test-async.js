@@ -2199,6 +2199,39 @@ exports['rejectSeries'] = function(test){
     });
 };
 
+function testLimit(test, arr, limitFunc, limit, iter, done) {
+    var args = [];
+
+    limitFunc(arr, limit, function(x) {
+        args.push(x);
+        iter.apply(this, arguments);
+    }, function() {
+        test.same(args, arr);
+        if (done) done.apply(this, arguments);
+        else test.done();
+    });
+}
+
+exports['rejectLimit'] = function(test) {
+    test.expect(2);
+    testLimit(test, [5, 4, 3, 2, 1], async.rejectLimit, 2, function(v, next) {
+        next(v % 2);
+    }, function(x) {
+        test.same(x, [4, 2]);
+        test.done();
+    });
+};
+
+exports['filterLimit'] = function(test) {
+    test.expect(2);
+    testLimit(test, [5, 4, 3, 2, 1], async.filterLimit, 2, function(v, next) {
+        next(v % 2);
+    }, function(x) {
+        test.same(x, [5, 3, 1]);
+        test.done();
+    });
+};
+
 exports['some true'] = function(test){
     test.expect(1);
     async.some([3,1,2], function(x, callback){
