@@ -3,6 +3,7 @@ CWD := $(shell pwd)
 NODEUNIT = "$(CWD)/node_modules/.bin/nodeunit"
 UGLIFY = "$(CWD)/node_modules/.bin/uglifyjs"
 JSHINT = "$(CWD)/node_modules/.bin/jshint"
+JSCS = "$(CWD)/node_modules/.bin/jscs"
 XYZ = node_modules/.bin/xyz --repo git@github.com:caolan/async.git
 
 BUILDDIR = lib
@@ -21,6 +22,7 @@ clean:
 
 lint:
 	$(JSHINT) lib/*.js test/*.js perf/*.js
+	$(JSCS) lib/*.js test/*.js perf/*.js
 
 .PHONY: test lint build all clean
 
