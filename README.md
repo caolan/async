@@ -749,6 +749,8 @@ callback, the main `callback` is immediately called with the value of the error.
 Once the `tasks` have completed, the results are passed to the final `callback` as an
 array.
 
+**Note:** `parallel` is about kicking-off I/O tasks in parallel, not about parallel execution of code.  If your tasks do not use any timers or perform any I/O, they will actually be executed in series.  Any synchronous setup sections for each task will happen one after the other.  JavaScript remains single-threaded.
+
 It is also possible to use an object instead of an array. Each property will be
 run as a function and the results will be passed to the final `callback` as an object
 instead of an array. This can be a more readable way of handling results from
