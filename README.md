@@ -91,6 +91,30 @@ Async guards against synchronous functions in some, but not all, cases.  If you 
 If javascript's event loop is still a bit nebulous, check out [this article](http://blog.carbonfive.com/2013/10/27/the-javascript-event-loop-explained/) or [this talk](http://2014.jsconf.eu/speakers/philip-roberts-what-the-heck-is-the-event-loop-anyway.html) for more detailed information about how it works.
 
 
+### Multiple callbacks
+
+Make sure to always `return` when calling a callback early, otherwise you will cause multiple callbacks and unpredictable behavior in many cases.
+
+```js
+async.waterfall([
+    function (callback) {
+        getSomething(options, function (err, result) {
+          if (err) {
+            callback(new Error("failed getting something:" + err.message));
+            // we should return here
+          }
+          // since we did not return, this callback still will be called and 
+          // `processData` will be called twice
+          callback(result);
+        });
+    },
+    processData
+], done)
+```
+
+It is always good practice to `return callback(err, result)`  whenever a callback call is not the last statement of a function.
+
+
 ### Binding a context to an iterator
 
 This section is really about `bind`, not about `async`. If you are wondering how to
@@ -1248,14 +1272,9 @@ cargo.push({name: 'baz'}, function (err) {
 <a name="auto" />
 ### auto(tasks, [callback])
 
-Determines the best order for running the functions in `tasks`, based on their
-requirements. Each function can optionally depend on other functions being completed
-first, and each function is run as soon as its requirements are satisfied.
+Determines the best order for running the functions in `tasks`, based on their requirements. Each function can optionally depend on other functions being completed first, and each function is run as soon as its requirements are satisfied.
 
-If any of the functions pass an error to their callback, it will not
-complete (so any other functions depending on it will not run), and the main
-`callback` is immediately called with the error. Functions also receive an
-object containing the results of functions which have completed so far.
+If any of the functions pass an error to their callback, the `auto` sequence will stop. Further tasks will not execute (so any other functions depending on it will not run), and the main `callback` is immediately called with the error.  Functions also receive an object containing the results of functions which have completed so far.
 
 Note, all functions are called with a `results` object as a second argument,
 so it is unsafe to pass functions in the `tasks` object which cannot handle the
