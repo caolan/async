@@ -21,6 +21,7 @@
   "devDependencies": {
     "benchmark": "bestiejs/benchmark.js",
     "coveralls": "^2.11.2",
+    "jscs": "^1.13.1",
     "jshint": "~2.8.0",
     "lodash": "^3.9.0",
     "mkdirp": "~0.5.1",
@@ -43,7 +44,7 @@
   },
   "scripts": {
     "test": "npm run-script lint && nodeunit test/test-async.js",
-    "lint": "jshint lib/*.js test/*.js perf/*.js",
+    "lint": "jshint lib/*.js test/*.js perf/*.js && jscs lib/*.js test/*.js perf/*.js",
     "coverage": "nyc npm test && nyc report",
     "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
