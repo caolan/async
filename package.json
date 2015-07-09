@@ -21,11 +21,13 @@
   "devDependencies": {
     "benchmark": "bestiejs/benchmark.js",
     "coveralls": "^2.11.2",
+    "es6-promise": "^2.3.0",
     "jshint": "~2.8.0",
     "lodash": "^3.9.0",
     "mkdirp": "~0.5.1",
     "nodeunit": ">0.0.0",
     "nyc": "^2.1.0",
+    "rsvp": "^3.0.18",
     "uglify-js": "~2.4.0",
     "xyz": "^0.5.0",
     "yargs": "~3.9.1"

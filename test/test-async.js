@@ -4267,5 +4267,81 @@ exports['asyncify'] = {
           test.ok(e.message === "callback error");
           test.done();
         }
+    },
+
+    'es6-promise': {
+        'setUp': function (callback) {
+            this.Promise = require('es6-promise').Promise;
+            callback();
+        },
+
+        'resolve': function(test) {
+            var promisified = function(argument) {
+                return new this.Promise(function (resolve) {
+                    setTimeout(function () {
+                        resolve(argument + " resolved");
+                    }, 15);
+                });
+            };
+            async.asyncify(promisified)("argument", function (err, value) {
+                if (err) {
+                    return test.done(new Error(err));
+                }
+                test.ok(value === "argument resolved");
+                test.done();
+            });
+        },
+
+        'reject': function(test) {
+            var promisified = function(argument) {
+                return new this.Promise(function (resolve, reject) {
+                    reject(argument + " rejected");
+                });
+            };
+            async.asyncify(promisified)("argument", function (err) {
+                console.log(err.message);
+                test.ok(err);
+                test.ok(err.message === "argument rejected");
+                test.done();
+            });
+        }
+    },
+    
+    'rsvp': {
+        'setUp': function (callback) {
+            this.Promise = require('rsvp').Promise;
+            callback();
+        },
+
+        'resolve': function(test) {
+            var promisified = function(argument) {
+                return new this.Promise(function (resolve) {
+                    setTimeout(function () {
+                        resolve(argument + " resolved");
+                    }, 15);
+                });
+            };
+            async.asyncify(promisified)("argument", function (err, value) {
+                if (err) {
+                    return test.done(new Error(err));
+                }
+                test.ok(value === "argument resolved");
+                test.done();
+            });
+        },
+
+        'reject': function(test) {
+            var promisified = function(argument) {
+                return new this.Promise(function (resolve, reject) {
+                    reject(argument + " rejected");
+                });
+            };
+            async.asyncify(promisified)("argument", function (err) {
+                console.log(err.message);
+                test.ok(err);
+                test.ok(err.message === "argument rejected");
+                test.done();
+            });
+        }
     }
 };
