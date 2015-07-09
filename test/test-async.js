@@ -4269,110 +4269,39 @@ exports['asyncify'] = {
         }
     },
 
-    'promisified by bluebird': {
-        'setUp': function (callback) {
-            this.Promise = require('bluebird');
-            callback();
-        },
-
-        'resolve': function(test) {
-            var promisified = this.Promise.promisify(function(argument, callback) {
-                setTimeout(function () {
-                    callback(null, argument + " resolved");
-                }, 15);
-            });
-            async.asyncify(promisified)("argument", function (err, value) {
-                if (err) {
-                    return test.done(new Error("should not get an error here"));
-                }
-                test.ok(value === "argument resolved");
-                test.done();
-            });
-        },
-
-        'reject': function(test) {
-            var promisified = this.Promise.promisify(function(argument, callback) {
-                callback("argument rejected");
-            });
-            async.asyncify(promisified)("argument", function (err) {
-                test.ok(err);
-                test.ok(err.message === "argument rejected");
-                test.done();
-            });
-        }
-    },
-
-    'promisified by es6-promise': {
-        'setUp': function (callback) {
-            this.Promise = require('es6-promise').Promise;
-            callback();
-        },
-
-        'resolve': function(test) {
-            var promisified = function(argument) {
-                return new this.Promise(function (resolve) {
-                    setTimeout(function () {
-                        resolve(argument + " resolved");
-                    }, 15);
+    'promisified': ['bluebird', 'es6-promise', 'rsvp'].reduce(function(promises, name) {
+        var Promise = require(name).Promise;
+        promises[name] = {
+            'resolve': function(test) {
+                var promisified = function(argument) {
+                    return new this.Promise(function (resolve) {
+                        setTimeout(function () {
+                            resolve(argument + " resolved");
+                        }, 15);
+                    });
+                };
+                async.asyncify(promisified)("argument", function (err, value) {
+                    if (err) {
+                        return test.done(new Error("should not get an error here"));
+                    }
+                    test.ok(value === "argument resolved");
+                    test.done();
                 });
-            };
-            async.asyncify(promisified)("argument", function (err, value) {
-                if (err) {
-                    return test.done(new Error("should not get an error here"));
-                }
-                test.ok(value === "argument resolved");
-                test.done();
-            });
-        },
+            },
 
-        'reject': function(test) {
-            var promisified = function(argument) {
-                return new this.Promise(function (resolve, reject) {
-                    reject(argument + " rejected");
+            'reject': function(test) {
+                var promisified = function(argument) {
+                    return new this.Promise(function (resolve, reject) {
+                        reject(argument + " rejected");
+                    });
+                };
+                async.asyncify(promisified)("argument", function (err) {
+                    test.ok(err);
+                    test.ok(err.message === "argument rejected");
+                    test.done();
                 });
-            };
-            async.asyncify(promisified)("argument", function (err) {
-                test.ok(err);
-                test.ok(err.message === "argument rejected");
-                test.done();
-            });
-        }
-    },
-    
-    'promisified by rsvp': {
-        'setUp': function (callback) {
-            this.Promise = require('rsvp').Promise;
-            callback();
-        },
-
-        'resolve': function(test) {
-            var promisified = function(argument) {
-                return new this.Promise(function (resolve) {
-                    setTimeout(function () {
-                        resolve(argument + " resolved");
-                    }, 15);
-                });
-            };
-            async.asyncify(promisified)("argument", function (err, value) {
-                if (err) {
-                    return test.done(new Error("should not get an error here"));
-                }
-                test.ok(value === "argument resolved");
-                test.done();
-            });
-        },
-
-        'reject': function(test) {
-            var promisified = function(argument) {
-                return new this.Promise(function (resolve, reject) {
-                    reject(argument + " rejected");
-                });
-            };
-            async.asyncify(promisified)("argument", function (err) {
-                test.ok(err);
-                test.ok(err.message === "argument rejected");
-                test.done();
-            });
-        }
-    }
+            }
+        };
+        return promises;
+    }, {})
 };
