@@ -4283,7 +4283,7 @@ exports['asyncify'] = {
             });
             async.asyncify(promisified)("argument", function (err, value) {
                 if (err) {
-                    return test.done(new Error(err));
+                    return test.done(new Error("should not get an error here"));
                 }
                 test.ok(value === "argument resolved");
                 test.done();
@@ -4318,7 +4318,7 @@ exports['asyncify'] = {
             };
             async.asyncify(promisified)("argument", function (err, value) {
                 if (err) {
-                    return test.done(new Error(err));
+                    return test.done(new Error("should not get an error here"));
                 }
                 test.ok(value === "argument resolved");
                 test.done();
@@ -4355,7 +4355,7 @@ exports['asyncify'] = {
             };
             async.asyncify(promisified)("argument", function (err, value) {
                 if (err) {
-                    return test.done(new Error(err));
+                    return test.done(new Error("should not get an error here"));
                 }
                 test.ok(value === "argument resolved");
                 test.done();
