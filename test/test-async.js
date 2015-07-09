@@ -4275,6 +4275,10 @@ exports['asyncify'] = {
         'es6-promise',
         'rsvp'
     ].reduce(function(promises, name) {
+        if (isBrowser()) {
+            // node only test
+            return;
+        }
         var Promise = require(name);
         if (typeof Promise.Promise === 'function') {
             Promise = Promise.Promise;
