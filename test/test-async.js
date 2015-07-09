@@ -4299,7 +4299,6 @@ exports['asyncify'] = {
                 });
             };
             async.asyncify(promisified)("argument", function (err) {
-                console.log(err.message);
                 test.ok(err);
                 test.ok(err.message === "argument rejected");
                 test.done();
@@ -4337,7 +4336,6 @@ exports['asyncify'] = {
                 });
             };
             async.asyncify(promisified)("argument", function (err) {
-                console.log(err.message);
                 test.ok(err);
                 test.ok(err.message === "argument rejected");
                 test.done();
