@@ -4274,7 +4274,7 @@ exports['asyncify'] = {
         promises[name] = {
             'resolve': function(test) {
                 var promisified = function(argument) {
-                    return new this.Promise(function (resolve) {
+                    return new Promise(function (resolve) {
                         setTimeout(function () {
                             resolve(argument + " resolved");
                         }, 15);
@@ -4291,7 +4291,7 @@ exports['asyncify'] = {
 
             'reject': function(test) {
                 var promisified = function(argument) {
-                    return new this.Promise(function (resolve, reject) {
+                    return new Promise(function (resolve, reject) {
                         reject(argument + " rejected");
                     });
                 };
