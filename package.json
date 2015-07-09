@@ -27,6 +27,7 @@
     "jshint": "~2.8.0",
     "lodash": "^3.9.0",
     "mkdirp": "~0.5.1",
+    "native-promise-only": "^0.8.0-a",
     "nodeunit": ">0.0.0",
     "nyc": "^2.1.0",
     "rsvp": "^3.0.18",

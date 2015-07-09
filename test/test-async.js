@@ -4269,8 +4269,16 @@ exports['asyncify'] = {
         }
     },
 
-    'promisified': ['bluebird', 'es6-promise', 'rsvp'].reduce(function(promises, name) {
-        var Promise = require(name).Promise;
+    'promisified': [
+        'native-promise-only',
+        'bluebird',
+        'es6-promise',
+        'rsvp'
+    ].reduce(function(promises, name) {
+        var Promise = require(name);
+        if (typeof Promise.Promise === 'function') {
+            Promise = Promise.Promise;
+        }
         promises[name] = {
             'resolve': function(test) {
                 var promisified = function(argument) {
