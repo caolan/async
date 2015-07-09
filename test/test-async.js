@@ -4267,5 +4267,53 @@ exports['asyncify'] = {
             test.ok(e.message === "callback error");
             test.done();
         }
-    }
+    },
+
+    'promisified': [
+        'native-promise-only',
+        'bluebird',
+        'es6-promise',
+        'rsvp'
+    ].reduce(function(promises, name) {
+        if (isBrowser()) {
+            // node only test
+            return;
+        }
+        var Promise = require(name);
+        if (typeof Promise.Promise === 'function') {
+            Promise = Promise.Promise;
+        }
+        promises[name] = {
+            'resolve': function(test) {
+                var promisified = function(argument) {
+                    return new Promise(function (resolve) {
+                        setTimeout(function () {
+                            resolve(argument + " resolved");
+                        }, 15);
+                    });
+                };
+                async.asyncify(promisified)("argument", function (err, value) {
+                    if (err) {
+                        return test.done(new Error("should not get an error here"));
+                    }
+                    test.ok(value === "argument resolved");
+                    test.done();
+                });
+            },
+
+            'reject': function(test) {
+                var promisified = function(argument) {
+                    return new Promise(function (resolve, reject) {
+                        reject(argument + " rejected");
+                    });
+                };
+                async.asyncify(promisified)("argument", function (err) {
+                    test.ok(err);
+                    test.ok(err.message === "argument rejected");
+                    test.done();
+                });
+            }
+        };
+        return promises;
+    }, {})
 };
