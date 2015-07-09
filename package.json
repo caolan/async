@@ -20,6 +20,7 @@
   "license": "MIT",
   "devDependencies": {
     "benchmark": "bestiejs/benchmark.js",
+    "bluebird": "^2.9.32",
     "coveralls": "^2.11.2",
     "es6-promise": "^2.3.0",
     "jscs": "^1.13.1",
