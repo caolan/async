@@ -4269,6 +4269,39 @@ exports['asyncify'] = {
         }
     },
 
+    'bluebird': {
+        'setUp': function (callback) {
+            this.Promise = require('bluebird');
+            callback();
+        },
+
+        'resolve': function(test) {
+            var promisified = this.Promise.promisify(function(argument, callback) {
+                setTimeout(function () {
+                    callback(null, argument + " resolved");
+                }, 15);
+            });
+            async.asyncify(promisified)("argument", function (err, value) {
+                if (err) {
+                    return test.done(new Error(err));
+                }
+                test.ok(value === "argument resolved");
+                test.done();
+            });
+        },
+
+        'reject': function(test) {
+            var promisified = this.Promise.promisify(function(argument, callback) {
+                callback("argument rejected");
+            });
+            async.asyncify(promisified)("argument", function (err) {
+                test.ok(err);
+                test.ok(err.message === "argument rejected");
+                test.done();
+            });
+        }
+    },
+
     'es6-promise': {
         'setUp': function (callback) {
             this.Promise = require('es6-promise').Promise;
