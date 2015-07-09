@@ -4269,7 +4269,7 @@ exports['asyncify'] = {
         }
     },
 
-    'bluebird': {
+    'promisified by bluebird': {
         'setUp': function (callback) {
             this.Promise = require('bluebird');
             callback();
@@ -4302,7 +4302,7 @@ exports['asyncify'] = {
         }
     },
 
-    'es6-promise': {
+    'promisified by es6-promise': {
         'setUp': function (callback) {
             this.Promise = require('es6-promise').Promise;
             callback();
@@ -4339,7 +4339,7 @@ exports['asyncify'] = {
         }
     },
     
-    'rsvp': {
+    'promisified by rsvp': {
         'setUp': function (callback) {
             this.Promise = require('rsvp').Promise;
             callback();
