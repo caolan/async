@@ -191,8 +191,8 @@ Some functions are also available in the following forms:
 * [`each`](#each), `eachSeries`, `eachLimit`
 * [`forEachOf`](#forEachOf), `forEachOfSeries`, `forEachOfLimit`
 * [`map`](#map), `mapSeries`, `mapLimit`
-* [`filter`](#filter), `filterSeries`
-* [`reject`](#reject), `rejectSeries`
+* [`filter`](#filter), `filterSeries`, `filterLimit`
+* [`reject`](#reject), `rejectSeries`, `rejectLimit`
 * [`reduce`](#reduce), [`reduceRight`](#reduceRight)
 * [`detect`](#detect), `detectSeries`
 * [`sortBy`](#sortBy)
@@ -422,6 +422,7 @@ async.filter(['file1','file2','file3'], fs.exists, function(results){
 __Related__
 
 * filterSeries(arr, iterator, [callback])
+* filterLimit(arr, iterator, [callback])
 
 ---------------------------------------
 
@@ -433,6 +434,7 @@ The opposite of [`filter`](#filter). Removes values that pass an `async` truth t
 __Related__
 
 * rejectSeries(arr, iterator, [callback])
+* rejectLimit(arr, iterator, [callback])
 
 ---------------------------------------
 
