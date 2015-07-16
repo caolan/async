@@ -609,7 +609,7 @@ async.some(['file1','file2','file3'], fs.exists, function(result){
 ---------------------------------------
 
 <a name="someLimit" />
-### someLimit(arr, limit iterator, callback)
+### someLimit(arr, limit, iterator, callback)
 
 __Alias:__ `anyLimit`
 
