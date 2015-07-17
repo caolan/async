@@ -4,5 +4,6 @@ node_js:
   - "0.12"
   - "iojs-v2.1.0"
 after_success: npm run coveralls
-addons:
-  firefox: "39.0"
+before_script:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
