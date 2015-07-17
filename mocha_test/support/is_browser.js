@@ -1,8 +1,4 @@
-support = {}
-
-support.isBrowser = function() {
+module.exports = function() {
     return (typeof process === "undefined") ||
         (process + "" !== "[object process]"); // browserify
 }
-
-module.exports = support

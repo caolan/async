@@ -1,6 +1,6 @@
 var async = require('../lib/async');
 var expect = require('chai').expect;
-var isBrowser = require('./support').isBrowser;
+var isBrowser = require('./support/is_browser');
 
 describe('forever', function(){
     context('function is asynchronous', function(){
