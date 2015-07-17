@@ -6,6 +6,7 @@ module.exports = function (config) {
     preprocessors: {
       'mocha_test/*.js': ['browserify']
     },
+    reporters: ['mocha'],
     singleRun: true
   });
 }

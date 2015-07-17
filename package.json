@@ -30,6 +30,7 @@
     "karma-browserify": "^4.2.1",
     "karma-firefox-launcher": "^0.1.6",
     "karma-mocha": "^0.2.0",
+    "karma-mocha-reporter": "^1.0.2",
     "lodash": "^3.9.0",
     "mkdirp": "~0.5.1",
     "mocha": "^2.2.5",
