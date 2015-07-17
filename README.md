@@ -103,7 +103,7 @@ async.waterfall([
             callback(new Error("failed getting something:" + err.message));
             // we should return here
           }
-          // since we did not return, this callback still will be called and 
+          // since we did not return, this callback still will be called and
           // `processData` will be called twice
           callback(result);
         });
@@ -191,16 +191,14 @@ Some functions are also available in the following forms:
 * [`each`](#each), `eachSeries`, `eachLimit`
 * [`forEachOf`](#forEachOf), `forEachOfSeries`, `forEachOfLimit`
 * [`map`](#map), `mapSeries`, `mapLimit`
-* [`filter`](#filter), `filterSeries`
-* [`reject`](#reject), `rejectSeries`
+* [`filter`](#filter), `filterSeries`, `filterLimit`
+* [`reject`](#reject), `rejectSeries`, `rejectLimit`
 * [`reduce`](#reduce), [`reduceRight`](#reduceRight)
 * [`detect`](#detect), `detectSeries`
 * [`sortBy`](#sortBy)
-* [`some`](#some)
-* [`someLimit`](#someLimit)
-* [`every`](#every)
-* [`concat`](#concat)
-* [`concatSeries`](#concatSeries)
+* [`some`](#some), `someLimit`
+* [`every`](#every), `everyLimit`
+* [`concat`](#concat), `concatSeries`
 
 ### Control Flow
 
@@ -424,6 +422,7 @@ async.filter(['file1','file2','file3'], fs.exists, function(results){
 __Related__
 
 * filterSeries(arr, iterator, [callback])
+* filterLimit(arr, iterator, [callback])
 
 ---------------------------------------
 
@@ -435,6 +434,7 @@ The opposite of [`filter`](#filter). Removes values that pass an `async` truth t
 __Related__
 
 * rejectSeries(arr, iterator, [callback])
+* rejectLimit(arr, iterator, [callback])
 
 ---------------------------------------
 
@@ -606,26 +606,9 @@ async.some(['file1','file2','file3'], fs.exists, function(result){
 });
 ```
 
----------------------------------------
+__Related__
 
-<a name="someLimit" />
-### someLimit(arr, limit, iterator, callback)
-
-__Alias:__ `anyLimit`
-
-The same as [`some`](#some), only no more than `limit` `iterator`s will be simultaneously 
-running at any time.
-
-__Arguments__
-
-* `arr` - An array to iterate over.
-* `limit` - The maximum number of `iterator`s to run at any time.
-* `iterator(item, callback)` - A truth test to apply to each item in the array
-  in parallel. The iterator is passed a callback(truthValue) which must be 
-  called with a boolean argument once it has completed.
-* `callback(result)` - A callback which is called as soon as any iterator returns
-  `true`, or after all the iterator functions have finished. Result will be
-  either `true` or `false` depending on the values of the async tests.
+* someLimit(arr, limit, iterator, callback)
 
 ---------------------------------------
 
@@ -658,6 +641,10 @@ async.every(['file1','file2','file3'], fs.exists, function(result){
     // if result is true then every file exists
 });
 ```
+
+__Related__
+
+* everyLimit(arr, limit, iterator, callback)
 
 ---------------------------------------
 
