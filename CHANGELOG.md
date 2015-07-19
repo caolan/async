@@ -1,3 +1,14 @@
+# v1.4.0
+
+- Asyncify now supports promises (#840)
+- Added limit versions of filter and reject (#836)
+- Add limit versions for detect, some and every (#828, #829)
+- Some, every and detect now short circuit early (#828, #829)
+- Improve detection of global script (#804) enabling use in WebWorkers
+- whilst now called with arguments from iterator (#823)
+- during now gets called with arguments from iterator (#824)
+- Code simplifications and optimizations aplenty ([diff](https://github.com/caolan/async/compare/v1.3.0...v1.4.0))
+
 # v1.3.0
 
 New Features:
