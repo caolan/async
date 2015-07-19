@@ -194,7 +194,7 @@ Some functions are also available in the following forms:
 * [`filter`](#filter), `filterSeries`, `filterLimit`
 * [`reject`](#reject), `rejectSeries`, `rejectLimit`
 * [`reduce`](#reduce), [`reduceRight`](#reduceRight)
-* [`detect`](#detect), `detectSeries`
+* [`detect`](#detect), `detectSeries`, `detectLimit`
 * [`sortBy`](#sortBy)
 * [`some`](#some), `someLimit`
 * [`every`](#every), `everyLimit`
@@ -522,6 +522,7 @@ async.detect(['file1','file2','file3'], fs.exists, function(result){
 __Related__
 
 * detectSeries(arr, iterator, [callback])
+* detectLimit(arr, limit, iterator, [callback])
 
 ---------------------------------------
 
