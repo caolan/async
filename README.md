@@ -422,7 +422,7 @@ async.filter(['file1','file2','file3'], fs.exists, function(results){
 __Related__
 
 * filterSeries(arr, iterator, [callback])
-* filterLimit(arr, iterator, [callback])
+* filterLimit(arr, limit, iterator, [callback])
 
 ---------------------------------------
 
@@ -434,7 +434,7 @@ The opposite of [`filter`](#filter). Removes values that pass an `async` truth t
 __Related__
 
 * rejectSeries(arr, iterator, [callback])
-* rejectLimit(arr, iterator, [callback])
+* rejectLimit(arr, limit, iterator, [callback])
 
 ---------------------------------------
 
