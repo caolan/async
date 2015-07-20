@@ -85,50 +85,6 @@ function isBrowser() {
         (process + "" !== "[object process]"); // browserify
 }
 
-exports['forever'] = {
-
-    'async': function (test) {
-    test.expect(2);
-    var counter = 0;
-    function addOne(callback) {
-        counter++;
-        if (counter === 50) {
-            return callback('too big!');
-        }
-        async.setImmediate(function () {
-            callback();
-        });
-    }
-    async.forever(addOne, function (err) {
-        test.equal(err, 'too big!');
-        test.equal(counter, 50);
-        test.done();
-    });
-},
-
-    'sync': function (test) {
-    if (isBrowser()) {
-        // this will take forever in a browser
-        return test.done();
-    }
-    test.expect(2);
-    var counter = 0;
-    function addOne(callback) {
-        counter++;
-        if (counter === 50000) { // needs to be huge to potentially overflow stack in node
-            return callback('too big!');
-        }
-        callback();
-    }
-    async.forever(addOne, function (err) {
-        test.equal(err, 'too big!');
-        test.equal(counter, 50000);
-        test.done();
-    });
-}
-
-};
-
 exports['applyEach'] = function (test) {
     test.expect(5);
     var call_order = [];
