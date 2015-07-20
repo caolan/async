@@ -23,8 +23,8 @@ clean:
 	rm -rf $(BUILDDIR)
 
 lint:
-	$(JSHINT) $(SRC) test/*.js perf/*.js
-	$(JSCS) $(SRC) test/*.js perf/*.js
+	$(JSHINT) $(SRC) test/*.js mocha_test/* perf/*.js
+	$(JSCS) $(SRC) test/*.js mocha_test/* perf/*.js
 
 .PHONY: test lint build all clean
 

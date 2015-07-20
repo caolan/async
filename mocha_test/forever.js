@@ -6,7 +6,7 @@ describe('forever', function(){
     context('function is asynchronous', function(){
         it('executes the function over and over until it yields an error', function(done){
             var counter = 0;
-            addOne = function (callback) {
+            function addOne(callback) {
                 counter++;
                 if (counter === 50) {
                     return callback('too big!');
@@ -20,7 +20,7 @@ describe('forever', function(){
                 expect(counter).to.eql(50);
                 done();
             });
-        })
+        });
     });
 
     context('function is synchronous', function(){

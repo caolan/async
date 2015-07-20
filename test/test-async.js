@@ -1,3 +1,8 @@
+/**
+ * NOTE:  We are in the process of migrating these tests to Mocha.  If you are
+ * adding a new test, consider creating a new spec file in mocha_tests/
+ */
+
 var async = require('../lib/async');
 
 if (!Function.prototype.bind) {

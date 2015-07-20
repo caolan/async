@@ -21,6 +21,9 @@
     "node": true,
     "globals": {
         "self": true,
-        "define": true
+        "define": true,
+        "describe": true,
+        "context": true,
+        "it": true
     }
 }
