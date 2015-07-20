@@ -224,22 +224,22 @@
     async.forEachOf =
     async.eachOf = function (object, iterator, callback) {
         callback = _once(callback || noop);
-        object = object || [];
-        var size = _isArrayLike(object) ? object.length : _keys(object).length;
-        var completed = 0;
-        if (!size) {
-            return callback(null);
-        }
-        _each(object, function (value, key) {
+
+        var nextKey = _keyIterator(obj);
+        var key, running = 0;
+        while ((key = nextKey()) != null) {
+            running += 1;
             iterator(object[key], key, only_once(done));
-        });
+        }
+        if (!running) {
+            callback (null);
+        }
         function done(err) {
             if (err) {
                 callback(err);
             }
             else {
-                completed += 1;
-                if (completed >= size) {
+                if (--running) {
                     callback(null);
                 }
             }
