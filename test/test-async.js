@@ -1,3 +1,8 @@
+/**
+ * NOTE:  We are in the process of migrating these tests to Mocha.  If you are
+ * adding a new test, consider creating a new spec file in mocha_tests/
+ */
+
 var async = require('../lib/async');
 
 if (!Function.prototype.bind) {
@@ -84,50 +89,6 @@ function isBrowser() {
     return (typeof process === "undefined") ||
         (process + "" !== "[object process]"); // browserify
 }
-
-exports['forever'] = {
-
-    'async': function (test) {
-    test.expect(2);
-    var counter = 0;
-    function addOne(callback) {
-        counter++;
-        if (counter === 50) {
-            return callback('too big!');
-        }
-        async.setImmediate(function () {
-            callback();
-        });
-    }
-    async.forever(addOne, function (err) {
-        test.equal(err, 'too big!');
-        test.equal(counter, 50);
-        test.done();
-    });
-},
-
-    'sync': function (test) {
-    if (isBrowser()) {
-        // this will take forever in a browser
-        return test.done();
-    }
-    test.expect(2);
-    var counter = 0;
-    function addOne(callback) {
-        counter++;
-        if (counter === 50000) { // needs to be huge to potentially overflow stack in node
-            return callback('too big!');
-        }
-        callback();
-    }
-    async.forever(addOne, function (err) {
-        test.equal(err, 'too big!');
-        test.equal(counter, 50000);
-        test.done();
-    });
-}
-
-};
 
 exports['applyEach'] = function (test) {
     test.expect(5);
@@ -726,6 +687,19 @@ exports['retry when all attempts succeeds'] = function(test) {
         test.equal(result, erroredResult + times, "Incorrect result was returned");
         test.done();
     });
+};
+
+exports['retry fails with invalid arguments'] = function(test) {
+    test.throws(function() {
+        async.retry("");
+    });
+    test.throws(function() {
+        async.retry();
+    });
+    test.throws(function() {
+        async.retry(function() {}, 2, function() {});
+    });
+    test.done();
 };
 
 exports['retry with interval when all attempts succeeds'] = function(test) {
@@ -2541,6 +2515,19 @@ exports['sortBy inverted'] = function(test){
     });
 };
 
+exports['sortBy error'] = function(test){
+    test.expect(1);
+    var error = new Error('asdas');
+    async.sortBy([{a:1},{a:15},{a:6}], function(x, callback){
+        async.setImmediate(function(){
+            callback(error);
+        });
+    }, function(err){
+        test.equal(err, error);
+        test.done();
+    });
+};
+
 exports['apply'] = function(test){
     test.expect(6);
     var fn = function(){
@@ -3019,6 +3006,22 @@ exports['doWhilst callback params'] = function (test) {
     );
 };
 
+exports['doWhilst - error'] = function (test) {
+    test.expect(1);
+    var error = new Error('asdas');
+
+    async.doWhilst(
+        function (cb) {
+            cb(error);
+        },
+        function () {},
+        function (err) {
+            test.equal(err, error);
+            test.done();
+        }
+    );
+};
+
 exports['during'] = function (test) {
     var call_order = [];
 
@@ -3073,6 +3076,40 @@ exports['doDuring'] = function (test) {
                 ['iterator', 4], ['test', 5],
             ]);
             test.equals(count, 5);
+            test.done();
+        }
+    );
+};
+
+exports['doDuring - error test'] = function (test) {
+    test.expect(1);
+    var error = new Error('asdas');
+
+    async.doDuring(
+        function (cb) {
+            cb(error);
+        },
+        function () {},
+        function (err) {
+            test.equal(err, error);
+            test.done();
+        }
+    );
+};
+
+exports['doDuring - error iterator'] = function (test) {
+    test.expect(1);
+    var error = new Error('asdas');
+
+    async.doDuring(
+        function (cb) {
+            cb(null);
+        },
+        function (cb) {
+            cb(error);
+        },
+        function (err) {
+            test.equal(err, error);
             test.done();
         }
     );
@@ -4307,6 +4344,17 @@ exports['asyncify'] = {
         parse("{\"a\":1}", function (err, result) {
             test.ok(!err);
             test.ok(result.a === 1);
+            test.done();
+        });
+    },
+
+    'asyncify null': function (test) {
+        var parse = async.asyncify(function() {
+            return null;
+        });
+        parse("{\"a\":1}", function (err, result) {
+            test.ok(!err);
+            test.ok(result === null);
             test.done();
         });
     },

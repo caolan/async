@@ -62,12 +62,6 @@
         return _toString.call(obj) === '[object Array]';
     };
 
-    // Ported from underscore.js isObject
-    var _isObject = function(obj) {
-        var type = typeof obj;
-        return type === 'function' || type === 'object' && !!obj;
-    };
-
     function _isArrayLike(arr) {
         return _isArray(arr) || (
             // has a positive integer length property
@@ -171,6 +165,7 @@
             switch (startIndex) {
                 case 0: return func.call(this, rest);
                 case 1: return func.call(this, arguments[0], rest);
+                case 2: return func.call(this, arguments[0], arguments[1], rest);
             }
             // Currently unused but handle cases outside of the switch statement:
             // var args = Array(startIndex + 1);
@@ -392,26 +387,18 @@
     function _filter(eachfn, arr, iterator, callback) {
         var results = [];
         eachfn(arr, function (x, index, callback) {
-            iterator(x, function (err, v) {
-                if (err) {
-                    callback(err);
-                } else {
-                    if (v) {
-                        results.push({index: index, value: x});
-                    }
-                    callback();
+            iterator(x, function (v) {
+                if (v) {
+                    results.push({index: index, value: x});
                 }
+                callback();
             });
-        }, function (err) {
-            if (err) {
-                callback(err);
-            } else {
-                callback(null, _map(results.sort(function (a, b) {
-                    return a.index - b.index;
-                }), function (x) {
-                    return x.value;
-                }));
-            }
+        }, function () {
+            callback(_map(results.sort(function (a, b) {
+                return a.index - b.index;
+            }), function (x) {
+                return x.value;
+            }));
         });
     }
 
@@ -426,42 +413,26 @@
 
     function _reject(eachfn, arr, iterator, callback) {
         _filter(eachfn, arr, function(value, cb) {
-            iterator(value, function(err, v) {
-                if (err) {
-                    cb(err);
-                } else {
-                    cb(null, !v);
-                }
+            iterator(value, function(v) {
+                cb(!v);
             });
         }, callback);
     }
-
     async.reject = doParallel(_reject);
     async.rejectLimit = doParallelLimit(_reject);
     async.rejectSeries = doSeries(_reject);
 
     function _createTester(eachfn, check, getResult) {
         return function(arr, limit, iterator, cb) {
-            function done(err) {
-                if (cb) {
-                    if (err) {
-                        cb(err);
-                    } else {
-                        cb(null, getResult(false, void 0));
-                    }
-                }
+            function done() {
+                if (cb) cb(getResult(false, void 0));
             }
             function iteratee(x, _, callback) {
                 if (!cb) return callback();
-                iterator(x, function (err, v) {
-                    if (cb) {
-                        if (err) {
-                            cb(err);
-                            cb = iterator = false;
-                        } else if (check(v)) {
-                            cb(null, getResult(true, x));
-                            cb = iterator = false;
-                        }
+                iterator(x, function (v) {
+                    if (cb && check(v)) {
+                        cb(getResult(true, x));
+                        cb = iterator = false;
                     }
                     callback();
                 });
@@ -622,7 +593,7 @@
                 acc.times = parseInt(t.times, 10) || DEFAULT_TIMES;
                 acc.interval = parseInt(t.interval, 10) || DEFAULT_INTERVAL;
             } else {
-                throw new Error('Unsupported argument type for \'times\': ' + typeof t);
+                throw new Error('Unsupported argument type for \'times\': ' + typeof(t));
             }
         }
 
@@ -1042,7 +1013,7 @@
     function _console_fn(name) {
         return _restParam(function (fn, args) {
             fn.apply(null, args.concat([_restParam(function (err, args) {
-                if (typeof console === 'object') {
+                if (typeof console !== 'undefined') {
                     if (err) {
                         if (console.error) {
                             console.error(err);
@@ -1215,7 +1186,7 @@
                 return callback(e);
             }
             // if result is Promise object
-            if (_isObject(result) && typeof result.then === "function") {
+            if (typeof result !== 'undefined' && typeof result.then === "function") {
                 result.then(function(value) {
                     callback(null, value);
                 }).catch(function(err) {
@@ -1228,11 +1199,11 @@
     };
 
     // Node.js
-    if (typeof module === 'object' && module.exports) {
+    if (typeof module !== 'undefined' && module.exports) {
         module.exports = async;
     }
     // AMD / RequireJS
-    else if (typeof define === 'function' && define.amd) {
+    else if (typeof define !== 'undefined' && define.amd) {
         define([], function () {
             return async;
         });

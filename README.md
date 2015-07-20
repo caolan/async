@@ -56,9 +56,7 @@ There are many more functions available so take a look at the docs below for a
 full list. This module aims to be comprehensive, so if you feel anything is
 missing please create a GitHub issue for it.
 
-## Common Pitfalls
-
-<a name="stack-overflow">
+## Common Pitfalls <sub>[(StackOverflow)](http://stackoverflow.com/questions/tagged/async.js)</sub>
 ### Synchronous iteration functions
 
 If you get an error like `RangeError: Maximum call stack size exceeded.` or other stack overflow issues when using async, you are likely using a synchronous iterator.  By *synchronous* we mean a function that calls its callback on the same tick in the javascript event loop, without doing any I/O or using any timers.  Calling many callbacks iteratively will quickly overflow the stack. If you run into this issue, just defer your callback with `async.nextTick` to start a new call stack on the next tick of the event loop.
@@ -107,7 +105,7 @@ async.waterfall([
             callback(new Error("failed getting something:" + err.message));
             // we should return here
           }
-          // since we did not return, this callback still will be called and 
+          // since we did not return, this callback still will be called and
           // `processData` will be called twice
           callback(result);
         });
@@ -195,16 +193,14 @@ Some functions are also available in the following forms:
 * [`each`](#each), `eachSeries`, `eachLimit`
 * [`forEachOf`](#forEachOf), `forEachOfSeries`, `forEachOfLimit`
 * [`map`](#map), `mapSeries`, `mapLimit`
-* [`filter`](#filter), `filterSeries`
-* [`reject`](#reject), `rejectSeries`
+* [`filter`](#filter), `filterSeries`, `filterLimit`
+* [`reject`](#reject), `rejectSeries`, `rejectLimit`
 * [`reduce`](#reduce), [`reduceRight`](#reduceRight)
-* [`detect`](#detect), `detectSeries`
+* [`detect`](#detect), `detectSeries`, `detectLimit`
 * [`sortBy`](#sortBy)
-* [`some`](#some)
-* [`someLimit`](#someLimit)
-* [`every`](#every)
-* [`concat`](#concat)
-* [`concatSeries`](#concatSeries)
+* [`some`](#some), `someLimit`
+* [`every`](#every), `everyLimit`
+* [`concat`](#concat), `concatSeries`
 
 ### Control Flow
 
@@ -429,6 +425,7 @@ async.filter(['file1','file2','file3'], function(filePath, callback) {
 __Related__
 
 * filterSeries(arr, iterator, [callback])
+* filterLimit(arr, limit, iterator, [callback])
 
 ---------------------------------------
 
@@ -440,6 +437,7 @@ The opposite of [`filter`](#filter). Removes values that pass an `async` truth t
 __Related__
 
 * rejectSeries(arr, iterator, [callback])
+* rejectLimit(arr, limit, iterator, [callback])
 
 ---------------------------------------
 
@@ -531,6 +529,7 @@ async.detect(['file1','file2','file3'], function(filePath, callback) {
 __Related__
 
 * detectSeries(arr, iterator, [callback])
+* detectLimit(arr, limit, iterator, [callback])
 
 ---------------------------------------
 
@@ -615,26 +614,9 @@ async.some(['file1','file2','file3'], function(filePath, callback) {
 });
 ```
 
----------------------------------------
+__Related__
 
-<a name="someLimit" />
-### someLimit(arr, limit, iterator, callback)
-
-__Alias:__ `anyLimit`
-
-The same as [`some`](#some), only no more than `limit` `iterator`s will be simultaneously 
-running at any time.
-
-__Arguments__
-
-* `arr` - An array to iterate over.
-* `limit` - The maximum number of `iterator`s to run at any time.
-* `iterator(item, callback)` - A truth test to apply to each item in the array
-  in parallel. The iterator is passed a callback(truthValue) which must be 
-  called with a boolean argument once it has completed.
-* `callback(result)` - A callback which is called as soon as any iterator returns
-  `true`, or after all the iterator functions have finished. Result will be
-  either `true` or `false` depending on the values of the async tests.
+* someLimit(arr, limit, iterator, callback)
 
 ---------------------------------------
 
@@ -667,6 +649,10 @@ async.every(['file1','file2','file3'], function(filePath, callback) {
     // if result is true then every file exists
 });
 ```
+
+__Related__
+
+* everyLimit(arr, limit, iterator, callback)
 
 ---------------------------------------
 
