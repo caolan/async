@@ -4311,6 +4311,17 @@ exports['asyncify'] = {
         });
     },
 
+    'asyncify null': function (test) {
+        var parse = async.asyncify(function() {
+            return null;
+        });
+        parse("{\"a\":1}", function (err, result) {
+            test.ok(!err);
+            test.ok(result === null);
+            test.done();
+        });
+    },
+
     'variable numbers of arguments': function (test) {
         async.asyncify(function (x, y, z) {
             test.ok(arguments.length === 3);
