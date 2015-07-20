@@ -9,12 +9,12 @@ XYZ = node_modules/.bin/xyz --repo git@github.com:caolan/async.git
 BUILDDIR = dist
 SRC = lib/async.js
 
-all: clean test build
+all: lint test clean build
 
 build: $(wildcard  lib/*.js)
 	mkdir -p $(BUILDDIR)
-	$(UGLIFY) $(SRC) -mc > $(BUILDDIR)/async.min.js
 	cp $(SRC) $(BUILDDIR)/async.js
+	cd $(BUILDDIR) && $(UGLIFY) async.js -mc --source-map async.min.map -o async.min.js
 
 test:
 	$(NODEUNIT) test
