@@ -2969,6 +2969,22 @@ exports['doWhilst callback params'] = function (test) {
     );
 };
 
+exports['doWhilst - error'] = function (test) {
+    test.expect(1);
+    var error = new Error('asdas');
+
+    async.doWhilst(
+        function (cb) {
+            cb(error);
+        },
+        function () {},
+        function (err) {
+            test.equal(err, error);
+            test.done();
+        }
+    );
+};
+
 exports['during'] = function (test) {
     var call_order = [];
 
@@ -3023,6 +3039,40 @@ exports['doDuring'] = function (test) {
                 ['iterator', 4], ['test', 5],
             ]);
             test.equals(count, 5);
+            test.done();
+        }
+    );
+};
+
+exports['doDuring - error test'] = function (test) {
+    test.expect(1);
+    var error = new Error('asdas');
+
+    async.doDuring(
+        function (cb) {
+            cb(error);
+        },
+        function () {},
+        function (err) {
+            test.equal(err, error);
+            test.done();
+        }
+    );
+};
+
+exports['doDuring - error iterator'] = function (test) {
+    test.expect(1);
+    var error = new Error('asdas');
+
+    async.doDuring(
+        function (cb) {
+            cb(null);
+        },
+        function (cb) {
+            cb(error);
+        },
+        function (err) {
+            test.equal(err, error);
             test.done();
         }
     );
