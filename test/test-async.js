@@ -728,6 +728,19 @@ exports['retry when all attempts succeeds'] = function(test) {
     });
 };
 
+exports['retry fails with invalid arguments'] = function(test) {
+    test.throws(function() {
+        async.retry("");
+    });
+    test.throws(function() {
+        async.retry();
+    });
+    test.throws(function() {
+        async.retry(function() {}, 2, function() {});
+    });
+    test.done();
+};
+
 exports['retry with interval when all attempts succeeds'] = function(test) {
     var times = 3;
     var interval = 500;
