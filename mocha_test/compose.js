@@ -62,7 +62,6 @@ describe('compose', function(){
         var context = {};
         var add2Context = null;
         var mul3Context = null;
-
         var add2 = function (n, cb) {
             add2Context = this;
             setTimeout(function () {
