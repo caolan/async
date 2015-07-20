@@ -2478,6 +2478,19 @@ exports['sortBy inverted'] = function(test){
     });
 };
 
+exports['sortBy error'] = function(test){
+    test.expect(1);
+    var error = new Error('asdas');
+    async.sortBy([{a:1},{a:15},{a:6}], function(x, callback){
+        async.setImmediate(function(){
+            callback(error);
+        });
+    }, function(err, result){
+        test.equal(err, error);
+        test.done();
+    });
+};
+
 exports['apply'] = function(test){
     test.expect(6);
     var fn = function(){
