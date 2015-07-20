@@ -2485,7 +2485,7 @@ exports['sortBy error'] = function(test){
         async.setImmediate(function(){
             callback(error);
         });
-    }, function(err, result){
+    }, function(err){
         test.equal(err, error);
         test.done();
     });
