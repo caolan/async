@@ -3,7 +3,7 @@
   "description": "Higher-order functions and common patterns for asynchronous code",
   "main": "lib/async.js",
   "author": "Caolan McMahon",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "keywords": [
     "async",
     "callback",
