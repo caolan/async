@@ -9,3 +9,5 @@ component.json
 bower.json
 .travis.yml
 .jshintrc
+support/
+.jscsrc
