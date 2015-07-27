@@ -11,3 +11,4 @@ bower.json
 .jshintrc
 support/
 .jscsrc
+mocha_test/

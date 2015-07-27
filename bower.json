@@ -40,7 +40,11 @@
     "node_modules",
     "bower_components",
     "test",
-    "tests"
+    "tests",
+    "support",
+    "deps",
+    "mocha_test",
+    "perf"
   ],
   "authors": [
     "Caolan McMahon"

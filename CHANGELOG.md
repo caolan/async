@@ -1,3 +1,7 @@
+# v1.4.1
+
+- Removed unnecessary files from npm releases (#861)
+
 # v1.4.0
 
 - `asyncify` now supports promises (#840)
