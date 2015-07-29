@@ -71,12 +71,6 @@
         );
     }
 
-    function _each(coll, iterator) {
-        return _isArrayLike(coll) ?
-            _arrayEach(coll, iterator) :
-            _forEachOf(coll, iterator);
-    }
-
     function _arrayEach(arr, iterator) {
         var index = -1,
             length = arr.length;
@@ -225,7 +219,7 @@
     async.eachOf = function (object, iterator, callback) {
         callback = _once(callback || noop);
 
-        var nextKey = _keyIterator(obj);
+        var nextKey = _keyIterator(object);
         var key, running = 0;
         while ((key = nextKey()) != null) {
             running += 1;
