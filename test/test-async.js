@@ -2329,6 +2329,43 @@ exports['detectSeries - ensure stop'] = function (test) {
     });
 };
 
+exports['detectLimit'] = function(test){
+    test.expect(2);
+    var call_order = [];
+    async.detectLimit([3, 2, 1], 2, detectIterator.bind(this, call_order), function(result) {
+        call_order.push('callback');
+        test.equals(result, 2);
+    });
+    setTimeout(function() {
+        test.same(call_order, [2, 'callback', 3]);
+        test.done();
+    }, 100);
+};
+
+exports['detectLimit - multiple matches'] = function(test){
+    test.expect(2);
+    var call_order = [];
+    async.detectLimit([3,2,2,1,2], 2, detectIterator.bind(this, call_order), function(result){
+        call_order.push('callback');
+        test.equals(result, 2);
+    });
+    setTimeout(function(){
+        test.same(call_order, [2, 'callback', 3]);
+        test.done();
+    }, 100);
+};
+
+exports['detectLimit - ensure stop'] = function (test) {
+    test.expect(1);
+    async.detectLimit([1, 2, 3, 4, 5], 2, function (num, cb) {
+        if (num > 4) throw new Error("detectLimit did not stop iterating");
+        cb(num === 3);
+    }, function (result) {
+        test.equals(result, 3);
+        test.done();
+    });
+};
+
 exports['sortBy'] = function(test){
     test.expect(2);
 
