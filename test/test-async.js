@@ -1810,6 +1810,7 @@ exports['map'] = {
         callback(null, val * 2);
     }, function (err, result) {
         if (err) throw err;
+        test.equals(Object.prototype.toString.call(result), '[object Object]');
         test.same(result, {a: 2, b: 4, c: 6});
         test.done();
     });
