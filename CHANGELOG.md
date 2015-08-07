@@ -1,6 +1,5 @@
 # v1.4.1
 
-- Fix bug on Android 2.3 (#870)
 - Add in overlooked `detectLimit` method (#866)
 - Removed unnecessary files from npm releases (#861)
 - Removed usage of a reserved word to prevent :boom: in older environments (#870)
