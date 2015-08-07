@@ -34,4 +34,4 @@ release-major release-minor release-patch: all
 	./support/sync-package-managers.js
 	git add --force $(BUILDDIR)
 	git commit -am "update minified build"; true
-	@$(XYZ) --increment $(@:release-%=%)
+	$(XYZ) --increment $(@:release-%=%)
