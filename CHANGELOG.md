@@ -1,6 +1,7 @@
 # v1.4.1
 
 - Removed unnecessary files from npm releases (#861)
+- Removed usage of a reserved word to prevent :boom: in older environments (#870)
 
 # v1.4.0
 
