@@ -1,3 +1,7 @@
+# v1.4.2
+
+- Ensure coverage files don't get published on npm (#879)
+
 # v1.4.1
 
 - Add in overlooked `detectLimit` method (#866)
