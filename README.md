@@ -103,7 +103,7 @@ async.waterfall([
           }
           // since we did not return, this callback still will be called and
           // `processData` will be called twice
-          callback(result);
+          callback(null, result);
         });
     },
     processData
