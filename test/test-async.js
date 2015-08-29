@@ -1347,6 +1347,19 @@ exports['forEachOf'] = function(test){
     });
 };
 
+exports['forEachOf - instant resolver'] = function(test){
+    test.expect(1);
+    var args = [];
+    async.forEachOf({ a: 1, b: 2 }, function(x, k, cb) {
+        args.push(k, x);
+        cb();
+    }, function(){
+        // ensures done callback isn't called before all items iterated
+        test.same(args, ["a", 1, "b", 2]);
+        test.done();
+    });
+};
+
 exports['forEachOf empty object'] = function(test){
     test.expect(1);
     async.forEachOf({}, function(value, key, callback){
