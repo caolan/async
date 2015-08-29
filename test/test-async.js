@@ -5,16 +5,6 @@
 
 var async = require('../lib/async');
 
-if (!Function.prototype.bind) {
-    Function.prototype.bind = function (thisArg) {
-        var args = Array.prototype.slice.call(arguments, 1);
-        var self = this;
-        return function () {
-            self.apply(thisArg, args.concat(Array.prototype.slice.call(arguments)));
-        };
-    };
-}
-
 function eachIterator(args, x, callback) {
     setTimeout(function(){
         args.push(x);
