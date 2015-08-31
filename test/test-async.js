@@ -1385,6 +1385,11 @@ exports['forEachOf no callback'] = function(test){
     async.forEachOf({ a: 1 }, forEachOfNoCallbackIterator.bind(this, test));
 };
 
+exports['eachOf alias'] = function(test){
+    test.equals(async.eachOf, async.forEachOf);
+    test.done();
+};
+
 exports['forEachOf with array'] = function(test){
     var args = [];
     async.forEachOf([ "a", "b" ], forEachOfIterator.bind(this, args), function(err){
@@ -1641,6 +1646,18 @@ exports['forEachOfSeries with array'] = function(test){
         test.same(args, [ 0, "a", 1, "b" ]);
         test.done();
     });
+};
+
+
+exports['eachOfLimit alias'] = function(test){
+    test.equals(async.eachOfLimit, async.forEachOfLimit);
+    test.done();
+};
+
+
+exports['eachOfSeries alias'] = function(test){
+    test.equals(async.eachOfSeries, async.forEachOfSeries);
+    test.done();
 };
 
 exports['forEachLimit alias'] = function (test) {
