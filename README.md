@@ -55,7 +55,7 @@ missing please create a GitHub issue for it.
 ## Common Pitfalls <sub>[(StackOverflow)](http://stackoverflow.com/questions/tagged/async.js)</sub>
 ### Synchronous iteration functions
 
-If you get an error like `RangeError: Maximum call stack size exceeded.` or other stack overflow issues when using async, you are likely using a synchronous iterator.  By *synchronous* we mean a function that calls its callback on the same tick in the javascript event loop, without doing any I/O or using any timers.  Calling many callbacks iteratively will quickly overflow the stack. If you run into this issue, just defer your callback with `async.nextTick` to start a new call stack on the next tick of the event loop.
+If you get an error like `RangeError: Maximum call stack size exceeded.` or other stack overflow issues when using async, you are likely using a synchronous iterator.  By *synchronous* we mean a function that calls its callback on the same tick in the javascript event loop, without doing any I/O or using any timers.  Calling many callbacks iteratively will quickly overflow the stack. If you run into this issue, just defer your callback with `async.setImmediate` to start a new call stack on the next tick of the event loop.
 
 This can also arise by accident if you callback early in certain cases:
 
