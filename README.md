@@ -694,7 +694,7 @@ instead of an array. This can be a more readable way of handling results from
 [`series`](#series).
 
 **Note** that while many implementations preserve the order of object properties, the
-[ECMAScript Language Specifcation](http://www.ecma-international.org/ecma-262/5.1/#sec-8.6)
+[ECMAScript Language Specification](http://www.ecma-international.org/ecma-262/5.1/#sec-8.6)
 explicitly states that
 
 > The mechanics and order of enumerating the properties is not specified.
