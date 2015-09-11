@@ -1504,6 +1504,10 @@ async.parallel([
         fs.writeFile('testfile2', 'test2', callback);
     }
 ]);
+
+// Remember that thisArg is null unless you bind
+
+async.apply(my.method.bind(my));
 ```
 
 It's possible to pass any number of additional arguments when calling the
