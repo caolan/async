@@ -1417,7 +1417,7 @@ async.retry({times: 3, interval: 200}, apiMethod, function(err, result) {
 });
 ```
 
-It can also be embeded within other control flow functions to retry individual methods
+It can also be embedded within other control flow functions to retry individual methods
 that are not as reliable, like this:
 
 ```js
