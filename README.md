@@ -220,6 +220,8 @@ Some functions are also available in the following forms:
 ### Utils
 
 * [`apply`](#apply)
+* [`next`](#next)
+* [`nextok`](#nextok)
 * [`nextTick`](#nextTick)
 * [`memoize`](#memoize)
 * [`unmemoize`](#unmemoize)
@@ -1516,6 +1518,62 @@ one
 two
 three
 ```
+
+---------------------------------------
+
+<a name="next" />
+### next(parentFnArgs, err, arguments..)
+
+Helper method for calling the continuation function
+
+Useful as a shorthand when you're not sure how many arguments the parent fn pass on.
+
+__Arguments__
+
+* `parentFnArgs` - An array. Usualy the [Arguments](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/arguments) object.
+* `err` - *Optional* An error or null. This is the first argument passed to the continuation fn.
+* `arguments...` - *Optional* Any number of arguments to automatically apply when the continuation is called.
+
+__Example__
+
+```js
+// using next
+
+async.waterfall([
+  async.apply(someUndocumentedFunc),
+  function(foo) {
+    async.next(arguments, null, 'success');
+  },
+  async.dir
+]);
+
+
+// the same process without using next
+
+async.waterfall([
+  async.apply(someUndocumentedFunc),
+  function(foo) {
+    arguments[arguments.length - 1](null, 'success');    
+  },
+  async.dir
+]);
+```
+
+<a name="nextok" />
+The nextok fn is equal to [next](#next) except that err is always null:
+
+```js
+// using nextok
+
+async.waterfall([
+  async.apply(someUndocumentedFunc),
+  function(foo) {
+    async.nextok(arguments, 'success');
+  },
+  async.dir
+]);
+```
+
 
 ---------------------------------------
 
