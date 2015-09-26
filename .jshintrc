@@ -19,6 +19,7 @@
     "sub": true,
     "browser": true,
     "node": true,
+    "esnext": true,
     "globals": {
         "self": true,
         "define": true,
