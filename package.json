@@ -45,6 +45,9 @@
     "xyz": "^0.5.0",
     "yargs": "~3.9.1"
   },
+  "typescript": {
+    "definition": "./dist/async.d.ts"
+  },
   "jam": {
     "main": "lib/async.js",
     "include": [
