@@ -2,7 +2,6 @@ language: node_js
 node_js:
   - "0.10"
   - "0.12"
-  - "iojs-v2.1.0"
   - "4"
 sudo: false
 after_success: npm run coveralls
