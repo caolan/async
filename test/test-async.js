@@ -2041,6 +2041,59 @@ exports['foldr alias'] = function(test){
     test.done();
 };
 
+exports['transform implictly determines memo if not provided'] = function(test){
+    async.transform([1,2,3], function(memo, x, v, callback){
+        memo.push(x + 1);
+        callback();
+    }, function(err, result){
+        test.same(result, [2, 3, 4]);
+        test.done();
+    });
+};
+
+exports['transform async with object memo'] = function(test){
+    test.expect(2);
+
+    async.transform([1,3,2], {}, function(memo, v, k, callback){
+        setTimeout(function() {
+            memo[k] = v;
+            callback();
+        });
+    }, function(err, result) {
+        test.equals(err, null);
+        test.same(result, {
+            0: 1,
+            1: 3,
+            2: 2
+        });
+        test.done();
+    });
+};
+
+exports['transform iterating object'] = function(test){
+    test.expect(2);
+
+    async.transform({a: 1, b: 3, c: 2}, function(memo, v, k, callback){
+        setTimeout(function() {
+            memo[k] = v + 1;
+            callback();
+        });
+    }, function(err, result) {
+        test.equals(err, null);
+        test.same(result, {a: 2, b: 4, c: 3});
+        test.done();
+    });
+};
+
+exports['transform error'] = function(test){
+    async.transform([1,2,3], function(a, v, k, callback){
+        callback('error');
+    }, function(err){
+        test.equals(err, 'error');
+        test.done();
+    });
+};
+
 exports['filter'] = function(test){
     async.filter([3,1,2], filterIterator, function(results){
         test.same(results, [3,1]);
