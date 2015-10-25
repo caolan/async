@@ -187,9 +187,9 @@ function createSuite(suiteConfig) {
                 console.log(winner + ' is faster');
                 wins[winner]++;
             }
-      }
-      console.log("--------------------------------------");
-  });
+        }
+        console.log("--------------------------------------");
+    });
 
 }
 
