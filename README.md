@@ -1120,6 +1120,7 @@ methods:
 * `length()` - a function returning the number of items waiting to be processed.
 * `started` - a function returning whether or not any items have been pushed and processed by the queue
 * `running()` - a function returning the number of items currently being processed.
+* `workersList()` - a function returning the array of items currently being processed.
 * `idle()` - a function returning false if there are items waiting or being processed, or true if not.
 * `concurrency` - an integer for determining how many `worker` functions should be
   run in parallel. This property can be changed after a `queue` is created to
