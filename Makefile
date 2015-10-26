@@ -10,8 +10,10 @@ all: lint test clean build
 
 build: $(wildcard  lib/*.js)
 	mkdir -p $(BUILDDIR)
-	cp $(SRC) $(BUILDDIR)/async.js
-	cd $(BUILDDIR) && uglifyjs async.js -mc --source-map async.min.map -o async.min.js
+	cp $(SRC) async.js
+	uglifyjs $(BUILDDIR)/async.js -mc \
+		--source-map $(BUILDDIR)/async.min.map \
+		-o $(BUILDDIR)/async.min.js
 
 test:
 	nodeunit test

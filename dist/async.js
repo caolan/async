@@ -77,12 +77,6 @@
         );
     }
 
-    function _each(coll, iterator) {
-        return _isArrayLike(coll) ?
-            _arrayEach(coll, iterator) :
-            _forEachOf(coll, iterator);
-    }
-
     function _arrayEach(arr, iterator) {
         var index = -1,
             length = arr.length;
@@ -230,23 +224,26 @@
     async.eachOf = function (object, iterator, callback) {
         callback = _once(callback || noop);
         object = object || [];
-        var size = _isArrayLike(object) ? object.length : _keys(object).length;
-        var completed = 0;
-        if (!size) {
-            return callback(null);
-        }
-        _each(object, function (value, key) {
+
+        var iter = _keyIterator(object);
+        var key, completed = 0;
+
+        while ((key = iter()) != null) {
+            completed += 1;
             iterator(object[key], key, only_once(done));
-        });
+        }
+
+        if (completed === 0) callback(null);
+
         function done(err) {
+            completed--;
             if (err) {
                 callback(err);
             }
-            else {
-                completed += 1;
-                if (completed >= size) {
-                    callback(null);
-                }
+            // Check key is null in case iterator isn't exhausted
+            // and done resolved synchronously.
+            else if (key === null && completed <= 0) {
+                callback(null);
             }
         }
     };
@@ -272,7 +269,7 @@
                         return callback(null);
                     } else {
                         if (sync) {
-                            async.nextTick(iterate);
+                            async.setImmediate(iterate);
                         } else {
                             iterate();
                         }
@@ -353,7 +350,8 @@
 
     function _asyncMap(eachfn, arr, iterator, callback) {
         callback = _once(callback || noop);
-        var results = [];
+        arr = arr || [];
+        var results = _isArrayLike(arr) ? [] : {};
         eachfn(arr, function (value, index, callback) {
             iterator(value, function (err, v) {
                 results[index] = v;
@@ -379,7 +377,7 @@
                 callback(err);
             });
         }, function (err) {
-            callback(err || null, memo);
+            callback(err, memo);
         });
     };
 
@@ -387,6 +385,20 @@
     async.reduceRight = function (arr, memo, iterator, callback) {
         var reversed = _map(arr, identity).reverse();
         async.reduce(reversed, memo, iterator, callback);
+    };
+
+    async.transform = function (arr, memo, iterator, callback) {
+        if (arguments.length === 3) {
+            callback = iterator;
+            iterator = memo;
+            memo = _isArray(arr) ? [] : {};
+        }
+
+        async.eachOf(arr, function(v, k, cb) {
+            iterator(memo, v, k, cb);
+        }, function(err) {
+            callback(err, memo);
+        });
     };
 
     function _filter(eachfn, arr, iterator, callback) {
@@ -497,15 +509,24 @@
         }
     };
 
-    async.auto = function (tasks, callback) {
+    async.auto = function (tasks, concurrency, callback) {
+        if (!callback) {
+            // concurrency is optional, shift the args.
+            callback = concurrency;
+            concurrency = null;
+        }
         callback = _once(callback || noop);
         var keys = _keys(tasks);
         var remainingTasks = keys.length;
         if (!remainingTasks) {
             return callback(null);
         }
+        if (!concurrency) {
+            concurrency = remainingTasks;
+        }
 
         var results = {};
+        var runningTasks = 0;
 
         var listeners = [];
         function addListener(fn) {
@@ -531,6 +552,7 @@
         _arrayEach(keys, function (k) {
             var task = _isArray(tasks[k]) ? tasks[k]: [tasks[k]];
             var taskCallback = _restParam(function(err, args) {
+                runningTasks--;
                 if (args.length <= 1) {
                     args = args[0];
                 }
@@ -560,11 +582,12 @@
                 }
             }
             function ready() {
-                return _reduce(requires, function (a, x) {
+                return runningTasks < concurrency && _reduce(requires, function (a, x) {
                     return (a && results.hasOwnProperty(x));
                 }, true) && !results.hasOwnProperty(k);
             }
             if (ready()) {
+                runningTasks++;
                 task[task.length - 1](taskCallback, results);
             }
             else {
@@ -572,6 +595,7 @@
             }
             function listener() {
                 if (ready()) {
+                    runningTasks++;
                     removeListener(listener);
                     task[task.length - 1](taskCallback, results);
                 }
@@ -1062,7 +1086,7 @@
             var callback = args.pop();
             var key = hasher.apply(null, args);
             if (key in memo) {
-                async.nextTick(function () {
+                async.setImmediate(function () {
                     callback.apply(null, memo[key]);
                 });
             }

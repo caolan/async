@@ -3,7 +3,9 @@
   "description": "Higher-order functions and common patterns for asynchronous code",
   "main": "lib/async.js",
   "files": [
-    "lib"
+    "lib",
+    "dist/async.js",
+    "dist/async.min.js"
   ],
   "author": "Caolan McMahon",
   "version": "1.4.2",
