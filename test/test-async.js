@@ -352,12 +352,12 @@ exports['auto concurrency'] = function (test) {
         task4: ['task1', 'task2', makeCallback('task4')],
         task5: ['task2', makeCallback('task5')],
         task6: ['task2', makeCallback('task6')]
-    }, function(err, results){
+    }, concurrency, function(err, results){
         Object.keys(results).forEach(function(taskName) {
             test.ok(results[taskName].length <= concurrency);
         });
         test.done();
-    }, concurrency);
+    });
 };
 
 exports['auto petrify'] = function (test) {
