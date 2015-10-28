@@ -3511,7 +3511,6 @@ exports['queue'] = {
             }
             else {
                 call_order.push(task.id);
-                // call_order.push('timeout ' + elapsed());
                 callback();
             }
         }, 10);
