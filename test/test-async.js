@@ -3497,6 +3497,37 @@ exports['queue'] = {
     }, 800);
 },
 
+    'pause in worker with concurrency': function(test) {
+        test.expect(1);
+        var call_order = [];
+        var q = async.queue(function (task, callback) {
+            if (task.isLongRunning) {
+                q.pause();
+                setTimeout(function () {
+                    call_order.push(task.id);
+                    q.resume();
+                    callback();
+                }, 500);
+            }
+            else {
+                call_order.push(task.id);
+                // call_order.push('timeout ' + elapsed());
+                callback();
+            }
+        }, 10);
+
+        q.push({ id: 1, isLongRunning: true});
+        q.push({ id: 2 });
+        q.push({ id: 3 });
+        q.push({ id: 4 });
+        q.push({ id: 5 });
+
+        setTimeout(function () {
+            test.same(call_order, [1, 2, 3, 4, 5]);
+            test.done();
+        }, 1000);
+    },
+
     'pause with concurrency': function(test) {
     test.expect(4);
     var call_order = [],
