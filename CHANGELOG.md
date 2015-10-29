@@ -1,3 +1,6 @@
+# v1.5.1
+- Fix issue with `pause` in `queue` with concurrency enabled (#946)
+
 # v1.5.0
 
 - Added `transform`, analogous to [`_.transform`](http://lodash.com/docs#transform) (#892)
