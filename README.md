@@ -773,7 +773,7 @@ __Arguments__
   a `callback(err, result)` which it must call on completion with an error `err`
   (which can be `null`) and an optional `result` value.
 * `callback(err, results)` - An optional callback to run once all the functions
-  have completed. This function gets a results array (or object) containing all
+  have completed successfully. This function gets a results array (or object) containing all
   the result arguments passed to the task callbacks.
 
 __Example__
