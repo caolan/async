@@ -834,8 +834,9 @@ __Arguments__
 * `fn(callback)` - A function which is called each time `test` passes. The function is
   passed a `callback(err)`, which must be called once it has completed with an
   optional `err` argument.
-* `callback(err)` - A callback which is called after the test fails and repeated
-  execution of `fn` has stopped.
+* `callback(err, [results])` - A callback which is called after the test
+  function has failed and repeated execution of `fn` has stopped. `callback`
+  will be passed an error and any arguments passed to the final `fn`'s callback.
 
 __Example__
 
@@ -846,10 +847,12 @@ async.whilst(
     function () { return count < 5; },
     function (callback) {
         count++;
-        setTimeout(callback, 1000);
+        setTimeout(function () {
+            callback(null, count);
+        }, 1000);
     },
-    function (err) {
-        // 5 seconds have passed
+    function (err, n) {
+        // 5 seconds have passed, n = 5
     }
 );
 ```
@@ -870,7 +873,8 @@ the order of operations, the arguments `test` and `fn` are switched.
 ### until(test, fn, callback)
 
 Repeatedly call `fn` until `test` returns `true`. Calls `callback` when stopped,
-or an error occurs.
+or an error occurs. `callback` will be passed an error and any arguments passed
+to the final `fn`'s callback.
 
 The inverse of [`whilst`](#whilst).
 
