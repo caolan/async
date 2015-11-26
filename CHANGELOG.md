@@ -1,5 +1,6 @@
 # v1.5.1
 - Fix issue with `pause` in `queue` with concurrency enabled (#946)
+- `while` and `until` now pass the final result to callback (#963)
 
 # v1.5.0
 
