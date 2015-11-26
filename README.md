@@ -751,7 +751,7 @@ function(err, results) {
 ---------------------------------------
 
 <a name="parallel" />
-### parallel(tasks, [callback])
+### parallel(tasks, callback)
 
 Run the `tasks` array of functions in parallel, without waiting until the previous
 function has completed. If any of the functions pass an error to its
@@ -772,7 +772,7 @@ __Arguments__
 * `tasks` - An array or object containing functions to run. Each function is passed
   a `callback(err, result)` which it must call on completion with an error `err`
   (which can be `null`) and an optional `result` value.
-* `callback(err, results)` - An optional callback to run once all the functions
+* `callback(err, results)` - A callback to run once all the functions
   have completed successfully. This function gets a results array (or object) containing all
   the result arguments passed to the task callbacks.
 
@@ -791,7 +791,6 @@ async.parallel([
         }, 100);
     }
 ],
-// optional callback
 function(err, results){
     // the results array will equal ['one','two'] even though
     // the second function had a shorter timeout.
