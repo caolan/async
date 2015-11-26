@@ -2812,7 +2812,7 @@ exports['concatSeries'] = function(test){
 };
 
 exports['until'] = function (test) {
-    test.expect(3);
+    test.expect(4);
 
     var call_order = [];
     var count = 0;
@@ -2824,10 +2824,11 @@ exports['until'] = function (test) {
         function (cb) {
             call_order.push(['iterator', count]);
             count++;
-            cb();
+            cb(null, count);
         },
-        function (err) {
+        function (err, result) {
             test.ok(err === null, err + " passed instead of 'null'");
+            test.equals(result, 5, 'last result passed through');
             test.same(call_order, [
                 ['test', 0],
                 ['iterator', 0], ['test', 1],
@@ -2843,7 +2844,7 @@ exports['until'] = function (test) {
 };
 
 exports['doUntil'] = function (test) {
-    test.expect(3);
+    test.expect(4);
 
     var call_order = [];
     var count = 0;
@@ -2851,14 +2852,15 @@ exports['doUntil'] = function (test) {
         function (cb) {
             call_order.push(['iterator', count]);
             count++;
-            cb();
+            cb(null, count);
         },
         function () {
             call_order.push(['test', count]);
             return (count == 5);
         },
-        function (err) {
+        function (err, result) {
             test.ok(err === null, err + " passed instead of 'null'");
+            test.equals(result, 5, 'last result passed through');
             test.same(call_order, [
                 ['iterator', 0], ['test', 1],
                 ['iterator', 1], ['test', 2],
@@ -2873,7 +2875,7 @@ exports['doUntil'] = function (test) {
 };
 
 exports['doUntil callback params'] = function (test) {
-    test.expect(2);
+    test.expect(3);
 
     var call_order = [];
     var count = 0;
@@ -2887,8 +2889,9 @@ exports['doUntil callback params'] = function (test) {
             call_order.push(['test', c]);
             return (c == 5);
         },
-        function (err) {
+        function (err, result) {
             if (err) throw err;
+            test.equals(result, 5, 'last result passed through');
             test.same(call_order, [
                 ['iterator', 0], ['test', 1],
                 ['iterator', 1], ['test', 2],
@@ -2903,7 +2906,7 @@ exports['doUntil callback params'] = function (test) {
 };
 
 exports['whilst'] = function (test) {
-    test.expect(3);
+    test.expect(4);
 
     var call_order = [];
 
@@ -2916,10 +2919,11 @@ exports['whilst'] = function (test) {
         function (cb) {
             call_order.push(['iterator', count]);
             count++;
-            cb();
+            cb(null, count);
         },
-        function (err) {
+        function (err, result) {
             test.ok(err === null, err + " passed instead of 'null'");
+            test.equals(result, 5, 'last result passed through');
             test.same(call_order, [
                 ['test', 0],
                 ['iterator', 0], ['test', 1],
@@ -2935,7 +2939,7 @@ exports['whilst'] = function (test) {
 };
 
 exports['doWhilst'] = function (test) {
-    test.expect(3);
+    test.expect(4);
     var call_order = [];
 
     var count = 0;
@@ -2943,14 +2947,15 @@ exports['doWhilst'] = function (test) {
         function (cb) {
             call_order.push(['iterator', count]);
             count++;
-            cb();
+            cb(null, count);
         },
         function () {
             call_order.push(['test', count]);
             return (count < 5);
         },
-        function (err) {
+        function (err, result) {
             test.ok(err === null, err + " passed instead of 'null'");
+            test.equals(result, 5, 'last result passed through');
             test.same(call_order, [
                 ['iterator', 0], ['test', 1],
                 ['iterator', 1], ['test', 2],
@@ -2965,7 +2970,7 @@ exports['doWhilst'] = function (test) {
 };
 
 exports['doWhilst callback params'] = function (test) {
-    test.expect(2);
+    test.expect(3);
     var call_order = [];
     var count = 0;
     async.doWhilst(
@@ -2978,8 +2983,9 @@ exports['doWhilst callback params'] = function (test) {
             call_order.push(['test', c]);
             return (c < 5);
         },
-        function (err) {
+        function (err, result) {
             if (err) throw err;
+            test.equals(result, 5, 'last result passed through');
             test.same(call_order, [
                 ['iterator', 0], ['test', 1],
                 ['iterator', 1], ['test', 2],
