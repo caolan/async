@@ -627,9 +627,9 @@ __Arguments__
 * `iterator(item, callback)` - A truth test to apply to each item in the array
   in parallel. The iterator is passed a `callback(truthValue)` which must be
   called with a  boolean argument once it has completed.
-* `callback(result)` - *Optional* A callback which is called after all the `iterator`
-  functions have finished. Result will be either `true` or `false` depending on
-  the values of the async tests.
+* `callback(result)` - *Optional* A callback which is called as soon as any iterator returns
+  `true`, or after all the iterator functions have finished. Result will be
+  either `true` or `false` depending on the values of the async tests.
 
  **Note: the callbacks do not take an error as their first argument.**
 
