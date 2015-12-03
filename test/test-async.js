@@ -426,7 +426,6 @@ exports['auto results'] = function(test){
     });
 };
 
-
 exports['auto empty object'] = function(test){
     async.auto({}, function(err){
         test.ok(err === null, err + " passed instead of 'null'");
@@ -459,6 +458,13 @@ exports['auto no callback'] = function(test){
         task1: function(callback){callback();},
         task2: ['task1', function(callback){callback(); test.done();}]
     });
+};
+
+exports['auto concurrency no callback'] = function(test){
+    async.auto({
+        task1: function(callback){callback();},
+        task2: ['task1', function(callback){callback(); test.done();}]
+    }, 1);
 };
 
 exports['auto error should pass partial results'] = function(test) {
