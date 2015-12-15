@@ -986,6 +986,7 @@ async.waterfall([
 });
 ```
 Or, with named functions:
+
 ```js
 async.waterfall([
     myFirstFunction,
@@ -1008,6 +1009,7 @@ function myLastFunction(arg1, callback) {
 ```
 
 Or, if you need to pass any argument to the first function:
+
 ```js
 async.waterfall([
     async.apply(myFirstFunction, 'zero'),
