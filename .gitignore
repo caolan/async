@@ -4,3 +4,4 @@ perf/versions
 nyc_output
 coverage
 *.log
+.DS_Store
