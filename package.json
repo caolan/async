@@ -1,20 +1,9 @@
 {
   "name": "async",
   "description": "Higher-order functions and common patterns for asynchronous code",
+  "version": "0.5.2",
   "main": "lib/async.js",
-  "files": [
-    "lib",
-    "dist/async.js",
-    "dist/async.min.js"
-  ],
   "author": "Caolan McMahon",
-  "version": "1.5.0",
-  "keywords": [
-    "async",
-    "callback",
-    "utility",
-    "module"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/caolan/async.git"
@@ -22,13 +11,84 @@
   "bugs": {
     "url": "https://github.com/caolan/async/issues"
   },
-  "license": "MIT",
+  "keywords": [
+    "async",
+    "callback",
+    "module",
+    "utility"
+  ],
+  "dependencies": {
+    "async.nexttick": "^0.5.1",
+    "async.setimmediate": "^0.5.1",
+    "async.each": "^0.5.1",
+    "async.eachseries": "^0.5.1",
+    "async.eachlimit": "^0.5.1",
+    "async.eachof": "^0.5.1",
+    "async.eachofseries": "^0.5.1",
+    "async.eachoflimit": "^0.5.1",
+    "async.map": "^0.5.1",
+    "async.mapseries": "^0.5.1",
+    "async.maplimit": "^0.5.1",
+    "async.reduce": "^0.5.1",
+    "async.reduceright": "^0.5.1",
+    "async.transform": "^0.5.1",
+    "async.filter": "^0.5.1",
+    "async.filterlimit": "^0.5.1",
+    "async.filterseries": "^0.5.1",
+    "async.reject": "^0.5.1",
+    "async.rejectlimit": "^0.5.1",
+    "async.rejectseries": "^0.5.1",
+    "async.some": "^0.5.1",
+    "async.somelimit": "^0.5.1",
+    "async.every": "^0.5.1",
+    "async.everylimit": "^0.5.1",
+    "async.detect": "^0.5.1",
+    "async.detectseries": "^0.5.1",
+    "async.detectlimit": "^0.5.1",
+    "async.sortby": "^0.5.1",
+    "async.auto": "git://github.com/async-js/async.auto.git",
+    "async.retry": "^0.5.1",
+    "async.waterfall": "^0.5.1",
+    "async.parallel": "^0.5.1",
+    "async.parallellimit": "^0.5.1",
+    "async.series": "^0.5.1",
+    "async.iterator": "^0.5.1",
+    "async.apply": "^0.5.1",
+    "async.concat": "^0.5.1",
+    "async.concatseries": "^0.5.1",
+    "async.whilst": "^0.5.1",
+    "async.dowhilst": "^0.5.1",
+    "async.until": "^0.5.1",
+    "async.dountil": "^0.5.1",
+    "async.during": "^0.5.1",
+    "async.doduring": "^0.5.1",
+    "async.queue": "^0.5.1",
+    "async.priorityqueue": "^0.5.1",
+    "async.cargo": "^0.5.1",
+    "async.log": "^0.5.1",
+    "async.dir": "^0.5.1",
+    "async.memoize": "^0.5.1",
+    "async.unmemoize": "^0.5.1",
+    "async.times": "^0.5.1",
+    "async.timesseries": "^0.5.1",
+    "async.timeslimit": "^0.5.1",
+    "async.seq": "^0.5.1",
+    "async.compose": "^0.5.1",
+    "async.applyeach": "^0.5.1",
+    "async.applyeachseries": "^0.5.1",
+    "async.forever": "^0.5.1",
+    "async.ensureasync": "^0.5.1",
+    "async.constant": "^0.5.1",
+    "async.asyncify": "^0.5.1"
+  },
   "devDependencies": {
     "benchmark": "bestiejs/benchmark.js",
     "bluebird": "^2.9.32",
     "chai": "^3.1.0",
     "coveralls": "^2.11.2",
     "es6-promise": "^2.3.0",
+    "fs-extra": "~0.26.3",
+    "gulp": "~3.9.0",
     "jscs": "^1.13.1",
     "jshint": "~2.8.0",
     "karma": "^0.13.2",
@@ -37,6 +97,7 @@
     "karma-mocha": "^0.2.0",
     "karma-mocha-reporter": "^1.0.2",
     "lodash": "^3.9.0",
+    "lodash.template": "~3.6.2",
     "mkdirp": "~0.5.1",
     "mocha": "^2.2.5",
     "native-promise-only": "^0.8.0-a",
@@ -45,41 +106,49 @@
     "rsvp": "^3.0.18",
     "semver": "^4.3.6",
     "uglify-js": "~2.4.0",
+    "vinyl-buffer": "~1.0.0",
+    "vinyl-source-stream": "~1.1.0",
     "xyz": "^0.5.0",
     "yargs": "~3.9.1"
   },
-  "jam": {
-    "main": "lib/async.js",
-    "include": [
-      "lib/async.js",
-      "README.md",
-      "LICENSE"
-    ],
-    "categories": [
-      "Utilities"
-    ]
-  },
+  "files": [
+    "dist/async.js",
+    "dist/async.min.js",
+    "lib"
+  ],
   "scripts": {
-    "mocha-node-test": "mocha mocha_test/",
+    "coverage": "nyc npm test && nyc report",
+    "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "lint": "jshint lib/*.js test/*.js perf/*.js && jscs lib/*.js test/*.js perf/*.js",
     "mocha-browser-test": "karma start",
+    "mocha-node-test": "mocha mocha_test/",
     "mocha-test": "npm run mocha-node-test && npm run mocha-browser-test",
     "nodeunit-test": "nodeunit test/test-async.js",
-    "test": "npm run-script lint && npm run nodeunit-test && npm run mocha-test",
-    "lint": "jshint lib/*.js test/*.js perf/*.js && jscs lib/*.js test/*.js perf/*.js",
-    "coverage": "nyc npm test && nyc report",
-    "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
+    "test": "npm run-script lint && npm run nodeunit-test && npm run mocha-test"
+  },
+  "license": "MIT",
+  "jam": {
+    "categories": [
+      "Utilities"
+    ],
+    "include": [
+      "LICENSE",
+      "README.md",
+      "lib/async.js"
+    ],
+    "main": "lib/async.js"
   },
   "spm": {
     "main": "lib/async.js"
   },
   "volo": {
-    "main": "lib/async.js",
     "ignore": [
       "**/.*",
-      "node_modules",
       "bower_components",
+      "node_modules",
       "test",
       "tests"
-    ]
+    ],
+    "main": "lib/async.js"
   }
 }

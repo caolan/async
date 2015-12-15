@@ -1,0 +1,21 @@
+{
+  "name": "async.timesseries",
+  "description": "async timesseriesmethod as module.",
+  "main": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caolan/async.git"
+  },
+  "author": "Caolan McMahon",
+  "version": "0.5.2",
+  "license": "MIT",
+  "dependencies": {
+    "async.mapseries": "0.5.2",
+    "async.util.times": "0.5.2"
+  },
+  "keywords": [
+    "async",
+    "async-modularized",
+    "timesseries"
+  ]
+}

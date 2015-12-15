@@ -1,0 +1,25 @@
+{
+  "name": "async.waterfall",
+  "description": "async waterfallmethod as module.",
+  "main": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caolan/async.git"
+  },
+  "author": "Caolan McMahon",
+  "version": "0.5.2",
+  "license": "MIT",
+  "dependencies": {
+    "async.iterator": "0.5.2",
+    "async.util.ensureasync": "0.5.2",
+    "async.util.isarray": "0.5.2",
+    "async.util.noop": "0.5.2",
+    "async.util.once": "0.5.2",
+    "async.util.restparam": "0.5.2"
+  },
+  "keywords": [
+    "async",
+    "async-modularized",
+    "waterfall"
+  ]
+}

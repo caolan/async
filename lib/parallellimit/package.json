@@ -1,0 +1,21 @@
+{
+  "name": "async.parallellimit",
+  "description": "async parallellimitmethod as module.",
+  "main": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caolan/async.git"
+  },
+  "author": "Caolan McMahon",
+  "version": "0.5.2",
+  "license": "MIT",
+  "dependencies": {
+    "async.util.eachoflimit": "0.5.2",
+    "async.util.parallel": "0.5.2"
+  },
+  "keywords": [
+    "async",
+    "async-modularized",
+    "parallellimit"
+  ]
+}

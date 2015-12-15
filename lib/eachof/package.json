@@ -1,0 +1,23 @@
+{
+  "name": "async.eachof",
+  "description": "async eachofmethod as module.",
+  "main": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caolan/async.git"
+  },
+  "author": "Caolan McMahon",
+  "version": "0.5.2",
+  "license": "MIT",
+  "dependencies": {
+    "async.util.keyiterator": "0.5.2",
+    "async.util.noop": "0.5.2",
+    "async.util.once": "0.5.2",
+    "async.util.onlyonce": "0.5.2"
+  },
+  "keywords": [
+    "async",
+    "async-modularized",
+    "eachof"
+  ]
+}
