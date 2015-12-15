@@ -1007,7 +1007,7 @@ function myLastFunction(arg1, callback) {
 }
 ```
 
-If you need to pass any argument to the first function:
+Or, if you need to pass any argument to the first function:
 ```js
 async.waterfall([
     async.apply(myFirstFunction, 'zero'),
