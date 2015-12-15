@@ -24,10 +24,8 @@ lint:
 	jshint $(SRC) test/*.js mocha_test/* perf/*.js
 	jscs $(SRC) test/*.js mocha_test/* perf/*.js
 
-submodule-clone:
-	git submodule update --init --recursive
 
-build-bundle: submodule-clone
+build-bundle:
 	$(NODE) $(SCRIPTS)/build/modules-cjs.js
 	$(NODE) $(SCRIPTS)/build/aggregate-bundle.js
 	$(NODE) $(SCRIPTS)/build/aggregate-cjs.js

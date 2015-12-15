@@ -1,4 +1,0 @@
-[submodule "deps/lodash-es"]
-	path = deps/lodash-es
-	url = https://github.com/lodash/lodash
-	branch = es
