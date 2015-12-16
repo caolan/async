@@ -628,7 +628,7 @@ __Arguments__
   in parallel. The iterator is passed a `callback(truthValue)` which must be
   called with a  boolean argument once it has completed.
 * `callback(result)` - *Optional* A callback which is called as soon as any iterator returns
-  `true`, or after all the iterator functions have finished. Result will be
+  `false`, or after all the iterator functions have finished. Result will be
   either `true` or `false` depending on the values of the async tests.
 
  **Note: the callbacks do not take an error as their first argument.**
