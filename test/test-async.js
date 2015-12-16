@@ -3,7 +3,7 @@
  * adding a new test, consider creating a new spec file in mocha_tests/
  */
 
-var async = require('../lib/async');
+var async = require('../lib');
 
 if (!Function.prototype.bind) {
     Function.prototype.bind = function (thisArg) {
