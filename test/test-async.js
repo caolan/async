@@ -2737,7 +2737,7 @@ exports['noConflict - node only'] = function(test){
         test.expect(3);
         var fs = require('fs');
         var vm = require('vm');
-        var filename = __dirname + '/../lib/async.js';
+        var filename = __dirname + '/../lib/index.js';
         fs.readFile(filename, function(err, content){
             if(err) return test.done();
 
