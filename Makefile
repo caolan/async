@@ -5,7 +5,7 @@ XYZ = node_modules/.bin/xyz --repo git@github.com:caolan/async.git
 BROWSERIFY = node_modules/.bin/browserify
 
 BUILDDIR = dist
-SRC = lib/async.js
+SRC = lib/index.js
 
 all: lint test clean build
 
