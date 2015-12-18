@@ -1,0 +1,18 @@
+{
+  "author": "Caolan McMahon",
+  "browser": "./dist/async.constant.js",
+  "description": "",
+  "keywords": [
+    "async",
+    "async-modularized",
+    "constant"
+  ],
+  "license": "MIT",
+  "main": "./async.constant.js",
+  "name": "async.constant",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caolan/async.git"
+  },
+  "version": "1.5.0"
+}

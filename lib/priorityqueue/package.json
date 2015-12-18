@@ -1,0 +1,18 @@
+{
+  "author": "Caolan McMahon",
+  "browser": "./dist/async.priorityqueue.js",
+  "description": "",
+  "keywords": [
+    "async",
+    "async-modularized",
+    "priorityqueue"
+  ],
+  "license": "MIT",
+  "main": "./async.priorityqueue.js",
+  "name": "async.priorityqueue",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caolan/async.git"
+  },
+  "version": "1.5.0"
+}

@@ -1,0 +1,18 @@
+{
+  "author": "Caolan McMahon",
+  "browser": "./dist/async.transform.js",
+  "description": "",
+  "keywords": [
+    "async",
+    "async-modularized",
+    "transform"
+  ],
+  "license": "MIT",
+  "main": "./async.transform.js",
+  "name": "async.transform",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caolan/async.git"
+  },
+  "version": "1.5.0"
+}

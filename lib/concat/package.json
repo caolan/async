@@ -1,0 +1,18 @@
+{
+  "author": "Caolan McMahon",
+  "browser": "./dist/async.concat.js",
+  "description": "",
+  "keywords": [
+    "async",
+    "async-modularized",
+    "concat"
+  ],
+  "license": "MIT",
+  "main": "./async.concat.js",
+  "name": "async.concat",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caolan/async.git"
+  },
+  "version": "1.5.0"
+}

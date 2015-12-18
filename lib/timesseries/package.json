@@ -1,0 +1,18 @@
+{
+  "author": "Caolan McMahon",
+  "browser": "./dist/async.timesseries.js",
+  "description": "",
+  "keywords": [
+    "async",
+    "async-modularized",
+    "timesseries"
+  ],
+  "license": "MIT",
+  "main": "./async.timesseries.js",
+  "name": "async.timesseries",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caolan/async.git"
+  },
+  "version": "1.5.0"
+}

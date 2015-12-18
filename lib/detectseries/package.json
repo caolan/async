@@ -1,0 +1,18 @@
+{
+  "author": "Caolan McMahon",
+  "browser": "./dist/async.detectseries.js",
+  "description": "",
+  "keywords": [
+    "async",
+    "async-modularized",
+    "detectseries"
+  ],
+  "license": "MIT",
+  "main": "./async.detectseries.js",
+  "name": "async.detectseries",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caolan/async.git"
+  },
+  "version": "1.5.0"
+}

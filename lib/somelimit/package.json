@@ -1,0 +1,18 @@
+{
+  "author": "Caolan McMahon",
+  "browser": "./dist/async.somelimit.js",
+  "description": "",
+  "keywords": [
+    "async",
+    "async-modularized",
+    "somelimit"
+  ],
+  "license": "MIT",
+  "main": "./async.somelimit.js",
+  "name": "async.somelimit",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caolan/async.git"
+  },
+  "version": "1.5.0"
+}

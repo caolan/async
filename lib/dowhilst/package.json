@@ -1,0 +1,18 @@
+{
+  "author": "Caolan McMahon",
+  "browser": "./dist/async.dowhilst.js",
+  "description": "",
+  "keywords": [
+    "async",
+    "async-modularized",
+    "dowhilst"
+  ],
+  "license": "MIT",
+  "main": "./async.dowhilst.js",
+  "name": "async.dowhilst",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caolan/async.git"
+  },
+  "version": "1.5.0"
+}

@@ -1,0 +1,18 @@
+{
+  "author": "Caolan McMahon",
+  "browser": "./dist/async.sortby.js",
+  "description": "",
+  "keywords": [
+    "async",
+    "async-modularized",
+    "sortby"
+  ],
+  "license": "MIT",
+  "main": "./async.sortby.js",
+  "name": "async.sortby",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caolan/async.git"
+  },
+  "version": "1.5.0"
+}
