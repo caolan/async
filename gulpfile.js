@@ -8,6 +8,10 @@ var pkg = require('./package.json');
 var jsonFuture = require('json-future');
 var template = require('lodash.template');
 
+var moduleDeps = JSON.parse(template(fs.readFileSync('./support/dependencies.json').toString())({
+    version: pkg.version}
+    ));
+
 function getFolders(dir) {
     return fs.readdirSync(dir)
         .filter(function(file) {
@@ -16,7 +20,6 @@ function getFolders(dir) {
 }
 
 function generatePackage(name) {
-
     function generateKeywords(name) {
         var keywords = [
             'async',
@@ -45,6 +48,9 @@ function generatePackage(name) {
         ORIGINAL_FIELDS.forEach(function(field) {
             structure[field] = pkg[field];
         });
+
+        if (Object.keys(moduleDeps[name]).length > 0)
+            structure.dependencies = moduleDeps[name];
 
         return structure;
     }
