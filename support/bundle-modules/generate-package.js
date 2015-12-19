@@ -23,7 +23,7 @@ function generateDefaultFields(name) {
 
     var structure = {
         name: 'async.' + name,
-        main: './async.' + name + '.js',
+        main: './index.js',
         browser: './dist/async.' + name + '.js'
     };
 

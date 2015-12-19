@@ -1,56 +1,53 @@
 'use strict';
 
+var buffer = require('vinyl-buffer')
+var source = require('vinyl-source-stream')
+var fs = require('fs');
+var path = require('path');
 var gulp = require('gulp');
-var gutil = require('gulp-util');
+var pkg = require('./package.json');
+var rename = require('gulp-rename');
 var header = require('gulp-header');
 var uglify = require('gulp-uglify');
 var pkg = require('./package.json');
-var buffer = require('vinyl-buffer');
 var browserify = require('browserify');
-var source = require('vinyl-source-stream');
-var buildModules = require('./support/modules/build');
+var bundleModule = require('./support/bundle-modules');
 
-var src = {
-  main: './index.js'
-};
+function bannerModule(module) {
+    return [
+        "/**",
+        " * <%= pkg.name %>." + module + " – " + bundleModule.descriptions[module],
+        " * @version v<%= pkg.version %>",
+        " * @link    <%= pkg.homepage %>",
+        " * @license <%= pkg.license %>", " */"
+    ].join("\n");
+}
 
-var module = {
-  filename: pkg.name + ".js",
-  shortcut: "" + pkg.name,
-  dist: 'dist'
-};
-
-var banner = [
-  "/**",
-  " * <%= pkg.name %> - <%= pkg.description %>",
-  " * @version v<%= pkg.version %>",
-  " * @link    <%= pkg.homepage %>",
-  " * @license <%= pkg.license %>", " */"
-  ].join("\n");
+var modulesPath = 'lib/';
 
 gulp.task('modules', function() {
-    buildModules()
-})
+    return bundleModule.modules.map(function(module) {
+        bundleModule.buildPackage(module);
 
-// gulp.task('browserify', function() {
-//   browserify({
-//     extensions: ['.coffee', '.js']
-//   })
-//   .require(src.main, {
-//     expose: module.shortcut
-//   })
-//   .ignore('coffee-script')
-//   .bundle()
-//   .on('error', gutil.log)
-//   .pipe(source(module.filename))
-//   .pipe(buffer())
-//   .pipe(uglify())
-//   .pipe(header(banner, {
-//     pkg: pkg
-//   }))
-//   .pipe(gulp.dest(module.dist));
-// });
+        var requirePath = path.resolve(modulesPath, module, 'index.js');
+        var requireName = pkg.name + '.' + module;
+        var browserBuilPath = bundleModule.rootPath(module, 'dist');
+        var filename = requireName + '.js';
 
-// gulp.task('default', function() {
-//   gulp.start('browserify');
-// });
+        return browserify({
+                extensions: ['.js']
+            })
+            .require(requirePath, {
+                expose: requireName
+            })
+            .bundle()
+            .pipe(source(filename))
+            .pipe(buffer())
+            .pipe(header(bannerModule(module), {pkg: pkg}))
+            .pipe(gulp.dest(browserBuilPath))
+            .pipe(uglify())
+            .pipe(rename(requireName + '.min.js'))
+            .pipe(header(bannerModule(module), {pkg: pkg}))
+            .pipe(gulp.dest(browserBuilPath));
+    });
+});
