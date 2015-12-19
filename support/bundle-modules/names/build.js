@@ -5,7 +5,8 @@ var path = require('path');
 var jsonFuture = require('json-future');
 
 var BLACKLIST = [
-    'index.js'
+    'index.js',
+    '.DS_Store'
 ];
 
 function sanetize(array) {

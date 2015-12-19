@@ -1,20 +1,9 @@
 {
   "name": "async",
   "description": "Higher-order functions and common patterns for asynchronous code",
-  "main": "lib/async.js",
-  "files": [
-    "lib",
-    "dist/async.js",
-    "dist/async.min.js"
-  ],
-  "author": "Caolan McMahon",
   "version": "1.5.0",
-  "keywords": [
-    "async",
-    "callback",
-    "utility",
-    "module"
-  ],
+  "main": "lib/async.js",
+  "author": "Caolan McMahon",
   "repository": {
     "type": "git",
     "url": "https://github.com/caolan/async.git"
@@ -22,14 +11,64 @@
   "bugs": {
     "url": "https://github.com/caolan/async/issues"
   },
-  "license": "MIT",
+  "keywords": [
+    "async",
+    "callback",
+    "module",
+    "utility"
+  ],
+  "dependencies": {
+    "async.util.applyeach": "^0.3.0",
+    "async.util.arrayeach": "^0.3.0",
+    "async.util.asyncify": "^0.3.0",
+    "async.util.concat": "^0.3.0",
+    "async.util.consolefn": "^0.3.0",
+    "async.util.createtester": "^0.3.0",
+    "async.util.doparallel": "^0.3.0",
+    "async.util.doparallellimit": "^0.3.0",
+    "async.util.doseries": "^0.3.0",
+    "async.util.eachoflimit": "^0.3.0",
+    "async.util.ensureasync": "^0.3.0",
+    "async.util.filter": "^0.3.0",
+    "async.util.findgetresult": "^0.3.0",
+    "async.util.foreachof": "^0.3.0",
+    "async.util.identity": "^0.3.0",
+    "async.util.indexof": "^0.3.0",
+    "async.util.isarray": "^0.3.0",
+    "async.util.isarraylike": "^0.3.0",
+    "async.util.isobject": "^0.3.0",
+    "async.util.keyiterator": "^0.3.0",
+    "async.util.keys": "^0.3.0",
+    "async.util.map": "^0.3.0",
+    "async.util.mapasync": "^0.3.0",
+    "async.util.nexttick": "^0.3.0",
+    "async.util.noop": "^0.3.0",
+    "async.util.notid": "^0.3.0",
+    "async.util.once": "^0.3.0",
+    "async.util.onlyonce": "^0.3.0",
+    "async.util.parallel": "^0.3.0",
+    "async.util.queue": "^0.3.0",
+    "async.util.range": "^0.3.0",
+    "async.util.reduce": "^0.3.0",
+    "async.util.reject": "^0.3.0",
+    "async.util.restparam": "^0.3.0",
+    "async.util.setimmediate": "^0.3.0",
+    "async.util.times": "^0.3.0",
+    "async.util.tobool": "^0.3.0",
+    "async.util.withoutindex": "^0.3.0"
+  },
   "devDependencies": {
     "benchmark": "bestiejs/benchmark.js",
     "bluebird": "^2.9.32",
     "broserify": "^12.0.1",
+    "browserify": "~12.0.1",
     "chai": "^3.1.0",
     "coveralls": "^2.11.2",
     "es6-promise": "^2.3.0",
+    "gulp": "~3.9.0",
+    "gulp-header": "~1.7.1",
+    "gulp-uglify": "~1.5.1",
+    "gulp-util": "~3.0.7",
     "jscs": "^1.13.1",
     "jshint": "~2.8.0",
     "karma": "^0.13.2",
@@ -46,48 +85,49 @@
     "rsvp": "^3.0.18",
     "semver": "^4.3.6",
     "uglify-js": "~2.4.0",
-    "xyz": "^0.5.0",
-    "yargs": "~3.9.1",
-    "gulp": "~3.9.0",
-    "browserify": "~12.0.1",
-    "vinyl-source-stream": "~1.1.0",
     "vinyl-buffer": "~1.0.0",
-    "gulp-header": "~1.7.1",
-    "gulp-util": "~3.0.7",
-    "gulp-uglify": "~1.5.1"
+    "vinyl-source-stream": "~1.1.0",
+    "xyz": "^0.5.0",
+    "yargs": "~3.9.1"
   },
-  "jam": {
-    "main": "lib/async.js",
-    "include": [
-      "lib/async.js",
-      "README.md",
-      "LICENSE"
-    ],
-    "categories": [
-      "Utilities"
-    ]
-  },
+  "files": [
+    "dist/async.js",
+    "dist/async.min.js",
+    "lib"
+  ],
   "scripts": {
-    "mocha-node-test": "mocha mocha_test/",
+    "coverage": "nyc npm test && nyc report",
+    "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "lint": "jshint lib/*.js test/*.js perf/*.js && jscs lib/*.js test/*.js perf/*.js",
     "mocha-browser-test": "karma start",
+    "mocha-node-test": "mocha mocha_test/",
     "mocha-test": "npm run mocha-node-test && npm run mocha-browser-test",
     "nodeunit-test": "nodeunit test/test-async.js",
-    "test": "npm run-script lint && npm run nodeunit-test && npm run mocha-test",
-    "lint": "jshint lib/*.js test/*.js perf/*.js && jscs lib/*.js test/*.js perf/*.js",
-    "coverage": "nyc npm test && nyc report",
-    "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
+    "test": "npm run-script lint && npm run nodeunit-test && npm run mocha-test"
+  },
+  "license": "MIT",
+  "jam": {
+    "categories": [
+      "Utilities"
+    ],
+    "include": [
+      "LICENSE",
+      "README.md",
+      "lib/async.js"
+    ],
+    "main": "lib/async.js"
   },
   "spm": {
     "main": "lib/async.js"
   },
   "volo": {
-    "main": "lib/async.js",
     "ignore": [
       "**/.*",
-      "node_modules",
       "bower_components",
+      "node_modules",
       "test",
       "tests"
-    ]
+    ],
+    "main": "lib/async.js"
   }
 }
