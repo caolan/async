@@ -2,7 +2,6 @@
 
 var gulp = require('gulp');
 var path = require('path');
-var modulesPath = './lib/';
 var fs = require('fs-extra');
 var pkg = require('./package.json');
 var jsonFuture = require('json-future');
@@ -11,6 +10,8 @@ var template = require('lodash.template');
 var moduleDeps = JSON.parse(template(fs.readFileSync('./support/dependencies.json').toString())({
     version: pkg.version}
     ));
+
+var MODULES_PATH = './lib/';
 
 function getFolders(dir) {
     return fs.readdirSync(dir)
@@ -78,10 +79,12 @@ function copyMetaFiles(dist) {
 }
 
 gulp.task('package', function() {
-    return getFolders(modulesPath).map(function(module) {
-        var dist = path.resolve(modulesPath, module);
+
         jsonFuture.save(path.resolve(dist, 'package.json'), generatePackage(module));
         generateReadme(module, path.resolve(dist, 'README.md'));
         copyMetaFiles(dist);
     });
 });
+        var dist = path.resolve(MODULES_PATH, module);
+
+    return getFolders(MODULES_PATH).map(function(module) {
