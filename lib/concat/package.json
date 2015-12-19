@@ -1,0 +1,17 @@
+{
+  "name": "async.concat",
+  "description": "async concatmethod as module.",
+  "main": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caolan/async.git"
+  },
+  "author": "Caolan McMahon",
+  "version": "1.5.0",
+  "license": "MIT",
+  "keywords": [
+    "async",
+    "async-modularized",
+    "concat"
+  ]
+}

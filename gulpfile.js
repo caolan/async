@@ -1,53 +1,81 @@
 'use strict';
 
-var buffer = require('vinyl-buffer')
-var source = require('vinyl-source-stream')
-var fs = require('fs');
-var path = require('path');
 var gulp = require('gulp');
+var path = require('path');
+var modulesPath = './lib/';
+var fs = require('fs-extra');
 var pkg = require('./package.json');
-var rename = require('gulp-rename');
-var header = require('gulp-header');
-var uglify = require('gulp-uglify');
-var pkg = require('./package.json');
-var browserify = require('browserify');
-var bundleModule = require('./support/bundle-modules');
+var jsonFuture = require('json-future');
+var template = require('lodash.template');
 
-function bannerModule(module) {
-    return [
-        "/**",
-        " * <%= pkg.name %>." + module + " – " + bundleModule.descriptions[module],
-        " * @version v<%= pkg.version %>",
-        " * @link    <%= pkg.homepage %>",
-        " * @license <%= pkg.license %>", " */"
-    ].join("\n");
+function getFolders(dir) {
+    return fs.readdirSync(dir)
+        .filter(function(file) {
+            return fs.statSync(path.join(dir, file)).isDirectory();
+        });
 }
 
-var modulesPath = 'lib/';
+function generatePackage(name) {
 
-gulp.task('modules', function() {
-    return bundleModule.modules.map(function(module) {
-        bundleModule.buildPackage(module);
+    function generateKeywords(name) {
+        var keywords = [
+            'async',
+            'async-modularized'
+        ];
 
-        var requirePath = path.resolve(modulesPath, module, 'index.js');
-        var requireName = pkg.name + '.' + module;
-        var browserBuilPath = bundleModule.rootPath(module, 'dist');
-        var filename = requireName + '.js';
+        keywords.push(name);
+        return keywords;
+    }
 
-        return browserify({
-                extensions: ['.js']
-            })
-            .require(requirePath, {
-                expose: requireName
-            })
-            .bundle()
-            .pipe(source(filename))
-            .pipe(buffer())
-            .pipe(header(bannerModule(module), {pkg: pkg}))
-            .pipe(gulp.dest(browserBuilPath))
-            .pipe(uglify())
-            .pipe(rename(requireName + '.min.js'))
-            .pipe(header(bannerModule(module), {pkg: pkg}))
-            .pipe(gulp.dest(browserBuilPath));
+    function generateDefaultFields(name) {
+        var ORIGINAL_FIELDS = [
+            'author',
+            'version',
+            'repository',
+            'license'
+        ];
+
+        var structure = {
+            name: 'async.' + name,
+            description: 'async ' + name + 'method as module.',
+            main: './index.js',
+            repository: "async-js/async." + name
+        };
+
+        ORIGINAL_FIELDS.forEach(function(field) {
+            structure[field] = pkg[field];
+        });
+
+        return structure;
+    }
+
+    var modulePackage = generateDefaultFields(name);
+    modulePackage.keywords = generateKeywords(name);
+    return modulePackage;
+}
+
+function generateReadme(name, dist) {
+    var filepath = path.resolve('support/module_template.md');
+    var tpl = fs.readFileSync(filepath).toString();
+    tpl = template(tpl)({name: name});
+    fs.writeFileSync(dist, tpl);
+}
+
+function copyMetaFiles(dist) {
+    var files = ['.editorconfig', '.jscsrc', '.jshintrc', '.gitignore'];
+
+    files.forEach(function(file) {
+        var metafile = path.resolve(file);
+        var distFile = path.resolve(dist, file);
+        fs.copySync(metafile, distFile);
+    });
+}
+
+gulp.task('package', function() {
+    return getFolders(modulesPath).map(function(module) {
+        var dist = path.resolve(modulesPath, module);
+        jsonFuture.save(path.resolve(dist, 'package.json'), generatePackage(module));
+        generateReadme(module, path.resolve(dist, 'README.md'));
+        copyMetaFiles(dist);
     });
 });

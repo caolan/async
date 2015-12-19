@@ -1,0 +1,29 @@
+{
+    // Enforcing options
+    "eqeqeq": false,
+    "forin": true,
+    "indent": 4,
+    "noarg": true,
+    "undef": true,
+    "unused": true,
+    "trailing": true,
+    "evil": true,
+    "laxcomma": true,
+
+    // Relaxing options
+    "onevar": false,
+    "asi": false,
+    "eqnull": true,
+    "expr": false,
+    "loopfunc": true,
+    "sub": true,
+    "browser": true,
+    "node": true,
+    "globals": {
+        "self": true,
+        "define": true,
+        "describe": true,
+        "context": true,
+        "it": true
+    }
+}
