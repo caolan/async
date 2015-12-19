@@ -79,12 +79,10 @@ function copyMetaFiles(dist) {
 }
 
 gulp.task('package', function() {
-
+    return getFolders(MODULES_PATH).map(function(module) {
+        var dist = path.resolve(MODULES_PATH, module);
         jsonFuture.save(path.resolve(dist, 'package.json'), generatePackage(module));
         generateReadme(module, path.resolve(dist, 'README.md'));
         copyMetaFiles(dist);
     });
 });
-        var dist = path.resolve(MODULES_PATH, module);
-
-    return getFolders(MODULES_PATH).map(function(module) {
