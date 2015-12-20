@@ -236,7 +236,7 @@
     "async.util.range": "<%=version%>"
   },
   "timesseries": {
-    "async.mapSeries": "<%=version%>",
+    "async.mapseries": "<%=version%>",
     "async.util.times": "<%=version%>"
   },
   "transform": {
