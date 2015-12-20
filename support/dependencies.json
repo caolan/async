@@ -61,7 +61,7 @@
     "async.util.identity": "<%=version%>"
   },
   "dir": {
-    "async.util.consolef": "<%=version%>"
+    "async.util.consolefn": "<%=version%>"
   },
   "doduring": {
     "async.during": "<%=version%>"
@@ -136,7 +136,7 @@
   },
   "iterator": {},
   "log": {
-    "async.util.consolef": "<%=version%>"
+    "async.util.consolefn": "<%=version%>"
   },
   "map": {
     "async.util.doparallel": "<%=version%>",
