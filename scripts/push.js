@@ -4,5 +4,5 @@ eachModule(['git-up',
            'git add .',
            'git commit -m "bumped new version"',
            'git push origin master --force',
-           'npm publish'
            ]);
+eachModule(['npm publish']);
