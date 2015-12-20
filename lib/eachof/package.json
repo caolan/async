@@ -7,13 +7,13 @@
     "url": "https://github.com/caolan/async.git"
   },
   "author": "Caolan McMahon",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "license": "MIT",
   "dependencies": {
-    "async.util.keyiterator": "0.4.1",
-    "async.util.noop": "0.4.1",
-    "async.util.once": "0.4.1",
-    "async.util.onlyonce": "0.4.1"
+    "async.util.keyiterator": "0.4.2",
+    "async.util.noop": "0.4.2",
+    "async.util.once": "0.4.2",
+    "async.util.onlyonce": "0.4.2"
   },
   "keywords": [
     "async",

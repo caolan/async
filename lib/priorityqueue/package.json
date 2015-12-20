@@ -7,14 +7,14 @@
     "url": "https://github.com/caolan/async.git"
   },
   "author": "Caolan McMahon",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "license": "MIT",
   "dependencies": {
-    "async.queue": "0.4.1",
-    "async.util.arrayeach": "0.4.1",
-    "async.util.isarray": "0.4.1",
-    "async.util.noop": "0.4.1",
-    "async.util.setimmediate": "0.4.1"
+    "async.queue": "0.4.2",
+    "async.util.arrayeach": "0.4.2",
+    "async.util.isarray": "0.4.2",
+    "async.util.noop": "0.4.2",
+    "async.util.setimmediate": "0.4.2"
   },
   "keywords": [
     "async",
