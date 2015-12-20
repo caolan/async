@@ -1,0 +1,21 @@
+{
+  "name": "async.filter",
+  "description": "async filtermethod as module.",
+  "main": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caolan/async.git"
+  },
+  "author": "Caolan McMahon",
+  "version": "0.5.2",
+  "license": "MIT",
+  "dependencies": {
+    "async.util.doparallel": "0.5.2",
+    "async.util.filter": "0.5.2"
+  },
+  "keywords": [
+    "async",
+    "async-modularized",
+    "filter"
+  ]
+}

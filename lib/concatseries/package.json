@@ -1,0 +1,21 @@
+{
+  "name": "async.concatseries",
+  "description": "async concatseriesmethod as module.",
+  "main": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caolan/async.git"
+  },
+  "author": "Caolan McMahon",
+  "version": "0.5.2",
+  "license": "MIT",
+  "dependencies": {
+    "async.util.concat": "0.5.2",
+    "async.util.doseries": "0.5.2"
+  },
+  "keywords": [
+    "async",
+    "async-modularized",
+    "concatseries"
+  ]
+}

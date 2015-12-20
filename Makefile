@@ -1,16 +1,18 @@
 export PATH := ./node_modules/.bin/:$(PATH):./bin/
 
 PACKAGE = asyncjs
+REQUIRE_NAME = async
 XYZ = node_modules/.bin/xyz --repo git@github.com:caolan/async.git
+BROWSERIFY = node_modules/.bin/browserify
 
 BUILDDIR = dist
-SRC = lib/async.js
+SRC = lib/index.js
 
 all: lint test clean build
 
 build: $(wildcard  lib/*.js)
 	mkdir -p $(BUILDDIR)
-	cp $(SRC) $(BUILDDIR)/async.js
+	browserify $(SRC) -o $(BUILDDIR)/async.js -s $(REQUIRE_NAME)
 	uglifyjs $(BUILDDIR)/async.js -mc \
 		--source-map $(BUILDDIR)/async.min.map \
 		-o $(BUILDDIR)/async.min.js
