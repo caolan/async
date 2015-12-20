@@ -17,7 +17,7 @@
     "async.util.arrayeach": "<%=version%>",
     "async.util.foreachof": "<%=version%>",
     "async.util.indexof": "<%=version%>",
-    "async.util.isArray": "<%=version%>",
+    "async.util.isarray": "<%=version%>",
     "async.util.keys": "<%=version%>",
     "async.util.noop": "<%=version%>",
     "async.util.once": "<%=version%>",

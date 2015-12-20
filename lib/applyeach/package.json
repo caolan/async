@@ -7,11 +7,11 @@
     "url": "https://github.com/caolan/async.git"
   },
   "author": "Caolan McMahon",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "license": "MIT",
   "dependencies": {
-    "async.eachof": "0.4.2",
-    "async.util.applyeach": "0.4.2"
+    "async.eachof": "0.5.0",
+    "async.util.applyeach": "0.5.0"
   },
   "keywords": [
     "async",
