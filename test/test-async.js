@@ -3,6 +3,7 @@
  * adding a new test, consider creating a new spec file in mocha_tests/
  */
 
+require('babel-core/register');
 var async = require('../lib');
 
 if (!Function.prototype.bind) {
@@ -291,6 +292,7 @@ exports['seq without callback'] = function (test) {
 };
 
 exports['auto'] = function(test){
+    test.expect(2);
     var callOrder = [];
     async.auto({
         task1: ['task2', function(callback){

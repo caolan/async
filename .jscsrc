@@ -1,3 +1,4 @@
 {
-  "validateIndentation": 4
+  "validateIndentation": 4,
+  "esnext": true
 }

@@ -9,6 +9,7 @@
     "trailing": true,
     "evil": true,
     "laxcomma": true,
+    "esnext": true,
 
     // Relaxing options
     "onevar": false,
