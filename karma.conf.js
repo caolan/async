@@ -4,9 +4,14 @@ module.exports = function (config) {
     files: ['mocha_test/*.js'],
     frameworks: ['browserify', 'mocha'],
     preprocessors: {
-      'mocha_test/*.js': ['browserify']
+        '**/*': ['browserify']
     },
     reporters: ['mocha'],
-    singleRun: true
+    singleRun: true,
+
+    browserify: {
+        debug: true,
+        transform: ['babelify']
+    }
   });
-}
+};

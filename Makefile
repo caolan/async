@@ -2,6 +2,7 @@ export PATH := ./node_modules/.bin/:$(PATH):./bin/
 
 PACKAGE = asyncjs
 REQUIRE_NAME = async
+NODE = node_modules/babel-cli/bin/babel-node.js
 XYZ = node_modules/.bin/xyz --repo git@github.com:caolan/async.git
 BROWSERIFY = node_modules/.bin/browserify
 
@@ -18,7 +19,7 @@ build: $(wildcard  lib/*.js)
 		-o $(BUILDDIR)/async.min.js
 
 test:
-	nodeunit test
+	npm test
 
 clean:
 	rm -rf $(BUILDDIR)
@@ -27,8 +28,14 @@ lint:
 	jshint $(SRC) test/*.js mocha_test/* perf/*.js
 	jscs $(SRC) test/*.js mocha_test/* perf/*.js
 
-.PHONY: test lint build all clean
+submodule-clone:
+	git submodule update --init --recursive
 
+build-bundle: submodule-clone lint test
+	$(NODE) scripts/build/modules-cjs.js
+	$(NODE) scripts/build/aggregate-build.js
+
+.PHONY: test lint build all clean
 
 .PHONY: release-major release-minor release-patch
 release-major release-minor release-patch: all
