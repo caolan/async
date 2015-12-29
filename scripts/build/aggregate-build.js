@@ -1,15 +1,20 @@
 import compileModules from './compile-modules';
 import rollup from 'rollup';
+import rimraf from 'rimraf/rimraf';
 
-function buildBundle() {
-    rollup.rollup({
-      entry: 'build/modules-es6/index.js'
-    }).then(function ( bundle ) {
-        bundle.write({
-            format: 'cjs',
-            dest: 'build/async-bundle.js'
+export default function buildBundle(options) {
+    function bundle() {
+        rollup.rollup({
+          entry: options.outpath + '/index.js'
+        }).then(function ( bundle ) {
+            bundle.write({
+                format: options.format,
+                moduleName: 'async',
+                dest: options.outfile
+            });
+            rimraf.sync(options.outpath);
         });
-    });
+    }
+    
+    compileModules(bundle, options);
 }
-
-compileModules(buildBundle, {es6: true, outpath:'build/modules-es6'});

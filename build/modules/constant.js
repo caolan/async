@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _rest = require('../../deps/lodash-es/function/rest');
+var _rest = require('lodash/function/rest');
 
 var _rest2 = _interopRequireDefault(_rest);
 

@@ -96,39 +96,39 @@ exports.default = function (tasks, concurrency, callback) {
     });
 };
 
-var _arrayEach = require('../../deps/lodash-es/internal/arrayEach');
+var _arrayEach = require('lodash/internal/arrayEach');
 
 var _arrayEach2 = _interopRequireDefault(_arrayEach);
 
-var _arrayEvery = require('../../deps/lodash-es/internal/arrayEvery');
+var _arrayEvery = require('lodash/internal/arrayEvery');
 
 var _arrayEvery2 = _interopRequireDefault(_arrayEvery);
 
-var _forOwn = require('../../deps/lodash-es/object/forOwn');
+var _forOwn = require('lodash/object/forOwn');
 
 var _forOwn2 = _interopRequireDefault(_forOwn);
 
-var _indexOf = require('../../deps/lodash-es/array/indexOf');
+var _indexOf = require('lodash/array/indexOf');
 
 var _indexOf2 = _interopRequireDefault(_indexOf);
 
-var _isArray = require('../../deps/lodash-es/lang/isArray');
+var _isArray = require('lodash/lang/isArray');
 
 var _isArray2 = _interopRequireDefault(_isArray);
 
-var _keys = require('../../deps/lodash-es/object/keys');
+var _keys = require('lodash/object/keys');
 
 var _keys2 = _interopRequireDefault(_keys);
 
-var _noop = require('../../deps/lodash-es/utility/noop');
+var _noop = require('lodash/utility/noop');
 
 var _noop2 = _interopRequireDefault(_noop);
 
-var _once = require('../../deps/lodash-es/function/once');
+var _once = require('lodash/function/once');
 
 var _once2 = _interopRequireDefault(_once);
 
-var _rest = require('../../deps/lodash-es/function/rest');
+var _rest = require('lodash/function/rest');
 
 var _rest2 = _interopRequireDefault(_rest);
 

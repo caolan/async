@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = reduceRight;
 
-var _toArray = require('../../deps/lodash-es/lang/toArray');
+var _toArray = require('lodash/lang/toArray');
 
 var _toArray2 = _interopRequireDefault(_toArray);
 

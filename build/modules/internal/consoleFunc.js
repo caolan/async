@@ -5,11 +5,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = consoleFunc;
 
-var _arrayEach = require('../../../deps/lodash-es/internal/arrayEach');
+var _arrayEach = require('lodash/internal/arrayEach');
 
 var _arrayEach2 = _interopRequireDefault(_arrayEach);
 
-var _rest = require('../../../deps/lodash-es/function/rest');
+var _rest = require('lodash/function/rest');
 
 var _rest2 = _interopRequireDefault(_rest);
 

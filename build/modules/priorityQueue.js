@@ -67,15 +67,15 @@ exports.default = function (worker, concurrency) {
     return q;
 };
 
-var _arrayEach = require('../../deps/lodash-es/internal/arrayEach');
+var _arrayEach = require('lodash/internal/arrayEach');
 
 var _arrayEach2 = _interopRequireDefault(_arrayEach);
 
-var _isArray = require('../../deps/lodash-es/lang/isArray');
+var _isArray = require('lodash/lang/isArray');
 
 var _isArray2 = _interopRequireDefault(_isArray);
 
-var _noop = require('../../deps/lodash-es/utility/noop');
+var _noop = require('lodash/utility/noop');
 
 var _noop2 = _interopRequireDefault(_noop);
 

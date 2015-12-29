@@ -27,19 +27,19 @@ exports.default = function (tasks, cb) {
     wrapIterator((0, _iterator2.default)(tasks))();
 };
 
-var _isArray = require('../../deps/lodash-es/lang/isArray');
+var _isArray = require('lodash/lang/isArray');
 
 var _isArray2 = _interopRequireDefault(_isArray);
 
-var _noop = require('../../deps/lodash-es/utility/noop');
+var _noop = require('lodash/utility/noop');
 
 var _noop2 = _interopRequireDefault(_noop);
 
-var _once = require('../../deps/lodash-es/function/once');
+var _once = require('lodash/function/once');
 
 var _once2 = _interopRequireDefault(_once);
 
-var _rest = require('../../deps/lodash-es/function/rest');
+var _rest = require('lodash/function/rest');
 
 var _rest2 = _interopRequireDefault(_rest);
 

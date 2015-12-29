@@ -12,7 +12,7 @@ var _map = require('./map');
 
 var _map2 = _interopRequireDefault(_map);
 
-var _range = require('../../deps/lodash-es/utility/range');
+var _range = require('lodash/utility/range');
 
 var _range2 = _interopRequireDefault(_range);
 

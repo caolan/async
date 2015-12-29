@@ -8,8 +8,12 @@ import {join as joinPath} from 'path';
 import fs from 'fs-extra';
 
 export default function(cb, options) {
-    options = _.defaults({}, options, {path:'lib/', outpath:'build/modules', es6: false});
-    let plugins = [pluginLodashImportRename];
+    options = _.defaults({}, options, {path:'lib/', outpath:'build/modules', es6: false, lodashRename: false});
+    let plugins = [];
+
+    if (options.lodashRename) {
+        plugins.push(pluginLodashImportRename);
+    }
     if (!options.es6) {
         plugins.push(pluginCJS);
     }

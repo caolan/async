@@ -5,11 +5,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _filter;
 
-var _arrayMap = require('../../../deps/lodash-es/internal/arrayMap');
+var _arrayMap = require('lodash/internal/arrayMap');
 
 var _arrayMap2 = _interopRequireDefault(_arrayMap);
 
-var _property = require('../../../deps/lodash-es/utility/property');
+var _property = require('lodash/utility/property');
 
 var _property2 = _interopRequireDefault(_property);
 

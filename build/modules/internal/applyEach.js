@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _applyEach;
 
-var _rest = require('../../../deps/lodash-es/function/rest');
+var _rest = require('lodash/function/rest');
 
 var _rest2 = _interopRequireDefault(_rest);
 

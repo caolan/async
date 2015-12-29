@@ -5,23 +5,23 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = queue;
 
-var _arrayEach = require('../../../deps/lodash-es/internal/arrayEach');
+var _arrayEach = require('lodash/internal/arrayEach');
 
 var _arrayEach2 = _interopRequireDefault(_arrayEach);
 
-var _arrayMap = require('../../../deps/lodash-es/internal/arrayMap');
+var _arrayMap = require('lodash/internal/arrayMap');
 
 var _arrayMap2 = _interopRequireDefault(_arrayMap);
 
-var _isArray = require('../../../deps/lodash-es/lang/isArray');
+var _isArray = require('lodash/lang/isArray');
 
 var _isArray2 = _interopRequireDefault(_isArray);
 
-var _noop = require('../../../deps/lodash-es/utility/noop');
+var _noop = require('lodash/utility/noop');
 
 var _noop2 = _interopRequireDefault(_noop);
 
-var _property = require('../../../deps/lodash-es/utility/property');
+var _property = require('lodash/utility/property');
 
 var _property2 = _interopRequireDefault(_property);
 

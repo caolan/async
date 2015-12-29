@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _identity = require('../../deps/lodash-es/utility/identity');
+var _identity = require('lodash/utility/identity');
 
 var _identity2 = _interopRequireDefault(_identity);
 

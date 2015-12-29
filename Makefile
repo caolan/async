@@ -31,9 +31,10 @@ lint:
 submodule-clone:
 	git submodule update --init --recursive
 
-build-bundle: submodule-clone lint test
+build-bundle: #submodule-clone lint test
 	$(NODE) scripts/build/modules-cjs.js
-	$(NODE) scripts/build/aggregate-build.js
+	$(NODE) scripts/build/aggregate-bundle.js
+	$(NODE) scripts/build/aggregate-cjs.js
 
 .PHONY: test lint build all clean
 

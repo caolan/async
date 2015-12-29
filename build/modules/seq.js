@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = seq;
 
-var _noop = require('../../deps/lodash-es/utility/noop');
+var _noop = require('lodash/utility/noop');
 
 var _noop2 = _interopRequireDefault(_noop);
 
@@ -13,7 +13,7 @@ var _reduce = require('./reduce');
 
 var _reduce2 = _interopRequireDefault(_reduce);
 
-var _rest = require('../../deps/lodash-es/function/rest');
+var _rest = require('lodash/function/rest');
 
 var _rest2 = _interopRequireDefault(_rest);
 

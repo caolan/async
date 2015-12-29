@@ -5,11 +5,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = asyncify;
 
-var _isObject = require('../../deps/lodash-es/lang/isObject');
+var _isObject = require('lodash/lang/isObject');
 
 var _isObject2 = _interopRequireDefault(_isObject);
 
-var _rest = require('../../deps/lodash-es/function/rest');
+var _rest = require('lodash/function/rest');
 
 var _rest2 = _interopRequireDefault(_rest);
 

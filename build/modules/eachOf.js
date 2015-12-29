@@ -5,11 +5,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = eachOf;
 
-var _once = require('../../deps/lodash-es/function/once');
+var _once = require('lodash/function/once');
 
 var _once2 = _interopRequireDefault(_once);
 
-var _noop = require('../../deps/lodash-es/utility/noop');
+var _noop = require('lodash/utility/noop');
 
 var _noop2 = _interopRequireDefault(_noop);
 
