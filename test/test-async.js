@@ -601,6 +601,22 @@ exports['auto prevent dead-locks due to cyclic dependencies'] = function(test) {
     test.done();
 };
 
+// Issue 988 on github: https://github.com/caolan/async/issues/988
+exports['auto stops running tasks on error'] = function(test) {
+    async.auto({
+        task1: function (callback) {
+            callback('error');
+        },
+        task2: function (callback) {
+            test.ok(false, 'test2 should not be called');
+            callback();
+        }
+    }, 1, function (error) {
+        test.equal(error, 'error', 'finishes with error');
+        test.done();
+    });
+};
+
 // Issue 306 on github: https://github.com/caolan/async/issues/306
 exports['retry when attempt succeeds'] = function(test) {
     var failed = 3;
