@@ -1,6 +1,9 @@
 # v1.5.1
 - Fix issue with `pause` in `queue` with concurrency enabled (#946)
 - `while` and `until` now pass the final result to callback (#963)
+- `auto` will properly handle concurrency when there is no callback (#966)
+- `auto` will now  properly stop execution when an error occurs (#988, #993)
+- Various doc fixes (#971, #980)
 
 # v1.5.0
 
