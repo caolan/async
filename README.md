@@ -834,9 +834,9 @@ __Arguments__
 * `fn(callback)` - A function which is called each time `test` passes. The function is
   passed a `callback(err)`, which must be called once it has completed with an
   optional `err` argument.
-* `callback(err, [results])` - A callback which is called after the test
+* `callback(err)` - A callback which is called after the test
   function has failed and repeated execution of `fn` has stopped. `callback`
-  will be passed an error and any arguments passed to the final `fn`'s callback.
+  will be passed an error passed to the final `fn`'s callback.
 
 __Example__
 
@@ -848,12 +848,10 @@ async.whilst(
     function (callback) {
         count++;
         setTimeout(function () {
-            callback(null, count);
+            callback();
         }, 1000);
     },
-    function (err, n) {
-        // 5 seconds have passed, n = 5
-    }
+    function (err) {}
 );
 ```
 
