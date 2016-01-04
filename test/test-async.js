@@ -4309,6 +4309,72 @@ exports['memoize'] = {
         test.equal(val, "bar");
         test.done();
     });
+},
+
+    'memo works with domains': function(test) {
+    if (isBrowser()) {
+        // node only test
+        test.done();
+        return;
+    }
+    
+    var domain = require("domain");
+    
+    var called = 0;
+    var d1Done = false;
+    var d2Done = false;
+    var d1Error = false;
+    var d2Error = false;
+    var fn = function(cb) {
+        called++;
+        setTimeout(function() {
+            cb(null, "done");
+        }, 10);
+    };
+    
+    var memo = async.memoize(fn);
+    
+    // create an initial domain, it should operate successfully and the error handler is never called
+    var d1 = domain.create();
+    d1.on("error", function() {
+        d1Error = true;
+    });
+    d1.run(function() {
+        setImmediate(function() {
+            memo(function() {
+                d1Done = true;
+            });
+        });
+    });
+       
+    // if memoize does not bind our domain then our callback will end up in the context of the first callback (d1) since this callback gets queued
+    var d2 = domain.create();
+    d2.on("error", function(err) {
+        d2Error = true;
+        test.equal(err.message, "should be caught by d2");
+    });
+    d2.run(function() {
+        setImmediate(function() {
+            memo(function() {
+                setImmediate(function() {
+                    throw new Error("should be caught by d2");
+                });
+            });
+        });
+    });
+    
+    var i = setInterval(function() {
+        if (
+            d1Error === false
+            && d2Error === true
+            && d1Done === true
+            && d2Done === false
+        ) {
+            clearInterval(i);
+            test.equal(process.domain, null);
+            test.done();
+        }
+    }, 5);
 }
 
 };
