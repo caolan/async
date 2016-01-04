@@ -18,6 +18,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function ensureAsync(fn) {
     return (0, _rest2.default)(function (args) {
         var callback = args.pop();
+        var sync = true;
         args.push(function () {
             var innerArgs = arguments;
             if (sync) {
@@ -28,7 +29,6 @@ function ensureAsync(fn) {
                 callback.apply(null, innerArgs);
             }
         });
-        var sync = true;
         fn.apply(this, args);
         sync = false;
     });

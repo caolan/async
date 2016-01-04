@@ -5,15 +5,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 exports.default = function (count, iterator, callback) {
-    (0, _mapSeries2.default)((0, _range2.default)(0, count), iterator, callback);
+    (0, _mapSeries2.default)((0, _baseRange2.default)(0, count, 1), iterator, callback);
 };
 
 var _mapSeries = require('./mapSeries');
 
 var _mapSeries2 = _interopRequireDefault(_mapSeries);
 
-var _range = require('lodash/utility/range');
+var _baseRange = require('lodash/internal/baseRange');
 
-var _range2 = _interopRequireDefault(_range);
+var _baseRange2 = _interopRequireDefault(_baseRange);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

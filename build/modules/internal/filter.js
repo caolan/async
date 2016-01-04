@@ -9,9 +9,9 @@ var _arrayMap = require('lodash/internal/arrayMap');
 
 var _arrayMap2 = _interopRequireDefault(_arrayMap);
 
-var _property = require('lodash/utility/property');
+var _baseProperty = require('lodash/internal/baseProperty');
 
-var _property2 = _interopRequireDefault(_property);
+var _baseProperty2 = _interopRequireDefault(_baseProperty);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27,6 +27,6 @@ function _filter(eachfn, arr, iterator, callback) {
     }, function () {
         callback((0, _arrayMap2.default)(results.sort(function (a, b) {
             return a.index - b.index;
-        }), (0, _property2.default)('value')));
+        }), (0, _baseProperty2.default)('value')));
     });
 }

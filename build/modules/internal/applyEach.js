@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.default = _applyEach;
+exports.default = applyEach;
 
 var _rest = require('lodash/function/rest');
 
@@ -11,7 +11,7 @@ var _rest2 = _interopRequireDefault(_rest);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _applyEach(eachfn) {
+function applyEach(eachfn) {
     return (0, _rest2.default)(function (fns, args) {
         var go = (0, _rest2.default)(function (args) {
             var that = this;

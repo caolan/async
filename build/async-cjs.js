@@ -8,6 +8,8 @@ var arrayEach = require('lodash/internal/arrayEach');
 arrayEach = 'default' in arrayEach ? arrayEach['default'] : arrayEach;
 var arrayEvery = require('lodash/internal/arrayEvery');
 arrayEvery = 'default' in arrayEvery ? arrayEvery['default'] : arrayEvery;
+var baseHas = require('lodash/internal/baseHas');
+baseHas = 'default' in baseHas ? baseHas['default'] : baseHas;
 var forOwn = require('lodash/object/forOwn');
 forOwn = 'default' in forOwn ? forOwn['default'] : forOwn;
 var indexOf = require('lodash/array/indexOf');
@@ -22,13 +24,11 @@ var once = require('lodash/function/once');
 once = 'default' in once ? once['default'] : once;
 var identity = require('lodash/utility/identity');
 identity = 'default' in identity ? identity['default'] : identity;
-var toArray = require('lodash/lang/toArray');
-toArray = 'default' in toArray ? toArray['default'] : toArray;
 var arrayMap = require('lodash/internal/arrayMap');
 arrayMap = 'default' in arrayMap ? arrayMap['default'] : arrayMap;
-var property = require('lodash/utility/property');
+var property = require('lodash/internal/baseProperty');
 property = 'default' in property ? property['default'] : property;
-var range = require('lodash/utility/range');
+var range = require('lodash/internal/baseRange');
 range = 'default' in range ? range['default'] : range;
 var isArrayLike = require('lodash/lang/isArrayLike');
 isArrayLike = 'default' in isArrayLike ? isArrayLike['default'] : isArrayLike;
@@ -252,8 +252,10 @@ function reduce(arr, memo, iterator, cb) {
     });
 }
 
+var slice = Array.prototype.slice;
+
 function reduceRight(arr, memo, iterator, cb) {
-    var reversed = toArray(arr).reverse();
+    var reversed = slice.call(arr).reverse();
     reduce(reversed, memo, iterator, cb);
 }
 
@@ -326,6 +328,7 @@ function whilst(test, iterator, cb) {
 function ensureAsync(fn) {
     return rest(function (args) {
         var callback = args.pop();
+        var sync = true;
         args.push(function () {
             var innerArgs = arguments;
             if (sync) {
@@ -336,7 +339,6 @@ function ensureAsync(fn) {
                 callback.apply(null, innerArgs);
             }
         });
-        var sync = true;
         fn.apply(this, args);
         sync = false;
     });
@@ -424,19 +426,19 @@ function _asyncMap(eachfn, arr, iterator, callback) {
 var mapSeries = doSeries(_asyncMap);
 
 function timesSeries (count, iterator, callback) {
-    mapSeries(range(0, count), iterator, callback);
+    mapSeries(range(0, count, 1), iterator, callback);
 }
 
 var mapLimit = doParallelLimit(_asyncMap);
 
 function timeLimit(count, limit, iterator, cb) {
-    return mapLimit(range(0, count), limit, iterator, cb);
+    return mapLimit(range(0, count, 1), limit, iterator, cb);
 }
 
 var map = doParallel(_asyncMap);
 
 function times (count, iterator, callback) {
-    map(range(0, count), iterator, callback);
+    map(range(0, count, 1), iterator, callback);
 }
 
 function sortBy(arr, iterator, cb) {
@@ -1021,9 +1023,9 @@ function auto (tasks, concurrency, callback) {
             }
         }
         function ready() {
-            return runningTasks < concurrency && arrayEvery(requires, function (x) {
-                return results.hasOwnProperty(x);
-            }) && !results.hasOwnProperty(k);
+            return runningTasks < concurrency && !baseHas(results, k) && arrayEvery(requires, function (x) {
+                return baseHas(results, x);
+            });
         }
         if (ready()) {
             runningTasks++;
@@ -1047,7 +1049,7 @@ var apply = rest(function (fn, args) {
     });
 });
 
-function _applyEach(eachfn) {
+function applyEach$1(eachfn) {
     return rest(function (fns, args) {
         var go = rest(function (args) {
             var that = this;
@@ -1064,9 +1066,9 @@ function _applyEach(eachfn) {
     });
 }
 
-var applyEachSeries = _applyEach(eachOfSeries);
+var applyEachSeries = applyEach$1(eachOfSeries);
 
-var applyEach = _applyEach(eachOf);
+var applyEach = applyEach$1(eachOf);
 
 var index = {
     applyEach: applyEach,

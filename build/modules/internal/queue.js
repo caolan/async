@@ -21,9 +21,9 @@ var _noop = require('lodash/utility/noop');
 
 var _noop2 = _interopRequireDefault(_noop);
 
-var _property = require('lodash/utility/property');
+var _baseProperty = require('lodash/internal/baseProperty');
 
-var _property2 = _interopRequireDefault(_property);
+var _baseProperty2 = _interopRequireDefault(_baseProperty);
 
 var _onlyOnce = require('./onlyOnce');
 
@@ -122,7 +122,7 @@ function queue(worker, concurrency, payload) {
 
                 var tasks = q.payload ? q.tasks.splice(0, q.payload) : q.tasks.splice(0, q.tasks.length);
 
-                var data = (0, _arrayMap2.default)(tasks, (0, _property2.default)('data'));
+                var data = (0, _arrayMap2.default)(tasks, (0, _baseProperty2.default)('data'));
 
                 if (q.tasks.length === 0) {
                     q.empty();

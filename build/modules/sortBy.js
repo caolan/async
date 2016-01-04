@@ -9,9 +9,9 @@ var _arrayMap = require('lodash/internal/arrayMap');
 
 var _arrayMap2 = _interopRequireDefault(_arrayMap);
 
-var _property = require('lodash/utility/property');
+var _baseProperty = require('lodash/internal/baseProperty');
 
-var _property2 = _interopRequireDefault(_property);
+var _baseProperty2 = _interopRequireDefault(_baseProperty);
 
 var _map = require('./map');
 
@@ -27,7 +27,7 @@ function sortBy(arr, iterator, cb) {
         });
     }, function (err, results) {
         if (err) return cb(err);
-        cb(null, (0, _arrayMap2.default)(results.sort(comparator), (0, _property2.default)('value')));
+        cb(null, (0, _arrayMap2.default)(results.sort(comparator), (0, _baseProperty2.default)('value')));
     });
 
     function comparator(left, right) {

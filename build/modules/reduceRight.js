@@ -5,17 +5,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = reduceRight;
 
-var _toArray = require('lodash/lang/toArray');
-
-var _toArray2 = _interopRequireDefault(_toArray);
-
 var _reduce = require('./reduce');
 
 var _reduce2 = _interopRequireDefault(_reduce);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var slice = Array.prototype.slice;
+
 function reduceRight(arr, memo, iterator, cb) {
-    var reversed = (0, _toArray2.default)(arr).reverse();
+    var reversed = slice.call(arr).reverse();
     (0, _reduce2.default)(reversed, memo, iterator, cb);
 }

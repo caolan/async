@@ -76,9 +76,9 @@ exports.default = function (tasks, concurrency, callback) {
             }
         }
         function ready() {
-            return runningTasks < concurrency && (0, _arrayEvery2.default)(requires, function (x) {
-                return results.hasOwnProperty(x);
-            }) && !results.hasOwnProperty(k);
+            return runningTasks < concurrency && !(0, _baseHas2.default)(results, k) && (0, _arrayEvery2.default)(requires, function (x) {
+                return (0, _baseHas2.default)(results, x);
+            });
         }
         if (ready()) {
             runningTasks++;
@@ -103,6 +103,10 @@ var _arrayEach2 = _interopRequireDefault(_arrayEach);
 var _arrayEvery = require('lodash/internal/arrayEvery');
 
 var _arrayEvery2 = _interopRequireDefault(_arrayEvery);
+
+var _baseHas = require('lodash/internal/baseHas');
+
+var _baseHas2 = _interopRequireDefault(_baseHas);
 
 var _forOwn = require('lodash/object/forOwn');
 

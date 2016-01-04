@@ -11,13 +11,6 @@ SRC = lib/index.js
 
 all: lint test clean build
 
-build: $(wildcard  lib/*.js)
-	mkdir -p $(BUILDDIR)
-	browserify $(SRC) -o $(BUILDDIR)/async.js -s $(REQUIRE_NAME)
-	uglifyjs $(BUILDDIR)/async.js -mc \
-		--source-map $(BUILDDIR)/async.min.map \
-		-o $(BUILDDIR)/async.min.js
-
 test:
 	npm test
 
@@ -31,10 +24,13 @@ lint:
 submodule-clone:
 	git submodule update --init --recursive
 
-build-bundle: #submodule-clone lint test
+build-bundle: submodule-clone
 	$(NODE) scripts/build/modules-cjs.js
 	$(NODE) scripts/build/aggregate-bundle.js
 	$(NODE) scripts/build/aggregate-cjs.js
+
+
+build: build-bundle
 
 .PHONY: test lint build all clean
 
