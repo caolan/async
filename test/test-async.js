@@ -4364,12 +4364,7 @@ exports['memoize'] = {
     });
     
     var i = setInterval(function() {
-        if (
-            d1Error === false
-            && d2Error === true
-            && d1Done === true
-            && d2Done === false
-        ) {
+        if (d1Error === false && d2Error === true && d1Done === true && d2Done === false) {
             clearInterval(i);
             test.equal(process.domain, null);
             test.done();
