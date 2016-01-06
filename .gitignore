@@ -1,2 +1,6 @@
-/node_modules
-/dist
+node_modules
+dist
+perf/versions
+nyc_output
+coverage
+*.log

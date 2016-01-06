@@ -1,25 +1,37 @@
+export PATH := ./node_modules/.bin/:$(PATH):./bin/
+
 PACKAGE = asyncjs
-NODEJS = $(if $(shell test -f /usr/bin/nodejs && echo "true"),nodejs,node)
-CWD := $(shell pwd)
-NODEUNIT = $(CWD)/node_modules/nodeunit/bin/nodeunit
-UGLIFY = $(CWD)/node_modules/uglify-js/bin/uglifyjs
-NODELINT = $(CWD)/node_modules/nodelint/nodelint
+XYZ = node_modules/.bin/xyz --repo git@github.com:caolan/async.git
 
 BUILDDIR = dist
+SRC = lib/async.js
 
-all: clean test build
+all: lint test clean build
 
 build: $(wildcard  lib/*.js)
 	mkdir -p $(BUILDDIR)
-	$(UGLIFY) lib/async.js > $(BUILDDIR)/async.min.js
+	cp $(SRC) $(BUILDDIR)/async.js
+	uglifyjs $(BUILDDIR)/async.js -mc \
+		--source-map $(BUILDDIR)/async.min.map \
+		-o $(BUILDDIR)/async.min.js
 
 test:
-	$(NODEUNIT) test
+	nodeunit test
 
 clean:
 	rm -rf $(BUILDDIR)
 
 lint:
-	$(NODELINT) --config nodelint.cfg lib/async.js
+	jshint $(SRC) test/*.js mocha_test/* perf/*.js
+	jscs $(SRC) test/*.js mocha_test/* perf/*.js
 
-.PHONY: test build all
+.PHONY: test lint build all clean
+
+
+.PHONY: release-major release-minor release-patch
+release-major release-minor release-patch: all
+	./support/sync-package-managers.js
+	git add --force *.json
+	git add --force $(BUILDDIR)
+	git commit -am "update minified build"; true
+	$(XYZ) --increment $(@:release-%=%)
