@@ -985,6 +985,52 @@ async.waterfall([
     // result now equals 'done'
 });
 ```
+Or, with named functions:
+
+```js
+async.waterfall([
+    myFirstFunction,
+    mySecondFunction,
+    myLastFunction,
+], function (err, result) {
+    // result now equals 'done'
+});
+function myFirstFunction(callback) {
+  callback(null, 'one', 'two');
+}
+function mySecondFunction(arg1, arg2, callback) {
+  // arg1 now equals 'one' and arg2 now equals 'two'
+  callback(null, 'three');
+}
+function myLastFunction(arg1, callback) {
+  // arg1 now equals 'three'
+  callback(null, 'done');
+}
+```
+
+Or, if you need to pass any argument to the first function:
+
+```js
+async.waterfall([
+    async.apply(myFirstFunction, 'zero'),
+    mySecondFunction,
+    myLastFunction,
+], function (err, result) {
+    // result now equals 'done'
+});
+function myFirstFunction(arg1, callback) {
+  // arg1 now equals 'zero'
+  callback(null, 'one', 'two');
+}
+function mySecondFunction(arg1, arg2, callback) {
+  // arg1 now equals 'one' and arg2 now equals 'two'
+  callback(null, 'three');
+}
+function myLastFunction(arg1, callback) {
+  // arg1 now equals 'three'
+  callback(null, 'done');
+}
+```
 
 ---------------------------------------
 <a name="compose" />
