@@ -1783,6 +1783,32 @@ async.waterfall([
 ], callback)
 ```
 
+If the function passed to `asyncify` returns a Promise, that promises's resolved/rejected state will be used to call the callback, rather than simply the synchronous return value.  Example:
+
+```js
+async.waterfall([
+  async.apply(fs.readFile, filename, "utf8"),
+  async.asyncify(function (contents) {
+    return db.model.create(contents);
+  }),
+  function (model, next) {
+    // `model` is the instantiated model object. 
+    // If there was an error, this function would be skipped.
+  }
+], callback)
+```
+
+This also means you can asyncify ES2016 `async` functions.
+
+```js
+var q = async.queue(async.asyncify(async function (file) {
+  var intermediateStep = await processFile(file);
+  return await somePromise(intermediateStep)
+}));
+
+q.push(files);
+```
+
 ---------------------------------------
 
 <a name="log" />
