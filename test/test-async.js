@@ -4309,6 +4309,45 @@ exports['memoize'] = {
         test.equal(val, "bar");
         test.done();
     });
+},
+
+    'avoid constructor key return undefined': function (test) {
+    test.expect(1);
+    var fn = async.memoize(function(name, callback) {
+        setTimeout(function(){
+            callback(null, name);
+        }, 100);
+    });
+    fn('constructor', function(error, results) {
+        test.equal(results, 'constructor');
+        test.done();
+    });
+},
+
+    'avoid __proto__ key return undefined': function (test) {
+    test.expect(1);
+    var fn = async.memoize(function(name, callback) {
+        setTimeout(function(){
+            callback(null, name);
+        }, 100);
+    });
+    fn('__proto__', function(error, results) {
+        test.equal(results, '__proto__');
+        test.done();
+    });
+},
+
+    'allow hasOwnProperty as key': function (test) {
+    test.expect(1);
+    var fn = async.memoize(function(name, callback) {
+        setTimeout(function(){
+            callback(null, name);
+        }, 100);
+    });
+    fn('hasOwnProperty', function(error, results) {
+        test.equal(results, 'hasOwnProperty');
+        test.done();
+    });
 }
 
 };
