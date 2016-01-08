@@ -580,7 +580,7 @@
             var dep;
             while (len--) {
                 if (!(dep = tasks[requires[len]])) {
-                    throw new Error('Has inexistant dependency');
+                    throw new Error('Has nonexistent dependency in ' + requires.join(', '));
                 }
                 if (_isArray(dep) && _indexOf(dep, k) >= 0) {
                     throw new Error('Has cyclic dependencies');
@@ -1085,16 +1085,17 @@
     async.memoize = function (fn, hasher) {
         var memo = {};
         var queues = {};
+        var has = Object.prototype.hasOwnProperty;
         hasher = hasher || identity;
         var memoized = _restParam(function memoized(args) {
             var callback = args.pop();
             var key = hasher.apply(null, args);
-            if (key in memo) {
+            if (has.call(memo, key)) {   
                 async.setImmediate(function () {
                     callback.apply(null, memo[key]);
                 });
             }
-            else if (key in queues) {
+            else if (has.call(queues, key)) {
                 queues[key].push(callback);
             }
             else {
