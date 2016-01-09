@@ -65,7 +65,7 @@
     "mocha-test": "npm run mocha-node-test && npm run mocha-browser-test",
     "nodeunit-test": "nodeunit test/test-async.js",
     "test": "npm run-script lint && npm run nodeunit-test && npm run mocha-test",
-    "lint": "jshint lib/*.js test/*.js perf/*.js && jscs lib/*.js test/*.js perf/*.js",
+    "lint": "jshint lib test perf && jscs lib test perf",
     "coverage": "nyc npm test && nyc report",
     "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
