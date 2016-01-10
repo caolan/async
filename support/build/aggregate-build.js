@@ -13,7 +13,7 @@ export default function buildBundle(options) {
                 dest: options.outfile
             });
             rimraf.sync(options.outpath);
-        });
+        }).catch(console.error);
     }
     
     compileModules(bundle, options);

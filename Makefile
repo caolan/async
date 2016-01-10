@@ -32,10 +32,10 @@ build-bundle:
 
 build-dist:
 	mkdir -p $(DIST)
-	cp $(BUILDDIR)/async-bundle.js $(DIST)/
-	$(UGLIFY) $(DIST)/async-bundle.js -mc \
-		--source-map $(DIST)/async-bundle.min.map \
-		-o $(DIST)/async-bundle.min.js
+	cp $(BUILDDIR)/async-bundle.js $(DIST)/async.js
+	$(UGLIFY) $(DIST)/async.js -mc \
+		--source-map $(DIST)/async.min.map \
+		-o $(DIST)/async.min.js
 
 build: clean build-bundle build-dist
 
