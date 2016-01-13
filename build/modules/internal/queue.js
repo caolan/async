@@ -13,11 +13,11 @@ var _arrayMap = require('lodash/internal/arrayMap');
 
 var _arrayMap2 = _interopRequireDefault(_arrayMap);
 
-var _isArray = require('lodash/lang/isArray');
+var _isArray = require('lodash/isArray');
 
 var _isArray2 = _interopRequireDefault(_isArray);
 
-var _noop = require('lodash/utility/noop');
+var _noop = require('lodash/noop');
 
 var _noop2 = _interopRequireDefault(_noop);
 

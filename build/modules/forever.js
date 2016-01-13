@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = forever;
 
-var _noop = require('lodash/utility/noop');
+var _noop = require('lodash/noop');
 
 var _noop2 = _interopRequireDefault(_noop);
 

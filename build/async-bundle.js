@@ -55,107 +55,6 @@
     return func.apply(thisArg, args);
   }
 
-  /**
-   * Checks if `value` is a global object.
-   *
-   * @private
-   * @param {*} value The value to check.
-   * @returns {null|Object} Returns `value` if it's a global object, else `null`.
-   */
-  function checkGlobal(value) {
-    return (value && value.Object === Object) ? value : null;
-  }
-
-  /** Used to determine if values are of the language type `Object`. */
-  var objectTypes = {
-    'function': true,
-    'object': true
-  };
-
-  /** Detect free variable `exports`. */
-  var freeExports = (objectTypes[typeof exports] && exports && !exports.nodeType) ? exports : null;
-
-  /** Detect free variable `module`. */
-  var freeModule = (objectTypes[typeof module] && module && !module.nodeType) ? module : null;
-
-  /** Detect free variable `global` from Node.js. */
-  var freeGlobal = checkGlobal(freeExports && freeModule && typeof global == 'object' && global);
-
-  /** Detect free variable `self`. */
-  var freeSelf = checkGlobal(objectTypes[typeof self] && self);
-
-  /** Detect free variable `window`. */
-  var freeWindow = checkGlobal(objectTypes[typeof window] && window);
-
-  /** Detect `this` as the global object. */
-  var thisGlobal = checkGlobal(objectTypes[typeof this] && this);
-
-  /**
-   * Used as a reference to the global object.
-   *
-   * The `this` value is used if it's the global object to avoid Greasemonkey's
-   * restricted `window` object, otherwise the `window` object is used.
-   */
-  var root = freeGlobal || ((freeWindow !== (thisGlobal && thisGlobal.window)) && freeWindow) || freeSelf || thisGlobal || Function('return this')();
-
-  /**
-   * Used by `trimmedStartIndex` and `trimmedEndIndex` to determine if a
-   * character code is whitespace.
-   *
-   * @private
-   * @param {number} charCode The character code to inspect.
-   * @returns {boolean} Returns `true` if `charCode` is whitespace, else `false`.
-   */
-  function isSpace(charCode) {
-    return ((charCode <= 160 && (charCode >= 9 && charCode <= 13) || charCode == 32 || charCode == 160) || charCode == 5760 || charCode == 6158 ||
-      (charCode >= 8192 && (charCode <= 8202 || charCode == 8232 || charCode == 8233 || charCode == 8239 || charCode == 8287 || charCode == 12288 || charCode == 65279)));
-  }
-
-  /**
-   * Used by `_.trim` and `_.trimEnd` to get the index of the last non-whitespace
-   * character of `string`.
-   *
-   * @private
-   * @param {string} string The string to inspect.
-   * @returns {number} Returns the index of the last non-whitespace character.
-   */
-  function trimmedEndIndex(string) {
-    var index = string.length;
-
-    while (index-- && isSpace(string.charCodeAt(index))) {}
-    return index;
-  }
-
-  /**
-   * Used by `_.trim` and `_.trimStart` to get the index of the first non-whitespace
-   * character of `string`.
-   *
-   * @private
-   * @param {string} string The string to inspect.
-   * @returns {number} Returns the index of the first non-whitespace character.
-   */
-  function trimmedStartIndex(string) {
-    var index = -1,
-        length = string.length;
-
-    while (++index < length && isSpace(string.charCodeAt(index))) {}
-    return index;
-  }
-
-  /**
-   * The base implementation of `_.trim` without support trimming non-whitespace
-   * characters.
-   *
-   * @private
-   * @param {string} string The string to trim.
-   * @returns {string} Returns the trimmed string.
-   */
-  function baseTrim(string) {
-    return string
-      ? string.slice(trimmedStartIndex(string), trimmedEndIndex(string) + 1)
-      : string;
-  }
-
   var funcTag = '[object Function]';
   var genTag = '[object GeneratorFunction]';
   /** Used for built-in method references. */
@@ -191,93 +90,11 @@
     return tag == funcTag || tag == genTag;
   }
 
-  /**
-   * Checks if `value` is classified as an `Array` object.
-   *
-   * @static
-   * @memberOf _
-   * @type Function
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
-   * @example
-   *
-   * _.isArray([1, 2, 3]);
-   * // => true
-   *
-   * _.isArray(document.body.children);
-   * // => false
-   *
-   * _.isArray('abc');
-   * // => false
-   *
-   * _.isArray(_.noop);
-   * // => false
-   */
-  var isArray = Array.isArray;
-
-  /**
-   * Checks if `value` is object-like. A value is object-like if it's not `null`
-   * and has a `typeof` result of "object".
-   *
-   * @static
-   * @memberOf _
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-   * @example
-   *
-   * _.isObjectLike({});
-   * // => true
-   *
-   * _.isObjectLike([1, 2, 3]);
-   * // => true
-   *
-   * _.isObjectLike(_.noop);
-   * // => false
-   *
-   * _.isObjectLike(null);
-   * // => false
-   */
-  function isObjectLike(value) {
-    return !!value && typeof value == 'object';
-  }
-
-  /** `Object#toString` result references. */
-  var stringTag = '[object String]';
-
-  /** Used for built-in method references. */
-  var objectProto$3 = Object.prototype;
-
-  /**
-   * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
-   * of values.
-   */
-  var objectToString$1 = objectProto$3.toString;
-
-  /**
-   * Checks if `value` is classified as a `String` primitive or object.
-   *
-   * @static
-   * @memberOf _
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
-   * @example
-   *
-   * _.isString('abc');
-   * // => true
-   *
-   * _.isString(1);
-   * // => false
-   */
-  function isString(value) {
-    return typeof value == 'string' ||
-      (!isArray(value) && isObjectLike(value) && objectToString$1.call(value) == stringTag);
-  }
-
   /** Used as references for various `Number` constants. */
   var NAN = 0 / 0;
+
+  /** Used to match leading and trailing whitespace. */
+  var reTrim = /^\s+|\s+$/g;
 
   /** Used to detect bad signed hexadecimal string values. */
   var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
@@ -288,8 +105,8 @@
   /** Used to detect octal string values. */
   var reIsOctal = /^0o[0-7]+$/i;
 
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-  var nativeParseInt = root.parseInt;
+  /** Built-in method references without a dependency on `root`. */
+  var freeParseInt = parseInt;
 
   /**
    * Converts `value` to a number.
@@ -314,20 +131,17 @@
    * // => 3
    */
   function toNumber(value) {
-    if (!value) {
-      return value === 0 ? value : +value;
-    }
     if (isObject(value)) {
       var other = isFunction(value.valueOf) ? value.valueOf() : value;
       value = isObject(other) ? (other + '') : other;
     }
-    if (typeof value == 'number' || !isString(value)) {
-      return +value;
+    if (typeof value != 'string') {
+      return value === 0 ? value : +value;
     }
-    value = baseTrim(value);
+    value = value.replace(reTrim, '');
     var isBinary = reIsBinary.test(value);
     return (isBinary || reIsOctal.test(value))
-      ? nativeParseInt(value.slice(2), isBinary ? 2 : 8)
+      ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
       : (reIsBadHex.test(value) ? NAN : +value);
   }
 
@@ -450,7 +264,7 @@
   }
 
   /**
-   * A specialized version of `_.map` for arrays without support for callback
+   * A specialized version of `_.map` for arrays without support for iteratee
    * shorthands.
    *
    * @private
@@ -561,7 +375,7 @@
    *
    * @static
    * @memberOf _
-   * @category Utility
+   * @category Util
    * @example
    *
    * var object = { 'user': 'fred' };
@@ -688,7 +502,7 @@
   }
 
   /**
-   * The base implementation of `_.times` without support for callback shorthands
+   * The base implementation of `_.times` without support for iteratee shorthands
    * or max array length checks.
    *
    * @private
@@ -704,6 +518,33 @@
       result[index] = iteratee(index);
     }
     return result;
+  }
+
+  /**
+   * Checks if `value` is object-like. A value is object-like if it's not `null`
+   * and has a `typeof` result of "object".
+   *
+   * @static
+   * @memberOf _
+   * @category Lang
+   * @param {*} value The value to check.
+   * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+   * @example
+   *
+   * _.isObjectLike({});
+   * // => true
+   *
+   * _.isObjectLike([1, 2, 3]);
+   * // => true
+   *
+   * _.isObjectLike(_.noop);
+   * // => false
+   *
+   * _.isObjectLike(null);
+   * // => false
+   */
+  function isObjectLike(value) {
+    return !!value && typeof value == 'object';
   }
 
   /**
@@ -772,6 +613,64 @@
     // Safari 8.1 incorrectly makes `arguments.callee` enumerable in strict mode.
     return isArrayLikeObject(value) && hasOwnProperty$1.call(value, 'callee') &&
       (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+  }
+
+  /**
+   * Checks if `value` is classified as an `Array` object.
+   *
+   * @static
+   * @memberOf _
+   * @type Function
+   * @category Lang
+   * @param {*} value The value to check.
+   * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+   * @example
+   *
+   * _.isArray([1, 2, 3]);
+   * // => true
+   *
+   * _.isArray(document.body.children);
+   * // => false
+   *
+   * _.isArray('abc');
+   * // => false
+   *
+   * _.isArray(_.noop);
+   * // => false
+   */
+  var isArray = Array.isArray;
+
+  /** `Object#toString` result references. */
+  var stringTag = '[object String]';
+
+  /** Used for built-in method references. */
+  var objectProto$3 = Object.prototype;
+
+  /**
+   * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+   * of values.
+   */
+  var objectToString$1 = objectProto$3.toString;
+
+  /**
+   * Checks if `value` is classified as a `String` primitive or object.
+   *
+   * @static
+   * @memberOf _
+   * @category Lang
+   * @param {*} value The value to check.
+   * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+   * @example
+   *
+   * _.isString('abc');
+   * // => true
+   *
+   * _.isString(1);
+   * // => false
+   */
+  function isString(value) {
+    return typeof value == 'string' ||
+      (!isArray(value) && isObjectLike(value) && objectToString$1.call(value) == stringTag);
   }
 
   /**
@@ -1088,7 +987,7 @@
    *
    * @static
    * @memberOf _
-   * @category Utility
+   * @category Util
    * @param {*} value Any value.
    * @returns {*} Returns `value`.
    * @example
@@ -1250,8 +1149,8 @@
   var nativeCeil = Math.ceil;
   var nativeMax$2 = Math.max;
   /**
-   * The base implementation of `_.range` and `_.rangeRight` without support
-   * for non-number arguments.
+   * The base implementation of `_.range` and `_.rangeRight` which doesn't
+   * coerce arguments to numbers.
    *
    * @private
    * @param {number} start The start of the range.
@@ -1441,7 +1340,7 @@
 
   /**
    * A specialized version of `_.forEach` for arrays without support for
-   * callback shorthands.
+   * iteratee shorthands.
    *
    * @private
    * @param {Array} array The array to iterate over.
@@ -1821,7 +1720,7 @@
 
   /**
    * A specialized version of `_.every` for arrays without support for
-   * callback shorthands.
+   * iteratee shorthands.
    *
    * @private
    * @param {Array} array The array to iterate over.
@@ -1879,7 +1778,7 @@
   var baseFor = createBaseFor();
 
   /**
-   * The base implementation of `_.forOwn` without support for callback shorthands.
+   * The base implementation of `_.forOwn` without support for iteratee shorthands.
    *
    * @private
    * @param {Object} object The object to iterate over.

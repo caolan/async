@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = transform;
 
-var _isArray = require('lodash/lang/isArray');
+var _isArray = require('lodash/isArray');
 
 var _isArray2 = _interopRequireDefault(_isArray);
 

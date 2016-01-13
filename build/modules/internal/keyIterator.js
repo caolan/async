@@ -5,11 +5,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = keyIterator;
 
-var _isArrayLike = require('lodash/lang/isArrayLike');
+var _isArrayLike = require('lodash/isArrayLike');
 
 var _isArrayLike2 = _interopRequireDefault(_isArrayLike);
 
-var _keys = require('lodash/object/keys');
+var _keys = require('lodash/keys');
 
 var _keys2 = _interopRequireDefault(_keys);
 

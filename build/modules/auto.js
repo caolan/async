@@ -108,31 +108,31 @@ var _baseHas = require('lodash/internal/baseHas');
 
 var _baseHas2 = _interopRequireDefault(_baseHas);
 
-var _forOwn = require('lodash/object/forOwn');
+var _forOwn = require('lodash/forOwn');
 
 var _forOwn2 = _interopRequireDefault(_forOwn);
 
-var _indexOf = require('lodash/array/indexOf');
+var _indexOf = require('lodash/indexOf');
 
 var _indexOf2 = _interopRequireDefault(_indexOf);
 
-var _isArray = require('lodash/lang/isArray');
+var _isArray = require('lodash/isArray');
 
 var _isArray2 = _interopRequireDefault(_isArray);
 
-var _keys = require('lodash/object/keys');
+var _keys = require('lodash/keys');
 
 var _keys2 = _interopRequireDefault(_keys);
 
-var _noop = require('lodash/utility/noop');
+var _noop = require('lodash/noop');
 
 var _noop2 = _interopRequireDefault(_noop);
 
-var _once = require('lodash/function/once');
+var _once = require('lodash/once');
 
 var _once2 = _interopRequireDefault(_once);
 
-var _rest = require('lodash/function/rest');
+var _rest = require('lodash/rest');
 
 var _rest2 = _interopRequireDefault(_rest);
 

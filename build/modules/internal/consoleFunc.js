@@ -9,7 +9,7 @@ var _arrayEach = require('lodash/internal/arrayEach');
 
 var _arrayEach2 = _interopRequireDefault(_arrayEach);
 
-var _rest = require('lodash/function/rest');
+var _rest = require('lodash/rest');
 
 var _rest2 = _interopRequireDefault(_rest);
 

@@ -1,8 +1,8 @@
 'use strict';
 
-var rest = require('lodash/function/rest');
+var rest = require('lodash/rest');
 rest = 'default' in rest ? rest['default'] : rest;
-var isObject = require('lodash/lang/isObject');
+var isObject = require('lodash/isObject');
 isObject = 'default' in isObject ? isObject['default'] : isObject;
 var arrayEach = require('lodash/internal/arrayEach');
 arrayEach = 'default' in arrayEach ? arrayEach['default'] : arrayEach;
@@ -10,19 +10,19 @@ var arrayEvery = require('lodash/internal/arrayEvery');
 arrayEvery = 'default' in arrayEvery ? arrayEvery['default'] : arrayEvery;
 var baseHas = require('lodash/internal/baseHas');
 baseHas = 'default' in baseHas ? baseHas['default'] : baseHas;
-var forOwn = require('lodash/object/forOwn');
+var forOwn = require('lodash/forOwn');
 forOwn = 'default' in forOwn ? forOwn['default'] : forOwn;
-var indexOf = require('lodash/array/indexOf');
+var indexOf = require('lodash/indexOf');
 indexOf = 'default' in indexOf ? indexOf['default'] : indexOf;
-var isArray = require('lodash/lang/isArray');
+var isArray = require('lodash/isArray');
 isArray = 'default' in isArray ? isArray['default'] : isArray;
-var okeys = require('lodash/object/keys');
+var okeys = require('lodash/keys');
 okeys = 'default' in okeys ? okeys['default'] : okeys;
-var noop = require('lodash/utility/noop');
+var noop = require('lodash/noop');
 noop = 'default' in noop ? noop['default'] : noop;
-var once = require('lodash/function/once');
+var once = require('lodash/once');
 once = 'default' in once ? once['default'] : once;
-var identity = require('lodash/utility/identity');
+var identity = require('lodash/identity');
 identity = 'default' in identity ? identity['default'] : identity;
 var arrayMap = require('lodash/internal/arrayMap');
 arrayMap = 'default' in arrayMap ? arrayMap['default'] : arrayMap;
@@ -30,7 +30,7 @@ var property = require('lodash/internal/baseProperty');
 property = 'default' in property ? property['default'] : property;
 var range = require('lodash/internal/baseRange');
 range = 'default' in range ? range['default'] : range;
-var isArrayLike = require('lodash/lang/isArrayLike');
+var isArrayLike = require('lodash/isArrayLike');
 isArrayLike = 'default' in isArrayLike ? isArrayLike['default'] : isArrayLike;
 
 function asyncify(func) {
