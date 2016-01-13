@@ -16,3 +16,4 @@ function doParallel(fn) {
         return fn(_eachOf2.default, obj, iterator, callback);
     };
 }
+module.exports = exports['default'];

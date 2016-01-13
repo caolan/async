@@ -32,3 +32,4 @@ function consoleFunc(name) {
         })]));
     });
 }
+module.exports = exports['default'];

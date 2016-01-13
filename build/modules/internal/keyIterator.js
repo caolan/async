@@ -33,3 +33,4 @@ function keyIterator(coll) {
         };
     }
 }
+module.exports = exports['default'];

@@ -36,3 +36,4 @@ function asyncify(func) {
         }
     });
 }
+module.exports = exports['default'];

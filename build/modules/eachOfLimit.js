@@ -14,3 +14,4 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function eachOfLimit(obj, limit, iterator, cb) {
     (0, _eachOfLimit3.default)(limit)(obj, iterator, cb);
 }
+module.exports = exports['default'];

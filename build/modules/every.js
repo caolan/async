@@ -19,3 +19,4 @@ var _notId2 = _interopRequireDefault(_notId);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = (0, _createTester2.default)(_eachOf2.default, _notId2.default, _notId2.default);
+module.exports = exports['default'];

@@ -18,3 +18,4 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function parallelLimit(tasks, limit, cb) {
     return (0, _parallel2.default)((0, _eachOfLimit2.default)(limit), tasks, cb);
 }
+module.exports = exports['default'];

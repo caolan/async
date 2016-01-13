@@ -16,3 +16,4 @@ function doSeries(fn) {
         return fn(_eachOfSeries2.default, obj, iterator, callback);
     };
 }
+module.exports = exports['default'];

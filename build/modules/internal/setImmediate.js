@@ -20,3 +20,4 @@ if (_setImmediate) {
 }
 
 exports.default = _delay;
+module.exports = exports['default'];

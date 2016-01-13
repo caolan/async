@@ -28,3 +28,4 @@ function transform(arr, memo, iterator, callback) {
         callback(err, memo);
     });
 }
+module.exports = exports['default'];

@@ -21,3 +21,4 @@ function reduce(arr, memo, iterator, cb) {
         cb(err, memo);
     });
 }
+module.exports = exports['default'];

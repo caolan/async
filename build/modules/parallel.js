@@ -18,3 +18,4 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function parallel(tasks, cb) {
     return (0, _parallel3.default)(_eachOf2.default, tasks, cb);
 }
+module.exports = exports['default'];

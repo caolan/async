@@ -50,3 +50,4 @@ function eachOf(object, iterator, callback) {
             }
     }
 }
+module.exports = exports['default'];

@@ -16,3 +16,4 @@ function doParallelLimit(fn) {
         return fn((0, _eachOfLimit2.default)(limit), obj, iterator, callback);
     };
 }
+module.exports = exports['default'];

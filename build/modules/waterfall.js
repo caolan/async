@@ -52,3 +52,5 @@ var _iterator = require('./iterator');
 var _iterator2 = _interopRequireDefault(_iterator);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = exports['default'];

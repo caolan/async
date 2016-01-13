@@ -15,3 +15,4 @@ exports.default = (0, _rest2.default)(function (fn, args) {
         return fn.apply(null, args.concat(callArgs));
     });
 });
+module.exports = exports['default'];

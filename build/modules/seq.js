@@ -40,3 +40,4 @@ function seq() /* functions... */{
         });
     });
 }
+module.exports = exports['default'];

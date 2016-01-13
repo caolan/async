@@ -13,3 +13,4 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var nexTick = typeof process === 'object' && typeof process.nextTick === 'function' ? process.nextTick : _setImmediate2.default;
 
 exports.default = nexTick;
+module.exports = exports['default'];

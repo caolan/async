@@ -11,3 +11,4 @@ function onlyOnce(fn) {
         fn = null;
     };
 }
+module.exports = exports['default'];

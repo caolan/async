@@ -33,3 +33,4 @@ function ensureAsync(fn) {
         sync = false;
     });
 }
+module.exports = exports['default'];

@@ -15,3 +15,4 @@ function concat(eachfn, arr, fn, callback) {
         callback(err, result);
     });
 }
+module.exports = exports['default'];

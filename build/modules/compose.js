@@ -16,3 +16,4 @@ var reverse = Array.prototype.reverse;
 function compose() /* functions... */{
     return _seq2.default.apply(null, reverse.call(arguments));
 }
+module.exports = exports['default'];

@@ -25,3 +25,4 @@ function whilst(test, iterator, cb) {
     });
     iterator(next);
 }
+module.exports = exports['default'];

@@ -17,3 +17,4 @@ function doWhilst(iterator, test, cb) {
         return ++calls <= 1 || test.apply(this, arguments);
     }, iterator, cb);
 }
+module.exports = exports['default'];

@@ -48,3 +48,4 @@ function memoize(fn, hasher) {
     memoized.unmemoized = fn;
     return memoized;
 }
+module.exports = exports['default'];

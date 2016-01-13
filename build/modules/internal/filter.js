@@ -30,3 +30,4 @@ function _filter(eachfn, arr, iterator, callback) {
         }), (0, _baseProperty2.default)('value')));
     });
 }
+module.exports = exports['default'];

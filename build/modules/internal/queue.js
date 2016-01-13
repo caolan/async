@@ -163,3 +163,4 @@ function queue(worker, concurrency, payload) {
     };
     return q;
 }
+module.exports = exports['default'];

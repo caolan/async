@@ -58,3 +58,4 @@ function eachOfSeries(obj, iterator, callback) {
     }
     iterate();
 }
+module.exports = exports['default'];

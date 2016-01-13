@@ -7,3 +7,4 @@ exports.default = notId;
 function notId(v) {
     return !v;
 }
+module.exports = exports['default'];

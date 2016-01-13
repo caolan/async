@@ -19,3 +19,4 @@ function doDuring(iterator, test, cb) {
         test.apply(this, arguments);
     }, iterator, cb);
 }
+module.exports = exports['default'];

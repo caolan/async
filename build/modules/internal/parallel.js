@@ -35,3 +35,4 @@ function _parallel(eachfn, tasks, callback) {
         callback(err, results);
     });
 }
+module.exports = exports['default'];

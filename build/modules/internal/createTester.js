@@ -28,3 +28,4 @@ function _createTester(eachfn, check, getResult) {
         }
     };
 }
+module.exports = exports['default'];

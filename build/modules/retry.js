@@ -84,3 +84,4 @@ function retry(times, task, callback) {
     // If a callback is passed, run this as a controll flow
     return opts.callback ? wrappedTask() : wrappedTask;
 }
+module.exports = exports['default'];

@@ -18,3 +18,4 @@ function reject(eachfn, arr, iterator, callback) {
         });
     }, callback);
 }
+module.exports = exports['default'];

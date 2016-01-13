@@ -17,3 +17,5 @@ var _baseRange = require('lodash/internal/baseRange');
 var _baseRange2 = _interopRequireDefault(_baseRange);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = exports['default'];

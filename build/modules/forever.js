@@ -29,3 +29,4 @@ function forever(fn, cb) {
     }
     next();
 }
+module.exports = exports['default'];

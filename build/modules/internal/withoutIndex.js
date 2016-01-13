@@ -9,3 +9,4 @@ function _withoutIndex(iterator) {
         return iterator(value, callback);
     };
 }
+module.exports = exports['default'];

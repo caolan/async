@@ -19,3 +19,5 @@ exports.default = function (tasks) {
     }
     return makeCallback(0);
 };
+
+module.exports = exports['default'];

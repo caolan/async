@@ -18,3 +18,4 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function timeLimit(count, limit, iterator, cb) {
     return (0, _mapLimit2.default)((0, _baseRange2.default)(0, count, 1), limit, iterator, cb);
 }
+module.exports = exports['default'];

@@ -32,3 +32,4 @@ function _asyncMap(eachfn, arr, iterator, callback) {
         callback(err, results);
     });
 }
+module.exports = exports['default'];

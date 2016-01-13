@@ -27,3 +27,4 @@ function applyEach(eachfn) {
         }
     });
 }
+module.exports = exports['default'];

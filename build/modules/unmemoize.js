@@ -9,3 +9,4 @@ function unmemoize(fn) {
         return (fn.unmemoized || fn).apply(null, arguments);
     };
 }
+module.exports = exports['default'];

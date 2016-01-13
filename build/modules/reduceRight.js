@@ -17,3 +17,4 @@ function reduceRight(arr, memo, iterator, cb) {
     var reversed = slice.call(arr).reverse();
     (0, _reduce2.default)(reversed, memo, iterator, cb);
 }
+module.exports = exports['default'];

@@ -36,3 +36,4 @@ function sortBy(arr, iterator, cb) {
         return a < b ? -1 : a > b ? 1 : 0;
     }
 }
+module.exports = exports['default'];

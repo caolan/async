@@ -16,3 +16,4 @@ exports.default = (0, _rest2.default)(function (values) {
         return cb.apply(this, args);
     };
 });
+module.exports = exports['default'];

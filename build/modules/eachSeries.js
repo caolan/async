@@ -18,3 +18,4 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function eachSeries(arr, iterator, cb) {
     return (0, _eachOfSeries2.default)(arr, (0, _withoutIndex2.default)(iterator), cb);
 }
+module.exports = exports['default'];

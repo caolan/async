@@ -35,3 +35,4 @@ function during(test, iterator, cb) {
 
     test(check);
 }
+module.exports = exports['default'];

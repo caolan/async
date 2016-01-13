@@ -3,6 +3,7 @@ import {transformFile} from 'babel-core';
 import _ from 'lodash';
 import readdirR from 'recursive-readdir';
 import pluginCJS from 'babel-plugin-transform-es2015-modules-commonjs';
+import pluginModuleExports from 'babel-plugin-add-module-exports';
 import pluginLodashImportRename from './plugin-lodash-import-rename';
 import {join as joinPath} from 'path';
 import fs from 'fs-extra';
@@ -15,6 +16,7 @@ export default function(cb, options) {
         plugins.push(pluginLodashImportRename);
     }
     if (!options.es6) {
+        plugins.push(pluginModuleExports);
         plugins.push(pluginCJS);
     }
 

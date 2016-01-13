@@ -14,3 +14,4 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function cargo(worker, payload) {
     return (0, _queue2.default)(worker, 1, payload);
 }
+module.exports = exports['default'];
