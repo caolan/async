@@ -14,7 +14,9 @@ export default function() {
                     let dir = dirname(f).split(sep);
                     let relative = _.repeat('../', dir.length + 1);
 
-                    node.source.value = value.replace(/\blodash\b/, relative + 'node_modules/lodash-es');
+                    node.source.value = value.replace(
+                        /\blodash\b/,
+                        relative + 'node_modules/lodash-es');
                 }
             }
         }

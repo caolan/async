@@ -9,7 +9,12 @@ import {join as joinPath} from 'path';
 import fs from 'fs-extra';
 
 export default function(cb, options) {
-    options = _.defaults({}, options, {path:'lib/', outpath:'build/modules', es6: false, lodashRename: false});
+    options = _.defaults({}, options, {
+        path:'lib/',
+        outpath:'build/modules',
+        es6: false,
+        lodashRename: false
+    });
     let plugins = [];
 
     if (options.lodashRename) {
@@ -24,12 +29,16 @@ export default function(cb, options) {
         fs.emptyDirSync(options.outpath);
         fs.emptyDirSync(joinPath(options.outpath, 'internal'));
         async.each(files, (file, callback) => {
-            var filename = file.startsWith(options.path) ? file.slice(options.path.length) : file;
+            let filename = file.startsWith(options.path) ?
+                file.slice(options.path.length) :
+                file;
+
             transformFile(file, {
                 babelrc: false,
                 plugins: plugins
             }, function(err, content) {
-                fs.writeFile(joinPath(options.outpath, filename), content.code, callback);
+                let outpath = joinPath(options.outpath, filename);
+                fs.writeFile(outpath, content.code, callback);
             });
         }, cb);
     });

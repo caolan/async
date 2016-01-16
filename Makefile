@@ -2,14 +2,19 @@ export PATH := ./node_modules/.bin/:$(PATH):./bin/
 
 PACKAGE = asyncjs
 REQUIRE_NAME = async
-NODE = node_modules/babel-cli/bin/babel-node.js
-UGLIFY = node_modules/.bin/uglifyjs
-XYZ = node_modules/.bin/xyz --repo git@github.com:caolan/async.git
+BABEL_NODE = babel-node
+UGLIFY = uglifyjs
+XYZ = xyz --repo git@github.com:caolan/async.git
 
 BUILDDIR = build
 DIST = dist
 SRC = lib/index.js
 SCRIPTS = ./support
+JS_SRC = $(shell find lib/ -type f -name '*.js') package.json
+LINT_FILES = lib/ test/ mocha_test/ $(shell find perf/ -maxdepth 2 -type f) support/ gulpfile.js karma.conf.js
+
+UMD_BUNDLE = $(BUILDDIR)/async-bundle.js
+CJS_BUNDLE = $(BUILDDIR)/async-cjs.js
 
 all: lint test clean build
 
@@ -21,14 +26,22 @@ clean:
 	rm -rf $(DIST)
 
 lint:
-	jshint $(SRC) test/*.js mocha_test/* perf/*.js
-	jscs $(SRC) test/*.js mocha_test/* perf/*.js
+	jshint $(LINT_FILES)
+	jscs $(LINT_FILES)
 
 
-build-bundle:
-	$(NODE) $(SCRIPTS)/build/modules-cjs.js
-	$(NODE) $(SCRIPTS)/build/aggregate-bundle.js
-	$(NODE) $(SCRIPTS)/build/aggregate-cjs.js
+build-bundle: build-modules $(UMD_BUNDLE) $(CJS_BUNDLE)
+
+build-modules:
+	$(BABEL_NODE) $(SCRIPTS)/build/modules-cjs.js
+
+$(UMD_BUNDLE): $(JS_SRC)
+	$(BABEL_NODE) $(SCRIPTS)/build/aggregate-bundle.js
+
+$(CJS_BUNDLE): $(JS_SRC)
+	$(BABEL_NODE) $(SCRIPTS)/build/aggregate-cjs.js
+
+.PHONY: build-modules build-bundle
 
 build-dist:
 	mkdir -p $(DIST)

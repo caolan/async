@@ -5,7 +5,7 @@ import rimraf from 'rimraf/rimraf';
 export default function buildBundle(options) {
     function bundle() {
         rollup.rollup({
-          entry: options.outpath + '/index.js'
+            entry: options.outpath + '/index.js'
         }).then(function ( bundle ) {
             bundle.write({
                 format: options.format,
@@ -15,6 +15,6 @@ export default function buildBundle(options) {
             rimraf.sync(options.outpath);
         }).catch(console.error);
     }
-    
+
     compileModules(bundle, options);
 }
