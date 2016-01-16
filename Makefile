@@ -13,13 +13,16 @@ SCRIPTS = ./support
 JS_SRC = $(shell find lib/ -type f -name '*.js') package.json
 LINT_FILES = lib/ test/ mocha_test/ $(shell find perf/ -maxdepth 2 -type f) support/ gulpfile.js karma.conf.js
 
-UMD_BUNDLE = $(BUILDDIR)/async-bundle.js
-CJS_BUNDLE = $(BUILDDIR)/async-cjs.js
+UMD_BUNDLE = $(BUILDDIR)/async.js
+CJS_BUNDLE = $(BUILDDIR)/index.js
 
 all: lint test clean build
 
 test:
 	npm test
+
+test-build: build
+	mocha support/build.test.js
 
 clean:
 	rm -rf $(BUILDDIR)
@@ -45,7 +48,7 @@ $(CJS_BUNDLE): $(JS_SRC)
 
 build-dist:
 	mkdir -p $(DIST)
-	cp $(BUILDDIR)/async-bundle.js $(DIST)/async.js
+	cp $(BUILDDIR)/async.js $(DIST)/async.js
 	$(UGLIFY) $(DIST)/async.js -mc \
 		--source-map $(DIST)/async.min.map \
 		-o $(DIST)/async.min.js

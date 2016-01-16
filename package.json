@@ -68,7 +68,7 @@
     "lint": "jshint lib/ test/ mocha_test/ perf/memory.js perf/suites.js perf/benchmark.js support/ gulpfile.js karma.conf.js && jscs lib/ test/ mocha_test/ perf/memory.js perf/suites.js perf/benchmark.js support/ gulpfile.js karma.conf.js",
     "mocha-browser-test": "karma start",
     "mocha-node-test": "mocha mocha_test/ --compilers js:babel-core/register",
-    "mocha-test": "npm run mocha-node-test",
+    "mocha-test": "npm run mocha-node-test && npm run mocha-browser-test",
     "nodeunit-test": "nodeunit test/test-async.js",
     "test": "npm run-script lint && npm run nodeunit-test && npm run mocha-test"
   },

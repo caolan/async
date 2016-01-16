@@ -25,6 +25,8 @@
         "define": true,
         "describe": true,
         "context": true,
-        "it": true
+        "it": true,
+        "before": true,
+        "after": true
     }
 }

@@ -11,7 +11,7 @@ import fs from 'fs-extra';
 export default function(cb, options) {
     options = _.defaults({}, options, {
         path:'lib/',
-        outpath:'build/modules',
+        outpath:'build',
         es6: false,
         lodashRename: false
     });
