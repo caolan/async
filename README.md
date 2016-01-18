@@ -1227,7 +1227,6 @@ q.unshift({name: 'bar'}, function (err) {
 });
 ```
 
-
 ---------------------------------------
 
 <a name="priorityQueue"></a>
@@ -1361,7 +1360,6 @@ __Arguments__
   an error occurs, no further `tasks` will be performed, and the results
   object will only contain partial results.
 
-
 __Example__
 
 ```js
@@ -1433,7 +1431,6 @@ function(err, results){
 For a complicated series of `async` tasks, using the [`auto`](#auto) function makes adding
 new tasks much easier (and the code more readable).
 
-
 ---------------------------------------
 
 <a name="retry"></a>
@@ -1492,7 +1489,6 @@ async.auto({
 });
 ```
 
-
 ---------------------------------------
 
 <a name="iterator"></a>
@@ -1529,7 +1525,7 @@ node> nextfn();
 'three'
 ```
 
----------------------------------------
+## Utils
 
 <a name="apply"></a>
 ### apply(function, arguments..)
@@ -1607,6 +1603,8 @@ async.nextTick(function(){
 call_order.push('one')
 ```
 
+---------------------------------------
+
 <a name="times"></a>
 ### times(n, iterator, [callback])
 
@@ -1641,10 +1639,9 @@ async.times(5, function(n, next){
 __Related__
 
 * timesSeries(n, iterator, [callback])
-* timesLimit(n, limit, iterator, [callback])
+* timesLimit(n, limit, iterator, [callback]
 
-
-## Utils
+---------------------------------------
 
 <a name="memoize"></a>
 ### memoize(fn, [hasher])
@@ -1679,6 +1676,8 @@ fn('some name', function () {
     // callback
 });
 ```
+
+---------------------------------------
 
 <a name="unmemoize"></a>
 ### unmemoize(fn)
