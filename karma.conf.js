@@ -4,7 +4,7 @@ module.exports = function(config) {
         files: ['mocha_test/*.js'],
         frameworks: ['browserify', 'mocha'],
         preprocessors: {
-            '**/*': ['browserify']
+            'mocha_test/*.js': ['browserify']
         },
         reporters: ['mocha'],
         singleRun: true,
