@@ -6,3 +6,4 @@ coverage
 *.log
 .DS_Store
 npm-debug.log
+tmp

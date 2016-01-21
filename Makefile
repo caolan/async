@@ -1,3 +1,7 @@
+# This makefile is meant to be run on OSX/Linux.  Make sure any artifacts
+# created here are checked in so people on all platforms can run npm scripts.
+# This build should be run once per release.
+
 export PATH := ./node_modules/.bin/:$(PATH):./bin/
 
 PACKAGE = asyncjs
@@ -14,15 +18,13 @@ JS_SRC = $(shell find lib/ -type f -name '*.js') package.json
 LINT_FILES = lib/ test/ mocha_test/ $(shell find perf/ -maxdepth 2 -type f) support/ gulpfile.js karma.conf.js
 
 UMD_BUNDLE = $(BUILDDIR)/async.js
+UMD_BUNDLE_MIN = $(BUILDDIR)/async.min.js
 CJS_BUNDLE = $(BUILDDIR)/index.js
 
 all: lint test clean build
 
 test:
 	npm test
-
-test-build: build
-	mocha support/build.test.js
 
 clean:
 	rm -rf $(BUILDDIR)
@@ -32,7 +34,7 @@ lint:
 	jshint $(LINT_FILES)
 	jscs $(LINT_FILES)
 
-
+# Compile the ES6 modules to singular bundles, and individual bundles
 build-bundle: build-modules $(UMD_BUNDLE) $(CJS_BUNDLE)
 
 build-modules:
@@ -44,16 +46,29 @@ $(UMD_BUNDLE): $(JS_SRC)
 $(CJS_BUNDLE): $(JS_SRC)
 	$(BABEL_NODE) $(SCRIPTS)/build/aggregate-cjs.js
 
-.PHONY: build-modules build-bundle
+# Create the minified UMD versions and copy them to dist/ for bower
+build-dist: $(DIST) $(DIST)/async.js $(DIST)/async.min.js $(UMD_BUNDLE_MIN)
 
-build-dist:
-	mkdir -p $(DIST)
-	cp $(BUILDDIR)/async.js $(DIST)/async.js
-	$(UGLIFY) $(DIST)/async.js -mc \
+$(DIST):
+	mkdir -p $(DIST)/
+
+$(UMD_BUNDLE_MIN): $(UMD_BUNDLE)
+	$(UGLIFY) $< --mangle --compress \
 		--source-map $(DIST)/async.min.map \
-		-o $(DIST)/async.min.js
+		-o $@
 
-build: clean build-bundle build-dist
+$(DIST)/async.js: $(UMD_BUNDLE)
+	cp $< $@
+
+$(DIST)/async.min.js: $(UMD_BUNDLE_MIN)
+	cp $< $@
+
+test-build:
+	mocha support/build.test.js
+
+.PHONY: build-modules build-bundle build-dist test-build
+
+build: clean build-bundle build-dist test-build
 
 .PHONY: test lint build all clean
 

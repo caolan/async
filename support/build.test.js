@@ -16,6 +16,34 @@ describe("async main", function() {
     });
 });
 
+describe("async umd", function() {
+    var async;
+
+    before(function() {
+        async = require("../build/async.js");
+    });
+
+    it("should have methods", function() {
+        methods.forEach(function(methodName) {
+            expect(async[methodName]).to.be.a("function");
+        });
+    });
+});
+
+describe("async umd minified", function() {
+    var async;
+
+    before(function() {
+        async = require("../build/async.min.js");
+    });
+
+    it("should have methods", function() {
+        methods.forEach(function(methodName) {
+            expect(async[methodName]).to.be.a("function");
+        });
+    });
+});
+
 methods.forEach(function (methodName) {
     describe("async." + methodName, function () {
         var method;
