@@ -14,12 +14,14 @@ BUILDDIR = build
 DIST = dist
 SRC = lib/index.js
 SCRIPTS = ./support
-JS_SRC = $(shell find lib/ -type f -name '*.js') package.json
+JS_SRC = $(shell find lib/ -type f -name '*.js')
 LINT_FILES = lib/ test/ mocha_test/ $(shell find perf/ -maxdepth 2 -type f) support/ gulpfile.js karma.conf.js
 
 UMD_BUNDLE = $(BUILDDIR)/async.js
 UMD_BUNDLE_MIN = $(BUILDDIR)/async.min.js
 CJS_BUNDLE = $(BUILDDIR)/index.js
+ES_MODULES = $(patsubst lib/%.js, build/es/%.js,  $(JS_SRC))
+
 
 all: lint test clean build
 
@@ -40,17 +42,17 @@ build-bundle: build-modules $(UMD_BUNDLE) $(CJS_BUNDLE)
 build-modules:
 	$(BABEL_NODE) $(SCRIPTS)/build/modules-cjs.js
 
-$(UMD_BUNDLE): $(JS_SRC)
+$(UMD_BUNDLE): $(JS_SRC) package.json
 	$(BABEL_NODE) $(SCRIPTS)/build/aggregate-bundle.js
 
-$(CJS_BUNDLE): $(JS_SRC)
+$(CJS_BUNDLE): $(JS_SRC) package.json
 	$(BABEL_NODE) $(SCRIPTS)/build/aggregate-cjs.js
 
 # Create the minified UMD versions and copy them to dist/ for bower
 build-dist: $(DIST) $(DIST)/async.js $(DIST)/async.min.js $(UMD_BUNDLE_MIN)
 
 $(DIST):
-	mkdir -p $(DIST)/
+	mkdir -p $@
 
 $(UMD_BUNDLE_MIN): $(UMD_BUNDLE)
 	$(UGLIFY) $< --mangle --compress \
@@ -63,12 +65,18 @@ $(DIST)/async.js: $(UMD_BUNDLE)
 $(DIST)/async.min.js: $(UMD_BUNDLE_MIN)
 	cp $< $@
 
+build-es: $(ES_MODULES)
+
+$(BUILDDIR)/es/%.js: lib/%.js
+	mkdir -p "$(@D)"
+	sed -r "s/(import.+)lodash/\1lodash-es/g" $< > $@
+
 test-build:
 	mocha support/build.test.js
 
-.PHONY: build-modules build-bundle build-dist test-build
+.PHONY: build-modules build-bundle build-dist build-es test-build
 
-build: clean build-bundle build-dist test-build
+build: clean build-bundle build-dist build-es test-build
 
 .PHONY: test lint build all clean
 

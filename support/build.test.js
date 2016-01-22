@@ -1,6 +1,10 @@
 // Smoke test for the CJS build
 var methods = ["each", "waterfall", "queue", "eachSeries"];
 var expect = require('chai').expect;
+var rollup = require('rollup').rollup;
+var rollupPluginNpm = require('rollup-plugin-npm');
+var fs = require('fs');
+var exec = require('child_process').exec;
 
 describe("async main", function() {
     var async;
@@ -54,5 +58,35 @@ methods.forEach(function (methodName) {
         it("should require the individual method", function() {
             expect(method).to.be.a("function");
         });
+    });
+});
+
+describe("ES Modules", function () {
+    var tmpDir = __dirname + "/../tmp";
+    var buildFile = __dirname + "/../tmp/es.test.js";
+
+    before(function (done) {
+        if (fs.existsSync(tmpDir)) {
+            return done();
+        }
+        fs.mkdir(tmpDir, done);
+    });
+
+    before(function () {
+        return rollup({
+            entry: __dirname + "/es.test.js",
+            plugins: [
+                rollupPluginNpm()
+            ]
+        }).then(function (bundle) {
+            return bundle.write({
+                format: "cjs",
+                dest: buildFile
+            });
+        });
+    });
+
+    it("should build a successful bundle", function (done) {
+        exec("node " + buildFile, done);
     });
 });
