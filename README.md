@@ -1639,7 +1639,7 @@ async.times(5, function(n, next){
 __Related__
 
 * timesSeries(n, iterator, [callback])
-* timesLimit(n, limit, iterator, [callback]
+* timesLimit(n, limit, iterator, [callback])
 
 ---------------------------------------
 
