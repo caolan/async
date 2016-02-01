@@ -215,6 +215,7 @@ Some functions are also available in the following forms:
 * [`retry`](#retry)
 * [`iterator`](#iterator)
 * [`times`](#times), `timesSeries`, `timesLimit`
+* [`race`](#race)
 
 ### Utils
 
@@ -1446,7 +1447,7 @@ __Arguments__
 * `opts` - Can be either an object with `times` and `interval` or a number.
   * `times` - The number of attempts to make before giving up.  The default is `5`.
   * `interval` - The time to wait between retries, in milliseconds.  The default is `0`.
-  * If `opts` is a number, the number specifies the number of times to retry, with the default interval of `0`. 
+  * If `opts` is a number, the number specifies the number of times to retry, with the default interval of `0`.
 * `task(callback, results)` - A function which receives two arguments: (1) a `callback(err, result)`
   which must be called when finished, passing `err` (which can be `null`) and the `result` of
   the function's execution, and (2) a `results` object, containing the results of
@@ -1464,14 +1465,14 @@ async.retry(3, apiMethod, function(err, result) {
 ```
 
 ```js
-// try calling apiMethod 3 times, waiting 200 ms between each retry 
+// try calling apiMethod 3 times, waiting 200 ms between each retry
 async.retry({times: 3, interval: 200}, apiMethod, function(err, result) {
     // do something with the result
 });
 ```
 
 ```js
-// try calling apiMethod the default 5 times no delay between each retry 
+// try calling apiMethod the default 5 times no delay between each retry
 async.retry(apiMethod, function(err, result) {
     // do something with the result
 });
@@ -1641,6 +1642,47 @@ __Related__
 * timesSeries(n, iterator, [callback])
 * timesLimit(n, limit, iterator, [callback])
 
+
+---------------------------------------
+
+<a name="race" />
+### race(tasks, [callback])
+
+Runs the `tasks` array of functions in parallel, without waiting until the
+previous function has completed. Once any the `tasks` completed or pass an
+error to its callback, the main `callback` is immediately called. It's
+equivalent to `Promise.race()`.
+
+__Arguments__
+
+* `tasks` - An array containing functions to run. Each function is passed
+  a `callback(err, result)` which it must call on completion with an error `err`
+  (which can be `null`) and an optional `result` value.
+* `callback(err, result)` - A callback to run once any of the
+  functions have completed. This function gets an error or result from the
+  first function that completed.
+
+__Example__
+
+```js
+async.race([
+    function(callback){
+        setTimeout(function(){
+            callback(null, 'one');
+        }, 200);
+    },
+    function(callback){
+        setTimeout(function(){
+            callback(null, 'two');
+        }, 100);
+    }
+],
+// main callback
+function(err, result){
+    // the result will be equal to 'two' as it finishes earlier
+});
+```
+
 ---------------------------------------
 
 <a name="memoize"></a>
@@ -1792,7 +1834,7 @@ async.waterfall([
         return db.model.create(contents);
     }),
     function (model, next) {
-        // `model` is the instantiated model object. 
+        // `model` is the instantiated model object.
         // If there was an error, this function would be skipped.
     }
 ], callback)
