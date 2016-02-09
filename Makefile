@@ -31,6 +31,7 @@ test:
 clean:
 	rm -rf $(BUILDDIR)
 	rm -rf $(DIST)
+	rm -rf tmp/
 
 lint:
 	jshint $(LINT_FILES)

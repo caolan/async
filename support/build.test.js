@@ -80,13 +80,17 @@ describe("ES Modules", function () {
             ]
         }).then(function (bundle) {
             return bundle.write({
-                format: "cjs",
+                format: "umd",
                 dest: buildFile
             });
         });
     });
 
     it("should build a successful bundle", function (done) {
-        exec("node " + buildFile, done);
+        exec("node " + buildFile, function (err, stdout) {
+            if (err) { return done(err); }
+            expect(stdout).to.match(/42/);
+            done();
+        });
     });
 });
