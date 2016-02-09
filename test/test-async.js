@@ -1134,13 +1134,16 @@ exports['series'] = {
                 callback(null, 1);
             }, 25);
         },
-        function(callback){
+        function(callback, results){
+            test.ok(results[0], 1);
             setTimeout(function(){
                 call_order.push(2);
                 callback(null, 2);
             }, 50);
         },
-        function(callback){
+        function(callback, results){
+            test.ok(results[0], 1);
+            test.ok(results[1], 2); 
             setTimeout(function(){
                 call_order.push(3);
                 callback(null, 3,3);
