@@ -67,7 +67,7 @@ exports.default = function (worker, concurrency) {
     return q;
 };
 
-var _arrayEach = require('lodash/internal/arrayEach');
+var _arrayEach = require('lodash/_arrayEach');
 
 var _arrayEach2 = _interopRequireDefault(_arrayEach);
 

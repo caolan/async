@@ -1,6 +1,6 @@
 'use strict';
 
-import arrayEach from 'lodash-es/internal/arrayEach';
+import arrayEach from 'lodash-es/_arrayEach';
 import isArray from 'lodash-es/isArray';
 import noop from 'lodash-es/noop';
 

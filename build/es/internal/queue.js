@@ -1,10 +1,10 @@
 'use strict';
 
-import arrayEach from 'lodash-es/internal/arrayEach';
-import arrayMap from 'lodash-es/internal/arrayMap';
+import arrayEach from 'lodash-es/_arrayEach';
+import arrayMap from 'lodash-es/_arrayMap';
 import isArray from 'lodash-es/isArray';
 import noop from 'lodash-es/noop';
-import property from 'lodash-es/internal/baseProperty';
+import property from 'lodash-es/_baseProperty';
 
 import onlyOnce from './onlyOnce';
 import setImmediate from './setImmediate';

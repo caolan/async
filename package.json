@@ -19,8 +19,8 @@
     "utility"
   ],
   "dependencies": {
-    "lodash": "^4.0.0",
-    "lodash-es": "^4.0.0"
+    "lodash": "^4.3.0",
+    "lodash-es": "^4.3.0"
   },
   "devDependencies": {
     "babel-cli": "^6.3.17",

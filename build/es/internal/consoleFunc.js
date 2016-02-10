@@ -1,6 +1,6 @@
 'use strict';
 
-import arrayEach from 'lodash-es/internal/arrayEach';
+import arrayEach from 'lodash-es/_arrayEach';
 import rest from 'lodash-es/rest';
 
 export default function consoleFunc(name) {

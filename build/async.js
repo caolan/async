@@ -11,11 +11,11 @@
    * @private
    * @param {Function} func The function to invoke.
    * @param {*} thisArg The `this` binding of `func`.
-   * @param {...*} [args] The arguments to invoke `func` with.
+   * @param {...*} args The arguments to invoke `func` with.
    * @returns {*} Returns the result of `func`.
    */
   function apply$1(func, thisArg, args) {
-    var length = args ? args.length : 0;
+    var length = args.length;
     switch (length) {
       case 0: return func.call(thisArg);
       case 1: return func.call(thisArg, args[0]);
@@ -49,8 +49,6 @@
    * // => false
    */
   function isObject(value) {
-    // Avoid a V8 JIT bug in Chrome 19-20.
-    // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
     var type = typeof value;
     return !!value && (type == 'object' || type == 'function');
   }
@@ -642,9 +640,11 @@
    */
   function indexKeys(object) {
     var length = object ? object.length : undefined;
-    return (isLength(length) && (isArray(object) || isString(object) || isArguments(object)))
-      ? baseTimes(length, String)
-      : null;
+    if (isLength(length) &&
+        (isArray(object) || isString(object) || isArguments(object))) {
+      return baseTimes(length, String);
+    }
+    return null;
   }
 
   /** Used as references for various `Number` constants. */
@@ -961,7 +961,7 @@
   }
 
   /**
-   * This method returns the first argument provided to it.
+   * This method returns the first argument given to it.
    *
    * @static
    * @memberOf _
@@ -1073,8 +1073,7 @@
    * Gets the index at which the first occurrence of `value` is found in `array`
    * using [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
    * for equality comparisons. If `fromIndex` is negative, it's used as the offset
-   * from the end of `array`. If `array` is sorted providing `true` for `fromIndex`
-   * performs a faster binary search.
+   * from the end of `array`.
    *
    * @static
    * @memberOf _
@@ -1088,7 +1087,7 @@
    * _.indexOf([1, 2, 1, 2], 2);
    * // => 1
    *
-   * // using `fromIndex`
+   * // Search from the `fromIndex`.
    * _.indexOf([1, 2, 1, 2], 2, 2);
    * // => 3
    */

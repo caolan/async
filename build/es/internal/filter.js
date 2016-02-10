@@ -1,7 +1,7 @@
 'use strict';
 
-import arrayMap from 'lodash-es/internal/arrayMap';
-import property from 'lodash-es/internal/baseProperty';
+import arrayMap from 'lodash-es/_arrayMap';
+import property from 'lodash-es/_baseProperty';
 
 export default function _filter(eachfn, arr, iterator, callback) {
     var results = [];

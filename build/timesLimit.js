@@ -9,7 +9,7 @@ var _mapLimit = require('./mapLimit');
 
 var _mapLimit2 = _interopRequireDefault(_mapLimit);
 
-var _baseRange = require('lodash/internal/baseRange');
+var _baseRange = require('lodash/_baseRange');
 
 var _baseRange2 = _interopRequireDefault(_baseRange);
 

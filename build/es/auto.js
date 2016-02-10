@@ -1,8 +1,8 @@
 'use strict';
 
-import arrayEach from 'lodash-es/internal/arrayEach';
-import arrayEvery from 'lodash-es/internal/arrayEvery';
-import baseHas from 'lodash-es/internal/baseHas';
+import arrayEach from 'lodash-es/_arrayEach';
+import arrayEvery from 'lodash-es/_arrayEvery';
+import baseHas from 'lodash-es/_baseHas';
 import forOwn from 'lodash-es/forOwn';
 import indexOf from 'lodash-es/indexOf';
 import isArray from 'lodash-es/isArray';

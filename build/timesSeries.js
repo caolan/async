@@ -12,7 +12,7 @@ var _mapSeries = require('./mapSeries');
 
 var _mapSeries2 = _interopRequireDefault(_mapSeries);
 
-var _baseRange = require('lodash/internal/baseRange');
+var _baseRange = require('lodash/_baseRange');
 
 var _baseRange2 = _interopRequireDefault(_baseRange);
 

@@ -96,15 +96,15 @@ exports.default = function (tasks, concurrency, callback) {
     });
 };
 
-var _arrayEach = require('lodash/internal/arrayEach');
+var _arrayEach = require('lodash/_arrayEach');
 
 var _arrayEach2 = _interopRequireDefault(_arrayEach);
 
-var _arrayEvery = require('lodash/internal/arrayEvery');
+var _arrayEvery = require('lodash/_arrayEvery');
 
 var _arrayEvery2 = _interopRequireDefault(_arrayEvery);
 
-var _baseHas = require('lodash/internal/baseHas');
+var _baseHas = require('lodash/_baseHas');
 
 var _baseHas2 = _interopRequireDefault(_baseHas);
 

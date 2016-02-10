@@ -19,8 +19,8 @@
     "utility"
   ],
   "dependencies": {
-    "lodash": "^4.0.0",
-    "lodash-es": "^4.0.0"
+    "lodash": "^4.3.0",
+    "lodash-es": "^4.3.0"
   },
   "devDependencies": {
     "babel-cli": "^6.3.17",
@@ -71,9 +71,9 @@
   },
   "license": "MIT",
   "jam": {
-    "main": "async.js",
+    "main": "index.js",
     "include": [
-      "async.js",
+      "lib/async.js",
       "README.md",
       "LICENSE"
     ],
@@ -82,10 +82,10 @@
     ]
   },
   "spm": {
-    "main": "async.js"
+    "main": "index.js"
   },
   "volo": {
-    "main": "async.js",
+    "main": "index.js",
     "ignore": [
       "**/.*",
       "node_modules",

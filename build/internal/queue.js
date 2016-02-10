@@ -5,11 +5,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = queue;
 
-var _arrayEach = require('lodash/internal/arrayEach');
+var _arrayEach = require('lodash/_arrayEach');
 
 var _arrayEach2 = _interopRequireDefault(_arrayEach);
 
-var _arrayMap = require('lodash/internal/arrayMap');
+var _arrayMap = require('lodash/_arrayMap');
 
 var _arrayMap2 = _interopRequireDefault(_arrayMap);
 
@@ -21,7 +21,7 @@ var _noop = require('lodash/noop');
 
 var _noop2 = _interopRequireDefault(_noop);
 
-var _baseProperty = require('lodash/internal/baseProperty');
+var _baseProperty = require('lodash/_baseProperty');
 
 var _baseProperty2 = _interopRequireDefault(_baseProperty);
 
