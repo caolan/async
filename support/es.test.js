@@ -8,9 +8,8 @@ waterfall([
     constant(42),
     function (val, next) {
         async.setImmediate(function () {
-            console.log("blah");
             next(null, val);
-        })
+        });
     }
 ], function (err, result) {
     if (err) { throw err; }
