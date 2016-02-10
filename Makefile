@@ -75,9 +75,20 @@ $(BUILDDIR)/es/%.js: lib/%.js
 test-build:
 	mocha support/build.test.js
 
-.PHONY: build-modules build-bundle build-dist build-es test-build
+build-config: $(BUILDDIR)/package.json $(BUILDDIR)/component.json $(BUILDDIR)/bower.json $(BUILDDIR)/README.md $(BUILDDIR)/LICENSE $(BUILDDIR)/CHANGELOG.md
 
-build: clean build-bundle build-dist build-es test-build
+bower.json: package.json
+	support/sync-package-managers.js
+
+component.json: package.json
+	support/sync-package-managers.js
+
+$(BUILDDIR)/%: %
+	cp $< $@
+
+.PHONY: build-modules build-bundle build-dist build-es build-config test-build
+
+build: clean build-bundle build-dist build-es build-config test-build
 
 .PHONY: test lint build all clean
 

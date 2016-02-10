@@ -71,9 +71,9 @@
   },
   "license": "MIT",
   "jam": {
-    "main": "index.js",
+    "main": "async.js",
     "include": [
-      "lib/async.js",
+      "async.js",
       "README.md",
       "LICENSE"
     ],
@@ -82,10 +82,10 @@
     ]
   },
   "spm": {
-    "main": "index.js"
+    "main": "async.js"
   },
   "volo": {
-    "main": "index.js",
+    "main": "async.js",
     "ignore": [
       "**/.*",
       "node_modules",
