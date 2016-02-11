@@ -8,7 +8,7 @@ PACKAGE = asyncjs
 REQUIRE_NAME = async
 BABEL_NODE = babel-node
 UGLIFY = uglifyjs
-XYZ = xyz --repo git@github.com:caolan/async.git
+XYZ = support/xyz.sh --repo git@github.com:caolan/async.git
 
 BUILDDIR = build
 DIST = dist
@@ -23,7 +23,7 @@ CJS_BUNDLE = $(BUILDDIR)/index.js
 ES_MODULES = $(patsubst lib/%.js, build/es/%.js,  $(JS_SRC))
 
 
-all: lint test clean build
+all: clean lint build test
 
 test:
 	npm test
@@ -94,8 +94,6 @@ build: clean build-bundle build-dist build-es build-config test-build
 
 .PHONY: release-major release-minor release-patch
 release-major release-minor release-patch: all
-	$(SCRIPTS)/sync-package-managers.js
-	git add --force *.json
 	git add --force $(BUILDDIR)
 	git commit -am "update minified build"; true
 	$(XYZ) --increment $(@:release-%=%)
