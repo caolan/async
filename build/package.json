@@ -72,7 +72,7 @@
   "jam": {
     "main": "index.js",
     "include": [
-      "build/async.js",
+      "dist/async.js",
       "README.md",
       "LICENSE"
     ],

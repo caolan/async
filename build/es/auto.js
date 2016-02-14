@@ -31,6 +31,7 @@ export default function (tasks, concurrency, callback) {
 
     var results = {};
     var runningTasks = 0;
+    var hasError = false;
 
     var listeners = [];
     function addListener(fn) {
@@ -54,6 +55,7 @@ export default function (tasks, concurrency, callback) {
     });
 
     arrayEach(keys, function (k) {
+        if (hasError) return;
         var task = isArray(tasks[k]) ? tasks[k]: [tasks[k]];
         var taskCallback = rest(function(err, args) {
             runningTasks--;
@@ -66,6 +68,8 @@ export default function (tasks, concurrency, callback) {
                     safeResults[rkey] = val;
                 });
                 safeResults[k] = args;
+                hasError = true;
+
                 callback(err, safeResults);
             }
             else {
@@ -79,7 +83,8 @@ export default function (tasks, concurrency, callback) {
         var dep;
         while (len--) {
             if (!(dep = tasks[requires[len]])) {
-                throw new Error('Has inexistant dependency');
+                throw new Error('Has non-existent dependency in ' +
+                    requires.join(', '));
             }
             if (isArray(dep) && indexOf(dep, k) >= 0) {
                 throw new Error('Has cyclic dependencies');

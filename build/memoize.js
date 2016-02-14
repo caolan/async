@@ -13,6 +13,10 @@ var _rest = require('lodash/rest');
 
 var _rest2 = _interopRequireDefault(_rest);
 
+var _has = require('lodash/has');
+
+var _has2 = _interopRequireDefault(_has);
+
 var _setImmediate = require('./internal/setImmediate');
 
 var _setImmediate2 = _interopRequireDefault(_setImmediate);
@@ -26,11 +30,11 @@ function memoize(fn, hasher) {
     var memoized = (0, _rest2.default)(function memoized(args) {
         var callback = args.pop();
         var key = hasher.apply(null, args);
-        if (key in memo) {
+        if ((0, _has2.default)(memo, key)) {
             (0, _setImmediate2.default)(function () {
                 callback.apply(null, memo[key]);
             });
-        } else if (key in queues) {
+        } else if ((0, _has2.default)(queues, key)) {
             queues[key].push(callback);
         } else {
             queues[key] = [callback];
