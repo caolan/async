@@ -603,6 +603,22 @@ exports['auto prevent dead-locks due to cyclic dependencies'] = function(test) {
     test.done();
 };
 
+// Issue 988 on github: https://github.com/caolan/async/issues/988
+exports['auto stops running tasks on error'] = function(test) {
+    async.auto({
+        task1: function (callback) {
+            callback('error');
+        },
+        task2: function (callback) {
+            test.ok(false, 'test2 should not be called');
+            callback();
+        }
+    }, 1, function (error) {
+        test.equal(error, 'error', 'finishes with error');
+        test.done();
+    });
+};
+
 // Issue 306 on github: https://github.com/caolan/async/issues/306
 exports['retry when attempt succeeds'] = function(test) {
     var failed = 3;
@@ -4262,6 +4278,45 @@ exports['memoize'] = {
     fn.memo["foo"] = ["bar"];
     fn("foo", function(val) {
         test.equal(val, "bar");
+        test.done();
+    });
+},
+
+    'avoid constructor key return undefined': function (test) {
+    test.expect(1);
+    var fn = async.memoize(function(name, callback) {
+        setTimeout(function(){
+            callback(null, name);
+        }, 100);
+    });
+    fn('constructor', function(error, results) {
+        test.equal(results, 'constructor');
+        test.done();
+    });
+},
+
+    'avoid __proto__ key return undefined': function (test) {
+    test.expect(1);
+    var fn = async.memoize(function(name, callback) {
+        setTimeout(function(){
+            callback(null, name);
+        }, 100);
+    });
+    fn('__proto__', function(error, results) {
+        test.equal(results, '__proto__');
+        test.done();
+    });
+},
+
+    'allow hasOwnProperty as key': function (test) {
+    test.expect(1);
+    var fn = async.memoize(function(name, callback) {
+        setTimeout(function(){
+            callback(null, name);
+        }, 100);
+    });
+    fn('hasOwnProperty', function(error, results) {
+        test.equal(results, 'hasOwnProperty');
         test.done();
     });
 }
