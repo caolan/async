@@ -94,6 +94,6 @@ build: clean build-bundle build-dist build-es build-config test-build
 
 .PHONY: release-major release-minor release-patch
 release-major release-minor release-patch: all
-	git add --force $(BUILDDIR)
+	git add --force $(DIST)
 	git commit -am "update minified build"; true
 	$(XYZ) --increment $(@:release-%=%)

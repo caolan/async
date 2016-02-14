@@ -10,7 +10,7 @@ var _ = require('lodash');
 var packageJson = require('../package.json');
 
 var IGNORES = ['**/.*', 'node_modules', 'bower_components', 'test', 'tests'];
-var INCLUDES = ['lib/async.js', 'README.md', 'LICENSE'];
+var INCLUDES = ['dist/async.js', 'README.md', 'LICENSE'];
 var REPOSITORY_NAME = 'caolan/async';
 
 packageJson.jam = {
@@ -31,7 +31,8 @@ packageJson.volo = {
 var bowerSpecific = {
     moduleType: ['amd', 'globals', 'node'],
     ignore: IGNORES,
-    authors: [packageJson.author]
+    authors: [packageJson.author],
+    main: INCLUDES[0]
 };
 
 var bowerInclude = ['name', 'description', 'main', 'keywords',
