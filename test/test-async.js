@@ -4296,6 +4296,14 @@ exports['memoize'] = {
 },
 
     'avoid __proto__ key return undefined': function (test) {
+    // Skip test if there is a Object.create bug (node 0.10 and some Chrome 30x versions)
+    var x = Object.create(null);
+    /* jshint proto: true */
+    x.__proto__ = 'foo';
+    if (x.__proto__ !== 'foo') {
+        return test.done();
+    }
+
     test.expect(1);
     var fn = async.memoize(function(name, callback) {
         setTimeout(function(){
