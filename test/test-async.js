@@ -38,14 +38,14 @@ function mapIterator(call_order, x, callback) {
 
 function filterIterator(x, callback) {
     setTimeout(function(){
-        callback(x % 2);
+        callback(null, x % 2);
     }, x*25);
 }
 
 function detectIterator(call_order, x, callback) {
     setTimeout(function(){
         call_order.push(x);
-        callback(x == 2);
+        callback(null, x == 2);
     }, x*25);
 }
 
@@ -2159,7 +2159,8 @@ exports['transform error'] = function(test){
 };
 
 exports['filter'] = function(test){
-    async.filter([3,1,2], filterIterator, function(results){
+    async.filter([3,1,2], filterIterator, function(err, results){
+        test.equals(err, null);
         test.same(results, [3,1]);
         test.done();
     });
@@ -2168,16 +2169,28 @@ exports['filter'] = function(test){
 exports['filter original untouched'] = function(test){
     var a = [3,1,2];
     async.filter(a, function(x, callback){
-        callback(x % 2);
-    }, function(results){
+        callback(null, x % 2);
+    }, function(err, results){
+        test.equals(err, null);
         test.same(results, [3,1]);
         test.same(a, [3,1,2]);
         test.done();
     });
 };
 
+exports['filter error'] = function(test){
+    async.filter([3,1,2], function(x, callback){
+        callback('error');
+    } , function(err, results){
+        test.equals(err, 'error');
+        test.equals(results, null);
+        test.done();
+    });
+};
+
 exports['filterSeries'] = function(test){
-    async.filterSeries([3,1,2], filterIterator, function(results){
+    async.filterSeries([3,1,2], filterIterator, function(err, results){
+        test.equals(err, null);
         test.same(results, [3,1]);
         test.done();
     });
@@ -2194,28 +2207,42 @@ exports['selectSeries alias'] = function(test){
 };
 
 exports['reject'] = function(test){
-    test.expect(1);
-    async.reject([3,1,2], filterIterator, function(results){
+    test.expect(2);
+    async.reject([3,1,2], filterIterator, function(err, results){
+        test.equals(err, null);
         test.same(results, [2]);
         test.done();
     });
 };
 
 exports['reject original untouched'] = function(test){
-    test.expect(2);
+    test.expect(3);
     var a = [3,1,2];
     async.reject(a, function(x, callback){
-        callback(x % 2);
-    }, function(results){
+        callback(null, x % 2);
+    }, function(err, results){
+        test.equals(err, null);
         test.same(results, [2]);
         test.same(a, [3,1,2]);
         test.done();
     });
 };
 
+exports['reject error'] = function(test){
+    test.expect(2);
+    async.reject([3,1,2], function(x, callback){
+        callback('error');
+    } , function(err, results){
+        test.equals(err, 'error');
+        test.equals(results, null);
+        test.done();
+    });
+};
+
 exports['rejectSeries'] = function(test){
-    test.expect(1);
-    async.rejectSeries([3,1,2], filterIterator, function(results){
+    test.expect(2);
+    async.rejectSeries([3,1,2], filterIterator, function(err, results){
+        test.equals(err, null);
         test.same(results, [2]);
         test.done();
     });
@@ -2235,40 +2262,44 @@ function testLimit(test, arr, limitFunc, limit, iter, done) {
 }
 
 exports['rejectLimit'] = function(test) {
-    test.expect(2);
+    test.expect(3);
     testLimit(test, [5, 4, 3, 2, 1], async.rejectLimit, 2, function(v, next) {
-        next(v % 2);
-    }, function(x) {
-        test.same(x, [4, 2]);
+        next(null, v % 2);
+    }, function(err, result){
+        test.equals(err, null);
+        test.same(result, [4, 2]);
         test.done();
     });
 };
 
 exports['filterLimit'] = function(test) {
-    test.expect(2);
+    test.expect(3);
     testLimit(test, [5, 4, 3, 2, 1], async.filterLimit, 2, function(v, next) {
-        next(v % 2);
-    }, function(x) {
-        test.same(x, [5, 3, 1]);
+        next(null, v % 2);
+    }, function(err, result){
+        test.equals(err, null);
+        test.same(result, [5, 3, 1]);
         test.done();
     });
 };
 
 exports['some true'] = function(test){
-    test.expect(1);
+    test.expect(2);
     async.some([3,1,2], function(x, callback){
-        setTimeout(function(){callback(x === 1);}, 0);
-    }, function(result){
+        setTimeout(function(){callback(null, x === 1);}, 0);
+    }, function(err, result){
+        test.equals(err, null);
         test.equals(result, true);
         test.done();
     });
 };
 
 exports['some false'] = function(test){
-    test.expect(1);
+    test.expect(2);
     async.some([3,1,2], function(x, callback){
-        setTimeout(function(){callback(x === 10);}, 0);
-    }, function(result){
+        setTimeout(function(){callback(null, x === 10);}, 0);
+    }, function(err, result){
+        test.equals(err, null);
         test.equals(result, false);
         test.done();
     });
@@ -2280,7 +2311,7 @@ exports['some early return'] = function(test){
     async.some([1,2,3], function(x, callback){
         setTimeout(function(){
             call_order.push(x);
-            callback(x === 1);
+            callback(null, x === 1);
         }, x*25);
     }, function(){
         call_order.push('callback');
@@ -2291,10 +2322,22 @@ exports['some early return'] = function(test){
     }, 100);
 };
 
+exports['some error'] = function(test){
+    test.expect(2);
+    async.some([3,1,2], function(x, callback){
+        setTimeout(function(){callback('error');}, 0);
+    }, function(err, result){
+        test.equals(err, 'error');
+        test.equals(result, null);
+        test.done();
+    });
+};
+
 exports['someLimit true'] = function(test){
     async.someLimit([3,1,2], 2, function(x, callback){
-        setTimeout(function(){callback(x === 2);}, 0);
-    }, function(result){
+        setTimeout(function(){callback(null, x === 2);}, 0);
+    }, function(err, result){
+        test.equals(err, null);
         test.equals(result, true);
         test.done();
     });
@@ -2302,8 +2345,9 @@ exports['someLimit true'] = function(test){
 
 exports['someLimit false'] = function(test){
     async.someLimit([3,1,2], 2, function(x, callback){
-        setTimeout(function(){callback(x === 10);}, 0);
-    }, function(result){
+        setTimeout(function(){callback(null, x === 10);}, 0);
+    }, function(err, result){
+        test.equals(err, null);
         test.equals(result, false);
         test.done();
     });
@@ -2311,8 +2355,9 @@ exports['someLimit false'] = function(test){
 
 exports['every true'] = function(test){
     async.everyLimit([3,1,2], 1, function(x, callback){
-        setTimeout(function(){callback(x > 1);}, 0);
-    }, function(result){
+        setTimeout(function(){callback(null, x > 1);}, 0);
+    }, function(err, result){
+        test.equals(err, null);
         test.equals(result, true);
         test.done();
     });
@@ -2320,20 +2365,22 @@ exports['every true'] = function(test){
 
 exports['everyLimit false'] = function(test){
     async.everyLimit([3,1,2], 2, function(x, callback){
-        setTimeout(function(){callback(x === 2);}, 0);
-    }, function(result){
+        setTimeout(function(){callback(null, x === 2);}, 0);
+    }, function(err, result){
+        test.equals(err, null);
         test.equals(result, false);
         test.done();
     });
 };
 
 exports['everyLimit short-circuit'] = function(test){
-    test.expect(2);
+    test.expect(3);
     var calls = 0;
     async.everyLimit([3,1,2], 1, function(x, callback){
         calls++;
-        callback(x === 1);
-    }, function(result){
+        callback(null, x === 1);
+    }, function(err, result){
+        test.equals(err, null);
         test.equals(result, false);
         test.equals(calls, 1);
         test.done();
@@ -2342,12 +2389,13 @@ exports['everyLimit short-circuit'] = function(test){
 
 
 exports['someLimit short-circuit'] = function(test){
-    test.expect(2);
+    test.expect(3);
     var calls = 0;
     async.someLimit([3,1,2], 1, function(x, callback){
         calls++;
-        callback(x === 1);
-    }, function(result){
+        callback(null, x === 1);
+    }, function(err, result){
+        test.equals(err, null);
         test.equals(result, true);
         test.equals(calls, 2);
         test.done();
@@ -2360,20 +2408,22 @@ exports['any alias'] = function(test){
 };
 
 exports['every true'] = function(test){
-    test.expect(1);
+    test.expect(2);
     async.every([1,2,3], function(x, callback){
-        setTimeout(function(){callback(true);}, 0);
-    }, function(result){
+        setTimeout(function(){callback(null, true);}, 0);
+    }, function(err, result){
+        test.equals(err, null);
         test.equals(result, true);
         test.done();
     });
 };
 
 exports['every false'] = function(test){
-    test.expect(1);
+    test.expect(2);
     async.every([1,2,3], function(x, callback){
-        setTimeout(function(){callback(x % 2);}, 0);
-    }, function(result){
+        setTimeout(function(){callback(null, x % 2);}, 0);
+    }, function(err, result){
+        test.equals(err, null);
         test.equals(result, false);
         test.done();
     });
@@ -2385,7 +2435,7 @@ exports['every early return'] = function(test){
     async.every([1,2,3], function(x, callback){
         setTimeout(function(){
             call_order.push(x);
-            callback(x === 1);
+            callback(null, x === 1);
         }, x*25);
     }, function(){
         call_order.push('callback');
@@ -2396,16 +2446,27 @@ exports['every early return'] = function(test){
     }, 100);
 };
 
+exports['every error'] = function(test){
+    async.every([1,2,3], function(x, callback){
+        setTimeout(function(){callback('error');}, 0);
+    }, function(err, result){
+        test.equals(err, 'error');
+        test.equals(result, null);
+        test.done();
+    });
+};
+
 exports['all alias'] = function(test){
     test.equals(async.all, async.every);
     test.done();
 };
 
 exports['detect'] = function(test){
-    test.expect(2);
+    test.expect(3);
     var call_order = [];
-    async.detect([3,2,1], detectIterator.bind(this, call_order), function(result){
+    async.detect([3,2,1], detectIterator.bind(this, call_order), function(err, result){
         call_order.push('callback');
+        test.equals(err, null);
         test.equals(result, 2);
     });
     setTimeout(function(){
@@ -2415,10 +2476,11 @@ exports['detect'] = function(test){
 };
 
 exports['detect - mulitple matches'] = function(test){
-    test.expect(2);
+    test.expect(3);
     var call_order = [];
-    async.detect([3,2,2,1,2], detectIterator.bind(this, call_order), function(result){
+    async.detect([3,2,2,1,2], detectIterator.bind(this, call_order), function(err, result){
         call_order.push('callback');
+        test.equals(err, null);
         test.equals(result, 2);
     });
     setTimeout(function(){
@@ -2427,11 +2489,23 @@ exports['detect - mulitple matches'] = function(test){
     }, 100);
 };
 
-exports['detectSeries'] = function(test){
+exports['detect error'] = function(test){
     test.expect(2);
+    async.detect([3,2,1], function(x, callback) {
+        setTimeout(function(){callback('error');}, 0);
+    }, function(err, result){
+        test.equals(err, 'error');
+        test.equals(result, null);
+        test.done();
+    });
+};
+
+exports['detectSeries'] = function(test){
+    test.expect(3);
     var call_order = [];
-    async.detectSeries([3,2,1], detectIterator.bind(this, call_order), function(result){
+    async.detectSeries([3,2,1], detectIterator.bind(this, call_order), function(err, result){
         call_order.push('callback');
+        test.equals(err, null);
         test.equals(result, 2);
     });
     setTimeout(function(){
@@ -2441,10 +2515,11 @@ exports['detectSeries'] = function(test){
 };
 
 exports['detectSeries - multiple matches'] = function(test){
-    test.expect(2);
+    test.expect(3);
     var call_order = [];
-    async.detectSeries([3,2,2,1,2], detectIterator.bind(this, call_order), function(result){
+    async.detectSeries([3,2,2,1,2], detectIterator.bind(this, call_order), function(err, result){
         call_order.push('callback');
+        test.equals(err, null);
         test.equals(result, 2);
     });
     setTimeout(function(){
@@ -2454,21 +2529,23 @@ exports['detectSeries - multiple matches'] = function(test){
 };
 
 exports['detectSeries - ensure stop'] = function (test) {
-    test.expect(1);
+    test.expect(2);
     async.detectSeries([1, 2, 3, 4, 5], function (num, cb) {
         if (num > 3) throw new Error("detectSeries did not stop iterating");
-        cb(num === 3);
-    }, function (result) {
+        cb(null, num === 3);
+    }, function (err, result) {
+        test.equals(err, null);
         test.equals(result, 3);
         test.done();
     });
 };
 
 exports['detectLimit'] = function(test){
-    test.expect(2);
+    test.expect(3);
     var call_order = [];
-    async.detectLimit([3, 2, 1], 2, detectIterator.bind(this, call_order), function(result) {
+    async.detectLimit([3, 2, 1], 2, detectIterator.bind(this, call_order), function(err, result) {
         call_order.push('callback');
+        test.equals(err, null);
         test.equals(result, 2);
     });
     setTimeout(function() {
@@ -2478,10 +2555,11 @@ exports['detectLimit'] = function(test){
 };
 
 exports['detectLimit - multiple matches'] = function(test){
-    test.expect(2);
+    test.expect(3);
     var call_order = [];
-    async.detectLimit([3,2,2,1,2], 2, detectIterator.bind(this, call_order), function(result){
+    async.detectLimit([3,2,2,1,2], 2, detectIterator.bind(this, call_order), function(err, result){
         call_order.push('callback');
+        test.equals(err, null);
         test.equals(result, 2);
     });
     setTimeout(function(){
@@ -2491,11 +2569,12 @@ exports['detectLimit - multiple matches'] = function(test){
 };
 
 exports['detectLimit - ensure stop'] = function (test) {
-    test.expect(1);
+    test.expect(2);
     async.detectLimit([1, 2, 3, 4, 5], 2, function (num, cb) {
         if (num > 4) throw new Error("detectLimit did not stop iterating");
-        cb(num === 3);
-    }, function (result) {
+        cb(null, num === 3);
+    }, function (err, result) {
+        test.equals(err, null);
         test.equals(result, 3);
         test.done();
     });
