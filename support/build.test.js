@@ -24,7 +24,7 @@ describe("async umd", function() {
     var async;
 
     before(function() {
-        async = require("../build/async.js");
+        async = require("../build/dist/async.js");
     });
 
     it("should have methods", function() {
@@ -38,7 +38,7 @@ describe("async umd minified", function() {
     var async;
 
     before(function() {
-        async = require("../build/async.min.js");
+        async = require("../build/dist/async.min.js");
     });
 
     it("should have methods", function() {
