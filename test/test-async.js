@@ -2541,10 +2541,11 @@ exports['detectSeries - ensure stop'] = function (test) {
 };
 
 exports['detectLimit'] = function(test){
-    test.expect(2);
+    test.expect(3);
     var call_order = [];
-    async.detectLimit([3, 2, 1], 2, detectIterator.bind(this, call_order), function(result) {
+    async.detectLimit([3, 2, 1], 2, detectIterator.bind(this, call_order), function(err, result) {
         call_order.push('callback');
+        test.equals(err, null);
         test.equals(result, 2);
     });
     setTimeout(function() {
@@ -2554,10 +2555,11 @@ exports['detectLimit'] = function(test){
 };
 
 exports['detectLimit - multiple matches'] = function(test){
-    test.expect(2);
+    test.expect(3);
     var call_order = [];
-    async.detectLimit([3,2,2,1,2], 2, detectIterator.bind(this, call_order), function(result){
+    async.detectLimit([3,2,2,1,2], 2, detectIterator.bind(this, call_order), function(err, result){
         call_order.push('callback');
+        test.equals(err, null);
         test.equals(result, 2);
     });
     setTimeout(function(){
@@ -2567,11 +2569,12 @@ exports['detectLimit - multiple matches'] = function(test){
 };
 
 exports['detectLimit - ensure stop'] = function (test) {
-    test.expect(1);
+    test.expect(2);
     async.detectLimit([1, 2, 3, 4, 5], 2, function (num, cb) {
         if (num > 4) throw new Error("detectLimit did not stop iterating");
-        cb(num === 3);
-    }, function (result) {
+        cb(null, num === 3);
+    }, function (err, result) {
+        test.equals(err, null);
         test.equals(result, 3);
         test.done();
     });
