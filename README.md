@@ -36,7 +36,7 @@ async.map(['file1','file2','file3'], fs.stat, function(err, results){
 
 async.filter(['file1','file2','file3'], function(filePath, callback) {
   fs.access(filePath, function(err) {
-    callback(filepath, !err)
+    callback(null, !err)
   });
 }, function(err, results){
     // results now equals an array of the existing files
@@ -416,7 +416,7 @@ __Example__
 ```js
 async.filter(['file1','file2','file3'], function(filePath, callback) {
   fs.access(filePath, function(err) {
-    callback(filepath, !err)
+    callback(null, !err)
   });
 }, function(err, results){
     // results now equals an array of the existing files
@@ -519,7 +519,7 @@ __Example__
 ```js
 async.detect(['file1','file2','file3'], function(filePath, callback) {
   fs.access(filePath, function(err) {
-    callback(filepath, !err)
+    callback(null, !err)
   });
 }, function(err, result){
     // result now equals the first file in the list that exists
@@ -607,7 +607,7 @@ __Example__
 ```js
 async.some(['file1','file2','file3'], function(filePath, callback) {
   fs.access(filePath, function(err) {
-    callback(filepath, !err)
+    callback(null, !err)
   });
 }, function(err, result){
     // if result is true then at least one of the files exists
@@ -643,7 +643,7 @@ __Example__
 ```js
 async.every(['file1','file2','file3'], function(filePath, callback) {
   fs.access(filePath, function(err) {
-    callback(filepath, !err)
+    callback(null, !err)
   });
 }, function(err, result){
     // if result is true then every file exists
