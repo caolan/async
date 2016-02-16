@@ -331,6 +331,35 @@ exports['auto'] = function(test){
     });
 };
 
+exports['auto concurrency'] = function (test) {
+    var concurrency = 2;
+    var runningTasks = [];
+    var makeCallback = function(taskName) {
+        return function(callback) {
+            runningTasks.push(taskName);
+            setTimeout(function(){
+                // Each task returns the array of running tasks as results.
+                var result = runningTasks.slice(0);
+                runningTasks.splice(runningTasks.indexOf(taskName), 1);
+                callback(null, result);
+            });
+        };
+    };
+    async.auto({
+        task1: ['task2', makeCallback('task1')],
+        task2: makeCallback('task2'),
+        task3: ['task2', makeCallback('task3')],
+        task4: ['task1', 'task2', makeCallback('task4')],
+        task5: ['task2', makeCallback('task5')],
+        task6: ['task2', makeCallback('task6')]
+    }, concurrency, function(err, results){
+        Object.keys(results).forEach(function(taskName) {
+            test.ok(results[taskName].length <= concurrency);
+        });
+        test.done();
+    });
+};
+
 exports['auto petrify'] = function (test) {
     var callOrder = [];
     async.auto({
@@ -397,7 +426,6 @@ exports['auto results'] = function(test){
     });
 };
 
-
 exports['auto empty object'] = function(test){
     async.auto({}, function(err){
         test.ok(err === null, err + " passed instead of 'null'");
@@ -430,6 +458,13 @@ exports['auto no callback'] = function(test){
         task1: function(callback){callback();},
         task2: ['task1', function(callback){callback(); test.done();}]
     });
+};
+
+exports['auto concurrency no callback'] = function(test){
+    async.auto({
+        task1: function(callback){callback();},
+        task2: ['task1', function(callback){callback(); test.done();}]
+    }, 1);
 };
 
 exports['auto error should pass partial results'] = function(test) {
@@ -564,6 +599,22 @@ exports['auto prevent dead-locks due to cyclic dependencies'] = function(test) {
         });
     }, Error);
     test.done();
+};
+
+// Issue 988 on github: https://github.com/caolan/async/issues/988
+exports['auto stops running tasks on error'] = function(test) {
+    async.auto({
+        task1: function (callback) {
+            callback('error');
+        },
+        task2: function (callback) {
+            test.ok(false, 'test2 should not be called');
+            callback();
+        }
+    }, 1, function (error) {
+        test.equal(error, 'error', 'finishes with error');
+        test.done();
+    });
 };
 
 // Issue 306 on github: https://github.com/caolan/async/issues/306
@@ -1347,6 +1398,19 @@ exports['forEachOf'] = function(test){
     });
 };
 
+exports['forEachOf - instant resolver'] = function(test){
+    test.expect(1);
+    var args = [];
+    async.forEachOf({ a: 1, b: 2 }, function(x, k, cb) {
+        args.push(k, x);
+        cb();
+    }, function(){
+        // ensures done callback isn't called before all items iterated
+        test.same(args, ["a", 1, "b", 2]);
+        test.done();
+    });
+};
+
 exports['forEachOf empty object'] = function(test){
     test.expect(1);
     async.forEachOf({}, function(value, key, callback){
@@ -1383,6 +1447,11 @@ exports['forEachOf error'] = function(test){
 
 exports['forEachOf no callback'] = function(test){
     async.forEachOf({ a: 1 }, forEachOfNoCallbackIterator.bind(this, test));
+};
+
+exports['eachOf alias'] = function(test){
+    test.equals(async.eachOf, async.forEachOf);
+    test.done();
 };
 
 exports['forEachOf with array'] = function(test){
@@ -1643,6 +1712,18 @@ exports['forEachOfSeries with array'] = function(test){
     });
 };
 
+
+exports['eachOfLimit alias'] = function(test){
+    test.equals(async.eachOfLimit, async.forEachOfLimit);
+    test.done();
+};
+
+
+exports['eachOfSeries alias'] = function(test){
+    test.equals(async.eachOfSeries, async.forEachOfSeries);
+    test.done();
+};
+
 exports['forEachLimit alias'] = function (test) {
     test.strictEqual(async.eachLimit, async.forEachLimit);
     test.done();
@@ -1810,6 +1891,7 @@ exports['map'] = {
         callback(null, val * 2);
     }, function (err, result) {
         if (err) throw err;
+        test.equals(Object.prototype.toString.call(result), '[object Object]');
         test.same(result, {a: 2, b: 4, c: 6});
         test.done();
     });
@@ -2021,6 +2103,59 @@ exports['reduceRight'] = function(test){
 exports['foldr alias'] = function(test){
     test.equals(async.foldr, async.reduceRight);
     test.done();
+};
+
+exports['transform implictly determines memo if not provided'] = function(test){
+    async.transform([1,2,3], function(memo, x, v, callback){
+        memo.push(x + 1);
+        callback();
+    }, function(err, result){
+        test.same(result, [2, 3, 4]);
+        test.done();
+    });
+};
+
+exports['transform async with object memo'] = function(test){
+    test.expect(2);
+
+    async.transform([1,3,2], {}, function(memo, v, k, callback){
+        setTimeout(function() {
+            memo[k] = v;
+            callback();
+        });
+    }, function(err, result) {
+        test.equals(err, null);
+        test.same(result, {
+            0: 1,
+            1: 3,
+            2: 2
+        });
+        test.done();
+    });
+};
+
+exports['transform iterating object'] = function(test){
+    test.expect(2);
+
+    async.transform({a: 1, b: 3, c: 2}, function(memo, v, k, callback){
+        setTimeout(function() {
+            memo[k] = v + 1;
+            callback();
+        });
+    }, function(err, result) {
+        test.equals(err, null);
+        test.same(result, {a: 2, b: 4, c: 3});
+        test.done();
+    });
+};
+
+exports['transform error'] = function(test){
+    async.transform([1,2,3], function(a, v, k, callback){
+        callback('error');
+    }, function(err){
+        test.equals(err, 'error');
+        test.done();
+    });
 };
 
 exports['filter'] = function(test){
@@ -2405,6 +2540,43 @@ exports['detectSeries - ensure stop'] = function (test) {
     });
 };
 
+exports['detectLimit'] = function(test){
+    test.expect(2);
+    var call_order = [];
+    async.detectLimit([3, 2, 1], 2, detectIterator.bind(this, call_order), function(result) {
+        call_order.push('callback');
+        test.equals(result, 2);
+    });
+    setTimeout(function() {
+        test.same(call_order, [2, 'callback', 3]);
+        test.done();
+    }, 100);
+};
+
+exports['detectLimit - multiple matches'] = function(test){
+    test.expect(2);
+    var call_order = [];
+    async.detectLimit([3,2,2,1,2], 2, detectIterator.bind(this, call_order), function(result){
+        call_order.push('callback');
+        test.equals(result, 2);
+    });
+    setTimeout(function(){
+        test.same(call_order, [2, 'callback', 3]);
+        test.done();
+    }, 100);
+};
+
+exports['detectLimit - ensure stop'] = function (test) {
+    test.expect(1);
+    async.detectLimit([1, 2, 3, 4, 5], 2, function (num, cb) {
+        if (num > 4) throw new Error("detectLimit did not stop iterating");
+        cb(num === 3);
+    }, function (result) {
+        test.equals(result, 3);
+        test.done();
+    });
+};
+
 exports['sortBy'] = function(test){
     test.expect(2);
 
@@ -2738,7 +2910,7 @@ exports['concatSeries'] = function(test){
 };
 
 exports['until'] = function (test) {
-    test.expect(3);
+    test.expect(4);
 
     var call_order = [];
     var count = 0;
@@ -2750,10 +2922,11 @@ exports['until'] = function (test) {
         function (cb) {
             call_order.push(['iterator', count]);
             count++;
-            cb();
+            cb(null, count);
         },
-        function (err) {
+        function (err, result) {
             test.ok(err === null, err + " passed instead of 'null'");
+            test.equals(result, 5, 'last result passed through');
             test.same(call_order, [
                 ['test', 0],
                 ['iterator', 0], ['test', 1],
@@ -2769,7 +2942,7 @@ exports['until'] = function (test) {
 };
 
 exports['doUntil'] = function (test) {
-    test.expect(3);
+    test.expect(4);
 
     var call_order = [];
     var count = 0;
@@ -2777,14 +2950,15 @@ exports['doUntil'] = function (test) {
         function (cb) {
             call_order.push(['iterator', count]);
             count++;
-            cb();
+            cb(null, count);
         },
         function () {
             call_order.push(['test', count]);
             return (count == 5);
         },
-        function (err) {
+        function (err, result) {
             test.ok(err === null, err + " passed instead of 'null'");
+            test.equals(result, 5, 'last result passed through');
             test.same(call_order, [
                 ['iterator', 0], ['test', 1],
                 ['iterator', 1], ['test', 2],
@@ -2799,7 +2973,7 @@ exports['doUntil'] = function (test) {
 };
 
 exports['doUntil callback params'] = function (test) {
-    test.expect(2);
+    test.expect(3);
 
     var call_order = [];
     var count = 0;
@@ -2813,8 +2987,9 @@ exports['doUntil callback params'] = function (test) {
             call_order.push(['test', c]);
             return (c == 5);
         },
-        function (err) {
+        function (err, result) {
             if (err) throw err;
+            test.equals(result, 5, 'last result passed through');
             test.same(call_order, [
                 ['iterator', 0], ['test', 1],
                 ['iterator', 1], ['test', 2],
@@ -2829,7 +3004,7 @@ exports['doUntil callback params'] = function (test) {
 };
 
 exports['whilst'] = function (test) {
-    test.expect(3);
+    test.expect(4);
 
     var call_order = [];
 
@@ -2842,10 +3017,11 @@ exports['whilst'] = function (test) {
         function (cb) {
             call_order.push(['iterator', count]);
             count++;
-            cb();
+            cb(null, count);
         },
-        function (err) {
+        function (err, result) {
             test.ok(err === null, err + " passed instead of 'null'");
+            test.equals(result, 5, 'last result passed through');
             test.same(call_order, [
                 ['test', 0],
                 ['iterator', 0], ['test', 1],
@@ -2861,7 +3037,7 @@ exports['whilst'] = function (test) {
 };
 
 exports['doWhilst'] = function (test) {
-    test.expect(3);
+    test.expect(4);
     var call_order = [];
 
     var count = 0;
@@ -2869,14 +3045,15 @@ exports['doWhilst'] = function (test) {
         function (cb) {
             call_order.push(['iterator', count]);
             count++;
-            cb();
+            cb(null, count);
         },
         function () {
             call_order.push(['test', count]);
             return (count < 5);
         },
-        function (err) {
+        function (err, result) {
             test.ok(err === null, err + " passed instead of 'null'");
+            test.equals(result, 5, 'last result passed through');
             test.same(call_order, [
                 ['iterator', 0], ['test', 1],
                 ['iterator', 1], ['test', 2],
@@ -2891,7 +3068,7 @@ exports['doWhilst'] = function (test) {
 };
 
 exports['doWhilst callback params'] = function (test) {
-    test.expect(2);
+    test.expect(3);
     var call_order = [];
     var count = 0;
     async.doWhilst(
@@ -2904,8 +3081,9 @@ exports['doWhilst callback params'] = function (test) {
             call_order.push(['test', c]);
             return (c < 5);
         },
-        function (err) {
+        function (err, result) {
             if (err) throw err;
+            test.equals(result, 5, 'last result passed through');
             test.same(call_order, [
                 ['iterator', 0], ['test', 1],
                 ['iterator', 1], ['test', 2],
@@ -3422,6 +3600,36 @@ exports['queue'] = {
         test.done();
     }, 800);
 },
+
+    'pause in worker with concurrency': function(test) {
+        test.expect(1);
+        var call_order = [];
+        var q = async.queue(function (task, callback) {
+            if (task.isLongRunning) {
+                q.pause();
+                setTimeout(function () {
+                    call_order.push(task.id);
+                    q.resume();
+                    callback();
+                }, 500);
+            }
+            else {
+                call_order.push(task.id);
+                callback();
+            }
+        }, 10);
+
+        q.push({ id: 1, isLongRunning: true});
+        q.push({ id: 2 });
+        q.push({ id: 3 });
+        q.push({ id: 4 });
+        q.push({ id: 5 });
+
+        setTimeout(function () {
+            test.same(call_order, [1, 2, 3, 4, 5]);
+            test.done();
+        }, 1000);
+    },
 
     'pause with concurrency': function(test) {
     test.expect(4);
@@ -4175,6 +4383,45 @@ exports['memoize'] = {
     fn.memo["foo"] = ["bar"];
     fn("foo", function(val) {
         test.equal(val, "bar");
+        test.done();
+    });
+},
+
+    'avoid constructor key return undefined': function (test) {
+    test.expect(1);
+    var fn = async.memoize(function(name, callback) {
+        setTimeout(function(){
+            callback(null, name);
+        }, 100);
+    });
+    fn('constructor', function(error, results) {
+        test.equal(results, 'constructor');
+        test.done();
+    });
+},
+
+    'avoid __proto__ key return undefined': function (test) {
+    test.expect(1);
+    var fn = async.memoize(function(name, callback) {
+        setTimeout(function(){
+            callback(null, name);
+        }, 100);
+    });
+    fn('__proto__', function(error, results) {
+        test.equal(results, '__proto__');
+        test.done();
+    });
+},
+
+    'allow hasOwnProperty as key': function (test) {
+    test.expect(1);
+    var fn = async.memoize(function(name, callback) {
+        setTimeout(function(){
+            callback(null, name);
+        }, 100);
+    });
+    fn('hasOwnProperty', function(error, results) {
+        test.equal(results, 'hasOwnProperty');
         test.done();
     });
 }

@@ -2,8 +2,13 @@
   "name": "async",
   "description": "Higher-order functions and common patterns for asynchronous code",
   "main": "lib/async.js",
+  "files": [
+    "lib",
+    "dist/async.js",
+    "dist/async.min.js"
+  ],
   "author": "Caolan McMahon",
-  "version": "1.4.0",
+  "version": "1.5.2",
   "keywords": [
     "async",
     "callback",
@@ -38,6 +43,7 @@
     "nodeunit": ">0.0.0",
     "nyc": "^2.1.0",
     "rsvp": "^3.0.18",
+    "semver": "^4.3.6",
     "uglify-js": "~2.4.0",
     "xyz": "^0.5.0",
     "yargs": "~3.9.1"
@@ -59,7 +65,7 @@
     "mocha-test": "npm run mocha-node-test && npm run mocha-browser-test",
     "nodeunit-test": "nodeunit test/test-async.js",
     "test": "npm run-script lint && npm run nodeunit-test && npm run mocha-test",
-    "lint": "jshint lib/*.js test/*.js perf/*.js && jscs lib/*.js test/*.js perf/*.js",
+    "lint": "jshint lib test perf && jscs lib test perf",
     "coverage": "nyc npm test && nyc report",
     "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },

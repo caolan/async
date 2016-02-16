@@ -31,7 +31,7 @@ describe('compose', function(){
     context('a function errors', function(){
         it('yields the error and does not call later functions', function(done){
             var add1called = false;
-            var mul3error = new Error('mul3 error')
+            var mul3error = new Error('mul3 error');
             var add2 = function (n, cb) {
                 setTimeout(function () {
                     cb(null, n + 2);
