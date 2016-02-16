@@ -1,5 +1,5 @@
 {
-  "name": "async",
+  "name": "async-es",
   "description": "Higher-order functions and common patterns for asynchronous code",
   "version": "2.0.0-alpha",
   "main": "index.js",
@@ -19,7 +19,7 @@
     "utility"
   ],
   "dependencies": {
-    "lodash": "^4.3.0"
+    "lodash-es": "^4.3.0"
   },
   "devDependencies": {
     "babel-cli": "^6.3.17",
@@ -67,29 +67,5 @@
     "nodeunit-test": "nodeunit test/test-async.js",
     "test": "npm run-script lint && npm run nodeunit-test && npm run mocha-test"
   },
-  "license": "MIT",
-  "jam": {
-    "main": "index.js",
-    "include": [
-      "dist/async.js",
-      "README.md",
-      "LICENSE"
-    ],
-    "categories": [
-      "Utilities"
-    ]
-  },
-  "spm": {
-    "main": "index.js"
-  },
-  "volo": {
-    "main": "index.js",
-    "ignore": [
-      "**/.*",
-      "node_modules",
-      "bower_components",
-      "test",
-      "tests"
-    ]
-  }
+  "license": "MIT"
 }

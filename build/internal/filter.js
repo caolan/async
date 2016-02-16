@@ -18,16 +18,24 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _filter(eachfn, arr, iterator, callback) {
     var results = [];
     eachfn(arr, function (x, index, callback) {
-        iterator(x, function (v) {
-            if (v) {
-                results.push({ index: index, value: x });
+        iterator(x, function (err, v) {
+            if (err) {
+                callback(err);
+            } else {
+                if (v) {
+                    results.push({ index: index, value: x });
+                }
+                callback();
             }
-            callback();
         });
-    }, function () {
-        callback((0, _arrayMap2.default)(results.sort(function (a, b) {
-            return a.index - b.index;
-        }), (0, _baseProperty2.default)('value')));
+    }, function (err) {
+        if (err) {
+            callback(err);
+        } else {
+            callback(null, (0, _arrayMap2.default)(results.sort(function (a, b) {
+                return a.index - b.index;
+            }), (0, _baseProperty2.default)('value')));
+        }
     });
 }
 module.exports = exports['default'];

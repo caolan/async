@@ -1,11 +1,7 @@
 'use strict';
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = _createTester;
-function _createTester(eachfn, check, getResult) {
-    return function (arr, limit, iterator, cb) {
+export default function _createTester(eachfn, check, getResult) {
+    return function(arr, limit, iterator, cb) {
         function done(err) {
             if (cb) {
                 if (err) {
@@ -39,4 +35,3 @@ function _createTester(eachfn, check, getResult) {
         }
     };
 }
-module.exports = exports['default'];

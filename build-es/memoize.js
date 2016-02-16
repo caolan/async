@@ -7,8 +7,8 @@ import has from 'lodash-es/has';
 import setImmediate from './internal/setImmediate';
 
 export default function memoize(fn, hasher) {
-    var memo = {};
-    var queues = {};
+    var memo = Object.create(null);
+    var queues = Object.create(null);
     hasher = hasher || identity;
     var memoized = rest(function memoized(args) {
         var callback = args.pop();

@@ -24,8 +24,8 @@ var _setImmediate2 = _interopRequireDefault(_setImmediate);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function memoize(fn, hasher) {
-    var memo = {};
-    var queues = {};
+    var memo = Object.create(null);
+    var queues = Object.create(null);
     hasher = hasher || _identity2.default;
     var memoized = (0, _rest2.default)(function memoized(args) {
         var callback = args.pop();

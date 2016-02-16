@@ -11,6 +11,7 @@ UGLIFY = uglifyjs
 XYZ = support/xyz.sh --repo git@github.com:caolan/async.git
 
 BUILDDIR = build
+BUILD_ES = build-es
 DIST = dist
 SRC = lib/index.js
 SCRIPTS = ./support
@@ -20,7 +21,7 @@ LINT_FILES = lib/ test/ mocha_test/ $(shell find perf/ -maxdepth 2 -type f) supp
 UMD_BUNDLE = $(BUILDDIR)/async.js
 UMD_BUNDLE_MIN = $(BUILDDIR)/async.min.js
 CJS_BUNDLE = $(BUILDDIR)/index.js
-ES_MODULES = $(patsubst lib/%.js, build/es/%.js,  $(JS_SRC))
+ES_MODULES = $(patsubst lib/%.js, build-es/%.js,  $(JS_SRC))
 
 
 all: clean lint build test
@@ -30,6 +31,7 @@ test:
 
 clean:
 	rm -rf $(BUILDDIR)
+	rm -rf $(BUILD_ES)
 	rm -rf $(DIST)
 	rm -rf tmp/
 
@@ -68,7 +70,7 @@ $(DIST)/async.min.js: $(UMD_BUNDLE_MIN)
 
 build-es: $(ES_MODULES)
 
-$(BUILDDIR)/es/%.js: lib/%.js
+$(BUILD_ES)/%.js: lib/%.js
 	mkdir -p "$(@D)"
 	sed -r "s/(import.+)lodash/\1lodash-es/g" $< > $@
 
@@ -77,18 +79,33 @@ test-build:
 
 build-config: $(BUILDDIR)/package.json $(BUILDDIR)/component.json $(BUILDDIR)/bower.json $(BUILDDIR)/README.md $(BUILDDIR)/LICENSE $(BUILDDIR)/CHANGELOG.md
 
+build-es-config: $(BUILD_ES)/package.json $(BUILD_ES)/README.md $(BUILD_ES)/LICENSE $(BUILD_ES)/CHANGELOG.md
+
 bower.json: package.json
 	support/sync-package-managers.js
 
 component.json: package.json
 	support/sync-package-managers.js
 
+$(BUILDDIR)/package.json: package.json
+	mkdir -p "$(@D)"
+	support/sync-cjs-package.js > $@
+
 $(BUILDDIR)/%: %
+	mkdir -p "$(@D)"
 	cp $< $@
 
-.PHONY: build-modules build-bundle build-dist build-es build-config test-build
+$(BUILD_ES)/package.json: package.json
+	mkdir -p "$(@D)"
+	support/sync-es-package.js > $@
 
-build: clean build-bundle build-dist build-es build-config test-build
+$(BUILD_ES)/%: %
+	mkdir -p "$(@D)"
+	cp $< $@
+
+.PHONY: build-modules build-bundle build-dist build-es build-config build-es-config test-build
+
+build: clean build-bundle build-dist build-es build-config build-es-config test-build
 
 .PHONY: test lint build all clean
 
@@ -97,3 +114,8 @@ release-major release-minor release-patch: all
 	git add --force $(DIST)
 	git commit -am "update minified build"; true
 	$(XYZ) --increment $(@:release-%=%)
+	# build again to propagate the version
+	$(MAKE) build-config
+	$(MAKE) build-es-config
+	cd build/ && npm pack
+	cd build-es/ && npm pack

@@ -13,8 +13,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function reject(eachfn, arr, iterator, callback) {
     (0, _filter2.default)(eachfn, arr, function (value, cb) {
-        iterator(value, function (v) {
-            cb(!v);
+        iterator(value, function (err, v) {
+            if (err) {
+                cb(err);
+            } else {
+                cb(null, !v);
+            }
         });
     }, callback);
 }

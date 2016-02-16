@@ -1,8 +1,8 @@
 // simple async example to test ES module build output
 
-import {waterfall as waterfall} from  "../build/es/index";
-import async from "../build/es/index";
-import constant from "../build/es/constant";
+import {waterfall as waterfall} from  "../build-es/index";
+import async from "../build-es/index";
+import constant from "../build-es/constant";
 
 waterfall([
     constant(42),
