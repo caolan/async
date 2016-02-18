@@ -2,7 +2,7 @@
   "name": "async",
   "description": "Higher-order functions and common patterns for asynchronous code",
   "version": "2.0.0-alpha",
-  "main": "index.js",
+  "main": "dist/async.js",
   "author": "Caolan McMahon",
   "repository": {
     "type": "git",
@@ -69,7 +69,7 @@
   },
   "license": "MIT",
   "jam": {
-    "main": "index.js",
+    "main": "dist/async.js",
     "include": [
       "dist/async.js",
       "README.md",
@@ -80,10 +80,10 @@
     ]
   },
   "spm": {
-    "main": "index.js"
+    "main": "dist/async.js"
   },
   "volo": {
-    "main": "index.js",
+    "main": "dist/async.js",
     "ignore": [
       "**/.*",
       "node_modules",

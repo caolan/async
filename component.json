@@ -9,9 +9,9 @@
     "utility"
   ],
   "license": "MIT",
-  "main": "index.js",
+  "main": "dist/async.js",
   "repository": "caolan/async",
   "scripts": [
-    "index.js"
+    "dist/async.js"
   ]
 }

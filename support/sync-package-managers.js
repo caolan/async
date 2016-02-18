@@ -31,8 +31,7 @@ packageJson.volo = {
 var bowerSpecific = {
     moduleType: ['amd', 'globals', 'node'],
     ignore: IGNORES,
-    authors: [packageJson.author],
-    main: INCLUDES[0]
+    authors: [packageJson.author]
 };
 
 var bowerInclude = ['name', 'description', 'main', 'keywords',
