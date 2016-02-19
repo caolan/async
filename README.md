@@ -1159,7 +1159,7 @@ __Arguments__
 
 * `worker(task, callback)` - An asynchronous function for processing a queued
   task, which must call its `callback(err)` argument when finished, with an
-  optional `error` as an argument.  If you want to handle errors from an individual task, pass a callback to `q.push()`.
+  optional `error` as an argument.  If you want to handle errors from an individual task, pass a callback to `queue.push()`.
 * `concurrency` - An `integer` for determining how many `worker` functions should be
   run in parallel.  If omitted, the concurrency defaults to `1`.  If the concurrency is `0`, an error is thrown.
 
