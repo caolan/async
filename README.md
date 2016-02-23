@@ -1191,8 +1191,9 @@ methods:
   the `worker` has finished processing the task. Instead of a single task, a `tasks` array
   can be submitted. The respective callback is used for every task in the list.
 * `unshift(task, [callback])` - add a new task to the front of the `queue`.
-* `saturated` - a callback that is called when the `queue` length hits the `concurrency` limit,
-   and further tasks will be queued.
+* `saturated` - a callback that is called when the `queue` length hits the `concurrency` limit, and further tasks will be queued.
+* `unsaturated` - a callback that is called when the `queue` length is less than the `concurrency` & `buffer` limits, and further tasks will not be queued.
+* `buffer` A minimum threshold buffer in order to say that the `queue` is `unsaturated`.
 * `empty` - a callback that is called when the last item from the `queue` is given to a `worker`.
 * `drain` - a callback that is called when the last item from the `queue` has returned from the `worker`.
 * `paused` - a boolean for determining whether the queue is in a paused state
