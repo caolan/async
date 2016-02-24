@@ -1,4 +1,6 @@
-# Async.js
+**NOTE: This is the README for Async 2.0, currently under development.  For docs for async@1.5.2 go [HERE](https://github.com/caolan/async/blob/v1.5.2/README.md).
+
+# Async.js v2.0.0-pre
 
 [![Build Status via Travis CI](https://travis-ci.org/caolan/async.svg?branch=master)](https://travis-ci.org/caolan/async)
 [![NPM version](http://img.shields.io/npm/v/async.svg)](https://www.npmjs.org/package/async)
@@ -32,7 +34,11 @@ async.map(['file1','file2','file3'], fs.stat, function(err, results){
     // results is now an array of stats for each file
 });
 
-async.filter(['file1','file2','file3'], fs.exists, function(results){
+async.filter(['file1','file2','file3'], function(filePath, callback) {
+  fs.access(filePath, function(err) {
+    callback(null, !err)
+  });
+}, function(err, results){
     // results now equals an array of the existing files
 });
 
@@ -393,25 +399,26 @@ __Related__
 __Alias:__ `select`
 
 Returns a new array of all the values in `arr` which pass an async truth test.
-_The callback for each `iteratee` call only accepts a single argument of `true` or
-`false`; it does not accept an error argument first!_ This is in-line with the
-way node libraries work with truth tests like `fs.exists`. This operation is
-performed in parallel, but the results array will be in the same order as the
-original.
+This operation is performed in parallel,
+but the results array will be in the same order as the original.
 
 __Arguments__
 
 * `arr` - An array to iterate over.
 * `iteratee(item, callback)` - A truth test to apply to each item in `arr`.
-  The `iteratee` is passed a `callback(truthValue)`, which must be called with a
+  The `iteratee` is passed a `callback(err, truthValue)`, which must be called with a
   boolean argument once it has completed.
-* `callback(results)` - *Optional* A callback which is called after all the `iteratee`
+* `callback(err, results)` - *Optional* A callback which is called after all the `iteratee`
   functions have finished.
 
 __Example__
 
 ```js
-async.filter(['file1','file2','file3'], fs.exists, function(results){
+async.filter(['file1','file2','file3'], function(filePath, callback) {
+  fs.access(filePath, function(err) {
+    callback(null, !err)
+  });
+}, function(err, results){
     // results now equals an array of the existing files
 });
 ```
@@ -500,17 +507,21 @@ __Arguments__
 
 * `arr` - An array to iterate over.
 * `iteratee(item, callback)` - A truth test to apply to each item in `arr`.
-  The iteratee is passed a `callback(truthValue)` which must be called with a
-  boolean argument once it has completed. **Note: this callback does not take an error as its first argument.**
-* `callback(result)` - *Optional* A callback which is called as soon as any iteratee returns
+  The iteratee is passed a `callback(err, truthValue)` which must be called with a
+  boolean argument once it has completed.
+* `callback(err, result)` - *Optional* A callback which is called as soon as any iteratee returns
   `true`, or after all the `iteratee` functions have finished. Result will be
   the first item in the array that passes the truth test (iteratee) or the
-  value `undefined` if none passed.  **Note: this callback does not take an error as its first argument.**
+  value `undefined` if none passed.
 
 __Example__
 
 ```js
-async.detect(['file1','file2','file3'], fs.exists, function(result){
+async.detect(['file1','file2','file3'], function(filePath, callback) {
+  fs.access(filePath, function(err) {
+    callback(null, !err)
+  });
+}, function(err, result){
     // result now equals the first file in the list that exists
 });
 ```
@@ -579,10 +590,7 @@ async.sortBy([1,9,3,5], function(x, callback){
 __Alias:__ `any`
 
 Returns `true` if at least one element in the `arr` satisfies an async test.
-_The callback for each iteratee call only accepts a single argument of `true` or
-`false`; it does not accept an error argument first!_ This is in-line with the
-way node libraries work with truth tests like `fs.exists`. Once any iteratee
-call returns `true`, the main `callback` is immediately called.
+If any iteratee call returns `true`, the main `callback` is immediately called.
 
 __Arguments__
 
@@ -590,15 +598,18 @@ __Arguments__
 * `iteratee(item, callback)` - A truth test to apply to each item in the array
   in parallel. The iteratee is passed a `callback(truthValue)`` which must be
   called with a boolean argument once it has completed.
-* `callback(result)` - *Optional* A callback which is called as soon as any iteratee returns
+* `callback(err, result)` - *Optional* A callback which is called as soon as any iteratee returns
   `true`, or after all the iteratee functions have finished. Result will be
   either `true` or `false` depending on the values of the async tests.
 
- **Note: the callbacks do not take an error as their first argument.**
 __Example__
 
 ```js
-async.some(['file1','file2','file3'], fs.exists, function(result){
+async.some(['file1','file2','file3'], function(filePath, callback) {
+  fs.access(filePath, function(err) {
+    callback(null, !err)
+  });
+}, function(err, result){
     // if result is true then at least one of the files exists
 });
 ```
@@ -615,26 +626,26 @@ __Related__
 __Alias:__ `all`
 
 Returns `true` if every element in `arr` satisfies an async test.
-_The callback for each `iteratee` call only accepts a single argument of `true` or
-`false`; it does not accept an error argument first!_ This is in-line with the
-way node libraries work with truth tests like `fs.exists`.
+If any iteratee call returns `false`, the main `callback` is immediately called.
 
 __Arguments__
 
 * `arr` - An array to iterate over.
 * `iteratee(item, callback)` - A truth test to apply to each item in the array
-  in parallel. The iteratee is passed a `callback(truthValue)` which must be
+  in parallel. The iteratee is passed a `callback(err, truthValue)` which must be
   called with a  boolean argument once it has completed.
-* `callback(result)` - *Optional* A callback which is called as soon as any iteratee returns
-  `false`, or after all the iteratee functions have finished. Result will be
-  either `true` or `false` depending on the values of the async tests.
-
- **Note: the callbacks do not take an error as their first argument.**
+* `callback(err, result)` - *Optional* A callback which is called after all the `iteratee`
+  functions have finished. Result will be either `true` or `false` depending on
+  the values of the async tests.
 
 __Example__
 
 ```js
-async.every(['file1','file2','file3'], fs.exists, function(result){
+async.every(['file1','file2','file3'], function(filePath, callback) {
+  fs.access(filePath, function(err) {
+    callback(null, !err)
+  });
+}, function(err, result){
     // if result is true then every file exists
 });
 ```
@@ -1180,8 +1191,9 @@ methods:
   the `worker` has finished processing the task. Instead of a single task, a `tasks` array
   can be submitted. The respective callback is used for every task in the list.
 * `unshift(task, [callback])` - add a new task to the front of the `queue`.
-* `saturated` - a callback that is called when the `queue` length hits the `concurrency` limit,
-   and further tasks will be queued.
+* `saturated` - a callback that is called when the `queue` length hits the `concurrency` limit, and further tasks will be queued.
+* `unsaturated` - a callback that is called when the `queue` length is less than the `concurrency` & `buffer` limits, and further tasks will not be queued.
+* `buffer` A minimum threshold buffer in order to say that the `queue` is `unsaturated`.
 * `empty` - a callback that is called when the last item from the `queue` is given to a `worker`.
 * `drain` - a callback that is called when the last item from the `queue` has returned from the `worker`.
 * `paused` - a boolean for determining whether the queue is in a paused state
@@ -1446,7 +1458,7 @@ __Arguments__
 * `opts` - Can be either an object with `times` and `interval` or a number.
   * `times` - The number of attempts to make before giving up.  The default is `5`.
   * `interval` - The time to wait between retries, in milliseconds.  The default is `0`.
-  * If `opts` is a number, the number specifies the number of times to retry, with the default interval of `0`. 
+  * If `opts` is a number, the number specifies the number of times to retry, with the default interval of `0`.
 * `task(callback, results)` - A function which receives two arguments: (1) a `callback(err, result)`
   which must be called when finished, passing `err` (which can be `null`) and the `result` of
   the function's execution, and (2) a `results` object, containing the results of
@@ -1464,14 +1476,14 @@ async.retry(3, apiMethod, function(err, result) {
 ```
 
 ```js
-// try calling apiMethod 3 times, waiting 200 ms between each retry 
+// try calling apiMethod 3 times, waiting 200 ms between each retry
 async.retry({times: 3, interval: 200}, apiMethod, function(err, result) {
     // do something with the result
 });
 ```
 
 ```js
-// try calling apiMethod the default 5 times no delay between each retry 
+// try calling apiMethod the default 5 times no delay between each retry
 async.retry(apiMethod, function(err, result) {
     // do something with the result
 });
@@ -1792,7 +1804,7 @@ async.waterfall([
         return db.model.create(contents);
     }),
     function (model, next) {
-        // `model` is the instantiated model object. 
+        // `model` is the instantiated model object.
         // If there was an error, this function would be skipped.
     }
 ], callback)

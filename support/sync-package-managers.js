@@ -10,40 +10,42 @@ var _ = require('lodash');
 var packageJson = require('../package.json');
 
 var IGNORES = ['**/.*', 'node_modules', 'bower_components', 'test', 'tests'];
-var INCLUDES = ['lib/async.js', 'README.md', 'LICENSE'];
+var INCLUDES = ['dist/async.js', 'README.md', 'LICENSE'];
 var REPOSITORY_NAME = 'caolan/async';
 
 packageJson.jam = {
-  main: packageJson.main,
-  include: INCLUDES,
-  categories: ['Utilities']
+    main: packageJson.main,
+    include: INCLUDES,
+    categories: ['Utilities']
 };
 
 packageJson.spm = {
-  main: packageJson.main
+    main: packageJson.main
 };
 
 packageJson.volo = {
-  main: packageJson.main,
-  ignore: IGNORES
+    main: packageJson.main,
+    ignore: IGNORES
 };
 
 var bowerSpecific = {
-  moduleType: ['amd', 'globals', 'node'],
-  ignore: IGNORES,
-  authors: [packageJson.author]
+    moduleType: ['amd', 'globals', 'node'],
+    ignore: IGNORES,
+    authors: [packageJson.author]
 };
 
 var bowerInclude = ['name', 'description', 'main', 'keywords',
-  'license', 'homepage', 'repository', 'devDependencies'];
+    'license', 'homepage', 'repository', 'devDependencies'
+];
 
 var componentSpecific = {
-  repository: REPOSITORY_NAME,
-  scripts: [packageJson.main]
+    repository: REPOSITORY_NAME,
+    scripts: [packageJson.main]
 };
 
 var componentInclude = ['name', 'description', 'version', 'keywords',
-  'license', 'main'];
+    'license', 'main'
+];
 
 var bowerJson = _.merge({}, _.pick(packageJson, bowerInclude), bowerSpecific);
 var componentJson = _.merge({}, _.pick(packageJson, componentInclude), componentSpecific);
