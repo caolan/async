@@ -1,5 +1,5 @@
 # v1.5.2
-- Allow using `"consructor"` as an argument in `memoize` (#998)
+- Allow using `"constructor"` as an argument in `memoize` (#998)
 - Give a better error messsage when `auto` dependency checking fails (#994)
 - Various doc updates (#936, #956, #979, #1002)
 
