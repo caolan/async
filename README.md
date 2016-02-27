@@ -36,9 +36,9 @@ async.map(['file1','file2','file3'], fs.stat, function(err, results){
 
 async.filter(['file1','file2','file3'], function(filePath, callback) {
   fs.access(filePath, function(err) {
-    callback(null, !err)
+    callback(!err)
   });
-}, function(err, results){
+}, function(results){
     // results now equals an array of the existing files
 });
 
@@ -417,9 +417,9 @@ __Example__
 ```js
 async.filter(['file1','file2','file3'], function(filePath, callback) {
   fs.access(filePath, function(err) {
-    callback(null, !err)
+    callback(!err)
   });
-}, function(err, results){
+}, function(results){
     // results now equals an array of the existing files
 });
 ```
