@@ -3,6 +3,7 @@
   "description": "Higher-order functions and common patterns for asynchronous code",
   "version": "2.0.0-alpha",
   "main": "dist/async.js",
+  "browser": "index.js",
   "author": "Caolan McMahon",
   "repository": {
     "type": "git",
