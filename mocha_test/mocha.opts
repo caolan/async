@@ -1,0 +1,4 @@
+--compilers js:babel-core/register
+--recursive
+--growl
+--ui bdd
