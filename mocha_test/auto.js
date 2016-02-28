@@ -263,15 +263,15 @@ describe("auto", function () {
     // Issue 462 on github: https://github.com/caolan/async/issues/462
     it('auto modifying results causes final callback to run early', function(done) {
         async.auto({
-            task1: function(callback, results){
-                results.inserted = true;
+            task1: function(callback){
                 callback(null, 'task1');
             },
-            task2: function(callback){
+            task2: ["task1", function(results, callback){
+                results.inserted = true;
                 setTimeout(function(){
                     callback(null, 'task2');
                 }, 50);
-            },
+            }],
             task3: function(callback){
                 setTimeout(function(){
                     callback(null, 'task3');
