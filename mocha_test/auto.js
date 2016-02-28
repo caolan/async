@@ -7,7 +7,7 @@ describe("auto", function () {
     it('auto', function(done){
         var callOrder = [];
         async.auto({
-            task1: ['task2', function(callback){
+            task1: ['task2', function(results, callback){
                 setTimeout(function(){
                     callOrder.push('task1');
                     callback();
@@ -19,21 +19,21 @@ describe("auto", function () {
                     callback();
                 }, 50);
             },
-            task3: ['task2', function(callback){
+            task3: ['task2', function(results, callback){
                 callOrder.push('task3');
                 callback();
             }],
-            task4: ['task1', 'task2', function(callback){
+            task4: ['task1', 'task2', function(results, callback){
                 callOrder.push('task4');
                 callback();
             }],
-            task5: ['task2', function(callback){
+            task5: ['task2', function(results, callback){
                 setTimeout(function(){
                     callOrder.push('task5');
                     callback();
                 }, 0);
             }],
-            task6: ['task2', function(callback){
+            task6: ['task2', function(results, callback){
                 callOrder.push('task6');
                 callback();
             }]
@@ -50,7 +50,8 @@ describe("auto", function () {
         var runningTasks = [];
 
         function makeCallback(taskName) {
-            return function(callback) {
+            return function(/*..., callback*/) {
+                var callback = _.last(arguments);
                 runningTasks.push(taskName);
                 setTimeout(function(){
                     // Each task returns the array of running tasks as results.
@@ -79,7 +80,7 @@ describe("auto", function () {
     it('auto petrify', function (done) {
         var callOrder = [];
         async.auto({
-            task1: ['task2', function (callback) {
+            task1: ['task2', function (results, callback) {
                 setTimeout(function () {
                     callOrder.push('task1');
                     callback();
@@ -91,11 +92,11 @@ describe("auto", function () {
                     callback();
                 }, 200);
             },
-            task3: ['task2', function (callback) {
+            task3: ['task2', function (results, callback) {
                 callOrder.push('task3');
                 callback();
             }],
-            task4: ['task1', 'task2', function (callback) {
+            task4: ['task1', 'task2', function (results, callback) {
                 callOrder.push('task4');
                 callback();
             }]
@@ -110,7 +111,7 @@ describe("auto", function () {
     it('auto results', function(done){
         var callOrder = [];
         async.auto({
-            task1: ['task2', function(callback, results){
+            task1: ['task2', function(results, callback){
               expect(results.task2).to.eql('task2');
               setTimeout(function(){
                   callOrder.push('task1');
@@ -123,12 +124,12 @@ describe("auto", function () {
                   callback(null, 'task2');
               }, 50);
           },
-            task3: ['task2', function(callback, results){
+            task3: ['task2', function(results, callback){
               expect(results.task2).to.eql('task2');
               callOrder.push('task3');
               callback(null);
           }],
-            task4: ['task1', 'task2', function(callback, results){
+            task4: ['task1', 'task2', function(results, callback){
               expect(results.task1).to.eql(['task1a','task1b']);
               expect(results.task2).to.eql('task2');
               callOrder.push('task4');
@@ -154,7 +155,7 @@ describe("auto", function () {
             task1: function(callback){
                 callback('testerror');
             },
-            task2: ['task1', function(callback){
+            task2: ['task1', function(results, callback){
                 throw new Error('task2 should not be called');
             }],
             task3: function(callback){
@@ -170,14 +171,14 @@ describe("auto", function () {
     it('auto no callback', function(done){
         async.auto({
             task1: function(callback){callback();},
-            task2: ['task1', function(callback){callback(); done();}]
+            task2: ['task1', function(results, callback){callback(); done();}]
         });
     });
 
     it('auto concurrency no callback', function(done){
         async.auto({
             task1: function(callback){callback();},
-            task2: ['task1', function(callback){callback(); done();}]
+            task2: ['task1', function(results, callback){callback(); done();}]
         }, 1);
     });
 
@@ -186,7 +187,7 @@ describe("auto", function () {
             task1: function(callback){
                 callback(false, 'result1');
             },
-            task2: ['task1', function(callback){
+            task2: ['task1', function(results, callback){
                 callback('testerror', 'result2');
             }],
             task3: ['task2', function(){
@@ -228,7 +229,7 @@ describe("auto", function () {
         domain.run(function () {
             async.auto({
                 task1: function(callback) { callback(null); },
-                task2: ['task1', function(callback) { callback(null); }]
+                task2: ['task1', function(results, callback) { callback(null); }]
             },
 
             // Error throwing final callback. This should only run once
@@ -288,7 +289,7 @@ describe("auto", function () {
     it('auto prevent dead-locks due to inexistant dependencies', function(done) {
         expect(function () {
             async.auto({
-                task1: ['noexist', function(callback){
+                task1: ['noexist', function(results, callback){
                     callback(null, 'task1');
                 }]
             });
@@ -300,10 +301,10 @@ describe("auto", function () {
     it('auto prevent dead-locks due to cyclic dependencies', function(done) {
         expect(function () {
             async.auto({
-                task1: ['task2', function(callback){
+                task1: ['task2', function(results, callback){
                     callback(null, 'task1');
                 }],
-                task2: ['task1', function(callback){
+                task2: ['task1', function(results, callback){
                     callback(null, 'task2');
                 }]
             });
