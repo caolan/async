@@ -1324,54 +1324,30 @@ cargo.push({name: 'baz'}, function (err) {
 
 Determines the best order for running the functions in `tasks`, based on their requirements. Each function can optionally depend on other functions being completed first, and each function is run as soon as its requirements are satisfied.
 
-If any of the functions pass an error to their callback, the `auto` sequence will stop. Further tasks will not execute (so any other functions depending on it will not run), and the main `callback` is immediately called with the error.  Functions also receive an object containing the results of functions which have completed so far.
+If any of the functions pass an error to their callback, the `auto` sequence will stop. Further tasks will not execute (so any other functions depending on it will not run), and the main `callback` is immediately called with the error.
 
-Note, all functions are called with a `results` object as a second argument,
-so it is unsafe to pass functions in the `tasks` object which cannot handle the
-extra argument.
+Functions also receive an object containing the results of functions which have completed so far as the first argument, if they have dependencies. If a task function has no dependencies, it will only be passed a callback.
 
-For example, this snippet of code:
 
 ```js
 async.auto({
+  // this function will just be passed a callback
   readData: async.apply(fs.readFile, 'data.txt', 'utf-8')
+  showData: ['readData', function (results, cb) {
+    // results.readData is the file's contents
+    // ...
+  }]
 }, callback);
 ```
 
-will have the effect of calling `readFile` with the results object as the last
-argument, which will fail:
-
-```js
-fs.readFile('data.txt', 'utf-8', cb, {});
-```
-
-Instead, wrap the call to `readFile` in a function which does not forward the
-`results` object:
-
-```js
-async.auto({
-  readData: function(cb, results){
-    fs.readFile('data.txt', 'utf-8', cb);
-  }
-}, callback);
-```
 
 __Arguments__
 
-* `tasks` - An object. Each of its properties is either a function or an array of
-  requirements, with the function itself the last item in the array. The object's key
-  of a property serves as the name of the task defined by that property,
-  i.e. can be used when specifying requirements for other tasks.
-  The function receives two arguments: (1) a `callback(err, result)` which must be
-  called when finished, passing an `error` (which can be `null`) and the result of
-  the function's execution, and (2) a `results` object, containing the results of
-  the previously executed functions.
+* `tasks` - An object. Each of its properties is either a function or an array of requirements, with the function itself the last item in the array. The object's key of a property serves as the name of the task defined by that property, i.e. can be used when specifying requirements for other tasks. The function receives one or two arguments:
+  * a `results` object, containing the results of the previously executed functions, only passed if the task has any dependencies,
+  * a `callback(err, result)` function, which must be called when finished, passing an `error` (which can be `null`) and the result of the function's execution.
 * `concurrency` - An optional `integer` for determining the maximum number of tasks that can be run in parallel. By default, as many as possible.
-* `callback(err, results)` - An optional callback which is called when all the
-  tasks have been completed. It receives the `err` argument if any `tasks`
-  pass an error to their callback. Results are always returned; however, if
-  an error occurs, no further `tasks` will be performed, and the results
-  object will only contain partial results.
+* `callback(err, results)` - An optional callback which is called when all the tasks have been completed. It receives the `err` argument if any `tasks` pass an error to their callback. Results are always returned; however, if an error occurs, no further `tasks` will be performed, and the results object will only contain partial results.
 
 __Example__
 
@@ -1388,13 +1364,13 @@ async.auto({
         // this is run at the same time as getting the data
         callback(null, 'folder');
     },
-    write_file: ['get_data', 'make_folder', function(callback, results){
+    write_file: ['get_data', 'make_folder', function(results, callback){
         console.log('in write_file', JSON.stringify(results));
         // once there is some data and the directory exists,
         // write the data to a file in the directory
         callback(null, 'filename');
     }],
-    email_link: ['write_file', function(callback, results){
+    email_link: ['write_file', function(results, callback){
         console.log('in email_link', JSON.stringify(results));
         // once the file is written let's email a link to it...
         // results.write_file contains the filename returned by write_file.
@@ -1406,8 +1382,7 @@ async.auto({
 });
 ```
 
-This is a fairly trivial example, but to do this using the basic parallel and
-series functions would look like this:
+This is a fairly trivial example, but to do this using the basic parallel and series functions would look like this:
 
 ```js
 async.parallel([
@@ -1441,8 +1416,7 @@ function(err, results){
 });
 ```
 
-For a complicated series of `async` tasks, using the [`auto`](#auto) function makes adding
-new tasks much easier (and the code more readable).
+For a complicated series of `async` tasks, using the [`auto`](#auto) function makes adding new tasks much easier (and the code more readable).
 
 ---------------------------------------
 
@@ -1805,7 +1779,7 @@ async.waterfall([
 async.auto({
     hostname: async.constant("https://server.net/"),
     port: findFreePort,
-    launchServer: ["hostname", "port", function (cb, options) {
+    launchServer: ["hostname", "port", function (options, cb) {
         startServer(options, cb);
     }],
     //...
