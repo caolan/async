@@ -1,8 +1,8 @@
 var async = require('../lib');
 var expect = require('chai').expect;
-var _ = require("lodash");
+var _ = require('lodash');
 
-describe("auto", function () {
+describe('auto', function () {
 
     it('auto', function(done){
         var callOrder = [];
@@ -235,7 +235,7 @@ describe("auto", function () {
             // Error throwing final callback. This should only run once
             function() {
                 finalCallCount++;
-                var e = new Error("An error");
+                var e = new Error('An error');
                 e._test_error = true;
                 throw e;
             });
@@ -249,12 +249,12 @@ describe("auto", function () {
 
     it('auto calls callback multiple times with parallel functions', function(done) {
         async.auto({
-            task1: function(callback) { setTimeout(callback,0,"err"); },
-            task2: function(callback) { setTimeout(callback,0,"err"); }
+            task1: function(callback) { setTimeout(callback,0,'err'); },
+            task2: function(callback) { setTimeout(callback,0,'err'); }
         },
         // Error throwing final callback. This should only run once
         function(err) {
-            expect(err).to.equal("err");
+            expect(err).to.equal('err');
             done();
         });
     });
@@ -266,7 +266,7 @@ describe("auto", function () {
             task1: function(callback){
                 callback(null, 'task1');
             },
-            task2: ["task1", function(results, callback){
+            task2: ['task1', function(results, callback){
                 results.inserted = true;
                 setTimeout(function(){
                     callback(null, 'task2');
@@ -324,6 +324,23 @@ describe("auto", function () {
         }, 1, function (error) {
             expect(error).to.equal('error');
             done();
+        });
+    });
+
+    it('ignores results after an error', function (done) {
+        async.auto({
+            task1: function (cb) {
+                setTimeout(cb, 25, 'error');
+            },
+            task2: function (cb) {
+                setTimeout(cb, 30, null);
+            },
+            task3: ['task2', function () {
+                throw new Error("task should not have been called");
+            }]
+        }, function (err) {
+            expect(err).to.equal('error');
+            setTimeout(done, 25, null);
         });
     });
 
