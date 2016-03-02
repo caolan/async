@@ -1,4 +1,4 @@
-**NOTE: This is the README for Async 2.0, currently under development.  For docs for async@1.5.2 go [HERE](https://github.com/caolan/async/blob/v1.5.2/README.md).
+# NOTE: This is the README for Async 2.0, currently under development. There are some differences with the current stable version.  For docs for async@1.5.2 go [HERE](https://github.com/caolan/async/blob/v1.5.2/README.md).
 
 # Async.js v2.0.0-pre
 
