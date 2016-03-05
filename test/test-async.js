@@ -998,9 +998,10 @@ exports['each extra callback'] = function(test){
     var count = 0;
     async.each([1,3,2], function(val, callback) {
         count++;
+        var done = count == 3;
         callback();
         test.throws(callback);
-        if (count == 3) {
+        if (done) {
             test.done();
         }
     });
@@ -1521,8 +1522,9 @@ exports['map'] = {
     var r = [];
     async.map(a, function(x, callback){
         r.push(x);
+        var done = r.length == a.length;
         callback(null);
-        if (r.length >= a.length) {
+        if (done) {
             test.same(r, a);
             test.done();
         }
