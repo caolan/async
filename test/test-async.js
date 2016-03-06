@@ -658,6 +658,38 @@ exports['autoInject'] = function(test){
     });
 };
 
+exports['autoInject concurrency'] = function (test) {
+    var concurrency = 2;
+    var runningTasks = [];
+    var makeCallback = function(taskName) {
+        return function(callback) {
+            runningTasks.push(taskName);
+            setTimeout(function(){
+                // Each task returns the array of running tasks as results.
+                var result = runningTasks.slice(0);
+                runningTasks.splice(runningTasks.indexOf(taskName), 1);
+                callback(null, result);
+            });
+        };
+    };
+    async.autoInject({
+        task1: function(task2, callback) { makeCallback('task1')(callback); },
+        task2: function(callback) { makeCallback('task2')(callback); },
+        task3: function(task2, callback) { makeCallback('task3')(callback); },
+        task4: function(task1, task2, callback) { makeCallback('task4')(callback); },
+        task5: function(task2, callback) { makeCallback('task5')(callback); },
+        task6: function(task2, callback) { makeCallback('task6')(callback); }
+    }, concurrency, function(err, task1, task2, task3, task4, task5, task6){
+        test.ok(task1.length <= concurrency);
+        test.ok(task2.length <= concurrency);
+        test.ok(task3.length <= concurrency);
+        test.ok(task4.length <= concurrency);
+        test.ok(task5.length <= concurrency);
+        test.ok(task6.length <= concurrency);
+        test.done();
+    });
+};
+
 exports['autoInject petrify'] = function (test) {
     var callOrder = [];
     async.autoInject({
@@ -875,6 +907,22 @@ exports['autoInject prevent dead-locks due to cyclic dependencies'] = function(t
         });
     }, Error);
     test.done();
+};
+
+// Issue 988 on github: https://github.com/caolan/async/issues/988
+exports['autoInject stops running tasks on error'] = function(test) {
+    async.autoInject({
+        task1: function (callback) {
+            callback('error');
+        },
+        task2: function (callback) {
+            test.ok(false, 'test2 should not be called');
+            callback();
+        }
+    }, 1, function (error) {
+        test.equal(error, 'error', 'finishes with error');
+        test.done();
+    });
 };
 
 // Issue 306 on github: https://github.com/caolan/async/issues/306
