@@ -487,168 +487,6 @@ exports['auto error should pass partial results'] = function(test) {
     });
 };
 
-exports['autoInject'] = function(test){
-    var callOrder = [];
-    var testdata = [{test: 'test'}];
-    async.autoInject({
-        task1: function(task2, callback){
-            setTimeout(function(){
-                callOrder.push('task1');
-                callback();
-            }, 25);
-        },
-        task2: function(callback){
-            setTimeout(function(){
-                callOrder.push('task2');
-                callback();
-            }, 50);
-        },
-        task3: function(task2, callback){
-            callOrder.push('task3');
-            callback();
-        },
-        task4: function(task1, task2, callback){
-            callOrder.push('task4');
-            callback();
-        },
-        task5: function(task2, callback){
-            setTimeout(function(){
-              callOrder.push('task5');
-              callback();
-            }, 0);
-        },
-        task6: function(task2, callback){
-            callOrder.push('task6');
-            callback();
-        }
-    },
-    function(err){
-        test.same(callOrder, ['task2','task6','task3','task5','task1','task4']);
-        test.done();
-    });
-};
-
-exports['autoInject petrify'] = function (test) {
-    var callOrder = [];
-    async.autoInject({
-        task1: function (task2, callback) {
-            setTimeout(function () {
-                callOrder.push('task1');
-                callback();
-            }, 100);
-        },
-        task2: function (callback) {
-            setTimeout(function () {
-                callOrder.push('task2');
-                callback();
-            }, 200);
-        },
-        task3: function (task2, callback) {
-            callOrder.push('task3');
-            callback();
-        },
-        task4: function (task1, task2, callback) {
-            callOrder.push('task4');
-            callback();
-        }
-    },
-    function (err) {
-        test.same(callOrder, ['task2', 'task3', 'task1', 'task4']);
-        test.done();
-    });
-};
-
-exports['autoInject results'] = function(test){
-    var callOrder = [];
-    async.autoInject({
-      task1: function(task2, callback){
-          test.same(task2, 'task2');
-          setTimeout(function(){
-              callOrder.push('task1');
-              callback(null, 'task1a', 'task1b');
-          }, 25);
-      },
-      task2: function(callback){
-          setTimeout(function(){
-              callOrder.push('task2');
-              callback(null, 'task2');
-          }, 50);
-      },
-      task3: function(task2, callback){
-          test.same(task2, 'task2');
-          callOrder.push('task3');
-          callback(null);
-      },
-      task4: function(task1, task2, callback){
-          test.same(task1, ['task1a','task1b']);
-          test.same(task2, 'task2');
-          callOrder.push('task4');
-          callback(null, 'task4');
-      }
-    },
-    function(err, task2, task4, task3, task1){
-        test.same(callOrder, ['task2','task3','task1','task4']);
-        test.same(task1, ['task1a','task1b']);
-        test.same(task2, 'task2');
-        test.same(task3, undefined);
-        test.same(task4, 'task4');
-        test.done();
-    });
-};
-
-exports['autoInject empty object'] = function(test){
-    async.autoInject({}, function(err){
-        test.done();
-    });
-};
-
-exports['autoInject error'] = function(test){
-    test.expect(1);
-    async.autoInject({
-        task1: function(callback){
-            callback('testerror');
-        },
-        task2: function(task1, callback){
-            test.ok(false, 'task2 should not be called');
-            callback();
-        },
-        task3: function(callback){
-            callback('testerror2');
-        }
-    },
-    function(err){
-        test.equals(err, 'testerror');
-    });
-    setTimeout(test.done, 100);
-};
-
-exports['autoInject no callback'] = function(test){
-    async.autoInject({
-        task1: function(callback){callback();},
-        task2: function(task1, callback){callback(); test.done();}
-    });
-};
-
-exports['autoInject error should pass partial results'] = function(test) {
-    async.autoInject({
-        task1: function(callback){
-            callback(false, 'result1');
-        },
-        task2: function(task1, callback){
-            callback('testerror', 'result2');
-        },
-        task3: function(task2, callback){
-            test.ok(false, 'task3 should not be called');
-        }
-    },
-    function(err, task1, task2){
-        test.equals(err, 'testerror');
-        test.equals(task1, 'result1');
-        test.equals(task2, 'result2');
-        test.done();
-    });
-};
-
 // Issue 24 on github: https://github.com/caolan/async/issues#issue/24
 // Issue 76 on github: https://github.com/caolan/async/issues#issue/76
 exports['auto removeListener has side effect on loop iterator'] = function(test) {
@@ -777,6 +615,266 @@ exports['auto stops running tasks on error'] = function(test) {
         test.equal(error, 'error', 'finishes with error');
         test.done();
     });
+};
+
+exports['autoInject'] = function(test){
+    var callOrder = [];
+    async.autoInject({
+        task1: function(task2, callback){
+            setTimeout(function(){
+                callOrder.push('task1');
+                callback();
+            }, 25);
+        },
+        task2: function(callback){
+            setTimeout(function(){
+                callOrder.push('task2');
+                callback();
+            }, 50);
+        },
+        task3: function(task2, callback){
+            callOrder.push('task3');
+            callback();
+        },
+        task4: function(task1, task2, callback){
+            callOrder.push('task4');
+            callback();
+        },
+        task5: function(task2, callback){
+            setTimeout(function(){
+                callOrder.push('task5');
+                callback();
+            }, 0);
+        },
+        task6: function(task2, callback){
+            callOrder.push('task6');
+            callback();
+        }
+    },
+    function(err){
+        test.ok(err === null, err + " passed instead of 'null'");
+        test.same(callOrder, ['task2','task6','task3','task5','task1','task4']);
+        test.done();
+    });
+};
+
+exports['autoInject petrify'] = function (test) {
+    var callOrder = [];
+    async.autoInject({
+        task1: function (task2, callback) {
+            setTimeout(function () {
+                callOrder.push('task1');
+                callback();
+            }, 100);
+        },
+        task2: function (callback) {
+            setTimeout(function () {
+                callOrder.push('task2');
+                callback();
+            }, 200);
+        },
+        task3: function (task2, callback) {
+            callOrder.push('task3');
+            callback();
+        },
+        task4: function (task1, task2, callback) {
+            callOrder.push('task4');
+            callback();
+        }
+    },
+    function (err) {
+        if (err) throw err;
+        test.same(callOrder, ['task2', 'task3', 'task1', 'task4']);
+        test.done();
+    });
+};
+
+exports['autoInject results'] = function(test){
+    var callOrder = [];
+    async.autoInject({
+        task1: function(task2, callback){
+          test.same(task2, 'task2');
+          setTimeout(function(){
+              callOrder.push('task1');
+              callback(null, 'task1a', 'task1b');
+          }, 25);
+      },
+        task2: function(callback){
+          setTimeout(function(){
+              callOrder.push('task2');
+              callback(null, 'task2');
+          }, 50);
+      },
+        task3: function(task2, callback){
+          test.same(task2, 'task2');
+          callOrder.push('task3');
+          callback(null);
+      },
+        task4: function(task1, task2, callback){
+          test.same(task1, ['task1a','task1b']);
+          test.same(task2, 'task2');
+          callOrder.push('task4');
+          callback(null, 'task4');
+      }
+    },
+    function(err, task1, task2, task3, task4){
+        test.same(callOrder, ['task2','task3','task1','task4']);
+        test.same(task1, ['task1a','task1b']);
+        test.same(task2, 'task2');
+		test.same(task3, undefined);
+		test.same(task4, 'task4');
+        test.done();
+    });
+};
+
+exports['autoInject empty object'] = function(test){
+    async.autoInject({}, function(err){
+        test.ok(err === null, err + " passed instead of 'null'");
+        test.done();
+    });
+};
+
+exports['autoInject error'] = function(test){
+    test.expect(1);
+    async.autoInject({
+        task1: function(callback){
+            callback('testerror');
+        },
+        task2: function(task1, callback){
+            test.ok(false, 'task2 should not be called');
+            callback();
+        },
+        task3: function(callback){
+            callback('testerror2');
+        }
+    },
+    function(err){
+        test.equals(err, 'testerror');
+    });
+    setTimeout(test.done, 100);
+};
+
+exports['autoInject no callback'] = function(test){
+    async.autoInject({
+        task1: function(callback){callback();},
+        task2: function(task1, callback){callback(); test.done();}
+    });
+};
+
+exports['autoInject concurrency no callback'] = function(test){
+    async.autoInject({
+        task1: function(callback){callback();},
+        task2: function(task1, callback){callback(); test.done();}
+    }, 1);
+};
+
+exports['autoInject error should pass partial results'] = function(test) {
+    async.autoInject({
+        task1: function(callback){
+            callback(false, 'result1');
+        },
+        task2: function(task1, callback){
+            callback('testerror', 'result2');
+        },
+        task3: function(task2, callback){
+            test.ok(false, 'task3 should not be called');
+        }
+    },
+    function(err, task1, task2){
+        test.equals(err, 'testerror');
+        test.equals(task1, 'result1');
+        test.equals(task2, 'result2');
+        test.done();
+    });
+};
+
+// Issue 24 on github: https://github.com/caolan/async/issues#issue/24
+// Issue 76 on github: https://github.com/caolan/async/issues#issue/76
+exports['autoInject removeListener has side effect on loop iterator'] = function(test) {
+    async.autoInject({
+        task1: function(task3, callback) { test.done(); },
+        task2: function(task3, callback) { /* by design: DON'T call callback */ },
+        task3: function(callback) { callback(); }
+    });
+};
+
+// Issue 410 on github: https://github.com/caolan/async/issues/410
+exports['autoInject calls callback multiple times'] = function(test) {
+    if (isBrowser()) {
+        // node only test
+        test.done();
+        return;
+    }
+    var finalCallCount = 0;
+    var domain = require('domain').create();
+    domain.on('error', function (e) {
+        // ignore test error
+        if (!e._test_error) {
+            return test.done(e);
+        }
+    });
+    domain.run(function () {
+        async.autoInject({
+            task1: function(callback) { callback(null); },
+            task2: function(task1, callback) { callback(null); }
+        },
+
+        // Error throwing final callback. This should only run once
+        function() {
+            finalCallCount++;
+            var e = new Error("An error");
+            e._test_error = true;
+            throw e;
+        });
+    });
+    setTimeout(function () {
+        test.equal(finalCallCount, 1,
+            "Final auto callback should only be called once"
+        );
+        test.done();
+    }, 10);
+};
+
+
+exports['autoInject calls callback multiple times with parallel functions'] = function(test) {
+    test.expect(1);
+    async.autoInject({
+        task1: function(callback) { setTimeout(callback,0,"err"); },
+        task2: function(callback) { setTimeout(callback,0,"err"); }
+    },
+    // Error throwing final callback. This should only run once
+    function(err) {
+        test.equal(err, "err");
+        test.done();
+    });
+};
+
+
+// Issue 263 on github: https://github.com/caolan/async/issues/263
+exports['autoInject prevent dead-locks due to inexistant dependencies'] = function(test) {
+    test.throws(function () {
+        async.autoInject({
+            task1: function(noexist, callback){
+                callback(null, 'task1');
+            }
+        });
+    }, Error);
+    test.done();
+};
+
+// Issue 263 on github: https://github.com/caolan/async/issues/263
+exports['autoInject prevent dead-locks due to cyclic dependencies'] = function(test) {
+    test.throws(function () {
+        async.autoInject({
+            task1: function(task2, callback){
+                callback(null, 'task1');
+            },
+            task2: function(task1, callback){
+                callback(null, 'task2');
+            }
+        });
+    }, Error);
+    test.done();
 };
 
 // Issue 306 on github: https://github.com/caolan/async/issues/306
