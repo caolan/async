@@ -4,7 +4,7 @@ var _ = require('lodash');
 
 describe('auto', function () {
 
-    it('auto', function(done){
+    it('basics', function(done){
         var callOrder = [];
         async.auto({
             task1: ['task2', function(results, callback){
@@ -342,6 +342,18 @@ describe('auto', function () {
             expect(err).to.equal('error');
             setTimeout(done, 25, null);
         });
+    });
+
+    it("does not allow calling callbacks twice", function () {
+        expect(function () {
+            async.auto({
+                bad: function (cb) {
+                    cb();
+                    cb();
+                }
+            }, function () {});
+
+        }).to.throw();
     });
 
 });
