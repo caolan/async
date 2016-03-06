@@ -491,7 +491,7 @@ exports['autoInject'] = function(test){
     var callOrder = [];
     var testdata = [{test: 'test'}];
     async.autoInject({
-        task1: function(callback, task2){
+        task1: function(task2, callback){
             setTimeout(function(){
                 callOrder.push('task1');
                 callback();
@@ -503,21 +503,21 @@ exports['autoInject'] = function(test){
                 callback();
             }, 50);
         },
-        task3: function(callback, task2){
+        task3: function(task2, callback){
             callOrder.push('task3');
             callback();
         },
-        task4: function(callback, task1, task2){
+        task4: function(task1, task2, callback){
             callOrder.push('task4');
             callback();
         },
-        task5: function(callback, task2){
+        task5: function(task2, callback){
             setTimeout(function(){
               callOrder.push('task5');
               callback();
             }, 0);
         },
-        task6: function(callback, task2){
+        task6: function(task2, callback){
             callOrder.push('task6');
             callback();
         }
@@ -531,7 +531,7 @@ exports['autoInject'] = function(test){
 exports['autoInject petrify'] = function (test) {
     var callOrder = [];
     async.autoInject({
-        task1: function (callback, task2) {
+        task1: function (task2, callback) {
             setTimeout(function () {
                 callOrder.push('task1');
                 callback();
@@ -543,11 +543,11 @@ exports['autoInject petrify'] = function (test) {
                 callback();
             }, 200);
         },
-        task3: function (callback, task2) {
+        task3: function (task2, callback) {
             callOrder.push('task3');
             callback();
         },
-        task4: function (callback, task1, task2) {
+        task4: function (task1, task2, callback) {
             callOrder.push('task4');
             callback();
         }
@@ -561,7 +561,7 @@ exports['autoInject petrify'] = function (test) {
 exports['autoInject results'] = function(test){
     var callOrder = [];
     async.autoInject({
-      task1: function(callback, task2){
+      task1: function(task2, callback){
           test.same(task2, 'task2');
           setTimeout(function(){
               callOrder.push('task1');
@@ -574,12 +574,12 @@ exports['autoInject results'] = function(test){
               callback(null, 'task2');
           }, 50);
       },
-      task3: function(callback, task2){
+      task3: function(task2, callback){
           test.same(task2, 'task2');
           callOrder.push('task3');
           callback(null);
       },
-      task4: function(callback, task1, task2){
+      task4: function(task1, task2, callback){
           test.same(task1, ['task1a','task1b']);
           test.same(task2, 'task2');
           callOrder.push('task4');
@@ -608,7 +608,7 @@ exports['autoInject error'] = function(test){
         task1: function(callback){
             callback('testerror');
         },
-        task2: function(callback, task1){
+        task2: function(task1, callback){
             test.ok(false, 'task2 should not be called');
             callback();
         },
@@ -625,7 +625,7 @@ exports['autoInject error'] = function(test){
 exports['autoInject no callback'] = function(test){
     async.autoInject({
         task1: function(callback){callback();},
-        task2: function(callback, task1){callback(); test.done();}
+        task2: function(task1, callback){callback(); test.done();}
     });
 };
 
@@ -634,10 +634,10 @@ exports['autoInject error should pass partial results'] = function(test) {
         task1: function(callback){
             callback(false, 'result1');
         },
-        task2: function(callback, task1){
+        task2: function(task1, callback){
             callback('testerror', 'result2');
         },
-        task3: function(callback, task2){
+        task3: function(task2, callback){
             test.ok(false, 'task3 should not be called');
         }
     },
