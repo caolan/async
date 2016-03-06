@@ -9,6 +9,7 @@
     "trailing": true,
     "evil": true,
     "laxcomma": true,
+    "esnext": true,
 
     // Relaxing options
     "onevar": false,
@@ -24,6 +25,8 @@
         "define": true,
         "describe": true,
         "context": true,
-        "it": true
+        "it": true,
+        "before": true,
+        "after": true
     }
 }

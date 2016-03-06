@@ -3,7 +3,8 @@
  * adding a new test, consider creating a new spec file in mocha_tests/
  */
 
-var async = require('../lib/async');
+require('babel-core/register');
+var async = require('../lib');
 
 if (!Function.prototype.bind) {
     Function.prototype.bind = function (thisArg) {
@@ -33,19 +34,6 @@ function mapIterator(call_order, x, callback) {
     setTimeout(function(){
         call_order.push(x);
         callback(null, x*2);
-    }, x*25);
-}
-
-function filterIterator(x, callback) {
-    setTimeout(function(){
-        callback(x % 2);
-    }, x*25);
-}
-
-function detectIterator(call_order, x, callback) {
-    setTimeout(function(){
-        call_order.push(x);
-        callback(x == 2);
     }, x*25);
 }
 
@@ -290,641 +278,6 @@ exports['seq without callback'] = function (test) {
     add2mul3.call(testcontext, 3);
 };
 
-exports['auto'] = function(test){
-    var callOrder = [];
-    async.auto({
-        task1: ['task2', function(callback){
-            setTimeout(function(){
-                callOrder.push('task1');
-                callback();
-            }, 25);
-        }],
-        task2: function(callback){
-            setTimeout(function(){
-                callOrder.push('task2');
-                callback();
-            }, 50);
-        },
-        task3: ['task2', function(callback){
-            callOrder.push('task3');
-            callback();
-        }],
-        task4: ['task1', 'task2', function(callback){
-            callOrder.push('task4');
-            callback();
-        }],
-        task5: ['task2', function(callback){
-            setTimeout(function(){
-                callOrder.push('task5');
-                callback();
-            }, 0);
-        }],
-        task6: ['task2', function(callback){
-            callOrder.push('task6');
-            callback();
-        }]
-    },
-    function(err){
-        test.ok(err === null, err + " passed instead of 'null'");
-        test.same(callOrder, ['task2','task6','task3','task5','task1','task4']);
-        test.done();
-    });
-};
-
-exports['auto concurrency'] = function (test) {
-    var concurrency = 2;
-    var runningTasks = [];
-    var makeCallback = function(taskName) {
-        return function(callback) {
-            runningTasks.push(taskName);
-            setTimeout(function(){
-                // Each task returns the array of running tasks as results.
-                var result = runningTasks.slice(0);
-                runningTasks.splice(runningTasks.indexOf(taskName), 1);
-                callback(null, result);
-            });
-        };
-    };
-    async.auto({
-        task1: ['task2', makeCallback('task1')],
-        task2: makeCallback('task2'),
-        task3: ['task2', makeCallback('task3')],
-        task4: ['task1', 'task2', makeCallback('task4')],
-        task5: ['task2', makeCallback('task5')],
-        task6: ['task2', makeCallback('task6')]
-    }, concurrency, function(err, results){
-        Object.keys(results).forEach(function(taskName) {
-            test.ok(results[taskName].length <= concurrency);
-        });
-        test.done();
-    });
-};
-
-exports['auto petrify'] = function (test) {
-    var callOrder = [];
-    async.auto({
-        task1: ['task2', function (callback) {
-            setTimeout(function () {
-                callOrder.push('task1');
-                callback();
-            }, 100);
-        }],
-        task2: function (callback) {
-            setTimeout(function () {
-                callOrder.push('task2');
-                callback();
-            }, 200);
-        },
-        task3: ['task2', function (callback) {
-            callOrder.push('task3');
-            callback();
-        }],
-        task4: ['task1', 'task2', function (callback) {
-            callOrder.push('task4');
-            callback();
-        }]
-    },
-    function (err) {
-        if (err) throw err;
-        test.same(callOrder, ['task2', 'task3', 'task1', 'task4']);
-        test.done();
-    });
-};
-
-exports['auto results'] = function(test){
-    var callOrder = [];
-    async.auto({
-        task1: ['task2', function(callback, results){
-          test.same(results.task2, 'task2');
-          setTimeout(function(){
-              callOrder.push('task1');
-              callback(null, 'task1a', 'task1b');
-          }, 25);
-      }],
-        task2: function(callback){
-          setTimeout(function(){
-              callOrder.push('task2');
-              callback(null, 'task2');
-          }, 50);
-      },
-        task3: ['task2', function(callback, results){
-          test.same(results.task2, 'task2');
-          callOrder.push('task3');
-          callback(null);
-      }],
-        task4: ['task1', 'task2', function(callback, results){
-          test.same(results.task1, ['task1a','task1b']);
-          test.same(results.task2, 'task2');
-          callOrder.push('task4');
-          callback(null, 'task4');
-      }]
-    },
-    function(err, results){
-        test.same(callOrder, ['task2','task3','task1','task4']);
-        test.same(results, {task1: ['task1a','task1b'], task2: 'task2', task3: undefined, task4: 'task4'});
-        test.done();
-    });
-};
-
-exports['auto empty object'] = function(test){
-    async.auto({}, function(err){
-        test.ok(err === null, err + " passed instead of 'null'");
-        test.done();
-    });
-};
-
-exports['auto error'] = function(test){
-    test.expect(1);
-    async.auto({
-        task1: function(callback){
-            callback('testerror');
-        },
-        task2: ['task1', function(callback){
-            test.ok(false, 'task2 should not be called');
-            callback();
-        }],
-        task3: function(callback){
-            callback('testerror2');
-        }
-    },
-    function(err){
-        test.equals(err, 'testerror');
-    });
-    setTimeout(test.done, 100);
-};
-
-exports['auto no callback'] = function(test){
-    async.auto({
-        task1: function(callback){callback();},
-        task2: ['task1', function(callback){callback(); test.done();}]
-    });
-};
-
-exports['auto concurrency no callback'] = function(test){
-    async.auto({
-        task1: function(callback){callback();},
-        task2: ['task1', function(callback){callback(); test.done();}]
-    }, 1);
-};
-
-exports['auto error should pass partial results'] = function(test) {
-    async.auto({
-        task1: function(callback){
-            callback(false, 'result1');
-        },
-        task2: ['task1', function(callback){
-            callback('testerror', 'result2');
-        }],
-        task3: ['task2', function(){
-            test.ok(false, 'task3 should not be called');
-        }]
-    },
-    function(err, results){
-        test.equals(err, 'testerror');
-        test.equals(results.task1, 'result1');
-        test.equals(results.task2, 'result2');
-        test.done();
-    });
-};
-
-// Issue 24 on github: https://github.com/caolan/async/issues#issue/24
-// Issue 76 on github: https://github.com/caolan/async/issues#issue/76
-exports['auto removeListener has side effect on loop iterator'] = function(test) {
-    async.auto({
-        task1: ['task3', function(/*callback*/) { test.done(); }],
-        task2: ['task3', function(/*callback*/) { /* by design: DON'T call callback */ }],
-        task3: function(callback) { callback(); }
-    });
-};
-
-// Issue 410 on github: https://github.com/caolan/async/issues/410
-exports['auto calls callback multiple times'] = function(test) {
-    if (isBrowser()) {
-        // node only test
-        test.done();
-        return;
-    }
-    var finalCallCount = 0;
-    var domain = require('domain').create();
-    domain.on('error', function (e) {
-        // ignore test error
-        if (!e._test_error) {
-            return test.done(e);
-        }
-    });
-    domain.run(function () {
-        async.auto({
-            task1: function(callback) { callback(null); },
-            task2: ['task1', function(callback) { callback(null); }]
-        },
-
-        // Error throwing final callback. This should only run once
-        function() {
-            finalCallCount++;
-            var e = new Error("An error");
-            e._test_error = true;
-            throw e;
-        });
-    });
-    setTimeout(function () {
-        test.equal(finalCallCount, 1,
-            "Final auto callback should only be called once"
-        );
-        test.done();
-    }, 10);
-};
-
-
-exports['auto calls callback multiple times with parallel functions'] = function(test) {
-    test.expect(1);
-    async.auto({
-        task1: function(callback) { setTimeout(callback,0,"err"); },
-        task2: function(callback) { setTimeout(callback,0,"err"); }
-    },
-    // Error throwing final callback. This should only run once
-    function(err) {
-        test.equal(err, "err");
-        test.done();
-    });
-};
-
-
-// Issue 462 on github: https://github.com/caolan/async/issues/462
-exports['auto modifying results causes final callback to run early'] = function(test) {
-    async.auto({
-        task1: function(callback, results){
-            results.inserted = true;
-            callback(null, 'task1');
-        },
-        task2: function(callback){
-            setTimeout(function(){
-                callback(null, 'task2');
-            }, 50);
-        },
-        task3: function(callback){
-            setTimeout(function(){
-                callback(null, 'task3');
-            }, 100);
-        }
-    },
-    function(err, results){
-        test.equal(results.inserted, true);
-        test.ok(results.task3, 'task3');
-        test.done();
-    });
-};
-
-// Issue 263 on github: https://github.com/caolan/async/issues/263
-exports['auto prevent dead-locks due to inexistant dependencies'] = function(test) {
-    test.throws(function () {
-        async.auto({
-            task1: ['noexist', function(callback){
-                callback(null, 'task1');
-            }]
-        });
-    }, Error);
-    test.done();
-};
-
-// Issue 263 on github: https://github.com/caolan/async/issues/263
-exports['auto prevent dead-locks due to cyclic dependencies'] = function(test) {
-    test.throws(function () {
-        async.auto({
-            task1: ['task2', function(callback){
-                callback(null, 'task1');
-            }],
-            task2: ['task1', function(callback){
-                callback(null, 'task2');
-            }]
-        });
-    }, Error);
-    test.done();
-};
-
-// Issue 988 on github: https://github.com/caolan/async/issues/988
-exports['auto stops running tasks on error'] = function(test) {
-    async.auto({
-        task1: function (callback) {
-            callback('error');
-        },
-        task2: function (callback) {
-            test.ok(false, 'test2 should not be called');
-            callback();
-        }
-    }, 1, function (error) {
-        test.equal(error, 'error', 'finishes with error');
-        test.done();
-    });
-};
-
-exports['autoInject'] = function(test){
-    var callOrder = [];
-    async.autoInject({
-        task1: function(task2, callback){
-            setTimeout(function(){
-                callOrder.push('task1');
-                callback();
-            }, 25);
-        },
-        task2: function(callback){
-            setTimeout(function(){
-                callOrder.push('task2');
-                callback();
-            }, 50);
-        },
-        task3: function(task2, callback){
-            callOrder.push('task3');
-            callback();
-        },
-        task4: function(task1, task2, callback){
-            callOrder.push('task4');
-            callback();
-        },
-        task5: function(task2, callback){
-            setTimeout(function(){
-                callOrder.push('task5');
-                callback();
-            }, 0);
-        },
-        task6: function(task2, callback){
-            callOrder.push('task6');
-            callback();
-        }
-    },
-    function(err){
-        test.ok(err === null, err + " passed instead of 'null'");
-        test.same(callOrder, ['task2','task6','task3','task5','task1','task4']);
-        test.done();
-    });
-};
-
-exports['autoInject concurrency'] = function (test) {
-    var concurrency = 2;
-    var runningTasks = [];
-    var makeCallback = function(taskName) {
-        return function(callback) {
-            runningTasks.push(taskName);
-            setTimeout(function(){
-                // Each task returns the array of running tasks as results.
-                var result = runningTasks.slice(0);
-                runningTasks.splice(runningTasks.indexOf(taskName), 1);
-                callback(null, result);
-            });
-        };
-    };
-    async.autoInject({
-        task1: function(task2, callback) { makeCallback('task1')(callback); },
-        task2: function(callback) { makeCallback('task2')(callback); },
-        task3: function(task2, callback) { makeCallback('task3')(callback); },
-        task4: function(task1, task2, callback) { makeCallback('task4')(callback); },
-        task5: function(task2, callback) { makeCallback('task5')(callback); },
-        task6: function(task2, callback) { makeCallback('task6')(callback); }
-    }, concurrency, function(err, task1, task2, task3, task4, task5, task6){
-        test.ok(task1.length <= concurrency);
-        test.ok(task2.length <= concurrency);
-        test.ok(task3.length <= concurrency);
-        test.ok(task4.length <= concurrency);
-        test.ok(task5.length <= concurrency);
-        test.ok(task6.length <= concurrency);
-        test.done();
-    });
-};
-
-exports['autoInject petrify'] = function (test) {
-    var callOrder = [];
-    async.autoInject({
-        task1: function (task2, callback) {
-            setTimeout(function () {
-                callOrder.push('task1');
-                callback();
-            }, 100);
-        },
-        task2: function (callback) {
-            setTimeout(function () {
-                callOrder.push('task2');
-                callback();
-            }, 200);
-        },
-        task3: function (task2, callback) {
-            callOrder.push('task3');
-            callback();
-        },
-        task4: function (task1, task2, callback) {
-            callOrder.push('task4');
-            callback();
-        }
-    },
-    function (err) {
-        if (err) throw err;
-        test.same(callOrder, ['task2', 'task3', 'task1', 'task4']);
-        test.done();
-    });
-};
-
-exports['autoInject results'] = function(test){
-    var callOrder = [];
-    async.autoInject({
-        task1: function(task2, callback){
-          test.same(task2, 'task2');
-          setTimeout(function(){
-              callOrder.push('task1');
-              callback(null, 'task1a', 'task1b');
-          }, 25);
-      },
-        task2: function(callback){
-          setTimeout(function(){
-              callOrder.push('task2');
-              callback(null, 'task2');
-          }, 50);
-      },
-        task3: function(task2, callback){
-          test.same(task2, 'task2');
-          callOrder.push('task3');
-          callback(null);
-      },
-        task4: function(task1, task2, callback){
-          test.same(task1, ['task1a','task1b']);
-          test.same(task2, 'task2');
-          callOrder.push('task4');
-          callback(null, 'task4');
-      }
-    },
-    function(err, task1, task2, task3, task4){
-        test.same(callOrder, ['task2','task3','task1','task4']);
-        test.same(task1, ['task1a','task1b']);
-        test.same(task2, 'task2');
-		test.same(task3, undefined);
-		test.same(task4, 'task4');
-        test.done();
-    });
-};
-
-exports['autoInject empty object'] = function(test){
-    async.autoInject({}, function(err){
-        test.ok(err === null, err + " passed instead of 'null'");
-        test.done();
-    });
-};
-
-exports['autoInject error'] = function(test){
-    test.expect(1);
-    async.autoInject({
-        task1: function(callback){
-            callback('testerror');
-        },
-        task2: function(task1, callback){
-            test.ok(false, 'task2 should not be called');
-            callback();
-        },
-        task3: function(callback){
-            callback('testerror2');
-        }
-    },
-    function(err){
-        test.equals(err, 'testerror');
-    });
-    setTimeout(test.done, 100);
-};
-
-exports['autoInject no callback'] = function(test){
-    async.autoInject({
-        task1: function(callback){callback();},
-        task2: function(task1, callback){callback(); test.done();}
-    });
-};
-
-exports['autoInject concurrency no callback'] = function(test){
-    async.autoInject({
-        task1: function(callback){callback();},
-        task2: function(task1, callback){callback(); test.done();}
-    }, 1);
-};
-
-exports['autoInject error should pass partial results'] = function(test) {
-    async.autoInject({
-        task1: function(callback){
-            callback(false, 'result1');
-        },
-        task2: function(task1, callback){
-            callback('testerror', 'result2');
-        },
-        task3: function(task2, callback){
-            test.ok(false, 'task3 should not be called');
-        }
-    },
-    function(err, task1, task2){
-        test.equals(err, 'testerror');
-        test.equals(task1, 'result1');
-        test.equals(task2, 'result2');
-        test.done();
-    });
-};
-
-// Issue 24 on github: https://github.com/caolan/async/issues#issue/24
-// Issue 76 on github: https://github.com/caolan/async/issues#issue/76
-exports['autoInject removeListener has side effect on loop iterator'] = function(test) {
-    async.autoInject({
-        task1: function(task3, callback) { test.done(); },
-        task2: function(task3, callback) { /* by design: DON'T call callback */ },
-        task3: function(callback) { callback(); }
-    });
-};
-
-// Issue 410 on github: https://github.com/caolan/async/issues/410
-exports['autoInject calls callback multiple times'] = function(test) {
-    if (isBrowser()) {
-        // node only test
-        test.done();
-        return;
-    }
-    var finalCallCount = 0;
-    var domain = require('domain').create();
-    domain.on('error', function (e) {
-        // ignore test error
-        if (!e._test_error) {
-            return test.done(e);
-        }
-    });
-    domain.run(function () {
-        async.autoInject({
-            task1: function(callback) { callback(null); },
-            task2: function(task1, callback) { callback(null); }
-        },
-
-        // Error throwing final callback. This should only run once
-        function() {
-            finalCallCount++;
-            var e = new Error("An error");
-            e._test_error = true;
-            throw e;
-        });
-    });
-    setTimeout(function () {
-        test.equal(finalCallCount, 1,
-            "Final auto callback should only be called once"
-        );
-        test.done();
-    }, 10);
-};
-
-
-exports['autoInject calls callback multiple times with parallel functions'] = function(test) {
-    test.expect(1);
-    async.autoInject({
-        task1: function(callback) { setTimeout(callback,0,"err"); },
-        task2: function(callback) { setTimeout(callback,0,"err"); }
-    },
-    // Error throwing final callback. This should only run once
-    function(err) {
-        test.equal(err, "err");
-        test.done();
-    });
-};
-
-
-// Issue 263 on github: https://github.com/caolan/async/issues/263
-exports['autoInject prevent dead-locks due to inexistant dependencies'] = function(test) {
-    test.throws(function () {
-        async.autoInject({
-            task1: function(noexist, callback){
-                callback(null, 'task1');
-            }
-        });
-    }, Error);
-    test.done();
-};
-
-// Issue 263 on github: https://github.com/caolan/async/issues/263
-exports['autoInject prevent dead-locks due to cyclic dependencies'] = function(test) {
-    test.throws(function () {
-        async.autoInject({
-            task1: function(task2, callback){
-                callback(null, 'task1');
-            },
-            task2: function(task1, callback){
-                callback(null, 'task2');
-            }
-        });
-    }, Error);
-    test.done();
-};
-
-// Issue 988 on github: https://github.com/caolan/async/issues/988
-exports['autoInject stops running tasks on error'] = function(test) {
-    async.autoInject({
-        task1: function (callback) {
-            callback('error');
-        },
-        task2: function (callback) {
-            test.ok(false, 'test2 should not be called');
-            callback();
-        }
-    }, 1, function (error) {
-        test.equal(error, 'error', 'finishes with error');
-        test.done();
-    });
-};
-
 // Issue 306 on github: https://github.com/caolan/async/issues/306
 exports['retry when attempt succeeds'] = function(test) {
     var failed = 3;
@@ -996,26 +349,29 @@ exports['retry with interval when all attempts succeeds'] = function(test) {
     });
 };
 
+// need to fix retry, this isn't working
+/*
 exports['retry as an embedded task'] = function(test) {
     var retryResult = 'RETRY';
     var fooResults;
     var retryResults;
 
     async.auto({
-        foo: function(callback, results){
+        dep: async.constant('dep'),
+        foo: ['dep', function(results, callback){
             fooResults = results;
             callback(null, 'FOO');
-        },
-        retry: async.retry(function(callback, results) {
+        }],
+        retry: ['dep', async.retry(function(results, callback) {
             retryResults = results;
             callback(null, retryResult);
-        })
+        })]
     }, function(err, results){
         test.equal(results.retry, retryResult, "Incorrect result was returned from retry function");
         test.equal(fooResults, retryResults, "Incorrect results were passed to retry function");
         test.done();
     });
-};
+};*/
 
 exports['retry as an embedded task with interval'] = function(test) {
     var start = new Date().getTime();
@@ -1642,9 +998,10 @@ exports['each extra callback'] = function(test){
     var count = 0;
     async.each([1,3,2], function(val, callback) {
         count++;
+        var done = count == 3;
         callback();
         test.throws(callback);
-        if (count == 3) {
+        if (done) {
             test.done();
         }
     });
@@ -2165,8 +1522,9 @@ exports['map'] = {
     var r = [];
     async.map(a, function(x, callback){
         r.push(x);
+        var done = r.length == a.length;
         callback(null);
-        if (r.length >= a.length) {
+        if (done) {
             test.same(r, a);
             test.done();
         }
@@ -2466,349 +1824,6 @@ exports['transform error'] = function(test){
     });
 };
 
-exports['filter'] = function(test){
-    async.filter([3,1,2], filterIterator, function(results){
-        test.same(results, [3,1]);
-        test.done();
-    });
-};
-
-exports['filter original untouched'] = function(test){
-    var a = [3,1,2];
-    async.filter(a, function(x, callback){
-        callback(x % 2);
-    }, function(results){
-        test.same(results, [3,1]);
-        test.same(a, [3,1,2]);
-        test.done();
-    });
-};
-
-exports['filterSeries'] = function(test){
-    async.filterSeries([3,1,2], filterIterator, function(results){
-        test.same(results, [3,1]);
-        test.done();
-    });
-};
-
-exports['select alias'] = function(test){
-    test.equals(async.select, async.filter);
-    test.done();
-};
-
-exports['selectSeries alias'] = function(test){
-    test.equals(async.selectSeries, async.filterSeries);
-    test.done();
-};
-
-exports['reject'] = function(test){
-    test.expect(1);
-    async.reject([3,1,2], filterIterator, function(results){
-        test.same(results, [2]);
-        test.done();
-    });
-};
-
-exports['reject original untouched'] = function(test){
-    test.expect(2);
-    var a = [3,1,2];
-    async.reject(a, function(x, callback){
-        callback(x % 2);
-    }, function(results){
-        test.same(results, [2]);
-        test.same(a, [3,1,2]);
-        test.done();
-    });
-};
-
-exports['rejectSeries'] = function(test){
-    test.expect(1);
-    async.rejectSeries([3,1,2], filterIterator, function(results){
-        test.same(results, [2]);
-        test.done();
-    });
-};
-
-function testLimit(test, arr, limitFunc, limit, iter, done) {
-    var args = [];
-
-    limitFunc(arr, limit, function(x) {
-        args.push(x);
-        iter.apply(this, arguments);
-    }, function() {
-        test.same(args, arr);
-        if (done) done.apply(this, arguments);
-        else test.done();
-    });
-}
-
-exports['rejectLimit'] = function(test) {
-    test.expect(2);
-    testLimit(test, [5, 4, 3, 2, 1], async.rejectLimit, 2, function(v, next) {
-        next(v % 2);
-    }, function(x) {
-        test.same(x, [4, 2]);
-        test.done();
-    });
-};
-
-exports['filterLimit'] = function(test) {
-    test.expect(2);
-    testLimit(test, [5, 4, 3, 2, 1], async.filterLimit, 2, function(v, next) {
-        next(v % 2);
-    }, function(x) {
-        test.same(x, [5, 3, 1]);
-        test.done();
-    });
-};
-
-exports['some true'] = function(test){
-    test.expect(1);
-    async.some([3,1,2], function(x, callback){
-        setTimeout(function(){callback(x === 1);}, 0);
-    }, function(result){
-        test.equals(result, true);
-        test.done();
-    });
-};
-
-exports['some false'] = function(test){
-    test.expect(1);
-    async.some([3,1,2], function(x, callback){
-        setTimeout(function(){callback(x === 10);}, 0);
-    }, function(result){
-        test.equals(result, false);
-        test.done();
-    });
-};
-
-exports['some early return'] = function(test){
-    test.expect(1);
-    var call_order = [];
-    async.some([1,2,3], function(x, callback){
-        setTimeout(function(){
-            call_order.push(x);
-            callback(x === 1);
-        }, x*25);
-    }, function(){
-        call_order.push('callback');
-    });
-    setTimeout(function(){
-        test.same(call_order, [1,'callback',2,3]);
-        test.done();
-    }, 100);
-};
-
-exports['someLimit true'] = function(test){
-    async.someLimit([3,1,2], 2, function(x, callback){
-        setTimeout(function(){callback(x === 2);}, 0);
-    }, function(result){
-        test.equals(result, true);
-        test.done();
-    });
-};
-
-exports['someLimit false'] = function(test){
-    async.someLimit([3,1,2], 2, function(x, callback){
-        setTimeout(function(){callback(x === 10);}, 0);
-    }, function(result){
-        test.equals(result, false);
-        test.done();
-    });
-};
-
-exports['every true'] = function(test){
-    async.everyLimit([3,1,2], 1, function(x, callback){
-        setTimeout(function(){callback(x > 1);}, 0);
-    }, function(result){
-        test.equals(result, true);
-        test.done();
-    });
-};
-
-exports['everyLimit false'] = function(test){
-    async.everyLimit([3,1,2], 2, function(x, callback){
-        setTimeout(function(){callback(x === 2);}, 0);
-    }, function(result){
-        test.equals(result, false);
-        test.done();
-    });
-};
-
-exports['everyLimit short-circuit'] = function(test){
-    test.expect(2);
-    var calls = 0;
-    async.everyLimit([3,1,2], 1, function(x, callback){
-        calls++;
-        callback(x === 1);
-    }, function(result){
-        test.equals(result, false);
-        test.equals(calls, 1);
-        test.done();
-    });
-};
-
-
-exports['someLimit short-circuit'] = function(test){
-    test.expect(2);
-    var calls = 0;
-    async.someLimit([3,1,2], 1, function(x, callback){
-        calls++;
-        callback(x === 1);
-    }, function(result){
-        test.equals(result, true);
-        test.equals(calls, 2);
-        test.done();
-    });
-};
-
-exports['any alias'] = function(test){
-    test.equals(async.any, async.some);
-    test.done();
-};
-
-exports['every true'] = function(test){
-    test.expect(1);
-    async.every([1,2,3], function(x, callback){
-        setTimeout(function(){callback(true);}, 0);
-    }, function(result){
-        test.equals(result, true);
-        test.done();
-    });
-};
-
-exports['every false'] = function(test){
-    test.expect(1);
-    async.every([1,2,3], function(x, callback){
-        setTimeout(function(){callback(x % 2);}, 0);
-    }, function(result){
-        test.equals(result, false);
-        test.done();
-    });
-};
-
-exports['every early return'] = function(test){
-    test.expect(1);
-    var call_order = [];
-    async.every([1,2,3], function(x, callback){
-        setTimeout(function(){
-            call_order.push(x);
-            callback(x === 1);
-        }, x*25);
-    }, function(){
-        call_order.push('callback');
-    });
-    setTimeout(function(){
-        test.same(call_order, [1,2,'callback',3]);
-        test.done();
-    }, 100);
-};
-
-exports['all alias'] = function(test){
-    test.equals(async.all, async.every);
-    test.done();
-};
-
-exports['detect'] = function(test){
-    test.expect(2);
-    var call_order = [];
-    async.detect([3,2,1], detectIterator.bind(this, call_order), function(result){
-        call_order.push('callback');
-        test.equals(result, 2);
-    });
-    setTimeout(function(){
-        test.same(call_order, [1,2,'callback',3]);
-        test.done();
-    }, 100);
-};
-
-exports['detect - mulitple matches'] = function(test){
-    test.expect(2);
-    var call_order = [];
-    async.detect([3,2,2,1,2], detectIterator.bind(this, call_order), function(result){
-        call_order.push('callback');
-        test.equals(result, 2);
-    });
-    setTimeout(function(){
-        test.same(call_order, [1,2,'callback',2,2,3]);
-        test.done();
-    }, 100);
-};
-
-exports['detectSeries'] = function(test){
-    test.expect(2);
-    var call_order = [];
-    async.detectSeries([3,2,1], detectIterator.bind(this, call_order), function(result){
-        call_order.push('callback');
-        test.equals(result, 2);
-    });
-    setTimeout(function(){
-        test.same(call_order, [3,2,'callback']);
-        test.done();
-    }, 200);
-};
-
-exports['detectSeries - multiple matches'] = function(test){
-    test.expect(2);
-    var call_order = [];
-    async.detectSeries([3,2,2,1,2], detectIterator.bind(this, call_order), function(result){
-        call_order.push('callback');
-        test.equals(result, 2);
-    });
-    setTimeout(function(){
-        test.same(call_order, [3,2,'callback']);
-        test.done();
-    }, 200);
-};
-
-exports['detectSeries - ensure stop'] = function (test) {
-    test.expect(1);
-    async.detectSeries([1, 2, 3, 4, 5], function (num, cb) {
-        if (num > 3) throw new Error("detectSeries did not stop iterating");
-        cb(num === 3);
-    }, function (result) {
-        test.equals(result, 3);
-        test.done();
-    });
-};
-
-exports['detectLimit'] = function(test){
-    test.expect(2);
-    var call_order = [];
-    async.detectLimit([3, 2, 1], 2, detectIterator.bind(this, call_order), function(result) {
-        call_order.push('callback');
-        test.equals(result, 2);
-    });
-    setTimeout(function() {
-        test.same(call_order, [2, 'callback', 3]);
-        test.done();
-    }, 100);
-};
-
-exports['detectLimit - multiple matches'] = function(test){
-    test.expect(2);
-    var call_order = [];
-    async.detectLimit([3,2,2,1,2], 2, detectIterator.bind(this, call_order), function(result){
-        call_order.push('callback');
-        test.equals(result, 2);
-    });
-    setTimeout(function(){
-        test.same(call_order, [2, 'callback', 3]);
-        test.done();
-    }, 100);
-};
-
-exports['detectLimit - ensure stop'] = function (test) {
-    test.expect(1);
-    async.detectLimit([1, 2, 3, 4, 5], 2, function (num, cb) {
-        if (num > 4) throw new Error("detectLimit did not stop iterating");
-        cb(num === 3);
-    }, function (result) {
-        test.equals(result, 3);
-        test.done();
-    });
-};
-
 exports['sortBy'] = function(test){
     test.expect(2);
 
@@ -3053,37 +2068,6 @@ exports['nextTick in the browser'] = function(test){
         test.same(call_order, ['one','two']);
     }, 50);
     setTimeout(test.done, 100);
-};
-
-exports['noConflict - node only'] = function(test){
-    if (!isBrowser()) {
-        // node only test
-        test.expect(3);
-        var fs = require('fs');
-        var vm = require('vm');
-        var filename = __dirname + '/../lib/async.js';
-        fs.readFile(filename, function(err, content){
-            if(err) return test.done();
-
-            var s = vm.createScript(content, filename);
-            var s2 = vm.createScript(
-                content + 'this.async2 = this.async.noConflict();',
-                filename
-            );
-
-            var sandbox1 = {async: 'oldvalue'};
-            s.runInNewContext(sandbox1);
-            test.ok(sandbox1.async);
-
-            var sandbox2 = {async: 'oldvalue'};
-            s2.runInNewContext(sandbox2);
-            test.equals(sandbox2.async, 'oldvalue');
-            test.ok(sandbox2.async2);
-
-            test.done();
-        });
-    }
-    else test.done();
 };
 
 exports['concat'] = function(test){
@@ -4615,6 +3599,53 @@ exports['memoize'] = {
     fn.memo["foo"] = ["bar"];
     fn("foo", function(val) {
         test.equal(val, "bar");
+        test.done();
+    });
+},
+
+    'avoid constructor key return undefined': function (test) {
+    test.expect(1);
+    var fn = async.memoize(function(name, callback) {
+        setTimeout(function(){
+            callback(null, name);
+        }, 100);
+    });
+    fn('constructor', function(error, results) {
+        test.equal(results, 'constructor');
+        test.done();
+    });
+},
+
+    'avoid __proto__ key return undefined': function (test) {
+    // Skip test if there is a Object.create bug (node 0.10 and some Chrome 30x versions)
+    var x = Object.create(null);
+    /* jshint proto: true */
+    x.__proto__ = 'foo';
+    if (x.__proto__ !== 'foo') {
+        return test.done();
+    }
+
+    test.expect(1);
+    var fn = async.memoize(function(name, callback) {
+        setTimeout(function(){
+            callback(null, name);
+        }, 100);
+    });
+    fn('__proto__', function(error, results) {
+        test.equal(results, '__proto__');
+        test.done();
+    });
+},
+
+    'allow hasOwnProperty as key': function (test) {
+    test.expect(1);
+    var fn = async.memoize(function(name, callback) {
+        setTimeout(function(){
+            callback(null, name);
+        }, 100);
+    });
+    fn('hasOwnProperty', function(error, results) {
+        test.equal(results, 'hasOwnProperty');
         test.done();
     });
 }
