@@ -40,7 +40,7 @@ describe('auto', function () {
         },
         function(err){
             expect(err).to.equal(null);
-            expect(callOrder).to.eql(['task2','task6','task3','task5','task1','task4']);
+            expect(callOrder).to.eql(['task2','task3','task6','task5','task1','task4']);
             done();
         });
     });
@@ -214,19 +214,8 @@ describe('auto', function () {
 
     // Issue 410 on github: https://github.com/caolan/async/issues/410
     it('auto calls callback multiple times', function(done) {
-        if (process.browser) {
-            // node only test
-            return done();
-        }
         var finalCallCount = 0;
-        var domain = require('domain').create();
-        domain.on('error', function (e) {
-            // ignore test error
-            if (!e._test_error) {
-                return done(e);
-            }
-        });
-        domain.run(function () {
+        try {
             async.auto({
                 task1: function(callback) { callback(null); },
                 task2: ['task1', function(results, callback) { callback(null); }]
@@ -239,7 +228,11 @@ describe('auto', function () {
                 e._test_error = true;
                 throw e;
             });
-        });
+        } catch (e) {
+            if (!e._test_error) {
+                throw e;
+            }
+        }
         setTimeout(function () {
             expect(finalCallCount).to.equal(1);
             done();
@@ -293,7 +286,7 @@ describe('auto', function () {
                     callback(null, 'task1');
                 }]
             });
-        }).to.throw;
+        }).to.throw();
         done();
     });
 
@@ -308,7 +301,7 @@ describe('auto', function () {
                     callback(null, 'task2');
                 }]
             });
-        }).to.throw;
+        }).to.throw();
         done();
     });
 
@@ -354,6 +347,22 @@ describe('auto', function () {
             }, function () {});
 
         }).to.throw();
+    });
+
+    it("should avoid unncecessary deferrals", function (done) {
+        var isSync = true;
+
+        async.auto({
+            step1: function (cb) { cb(null, 1); },
+            step2: ["step1", function (results, cb) {
+                cb();
+            }]
+        }, function () {
+            expect(isSync).to.equal(true);
+            done();
+        });
+
+        isSync = false;
     });
 
 });
