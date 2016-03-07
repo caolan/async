@@ -68,7 +68,7 @@ describe("waterfall", function () {
                 callback();
             },
             function(){
-                expect(call_order).to.eql([1,2,3]);
+                expect(call_order).to.eql([1,3]);
                 done();
             }
         ]);
@@ -89,33 +89,20 @@ describe("waterfall", function () {
         });
     });
 
-    it('multiple callback calls', function(done){
-        var call_order = [];
+    it('multiple callback calls', function(){
         var arr = [
             function(callback){
-                call_order.push(1);
                 // call the callback twice. this should call function 2 twice
                 callback(null, 'one', 'two');
                 callback(null, 'one', 'two');
             },
             function(arg1, arg2, callback){
-                call_order.push(2);
                 callback(null, arg1, arg2, 'three');
-            },
-            function(arg1, arg2, arg3, callback){
-                call_order.push(3);
-                callback(null, 'four');
-            },
-            function(/*arg4*/){
-                call_order.push(4);
-                arr[3] = function(){
-                    call_order.push(4);
-                    expect(call_order).to.eql([1,2,2,3,3,4,4]);
-                    done();
-                };
             }
         ];
-        async.waterfall(arr);
+        expect(function () {
+            async.waterfall(arr, function () {});
+        }).to.throw(/already called/);
     });
 
     it('call in another context', function(done) {
@@ -143,5 +130,19 @@ describe("waterfall", function () {
         }).toString() + "())";
 
         vm.runInNewContext(fn, sandbox);
+    });
+
+    it('should not use unnecessary deferrals', function (done) {
+        var sameStack = true;
+
+        async.waterfall([
+            function (cb) { cb(null, 1); },
+            function (arg, cb) { cb(); }
+        ], function() {
+            expect(sameStack).to.equal(true);
+            done();
+        });
+
+        sameStack = false;
     });
 });
