@@ -3825,3 +3825,49 @@ exports['asyncify'] = {
         return promises;
     }, {})
 };
+
+exports['timeout'] = function (test) {
+    test.expect(3);
+
+    async.series([
+        async.timeout(function asyncFn(callback) {
+            setTimeout(function() {
+                callback(null, 'I didn\'t time out');
+            }, 50);
+        }, 200),
+        async.timeout(function asyncFn(callback) {
+            setTimeout(function() {
+                callback(null, 'I will time out');
+            }, 300);
+        }, 150)
+    ],
+    function(err, results) {
+        test.ok(err.message === 'Callback function timed out.');
+        test.ok(err.code === 'ETIMEDOUT');
+        test.ok(results[0] === 'I didn\'t time out');
+        test.done();
+    });
+};
+
+exports['timeout with parallel'] = function (test) {
+    test.expect(3);
+
+    async.parallel([
+        async.timeout(function asyncFn(callback) {
+            setTimeout(function() {
+                callback(null, 'I didn\'t time out');
+            }, 50);
+        }, 200),
+        async.timeout(function asyncFn(callback) {
+            setTimeout(function() {
+                callback(null, 'I will time out');
+            }, 300);
+        }, 150)
+    ],
+    function(err, results) {
+        test.ok(err.message === 'Callback function timed out.');
+        test.ok(err.code === 'ETIMEDOUT');
+        test.ok(results[0] === 'I didn\'t time out');
+        test.done();
+    });
+};
