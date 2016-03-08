@@ -278,77 +278,6 @@ exports['seq without callback'] = function (test) {
     add2mul3.call(testcontext, 3);
 };
 
-// Issue 306 on github: https://github.com/caolan/async/issues/306
-exports['retry when attempt succeeds'] = function(test) {
-    var failed = 3;
-    var callCount = 0;
-    var expectedResult = 'success';
-    function fn(callback) {
-        callCount++;
-        failed--;
-        if (!failed) callback(null, expectedResult);
-        else callback(true); // respond with error
-    }
-    async.retry(fn, function(err, result){
-        test.ok(err === null, err + " passed instead of 'null'");
-        test.equal(callCount, 3, 'did not retry the correct number of times');
-        test.equal(result, expectedResult, 'did not return the expected result');
-        test.done();
-    });
-};
-
-exports['retry when all attempts succeeds'] = function(test) {
-    var times = 3;
-    var callCount = 0;
-    var error = 'ERROR';
-    var erroredResult = 'RESULT';
-    function fn(callback) {
-        callCount++;
-        callback(error + callCount, erroredResult + callCount); // respond with indexed values
-    }
-    async.retry(times, fn, function(err, result){
-        test.equal(callCount, 3, "did not retry the correct number of times");
-        test.equal(err, error + times, "Incorrect error was returned");
-        test.equal(result, erroredResult + times, "Incorrect result was returned");
-        test.done();
-    });
-};
-
-exports['retry fails with invalid arguments'] = function(test) {
-    test.throws(function() {
-        async.retry("");
-    });
-    test.throws(function() {
-        async.retry();
-    });
-    test.throws(function() {
-        async.retry(function() {}, 2, function() {});
-    });
-    test.done();
-};
-
-exports['retry with interval when all attempts succeeds'] = function(test) {
-    var times = 3;
-    var interval = 500;
-    var callCount = 0;
-    var error = 'ERROR';
-    var erroredResult = 'RESULT';
-    function fn(callback) {
-        callCount++;
-        callback(error + callCount, erroredResult + callCount); // respond with indexed values
-    }
-    var start = new Date().getTime();
-    async.retry({ times: times, interval: interval}, fn, function(err, result){
-        var now = new Date().getTime();
-        var duration = now - start;
-        test.ok(duration > (interval * (times -1)),  'did not include interval');
-        test.equal(callCount, 3, "did not retry the correct number of times");
-        test.equal(err, error + times, "Incorrect error was returned");
-        test.equal(result, erroredResult + times, "Incorrect result was returned");
-        test.done();
-    });
-};
-
 // need to fix retry, this isn't working
 /*
 exports['retry as an embedded task'] = function(test) {
@@ -371,7 +300,7 @@ exports['retry as an embedded task'] = function(test) {
         test.equal(fooResults, retryResults, "Incorrect results were passed to retry function");
         test.done();
     });
-};*/
+};
 
 exports['retry as an embedded task with interval'] = function(test) {
     var start = new Date().getTime();
@@ -390,7 +319,7 @@ exports['retry as an embedded task with interval'] = function(test) {
         test.ok(duration >= expectedMinimumDuration, "The duration should have been greater than " + expectedMinimumDuration + ", but was " + duration);
         test.done();
     });
-};
+};*/
 
 exports['waterfall'] = {
 
