@@ -1568,7 +1568,7 @@ three
 ---------------------------------------
 
 <a name="nextTick"></a>
-### nextTick(callback), setImmediate(callback)
+### nextTick(callback, [args...]), setImmediate(callback, [args...])
 
 Calls `callback` on a later loop around the event loop. In Node.js this just
 calls `process.nextTick`; in the browser it falls back to `setImmediate(callback)`
@@ -1580,6 +1580,7 @@ This is used internally for browser-compatibility purposes.
 __Arguments__
 
 * `callback` - The function to call on a later loop around the event loop.
+* `args...` - any number of additional arguments to pass to the callback on the next tick
 
 __Example__
 
@@ -1590,6 +1591,10 @@ async.nextTick(function(){
     // call_order now equals ['one','two']
 });
 call_order.push('one')
+
+async.setImmediate(function (a, b, c) {
+  // a, b, and c equal 1, 2, and 3
+}, 1, 2, 3)
 ```
 
 ---------------------------------------

@@ -2042,33 +2042,6 @@ console_fn_tests('dir');
 console_fn_tests('warn');
 console_fn_tests('error');*/
 
-exports['nextTick'] = function(test){
-    test.expect(1);
-    var call_order = [];
-    async.nextTick(function(){call_order.push('two');});
-    call_order.push('one');
-    setTimeout(function(){
-        test.same(call_order, ['one','two']);
-        test.done();
-    }, 50);
-};
-
-exports['nextTick in the browser'] = function(test){
-    if (!isBrowser()) {
-        // skip this test in node
-        return test.done();
-    }
-    test.expect(1);
-
-    var call_order = [];
-    async.nextTick(function(){call_order.push('two');});
-
-    call_order.push('one');
-    setTimeout(function(){
-        test.same(call_order, ['one','two']);
-    }, 50);
-    setTimeout(test.done, 100);
-};
 
 exports['concat'] = function(test){
     test.expect(3);
