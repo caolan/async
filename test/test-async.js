@@ -278,48 +278,6 @@ exports['seq without callback'] = function (test) {
     add2mul3.call(testcontext, 3);
 };
 
-// need to fix retry, this isn't working
-/*
-exports['retry as an embedded task'] = function(test) {
-    var retryResult = 'RETRY';
-    var fooResults;
-    var retryResults;
-
-    async.auto({
-        dep: async.constant('dep'),
-        foo: ['dep', function(results, callback){
-            fooResults = results;
-            callback(null, 'FOO');
-        }],
-        retry: ['dep', async.retry(function(results, callback) {
-            retryResults = results;
-            callback(null, retryResult);
-        })]
-    }, function(err, results){
-        test.equal(results.retry, retryResult, "Incorrect result was returned from retry function");
-        test.equal(fooResults, retryResults, "Incorrect results were passed to retry function");
-        test.done();
-    });
-};
-
-exports['retry as an embedded task with interval'] = function(test) {
-    var start = new Date().getTime();
-    var opts = {times: 5, interval: 100};
-
-    async.auto({
-        foo: function(callback){
-            callback(null, 'FOO');
-        },
-        retry: async.retry(opts, function(callback) {
-            callback('err');
-        })
-    }, function(){
-        var duration = new Date().getTime() - start;
-        var expectedMinimumDuration = (opts.times -1) * opts.interval;
-        test.ok(duration >= expectedMinimumDuration, "The duration should have been greater than " + expectedMinimumDuration + ", but was " + duration);
-        test.done();
-    });
-};*/
 
 exports['waterfall'] = {
 
