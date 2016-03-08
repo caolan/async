@@ -1912,7 +1912,7 @@ Changes the value of `async` back to its original value, returning a reference t
 
 Sets a time limit on an asynchronous function. If the function does not call its callback within the specified miliseconds, it will be called with a timeout error. The code property for the error object will be `'ETIMEDOUT'`.
 
-Returns a wrapped function that can be used with any of the control flow functions.
+Returns a wrapping function that can be used with any of the control flow functions.
 
 __Arguments__
 
