@@ -200,8 +200,8 @@ Some functions are also available in the following forms:
 * [`reduce`](#reduce), [`reduceRight`](#reduceRight)
 * [`detect`](#detect), `detectSeries`, `detectLimit`
 * [`sortBy`](#sortBy)
-* [`some`](#some), `someLimit`
-* [`every`](#every), `everyLimit`
+* [`some`](#some), `someLimit`, `someSeries`
+* [`every`](#every), `everyLimit`, `someSeries`
 * [`concat`](#concat), `concatSeries`
 
 ### Control Flow
@@ -500,6 +500,8 @@ Same as [`reduce`](#reduce), only operates on `arr` in reverse order.
 <a name="detect"></a>
 ### detect(arr, iteratee, [callback])
 
+__Alias:__ `find`
+
 Returns the first value in `arr` that passes an async truth test. The
 `iteratee` is applied in parallel, meaning the first iteratee to return `true` will
 fire the detect `callback` with that result. That means the result might not be
@@ -620,6 +622,7 @@ async.some(['file1','file2','file3'], function(filePath, callback) {
 
 __Related__
 
+* someSeries(arr, iteratee, callback)
 * someLimit(arr, limit, iteratee, callback)
 
 ---------------------------------------
@@ -656,6 +659,7 @@ async.every(['file1','file2','file3'], function(filePath, callback) {
 
 __Related__
 
+* everySeries(arr, iteratee, callback)
 * everyLimit(arr, limit, iteratee, callback)
 
 ---------------------------------------

@@ -87,5 +87,14 @@ describe("some", function () {
         expect(async.any).to.equal(async.some);
     });
 
+    it('anyLimit alias', function(){
+        expect(async.anyLimit).to.equal(async.someLimit);
+    });
+
+    it('anySeries alias', function(){
+        expect(async.anySeries).to.be.a('function');
+        expect(async.anySeries).to.equal(async.someSeries);
+    });
+
 
 });

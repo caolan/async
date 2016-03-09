@@ -87,4 +87,13 @@ describe("every", function () {
         expect(async.all).to.equal(async.every);
     });
 
+    it('allLimit alias', function(){
+        expect(async.allLimit).to.equal(async.everyLimit);
+    });
+
+    it('allSeries alias', function(){
+        expect(async.allSeries).to.be.a('function');
+        expect(async.allSeries).to.equal(async.everySeries);
+    });
+
 });
