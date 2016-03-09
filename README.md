@@ -1470,19 +1470,15 @@ async.autoInject({
 });
 ```
 
-If you are using a minifier that mangles parameter names, `autoInject` will not work with plain functions.  To work around this, you can explicitly specify the names of the parameters in an array, similar to Angular.js dependency injection.
+If you are using a JS minifier that mangles parameter names, `autoInject` will not work with plain functions, since the parameter names will be collapsed to a single letter identifier.  To work around this, you can explicitly specify the names of the parameters your task function needs in an array, similar to Angular.js dependency injection.
 
 ```js
 async.autoInject({
     //...
     write_file: ['get_data', 'make_folder', function(get_data, make_folder, callback){
-        // once there is some data and the directory exists,
-        // write the data to a file in the directory
         callback(null, 'filename');
     }],
     email_link: ['write_file', function(write_file, callback){
-        // once the file is written let's email a link to it...
-        // write_file contains the filename returned by write_file.
         callback(null, {'file':write_file, 'email':'user@example.com'});
     }]
     //...
