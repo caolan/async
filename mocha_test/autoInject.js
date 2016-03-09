@@ -46,7 +46,7 @@ describe('autoInject', function () {
         },
         function(err, results){
             expect(results.task6).to.equal(6);
-            expect(callOrder).to.eql(['task2','task6','task3','task5','task1','task4']);
+            expect(callOrder).to.eql(['task2','task3','task6','task5','task1','task4']);
             done();
         });
     });
