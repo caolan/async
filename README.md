@@ -201,7 +201,7 @@ Some functions are also available in the following forms:
 * [`detect`](#detect), `detectSeries`, `detectLimit`
 * [`sortBy`](#sortBy)
 * [`some`](#some), `someLimit`, `someSeries`
-* [`every`](#every), `everyLimit`, `someSeries`
+* [`every`](#every), `everyLimit`, `everySeries`
 * [`concat`](#concat), `concatSeries`
 
 ### Control Flow
