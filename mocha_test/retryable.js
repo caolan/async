@@ -21,8 +21,7 @@ describe('retryable', function () {
         }, 15);
     });
 
-    // TODO: re-enable when auto's args are swapped
-    it.skip('should work as an embedded task', function(done) {
+    it('should work as an embedded task', function(done) {
         var retryResult = 'RETRY';
         var fooResults;
         var retryResults;
