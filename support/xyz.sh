@@ -84,7 +84,7 @@ while (($# > 0)) ; do
       exit
       ;;
     -v|--version)
-      node -p "require('$dir/package.json').version"
+      node -p "require('$dir/../package.json').version"
       exit
       ;;
     -b|--branch)    branch="$1"           ; shift ;;
@@ -117,7 +117,7 @@ name=$(node -p "require('./package.json').name" 2>/dev/null) ||
 version=$(node -p "require('./package.json').version" 2>/dev/null) ||
   (echo "Cannot read package version" >&2 ; exit 1)
 
-next_version=$("$dir/node_modules/.bin/semver" -i "$increment" "$version") ||
+next_version=$("$dir/../node_modules/.bin/semver" -i "$increment" "$version") ||
   (echo "Cannot increment version number" >&2 ; exit 1)
 
 message="${message_template//X.Y.Z/$next_version}"
@@ -160,7 +160,7 @@ inc() {
 
 inc package.json
 
-run "./sync-package-managers.js"
+run "$dir/sync-package-managers.js"
 run "git add --force *.json"
 
 run "git commit --message '$message'"
