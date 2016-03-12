@@ -200,8 +200,8 @@ Some functions are also available in the following forms:
 * [`reduce`](#reduce), [`reduceRight`](#reduceRight)
 * [`detect`](#detect), `detectSeries`, `detectLimit`
 * [`sortBy`](#sortBy)
-* [`some`](#some), `someLimit`
-* [`every`](#every), `everyLimit`
+* [`some`](#some), `someLimit`, `someSeries`
+* [`every`](#every), `everyLimit`, `everySeries`
 * [`concat`](#concat), `concatSeries`
 
 ### Control Flow
@@ -219,6 +219,7 @@ Some functions are also available in the following forms:
 * [`queue`](#queue), [`priorityQueue`](#priorityQueue)
 * [`cargo`](#cargo)
 * [`auto`](#auto)
+* [`autoInject`](#autoInject)
 * [`retry`](#retry)
 * [`iterator`](#iterator)
 * [`times`](#times), `timesSeries`, `timesLimit`
@@ -243,6 +244,7 @@ Some functions are also available in the following forms:
 
 <a name="forEach"></a>
 <a name="each"></a>
+
 ### each(arr, iteratee, [callback])
 
 Applies the function `iteratee` to each item in `arr`, in parallel.
@@ -313,6 +315,7 @@ __Related__
 
 <a name="forEachOf"></a>
 <a name="eachOf"></a>
+
 ### forEachOf(obj, iteratee, [callback])
 
 Like `each`, except that it iterates over objects, and passes the key as the second argument to the iteratee.
@@ -358,6 +361,7 @@ __Related__
 ---------------------------------------
 
 <a name="map"></a>
+
 ### map(arr, iteratee, [callback])
 
 Produces a new array of values by mapping each value in `arr` through
@@ -397,6 +401,7 @@ __Related__
 
 <a name="select"></a>
 <a name="filter"></a>
+
 ### filter(arr, iteratee, [callback])
 
 __Alias:__ `select`
@@ -434,6 +439,7 @@ __Related__
 ---------------------------------------
 
 <a name="reject"></a>
+
 ### reject(arr, iteratee, [callback])
 
 The opposite of [`filter`](#filter). Removes values that pass an `async` truth test.
@@ -446,6 +452,7 @@ __Related__
 ---------------------------------------
 
 <a name="reduce"></a>
+
 ### reduce(arr, memo, iteratee, [callback])
 
 __Aliases:__ `inject`, `foldl`
@@ -488,6 +495,7 @@ async.reduce([1,2,3], 0, function(memo, item, callback){
 ---------------------------------------
 
 <a name="reduceRight"></a>
+
 ### reduceRight(arr, memo, iteratee, [callback])
 
 __Alias:__ `foldr`
@@ -497,7 +505,10 @@ Same as [`reduce`](#reduce), only operates on `arr` in reverse order.
 ---------------------------------------
 
 <a name="detect"></a>
+
 ### detect(arr, iteratee, [callback])
+
+__Alias:__ `find`
 
 Returns the first value in `arr` that passes an async truth test. The
 `iteratee` is applied in parallel, meaning the first iteratee to return `true` will
@@ -537,6 +548,7 @@ __Related__
 ---------------------------------------
 
 <a name="sortBy"></a>
+
 ### sortBy(arr, iteratee, [callback])
 
 Sorts a list by the results of running each `arr` value through an async `iteratee`.
@@ -588,6 +600,7 @@ async.sortBy([1,9,3,5], function(x, callback){
 ---------------------------------------
 
 <a name="some"></a>
+
 ### some(arr, iteratee, [callback])
 
 __Alias:__ `any`
@@ -619,11 +632,13 @@ async.some(['file1','file2','file3'], function(filePath, callback) {
 
 __Related__
 
+* someSeries(arr, iteratee, callback)
 * someLimit(arr, limit, iteratee, callback)
 
 ---------------------------------------
 
 <a name="every"></a>
+
 ### every(arr, iteratee, [callback])
 
 __Alias:__ `all`
@@ -655,11 +670,13 @@ async.every(['file1','file2','file3'], function(filePath, callback) {
 
 __Related__
 
+* everySeries(arr, iteratee, callback)
 * everyLimit(arr, limit, iteratee, callback)
 
 ---------------------------------------
 
 <a name="concat"></a>
+
 ### concat(arr, iteratee, [callback])
 
 Applies `iteratee` to each item in `arr`, concatenating the results. Returns the
@@ -693,6 +710,7 @@ __Related__
 ## Control Flow
 
 <a name="series"></a>
+
 ### series(tasks, [callback])
 
 Run the functions in the `tasks` array in series, each one running once the previous
@@ -763,6 +781,7 @@ function(err, results) {
 ---------------------------------------
 
 <a name="parallel"></a>
+
 ### parallel(tasks, [callback])
 
 Run the `tasks` array of functions in parallel, without waiting until the previous
@@ -835,6 +854,7 @@ __Related__
 ---------------------------------------
 
 <a name="whilst"></a>
+
 ### whilst(test, fn, callback)
 
 Repeatedly call `fn`, while `test` returns `true`. Calls `callback` when stopped,
@@ -872,6 +892,7 @@ async.whilst(
 ---------------------------------------
 
 <a name="doWhilst"></a>
+
 ### doWhilst(fn, test, callback)
 
 The post-check version of [`whilst`](#whilst). To reflect the difference in
@@ -882,6 +903,7 @@ the order of operations, the arguments `test` and `fn` are switched.
 ---------------------------------------
 
 <a name="until"></a>
+
 ### until(test, fn, callback)
 
 Repeatedly call `fn` until `test` returns `true`. Calls `callback` when stopped,
@@ -893,6 +915,7 @@ The inverse of [`whilst`](#whilst).
 ---------------------------------------
 
 <a name="doUntil"></a>
+
 ### doUntil(fn, test, callback)
 
 Like [`doWhilst`](#doWhilst), except the `test` is inverted. Note the argument ordering differs from `until`.
@@ -900,6 +923,7 @@ Like [`doWhilst`](#doWhilst), except the `test` is inverted. Note the argument o
 ---------------------------------------
 
 <a name="during"></a>
+
 ### during(test, fn, callback)
 
 Like [`whilst`](#whilst), except the `test` is an asynchronous function that is passed a callback in the form of `function (err, truth)`. If error is passed to `test` or `fn`, the main callback is immediately called with the value of the error.
@@ -926,6 +950,7 @@ async.during(
 ---------------------------------------
 
 <a name="doDuring"></a>
+
 ### doDuring(fn, test, callback)
 
 The post-check version of [`during`](#during). To reflect the difference in
@@ -936,6 +961,7 @@ Also a version of [`doWhilst`](#doWhilst) with asynchronous `test` function.
 ---------------------------------------
 
 <a name="forever"></a>
+
 ### forever(fn, [errback])
 
 Calls the asynchronous function `fn` with a callback parameter that allows it to
@@ -960,6 +986,7 @@ async.forever(
 ---------------------------------------
 
 <a name="waterfall"></a>
+
 ### waterfall(tasks, [callback])
 
 Runs the `tasks` array of functions in series, each passing their results to the next in
@@ -1047,6 +1074,7 @@ function myLastFunction(arg1, callback) {
 ---------------------------------------
 
 <a name="compose"></a>
+
 ### compose(fn1, fn2...)
 
 Creates a function which is a composition of the passed asynchronous
@@ -1086,6 +1114,7 @@ add1mul3(4, function (err, result) {
 ---------------------------------------
 
 <a name="seq"></a>
+
 ### seq(fn1, fn2...)
 
 Version of the compose function that is more natural to read.
@@ -1127,6 +1156,7 @@ app.get('/cats', function(request, response) {
 ---------------------------------------
 
 <a name="applyEach"></a>
+
 ### applyEach(fns, args..., callback)
 
 Applies the provided arguments to each function in the array, calling
@@ -1162,6 +1192,7 @@ __Related__
 ---------------------------------------
 
 <a name="queue"></a>
+
 ### queue(worker, [concurrency])
 
 Creates a `queue` object with the specified `concurrency`. Tasks added to the
@@ -1245,6 +1276,7 @@ q.unshift({name: 'bar'}, function (err) {
 ---------------------------------------
 
 <a name="priorityQueue"></a>
+
 ### priorityQueue(worker, concurrency)
 
 The same as [`queue`](#queue) only tasks are assigned a priority and completed in ascending priority order. There are two differences between `queue` and `priorityQueue` objects:
@@ -1256,6 +1288,7 @@ The same as [`queue`](#queue) only tasks are assigned a priority and completed i
 ---------------------------------------
 
 <a name="cargo"></a>
+
 ### cargo(worker, [payload])
 
 Creates a `cargo` object with the specified payload. Tasks added to the
@@ -1291,7 +1324,7 @@ methods:
 * `saturated` - A callback that is called when the `queue.length()` hits the concurrency and further tasks will be queued.
 * `empty` - A callback that is called when the last item from the `queue` is given to a `worker`.
 * `drain` - A callback that is called when the last item from the `queue` has returned from the `worker`.
-* `idle()`, `pause()`, `resume()`, `kill()` - cargo inherits all of the same methods and event calbacks as [`queue`](#queue)
+* `idle()`, `pause()`, `resume()`, `kill()` - cargo inherits all of the same methods and event callbacks as [`queue`](#queue)
 
 __Example__
 
@@ -1322,6 +1355,7 @@ cargo.push({name: 'baz'}, function (err) {
 ---------------------------------------
 
 <a name="auto"></a>
+
 ### auto(tasks, [concurrency], [callback])
 
 Determines the best order for running the functions in `tasks`, based on their requirements. Each function can optionally depend on other functions being completed first, and each function is run as soon as its requirements are satisfied.
@@ -1421,8 +1455,76 @@ function(err, results){
 For a complicated series of `async` tasks, using the [`auto`](#auto) function makes adding new tasks much easier (and the code more readable).
 
 ---------------------------------------
+<a name="autoInject" />
+### autoInject(tasks, [callback])
+
+A dependency-injected version of the [`auto`](#auto) function. Dependent tasks are specified as parameters to the function, after the usual callback parameter, with the parameter names matching the names of the tasks it depends on. This can provide even more readable task graphs which can be easier to maintain.
+
+If a final callback is specified, the task results are similarly injected, specified as named parameters after the initial error parameter.
+
+The autoInject function is purely syntactic sugar and its semantics are otherwise equivalent to [`auto`](#auto).
+
+__Arguments__
+
+* `tasks` - An object, each of whose properties is a function of the form
+  'func([dependencies...], callback). The object's key of a property serves as the name of the task defined by that property, i.e. can be used when specifying requirements for other tasks.
+  * The `callback` parameter is a `callback(err, result)` which must be called when finished, passing an `error` (which can be `null`) and the result of the function's execution. The remaining parameters name other tasks on which the task is dependent, and the results from those tasks are the arguments of those parameters.
+* `callback(err, [results...])` - An optional callback which is called when all the tasks have been completed. It receives the `err` argument if any `tasks` pass an error to their callback. The remaining parameters are task names whose results you are interested in. This callback will only be called when all tasks have finished or an error has occurred, and so do not not specify dependencies in the same way as `tasks` do. If an error occurs, no further `tasks` will be performed, and `results` will only be valid for those tasks which managed to complete.
+
+
+__Example__
+
+The example from [`auto`](#auto) can be rewritten as follows:
+
+```js
+async.autoInject({
+    get_data: function(callback){
+        // async code to get some data
+        callback(null, 'data', 'converted to array');
+    },
+    make_folder: function(callback){
+        // async code to create a directory to store a file in
+        // this is run at the same time as getting the data
+        callback(null, 'folder');
+    },
+    write_file: function(get_data, make_folder, callback){
+        // once there is some data and the directory exists,
+        // write the data to a file in the directory
+        callback(null, 'filename');
+    },
+    email_link: function(write_file, callback){
+        // once the file is written let's email a link to it...
+        // write_file contains the filename returned by write_file.
+        callback(null, {'file':write_file, 'email':'user@example.com'});
+    }
+}, function(err, email_link) {
+    console.log('err = ', err);
+    console.log('email_link = ', email_link);
+});
+```
+
+If you are using a JS minifier that mangles parameter names, `autoInject` will not work with plain functions, since the parameter names will be collapsed to a single letter identifier.  To work around this, you can explicitly specify the names of the parameters your task function needs in an array, similar to Angular.js dependency injection.
+
+```js
+async.autoInject({
+    //...
+    write_file: ['get_data', 'make_folder', function(get_data, make_folder, callback){
+        callback(null, 'filename');
+    }],
+    email_link: ['write_file', function(write_file, callback){
+        callback(null, {'file':write_file, 'email':'user@example.com'});
+    }]
+    //...
+},
+```
+
+This still has an advantage over plain `auto`, since the results a task depends on are still spread into arguments.
+
+
+---------------------------------------
 
 <a name="retry"></a>
+
 ### retry([opts = {times: 5, interval: 0}| 5], task, [callback])
 
 Attempts to get a successful response from `task` no more than `times` times before
@@ -1481,6 +1583,7 @@ async.auto({
 ---------------------------------------
 
 <a name="iterator"></a>
+
 ### iterator(tasks)
 
 Creates an iterator function which calls the next function in the `tasks` array,
@@ -1517,6 +1620,7 @@ node> nextfn();
 ## Utils
 
 <a name="apply"></a>
+
 ### apply(function, arguments..)
 
 Creates a continuation function with some arguments already applied.
@@ -1568,7 +1672,8 @@ three
 ---------------------------------------
 
 <a name="nextTick"></a>
-### nextTick(callback), setImmediate(callback)
+
+### nextTick(callback, [args...]), setImmediate(callback, [args...])
 
 Calls `callback` on a later loop around the event loop. In Node.js this just
 calls `process.nextTick`; in the browser it falls back to `setImmediate(callback)`
@@ -1580,6 +1685,7 @@ This is used internally for browser-compatibility purposes.
 __Arguments__
 
 * `callback` - The function to call on a later loop around the event loop.
+* `args...` - any number of additional arguments to pass to the callback on the next tick
 
 __Example__
 
@@ -1590,11 +1696,16 @@ async.nextTick(function(){
     // call_order now equals ['one','two']
 });
 call_order.push('one')
+
+async.setImmediate(function (a, b, c) {
+  // a, b, and c equal 1, 2, and 3
+}, 1, 2, 3)
 ```
 
 ---------------------------------------
 
 <a name="times"></a>
+
 ### times(n, iteratee, [callback])
 
 Calls the `iteratee` function `n` times, and accumulates results in the same manner
@@ -1673,6 +1784,7 @@ function(err, result){
 ---------------------------------------
 
 <a name="memoize"></a>
+
 ### memoize(fn, [hasher])
 
 Caches the results of an `async` function. When creating a hash to store function
@@ -1709,6 +1821,7 @@ fn('some name', function () {
 ---------------------------------------
 
 <a name="unmemoize"></a>
+
 ### unmemoize(fn)
 
 Undoes a [`memoize`](#memoize)d function, reverting it to the original, unmemoized
@@ -1721,6 +1834,7 @@ __Arguments__
 ---------------------------------------
 
 <a name="ensureAsync"></a>
+
 ### ensureAsync(fn)
 
 Wrap an async function and ensure it calls its callback on a later tick of the event loop.  If the function already calls its callback on a next tick, no extra deferral is added. This is useful for preventing stack overflows (`RangeError: Maximum call stack size exceeded`) and generally keeping [Zalgo](http://blog.izs.me/post/59142742143/designing-apis-for-asynchrony) contained.
@@ -1754,6 +1868,7 @@ async.mapSeries(args, async.ensureAsync(sometimesAsync), done);
 ---------------------------------------
 
 <a name="constant"></a>
+
 ### constant(values...)
 
 Returns a function that when called, calls-back with the values provided.  Useful as the first function in a `waterfall`, or for plugging values in to `auto`.
@@ -1793,6 +1908,7 @@ async.auto({
 
 <a name="asyncify"></a>
 <a name="wrapSync"></a>
+
 ### asyncify(func)
 
 __Alias:__ `wrapSync`
@@ -1841,6 +1957,7 @@ q.push(files);
 ---------------------------------------
 
 <a name="log"></a>
+
 ### log(function, arguments)
 
 Logs the result of an `async` function to the `console`. Only works in Node.js or
@@ -1870,6 +1987,7 @@ node> async.log(hello, 'world');
 ---------------------------------------
 
 <a name="dir"></a>
+
 ### dir(function, arguments)
 
 Logs the result of an `async` function to the `console` using `console.dir` to
@@ -1900,6 +2018,7 @@ node> async.dir(hello, 'world');
 ---------------------------------------
 
 <a name="noConflict"></a>
+
 ### noConflict()
 
 Changes the value of `async` back to its original value, returning a reference to the
@@ -1908,6 +2027,7 @@ Changes the value of `async` back to its original value, returning a reference t
 ---------------------------------------
 
 <a name="timeout"></a>
+
 ### timeout(function, miliseconds)
 
 Sets a time limit on an asynchronous function. If the function does not call its callback within the specified miliseconds, it will be called with a timeout error. The code property for the error object will be `'ETIMEDOUT'`.

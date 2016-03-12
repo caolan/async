@@ -120,4 +120,18 @@ describe("detect", function () {
         });
     });
 
+
+    it('find alias', function(){
+        expect(async.find).to.equal(async.detect);
+    });
+
+    it('findLimit alias', function(){
+        expect(async.findLimit).to.equal(async.detectLimit);
+    });
+
+    it('findSeries alias', function(){
+        expect(async.findSeries).to.be.a('function');
+        expect(async.findSeries).to.equal(async.detectSeries);
+    });
+
 });
