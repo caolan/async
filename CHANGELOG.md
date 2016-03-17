@@ -2,7 +2,7 @@
 
 Lots of changes here! The biggest feature is modularization.  You can now `require("async/series")` to only require the `series` function.  Every Async library function is available this way.  You still can `require("async")` to require the entire library, like you could do before.
 
-We also provide Async as a collection of ES2015 modules. You can now `import each from 'async-es'` or `import waterfall from 'async-es/waterfall'`.  If you are using only a few Async functions, and are using a ES bundler such as Rollup, this can significantly lower your build size.
+We also provide Async as a collection of ES2015 modules. You can now `import {each} from 'async-es'` or `import waterfall from 'async-es/waterfall'`.  If you are using only a few Async functions, and are using a ES bundler such as Rollup, this can significantly lower your build size.
 
 Major thanks to [**@Kikobeats**](github.com/Kikobeats), [**@aearly**](github.com/aearly) and [**@aearly**](github.com/aearly) for doing the majority of the modularization work, as well as [**@jdalton**](github.com/jdalton) and [**@Rich-Harris**](github.com/Rich-Harris) for advisory work on the general modularization strategy.
 
@@ -22,7 +22,7 @@ Another theme is performance.  We have eliminated internal deferrals in all case
 ## New Features
 
 - Async is now modularized.  Individual functions can be `require()`d from the main package. (`require('async/auto')`) (#696)
-- Async is also available as a collection of ES2015 modules in the new `async-es` package.  (`import forEachSeries from 'async-es'`) (#696)
+- Async is also available as a collection of ES2015 modules in the new `async-es` package.  (`import {forEachSeries} from 'async-es'`) (#696)
 - Added `race`, analogous to `Promise.race()`. It will run an array of async tasks in parallel and will call its callback with the result of the first task to respond. (#568, #1038)
 - Added `timeout`, a wrapper for an async function that will make the task time-out after the specified time. (#1007, #1027)
 - `constant` supports dynamic arguments -- it will now always use its last argument as the callback. (#1016, #1052)
