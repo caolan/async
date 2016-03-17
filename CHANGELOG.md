@@ -4,9 +4,9 @@ Lots of changes here! The biggest feature is modularization.  You can now `requi
 
 We also provide Async as a collection of ES2015 modules. You can now `import {each} from 'async-es'` or `import waterfall from 'async-es/waterfall'`.  If you are using only a few Async functions, and are using a ES bundler such as Rollup, this can significantly lower your build size.
 
-Major thanks to [**@Kikobeats**](github.com/Kikobeats), [**@aearly**](github.com/aearly) and [**@aearly**](github.com/aearly) for doing the majority of the modularization work, as well as [**@jdalton**](github.com/jdalton) and [**@Rich-Harris**](github.com/Rich-Harris) for advisory work on the general modularization strategy.
+Major thanks to [**@Kikobeats**](github.com/Kikobeats), [**@aearly**](github.com/aearly) and [**@megawac**](github.com/megawac) for doing the majority of the modularization work, as well as [**@jdalton**](github.com/jdalton) and [**@Rich-Harris**](github.com/Rich-Harris) for advisory work on the general modularization strategy.
 
-ANother one of the general themes of the 2.0 release is standardization of what an "async" function is.  We are now more strictly following the node-style continuation passing style.  That is, an async function is a function that:
+Another one of the general themes of the 2.0 release is standardization of what an "async" function is.  We are now more strictly following the node-style continuation passing style.  That is, an async function is a function that:
 
 1. Takes a variable number of arguments
 2. The last argument is always a callback
@@ -15,7 +15,7 @@ ANother one of the general themes of the 2.0 release is standardization of what 
 5. Any number of result arguments can be passed after the "error" argument
 6. The callback is called once and exactly once, either on the same tick or later tick of the JavaScript event loop.
 
-There were several cases where Async accepted some functions that did not strictly have these properties, most notably `auto`, and `every`/`some`/`filter`.
+There were several cases where Async accepted some functions that did not strictly have these properties, most notably `auto`, `every`, `some`, and `filter`.
 
 Another theme is performance.  We have eliminated internal deferrals in all cases where they make sense.  For example, in `waterfall` and `auto`, there was a `setImmediate` between each task -- these deferrals have been removed.  A `setImmediate` call can add up to 1ms of delay. This might not seem like a lot, but it can add up if you are using many Async functions in the course of processing a HTTP request, for example.  Nearly all asynchronous functions that do I/O already have some sort of deferral built in, so the extra deferral is unnecessary.  The trade-off of this change is removing our built-in stack-overflow defense. Many synchronous callback calls in series can quickly overflow the JS call stack.  If you do have a function that is sometimes synchronous (calling its callback on the same tick), and are running into stack overflows, wrap it with `async.ensureAsync()`.
 
