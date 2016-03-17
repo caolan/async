@@ -4,7 +4,7 @@ Lots of changes here! The biggest feature is modularization.  You can now `requi
 
 We also provide Async as a collection of ES2015 modules. You can now `import each from 'async-es'` or `import waterfall from 'async-es/waterfall'`.  If you are using only a few Async functions, and are using a ES bundler such as Rollup, this can significantly lower your build size.
 
-Major thanks to @Kikobeats and @megawac for doing the majority of the modularization work, as well as @jdalton and @Rich-Harris for advisory work on the general modularization strategy.
+Major thanks to [**@Kikobeats**](github.com/Kikobeats), [**@aearly**](github.com/aearly) and [**@aearly**](github.com/aearly) for doing the majority of the modularization work, as well as [**@jdalton**](github.com/jdalton) and [**@Rich-Harris**](github.com/Rich-Harris) for advisory work on the general modularization strategy.
 
 ANother one of the general themes of the 2.0 release is standardization of what an "async" function is.  We are now more strictly following the node-style continuation passing style.  That is, an async function is a function that:
 
