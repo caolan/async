@@ -221,6 +221,7 @@ Some functions are also available in the following forms:
 * [`auto`](#auto)
 * [`autoInject`](#autoInject)
 * [`retry`](#retry)
+* [`retryable`](#retryable)
 * [`iterator`](#iterator)
 * [`times`](#times), `timesSeries`, `timesLimit`
 * [`race`](#race)
@@ -1578,6 +1579,31 @@ async.auto({
 }, function(err, results) {
   // do something with the results
 });
+```
+
+
+---------------------------------------
+
+<a name="retryable"></a>
+
+### retryable([opts = {times: 5, interval: 0}| 5], task)
+
+A close relative of `retry`.  This method wraps a task and makes it retryable, rather than immediately calling it with retries.
+
+__Arguments__
+
+* `opts` - optional options, exactly the same as from `retry`
+* `task` - the asynchronous function to wrap
+
+__Example__
+
+```js
+async.auto({
+    dep1: async.retryable(3, getFromFlakyService),
+    process: ["dep1", async.retryable(3, function (results, cb) {
+        maybeProcessData(results.dep1, cb)
+    })]
+}, callback)
 ```
 
 ---------------------------------------
