@@ -756,7 +756,7 @@
     }
 
     function _eachOfLimit(limit) {
-        return function (obj, iterator, callback) {
+        return function (obj, iteratee, callback) {
             callback = once(callback || noop);
             obj = obj || [];
             var nextKey = keyIterator(obj);
@@ -782,7 +782,7 @@
                         return;
                     }
                     running += 1;
-                    iterator(obj[key], key, onlyOnce(function (err) {
+                    iteratee(obj[key], key, onlyOnce(function (err) {
                         running -= 1;
                         if (err) {
                             callback(err);
@@ -796,13 +796,13 @@
         };
     }
 
-    function eachOfLimit(obj, limit, iterator, cb) {
-        _eachOfLimit(limit)(obj, iterator, cb);
+    function eachOfLimit(obj, limit, iteratee, cb) {
+        _eachOfLimit(limit)(obj, iteratee, cb);
     }
 
     function doLimit(fn, limit) {
-        return function (iterable, iterator, callback) {
-            return fn(iterable, limit, iterator, callback);
+        return function (iterable, iteratee, callback) {
+            return fn(iterable, limit, iteratee, callback);
         };
     }
 
@@ -2650,9 +2650,9 @@
         return queue(worker, 1, payload);
     }
 
-    function reduce(arr, memo, iterator, cb) {
+    function reduce(arr, memo, iteratee, cb) {
         eachOfSeries(arr, function (x, i, cb) {
-            iterator(memo, x, function (err, v) {
+            iteratee(memo, x, function (err, v) {
                 memo = v;
                 cb(err);
             });
@@ -2702,16 +2702,16 @@
     }
 
     function doParallel(fn) {
-        return function (obj, iterator, callback) {
-            return fn(eachOf, obj, iterator, callback);
+        return function (obj, iteratee, callback) {
+            return fn(eachOf, obj, iteratee, callback);
         };
     }
 
     var concat = doParallel(concat$1);
 
     function doSeries(fn) {
-        return function (obj, iterator, callback) {
-            return fn(eachOfSeries, obj, iterator, callback);
+        return function (obj, iteratee, callback) {
+            return fn(eachOfSeries, obj, iteratee, callback);
         };
     }
 
@@ -2726,7 +2726,7 @@
     });
 
     function _createTester(eachfn, check, getResult) {
-        return function (arr, limit, iterator, cb) {
+        return function (arr, limit, iteratee, cb) {
             function done(err) {
                 if (cb) {
                     if (err) {
@@ -2736,27 +2736,27 @@
                     }
                 }
             }
-            function iteratee(x, _, callback) {
+            function wrappedIteratee(x, _, callback) {
                 if (!cb) return callback();
-                iterator(x, function (err, v) {
+                iteratee(x, function (err, v) {
                     if (cb) {
                         if (err) {
                             cb(err);
-                            cb = iterator = false;
+                            cb = iteratee = false;
                         } else if (check(v)) {
                             cb(null, getResult(true, x));
-                            cb = iterator = false;
+                            cb = iteratee = false;
                         }
                     }
                     callback();
                 });
             }
             if (arguments.length > 3) {
-                eachfn(arr, limit, iteratee, done);
+                eachfn(arr, limit, wrappedIteratee, done);
             } else {
-                cb = iterator;
-                iterator = limit;
-                eachfn(arr, iteratee, done);
+                cb = iteratee;
+                iteratee = limit;
+                eachfn(arr, wrappedIteratee, done);
             }
         };
     }
@@ -2791,7 +2791,7 @@
 
     var dir = consoleFunc('dir');
 
-    function during(test, iterator, cb) {
+    function during(test, iteratee, cb) {
         cb = cb || noop;
 
         var next = rest(function (err, args) {
@@ -2806,53 +2806,53 @@
         var check = function (err, truth) {
             if (err) return cb(err);
             if (!truth) return cb(null);
-            iterator(next);
+            iteratee(next);
         };
 
         test(check);
     }
 
-    function doDuring(iterator, test, cb) {
+    function doDuring(iteratee, test, cb) {
         var calls = 0;
 
         during(function (next) {
             if (calls++ < 1) return next(null, true);
             test.apply(this, arguments);
-        }, iterator, cb);
+        }, iteratee, cb);
     }
 
-    function whilst(test, iterator, cb) {
+    function whilst(test, iteratee, cb) {
         cb = cb || noop;
         if (!test()) return cb(null);
         var next = rest(function (err, args) {
             if (err) return cb(err);
-            if (test.apply(this, args)) return iterator(next);
+            if (test.apply(this, args)) return iteratee(next);
             cb.apply(null, [null].concat(args));
         });
-        iterator(next);
+        iteratee(next);
     }
 
-    function doWhilst(iterator, test, cb) {
+    function doWhilst(iteratee, test, cb) {
         var calls = 0;
         return whilst(function () {
             return ++calls <= 1 || test.apply(this, arguments);
-        }, iterator, cb);
+        }, iteratee, cb);
     }
 
-    function doUntil(iterator, test, cb) {
-        return doWhilst(iterator, function () {
+    function doUntil(iteratee, test, cb) {
+        return doWhilst(iteratee, function () {
             return !test.apply(this, arguments);
         }, cb);
     }
 
-    function _withoutIndex(iterator) {
+    function _withoutIndex(iteratee) {
         return function (value, index, callback) {
-            return iterator(value, callback);
+            return iteratee(value, callback);
         };
     }
 
-    function eachLimit(arr, limit, iterator, cb) {
-        return _eachOfLimit(limit)(arr, _withoutIndex(iterator), cb);
+    function eachLimit(arr, limit, iteratee, cb) {
+        return _eachOfLimit(limit)(arr, _withoutIndex(iteratee), cb);
     }
 
     var each = doLimit(eachLimit, Infinity);
@@ -2888,10 +2888,10 @@
 
     var everySeries = doLimit(everyLimit, 1);
 
-    function _filter(eachfn, arr, iterator, callback) {
+    function _filter(eachfn, arr, iteratee, callback) {
         var results = [];
         eachfn(arr, function (x, index, callback) {
-            iterator(x, function (err, v) {
+            iteratee(x, function (err, v) {
                 if (err) {
                     callback(err);
                 } else {
@@ -2913,8 +2913,8 @@
     }
 
     function doParallelLimit(fn) {
-        return function (obj, limit, iterator, callback) {
-            return fn(_eachOfLimit(limit), obj, iterator, callback);
+        return function (obj, limit, iteratee, callback) {
+            return fn(_eachOfLimit(limit), obj, iteratee, callback);
         };
     }
 
@@ -2953,12 +2953,12 @@
 
     var log = consoleFunc('log');
 
-    function _asyncMap(eachfn, arr, iterator, callback) {
+    function _asyncMap(eachfn, arr, iteratee, callback) {
         callback = once(callback || noop);
         arr = arr || [];
         var results = isArrayLike(arr) ? [] : {};
         eachfn(arr, function (value, index, callback) {
-            iterator(value, function (err, v) {
+            iteratee(value, function (err, v) {
                 results[index] = v;
                 callback(err);
             });
@@ -3475,14 +3475,14 @@
 
     var slice = Array.prototype.slice;
 
-    function reduceRight(arr, memo, iterator, cb) {
+    function reduceRight(arr, memo, iteratee, cb) {
         var reversed = slice.call(arr).reverse();
-        reduce(reversed, memo, iterator, cb);
+        reduce(reversed, memo, iteratee, cb);
     }
 
-    function reject$1(eachfn, arr, iterator, callback) {
+    function reject$1(eachfn, arr, iteratee, callback) {
         _filter(eachfn, arr, function (value, cb) {
-            iterator(value, function (err, v) {
+            iteratee(value, function (err, v) {
                 if (err) {
                     cb(err);
                 } else {
@@ -3568,15 +3568,31 @@
         }
     }
 
+    function retryable (opts, task) {
+        if (!task) {
+            task = opts;
+            opts = null;
+        }
+        return rest(function (args) {
+            var callback = args.pop();
+
+            function taskFn(cb) {
+                task.apply(null, args.concat([cb]));
+            }
+
+            if (opts) retry(opts, taskFn, callback);else retry(taskFn, callback);
+        });
+    }
+
     var someLimit = _createTester(eachOfLimit, Boolean, identity);
 
     var some = doLimit(someLimit, Infinity);
 
     var someSeries = doLimit(someLimit, 1);
 
-    function sortBy(arr, iterator, cb) {
+    function sortBy(arr, iteratee, cb) {
         map(arr, function (x, cb) {
-            iterator(x, function (err, criteria) {
+            iteratee(x, function (err, criteria) {
                 if (err) return cb(err);
                 cb(null, { value: x, criteria: criteria });
             });
@@ -3653,23 +3669,23 @@
       return result;
     }
 
-    function timeLimit(count, limit, iterator, cb) {
-        return mapLimit(baseRange(0, count, 1), limit, iterator, cb);
+    function timeLimit(count, limit, iteratee, cb) {
+        return mapLimit(baseRange(0, count, 1), limit, iteratee, cb);
     }
 
     var times = doLimit(timeLimit, Infinity);
 
     var timesSeries = doLimit(timeLimit, 1);
 
-    function transform(arr, memo, iterator, callback) {
+    function transform(arr, memo, iteratee, callback) {
         if (arguments.length === 3) {
-            callback = iterator;
-            iterator = memo;
+            callback = iteratee;
+            iteratee = memo;
             memo = isArray(arr) ? [] : {};
         }
 
         eachOf(arr, function (v, k, cb) {
-            iterator(memo, v, k, cb);
+            iteratee(memo, v, k, cb);
         }, function (err) {
             callback(err, memo);
         });
@@ -3681,10 +3697,10 @@
         };
     }
 
-    function until(test, iterator, cb) {
+    function until(test, iteratee, cb) {
         return whilst(function () {
             return !test.apply(this, arguments);
-        }, iterator, cb);
+        }, iteratee, cb);
     }
 
     function waterfall (tasks, cb) {
@@ -3766,6 +3782,7 @@
         rejectLimit: rejectLimit,
         rejectSeries: rejectSeries,
         retry: retry,
+        retryable: retryable,
         seq: seq,
         series: series,
         setImmediate: setImmediate$1,
@@ -3853,6 +3870,7 @@
     exports.rejectLimit = rejectLimit;
     exports.rejectSeries = rejectSeries;
     exports.retry = retry;
+    exports.retryable = retryable;
     exports.seq = seq;
     exports.series = series;
     exports.setImmediate = setImmediate$1;
