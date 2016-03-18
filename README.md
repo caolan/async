@@ -1,7 +1,4 @@
-NOTE: This is the README for Async 2.0, currently under development. There are some differences with the current stable version.  For docs for async@1.5.2 go [HERE](https://github.com/caolan/async/blob/v1.5.2/README.md).
--------------------------
-
-# Async.js v2.0.0-pre
+# Async.js
 
 [![Build Status via Travis CI](https://travis-ci.org/caolan/async.svg?branch=master)](https://travis-ci.org/caolan/async)
 [![NPM version](http://img.shields.io/npm/v/async.svg)](https://www.npmjs.org/package/async)
@@ -11,7 +8,7 @@ NOTE: This is the README for Async 2.0, currently under development. There are s
 
 Async is a utility module which provides straight-forward, powerful functions
 for working with asynchronous JavaScript. Although originally designed for
-use with [Node.js](http://nodejs.org) and installable via `npm install async`,
+use with [Node.js](http://nodejs.org) and installable via `npm install --save async`,
 it can also be used directly in the browser.
 
 Async is also installable via:
@@ -21,11 +18,11 @@ Async is also installable via:
 - [jam](http://jamjs.org/): `jam install async`
 - [spm](http://spmjs.io/): `spm install async`
 
-Async provides around 20 functions that include the usual 'functional'
+Async provides around 70 functions that include the usual 'functional'
 suspects (`map`, `reduce`, `filter`, `each`…) as well as some common patterns
 for asynchronous control flow (`parallel`, `series`, `waterfall`…). All these
 functions assume you follow the Node.js convention of providing a single
-callback as the last argument of your `async` function.
+callback as the last argument of your asynchronous function -- a callback which expects an Error as its first argument -- and calling the callback once.
 
 
 ## Quick Examples
@@ -87,10 +84,12 @@ async.eachSeries(hugeArray, function iteratee(item, callback) {
         });
     } else {
         doSomeIO(item, callback);
-    //...
+        //...
+    }
+});
 ```
 
-Async guards against synchronous functions in some, but not all, cases.  If you are still running into stack overflows, you can defer as suggested above, or wrap functions with [`async.ensureAsync`](#ensureAsync)  Functions that are asynchronous by their nature do not have this problem and don't need the extra callback deferral.
+Async does not guard against synchronous iteratees for performance reasons.  If you are still running into stack overflows, you can defer as suggested above, or wrap functions with [`async.ensureAsync`](#ensureAsync)  Functions that are asynchronous by their nature do not have this problem and don't need the extra callback deferral.
 
 If JavaScript's event loop is still a bit nebulous, check out [this article](http://blog.carbonfive.com/2013/10/27/the-javascript-event-loop-explained/) or [this talk](http://2014.jsconf.eu/speakers/philip-roberts-what-the-heck-is-the-event-loop-anyway.html) for more detailed information about how it works.
 
@@ -157,19 +156,32 @@ async.map([1, 2, 3], AsyncSquaringLibrary.square.bind(AsyncSquaringLibrary), fun
 
 The source is available for download from
 [GitHub](https://github.com/caolan/async/blob/master/lib/async.js).
-Alternatively, you can install using Node Package Manager (`npm`):
+Alternatively, you can install using npm:
 
-    npm install async
+    npm install --save async
 
 As well as using Bower:
 
     bower install async
 
+You can then `require()` async as normal:
+
+```js
+var async = require("async");
+```
+
+Or require individual methods:
+
+```js
+var waterfall = require("async/waterfall");
+var map = require("async/map");
+```
+
 __Development:__ [async.js](https://github.com/caolan/async/raw/master/lib/async.js) - 29.6kb Uncompressed
 
-## In the Browser
+### In the Browser
 
-So far it's been tested in IE6, IE7, IE8, FF3.6 and Chrome 5.
+Async should work in any ES5 environment (IE9 and above).
 
 Usage:
 
@@ -182,6 +194,17 @@ Usage:
     });
 
 </script>
+```
+
+### ES Modules
+
+We also provide async as a collection of ES2015 modules, in an alternative `async-es` package on npm.
+
+    npm i -S async-es
+
+```js
+import waterfall from 'async-es/waterfall';
+import async from 'async-es';
 ```
 
 ## Documentation
