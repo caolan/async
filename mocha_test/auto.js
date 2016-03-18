@@ -204,7 +204,7 @@ describe('auto', function () {
 
     // Issue 24 on github: https://github.com/caolan/async/issues#issue/24
     // Issue 76 on github: https://github.com/caolan/async/issues#issue/76
-    it('auto removeListener has side effect on loop iterator', function(done) {
+    it('auto removeListener has side effect on loop iteratee', function(done) {
         async.auto({
             task1: ['task3', function(/*callback*/) { done(); }],
             task2: ['task3', function(/*callback*/) { /* by design: DON'T call callback */ }],

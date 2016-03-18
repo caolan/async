@@ -3,7 +3,7 @@ var expect = require('chai').expect;
 
 describe("detect", function () {
 
-    function detectIterator(call_order, x, callback) {
+    function detectIteratee(call_order, x, callback) {
         setTimeout(function(){
             call_order.push(x);
             callback(null, x == 2);
@@ -12,7 +12,7 @@ describe("detect", function () {
 
     it('detect', function(done){
         var call_order = [];
-        async.detect([3,2,1], detectIterator.bind(this, call_order), function(err, result){
+        async.detect([3,2,1], detectIteratee.bind(this, call_order), function(err, result){
             call_order.push('callback');
             expect(err).to.equal(null);
             expect(result).to.equal(2);
@@ -25,7 +25,7 @@ describe("detect", function () {
 
     it('detect - mulitple matches', function(done){
         var call_order = [];
-        async.detect([3,2,2,1,2], detectIterator.bind(this, call_order), function(err, result){
+        async.detect([3,2,2,1,2], detectIteratee.bind(this, call_order), function(err, result){
             call_order.push('callback');
             expect(err).to.equal(null);
             expect(result).to.equal(2);
@@ -48,7 +48,7 @@ describe("detect", function () {
 
     it('detectSeries', function(done){
         var call_order = [];
-        async.detectSeries([3,2,1], detectIterator.bind(this, call_order), function(err, result){
+        async.detectSeries([3,2,1], detectIteratee.bind(this, call_order), function(err, result){
             call_order.push('callback');
             expect(err).to.equal(null);
             expect(result).to.equal(2);
@@ -61,7 +61,7 @@ describe("detect", function () {
 
     it('detectSeries - multiple matches', function(done){
         var call_order = [];
-        async.detectSeries([3,2,2,1,2], detectIterator.bind(this, call_order), function(err, result){
+        async.detectSeries([3,2,2,1,2], detectIteratee.bind(this, call_order), function(err, result){
             call_order.push('callback');
             expect(err).to.equal(null);
             expect(result).to.equal(2);
@@ -85,7 +85,7 @@ describe("detect", function () {
 
     it('detectLimit', function(done){
         var call_order = [];
-        async.detectLimit([3, 2, 1], 2, detectIterator.bind(this, call_order), function(err, result) {
+        async.detectLimit([3, 2, 1], 2, detectIteratee.bind(this, call_order), function(err, result) {
             call_order.push('callback');
             expect(err).to.equal(null);
             expect(result).to.equal(2);
@@ -98,7 +98,7 @@ describe("detect", function () {
 
     it('detectLimit - multiple matches', function(done){
         var call_order = [];
-        async.detectLimit([3,2,2,1,2], 2, detectIterator.bind(this, call_order), function(err, result){
+        async.detectLimit([3,2,2,1,2], 2, detectIteratee.bind(this, call_order), function(err, result){
             call_order.push('callback');
             expect(err).to.equal(null);
             expect(result).to.equal(2);

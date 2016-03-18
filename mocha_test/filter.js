@@ -1,7 +1,7 @@
 var async = require('../lib');
 var expect = require('chai').expect;
 
-function filterIterator(x, callback) {
+function filterIteratee(x, callback) {
     setTimeout(function(){
         callback(null, x % 2);
     }, x*25);
@@ -22,7 +22,7 @@ function testLimit(arr, limitFunc, limit, iter, done) {
 describe("filter", function () {
 
     it('filter', function(done){
-        async.filter([3,1,2], filterIterator, function(err, results){
+        async.filter([3,1,2], filterIteratee, function(err, results){
             expect(err).to.equal(null);
             expect(results).to.eql([3,1]);
             done();
@@ -52,7 +52,7 @@ describe("filter", function () {
     });
 
     it('filterSeries', function(done){
-        async.filterSeries([3,1,2], filterIterator, function(err, results){
+        async.filterSeries([3,1,2], filterIteratee, function(err, results){
             expect(err).to.equal(null);
             expect(results).to.eql([3,1]);
             done();
@@ -82,7 +82,7 @@ describe("filter", function () {
 describe("reject", function () {
 
     it('reject', function(done){
-        async.reject([3,1,2], filterIterator, function(err, results){
+        async.reject([3,1,2], filterIteratee, function(err, results){
             expect(err).to.equal(null);
             expect(results).to.eql([2]);
             done();
@@ -112,7 +112,7 @@ describe("reject", function () {
     });
 
     it('rejectSeries', function(done){
-        async.rejectSeries([3,1,2], filterIterator, function(err, results){
+        async.rejectSeries([3,1,2], filterIteratee, function(err, results){
             expect(err).to.equal(null);
             expect(results).to.eql([2]);
             done();
