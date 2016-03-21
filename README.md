@@ -36,7 +36,7 @@ async.filter(['file1','file2','file3'], function(filePath, callback) {
   fs.access(filePath, function(err) {
     callback(null, !err)
   });
-}, function(results){
+}, function(err, results){
     // results now equals an array of the existing files
 });
 
@@ -450,7 +450,7 @@ async.filter(['file1','file2','file3'], function(filePath, callback) {
   fs.access(filePath, function(err) {
     callback(null, !err)
   });
-}, function(results){
+}, function(err, results){
     // results now equals an array of the existing files
 });
 ```
