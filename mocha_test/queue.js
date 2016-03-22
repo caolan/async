@@ -504,7 +504,7 @@ describe('queue', function(){
         var q = async.queue(function(task, cb) {
             // nop
             calls.push('process ' + task);
-            async.setImmediate(cb);
+            setTimeout(cb, 10);
         }, 10);
         q.concurrency = 3;
 
@@ -582,9 +582,7 @@ describe('queue', function(){
             done();
         };
 
-        setTimeout(function () {
-            q.push(['foo', 'bar', 'baz', 'moo']);
-        }, 10);
+        q.push(['foo', 'bar', 'baz', 'moo']);
     });
 
     it('started', function(done) {
