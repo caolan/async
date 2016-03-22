@@ -139,8 +139,8 @@ describe('priorityQueue', function() {
             var calls = [];
             var q = async.priorityQueue(function(task, cb) {
                 calls.push('process ' + task);
-                async.setImmediate(cb);
-            }, 10);
+                setTimeout(cb, 10);
+            }, 4);
             q.unsaturated = function() {
                 calls.push('unsaturated');
             };
@@ -151,18 +151,21 @@ describe('priorityQueue', function() {
                         'unsaturated',
                         'unsaturated',
                         'unsaturated',
-                        'unsaturated',
-                        'unsaturated',
                         'process foo4',
                         'process foo3',
                         'process foo2',
                         'process foo1',
-                        'process foo0',
                         'foo4 cb',
+                        'unsaturated',
+                        'process foo0',
                         'foo3 cb',
+                        'unsaturated',
                         'foo2 cb',
+                        'unsaturated',
                         'foo1 cb',
-                        'foo0 cb'
+                        'unsaturated',
+                        'foo0 cb',
+                        'unsaturated'
                     ]);
                     done();
                 }, 50);

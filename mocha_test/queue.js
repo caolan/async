@@ -505,11 +505,11 @@ describe('queue', function(){
             // nop
             calls.push('process ' + task);
             setTimeout(cb, 10);
-        }, 10);
+        }, 3);
         q.concurrency = 3;
 
         q.saturated = function() {
-            assert(q.length() == 3, 'queue should be saturated now');
+            assert(q.running() == 3, 'queue should be saturated now');
             calls.push('saturated');
         };
         q.empty = function() {
@@ -523,14 +523,16 @@ describe('queue', function(){
             );
             calls.push('drain');
             expect(calls).to.eql([
-                'saturated',
                 'process foo',
                 'process bar',
+                'saturated',
                 'process zoo',
                 'foo cb',
+                'saturated',
                 'process poo',
                 'bar cb',
                 'empty',
+                'saturated',
                 'process moo',
                 'zoo cb',
                 'poo cb',
@@ -627,7 +629,7 @@ describe('queue', function(){
             var q = async.queue(function(task, cb) {
                 calls.push('process ' + task);
                 async.setImmediate(cb);
-            }, 10);
+            }, 4);
             q.unsaturated = function() {
                 calls.push('unsaturated');
             };
@@ -635,21 +637,21 @@ describe('queue', function(){
                 expect(calls.indexOf('unsaturated')).to.be.above(-1);
                 setTimeout(function() {
                     expect(calls).eql([
-                        'unsaturated',
-                        'unsaturated',
-                        'unsaturated',
-                        'unsaturated',
-                        'unsaturated',
                         'process foo0',
                         'process foo1',
                         'process foo2',
                         'process foo3',
-                        'process foo4',
                         'foo0 cb',
+                        'unsaturated',
+                        'process foo4',
                         'foo1 cb',
+                        'unsaturated',
                         'foo2 cb',
+                        'unsaturated',
                         'foo3 cb',
-                        'foo4 cb'
+                        'unsaturated',
+                        'foo4 cb',
+                        'unsaturated'
                     ]);
                     done();
                 }, 50);
