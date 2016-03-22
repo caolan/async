@@ -636,7 +636,7 @@ __Arguments__
 
 * `arr` - An array to iterate over.
 * `iteratee(item, callback)` - A truth test to apply to each item in the array
-  in parallel. The iteratee is passed a `callback(err, truthValue)`` which must be
+  in parallel. The iteratee is passed a `callback(err, truthValue)` which must be
   called with a boolean argument once it has completed.
 * `callback(err, result)` - *Optional* A callback which is called as soon as any iteratee returns
   `true`, or after all the iteratee functions have finished. Result will be
