@@ -1146,6 +1146,35 @@ exports['forEachOfSeries with array'] = function(test){
     });
 };
 
+exports['forEachOfSeries with Set (iterators)'] = function(test){
+    if (typeof Set !== 'function')
+        return test.done();
+
+    var args = [];
+    var set = new Set();
+    set.add("a");
+    set.add("b");
+    async.forEachOfSeries(set, forEachOfIteratee.bind(this, args), function(err){
+        if (err) throw err;
+        test.same(args, [0, "a", 1, "b"]);
+        test.done();
+    });
+};
+
+exports['forEachOfSeries with Map (iterators)'] = function(test){
+    if (typeof Map !== 'function')
+        return test.done();
+
+    var args = [];
+    var map = new Map();
+    map.set(1, "a");
+    map.set(2, "b");
+    async.forEachOfSeries(map, forEachOfIteratee.bind(this, args), function(err){
+        if (err) throw err;
+        test.same(args, [1, "a", 2, "b"]);
+        test.done();
+    });
+};
 
 exports['eachOfLimit alias'] = function(test){
     test.equals(async.eachOfLimit, async.forEachOfLimit);
@@ -1259,6 +1288,36 @@ exports['forEachOfLimit with array'] = function(test){
     async.forEachOfLimit(arr, 1, forEachOfIteratee.bind(this, args), function (err) {
         if (err) throw err;
         test.same(args, [ 0, "a", 1, "b" ]);
+        test.done();
+    });
+};
+
+exports['forEachOfLimit with Set (iterators)'] = function(test){
+    if (typeof Set !== 'function')
+        return test.done();
+
+    var args = [];
+    var set = new Set();
+    set.add("a");
+    set.add("b");
+    async.forEachOfLimit(set, 1, forEachOfIteratee.bind(this, args), function(err){
+        if (err) throw err;
+        test.same(args, [0, "a", 1, "b"]);
+        test.done();
+    });
+};
+
+exports['forEachOfLimit with Map (iterators)'] = function(test){
+    if (typeof Map !== 'function')
+        return test.done();
+
+    var args = [];
+    var map = new Map();
+    map.set(1, "a");
+    map.set(2, "b");
+    async.forEachOfLimit(map, 1, forEachOfIteratee.bind(this, args), function(err){
+        if (err) throw err;
+        test.same(args, [1, "a", 2, "b"]);
         test.done();
     });
 };
