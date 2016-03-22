@@ -1405,6 +1405,7 @@ async.auto({
 __Arguments__
 
 * `tasks` - An object. Each of its properties is either a function or an array of requirements, with the function itself the last item in the array. The object's key of a property serves as the name of the task defined by that property, i.e. can be used when specifying requirements for other tasks. The function receives one or two arguments:
+  Note: rc 2.0 has switched the order of these arguments. Prior versions should use the order of (callback, results)
   * a `results` object, containing the results of the previously executed functions, only passed if the task has any dependencies,
   * a `callback(err, result)` function, which must be called when finished, passing an `error` (which can be `null`) and the result of the function's execution.
 * `concurrency` - An optional `integer` for determining the maximum number of tasks that can be run in parallel. By default, as many as possible.
