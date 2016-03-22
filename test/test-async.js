@@ -892,7 +892,7 @@ exports['forEachOf with Map (iterators)'] = function(test){
     map.set(2, "b");
     async.forEachOf(map, forEachOfIteratee.bind(this, args), function(err){
         if (err) throw err;
-        test.same(args, [1, "a", 2, "b"]);
+        test.same(args, [0, [1, "a"], 1, [2, "b"]]);
         test.done();
     });
 };
@@ -1171,7 +1171,7 @@ exports['forEachOfSeries with Map (iterators)'] = function(test){
     map.set(2, "b");
     async.forEachOfSeries(map, forEachOfIteratee.bind(this, args), function(err){
         if (err) throw err;
-        test.same(args, [1, "a", 2, "b"]);
+        test.same(args, [0, [1, "a"], 1, [2, "b"]]);
         test.done();
     });
 };
@@ -1317,7 +1317,7 @@ exports['forEachOfLimit with Map (iterators)'] = function(test){
     map.set(2, "b");
     async.forEachOfLimit(map, 1, forEachOfIteratee.bind(this, args), function(err){
         if (err) throw err;
-        test.same(args, [1, "a", 2, "b"]);
+        test.same(args, [0, [1, "a"], 1, [2, "b"]]);
         test.done();
     });
 };
