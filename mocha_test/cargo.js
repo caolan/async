@@ -195,7 +195,7 @@ describe('cargo', function () {
         q.concurrency = 3;
 
         q.saturated = function() {
-            assert(q.length() == 3, 'cargo should be saturated now');
+            assert(q.running() == 3, 'cargo should be saturated now');
             calls.push('saturated');
         };
         q.empty = function() {
@@ -209,14 +209,16 @@ describe('cargo', function () {
             );
             calls.push('drain');
             expect(calls).to.eql([
-                'saturated',
                 'process foo',
                 'process bar',
+                'saturated',
                 'process zoo',
                 'foo cb',
+                'saturated',
                 'process poo',
                 'bar cb',
                 'empty',
+                'saturated',
                 'process moo',
                 'zoo cb',
                 'poo cb',
