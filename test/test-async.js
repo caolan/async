@@ -867,6 +867,36 @@ exports['forEachOf with array'] = function(test){
     });
 };
 
+exports['forEachOf with Set (iterators)'] = function(test){
+    if (typeof Set !== 'function')
+        return test.done();
+
+    var args = [];
+    var set = new Set();
+    set.add("a");
+    set.add("b");
+    async.forEachOf(set, forEachOfIteratee.bind(this, args), function(err){
+        if (err) throw err;
+        test.same(args, [0, "a", 1, "b"]);
+        test.done();
+    });
+};
+
+exports['forEachOf with Map (iterators)'] = function(test){
+    if (typeof Map !== 'function')
+        return test.done();
+
+    var args = [];
+    var map = new Map();
+    map.set(1, "a");
+    map.set(2, "b");
+    async.forEachOf(map, forEachOfIteratee.bind(this, args), function(err){
+        if (err) throw err;
+        test.same(args, [1, "a", 2, "b"]);
+        test.done();
+    });
+};
+
 exports['eachSeries'] = function(test){
     var args = [];
     async.eachSeries([1,3,2], eachIteratee.bind(this, args), function(err){
