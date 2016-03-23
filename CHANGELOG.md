@@ -40,6 +40,7 @@ Another theme is performance.  We have eliminated internal deferrals in all case
 - `filter`, `reject`, `some`, `every`, and related functions now expect an error as the first callback argument, rather than just a simple boolean. Pass `null` as the first argument, or use `fs.access` instead of `fs.exists`. (#118, #774, #1028, #1041)
 - `{METHOD}` and `{METHOD}Series` are now implemented in terms of `{METHOD}Limit`.  This is a major internal simplification, and is not expected to cause many problems, but it does subtly affect how functions execute internally. (#778, #847)
 - `retry`'s callback is now optional.  Previously, omitting the callback would partially apply the function, meaning it could be passed directly as a task to `series` or `auto`.  The partially applied "control-flow" behavior has been separated out into `retryable`.
+- The timing of the `q.saturated()` callback in a `queue` has been modified to better reflect when tasks pushed to the queue will start queueing. (#724, #1078)
 
 ## Other
 
