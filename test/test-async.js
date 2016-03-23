@@ -867,6 +867,36 @@ exports['forEachOf with array'] = function(test){
     });
 };
 
+exports['forEachOf with Set (iterators)'] = function(test){
+    if (typeof Set !== 'function')
+        return test.done();
+
+    var args = [];
+    var set = new Set();
+    set.add("a");
+    set.add("b");
+    async.forEachOf(set, forEachOfIteratee.bind(this, args), function(err){
+        if (err) throw err;
+        test.same(args, [0, "a", 1, "b"]);
+        test.done();
+    });
+};
+
+exports['forEachOf with Map (iterators)'] = function(test){
+    if (typeof Map !== 'function')
+        return test.done();
+
+    var args = [];
+    var map = new Map();
+    map.set(1, "a");
+    map.set(2, "b");
+    async.forEachOf(map, forEachOfIteratee.bind(this, args), function(err){
+        if (err) throw err;
+        test.same(args, [0, [1, "a"], 1, [2, "b"]]);
+        test.done();
+    });
+};
+
 exports['eachSeries'] = function(test){
     var args = [];
     async.eachSeries([1,3,2], eachIteratee.bind(this, args), function(err){
@@ -1116,6 +1146,35 @@ exports['forEachOfSeries with array'] = function(test){
     });
 };
 
+exports['forEachOfSeries with Set (iterators)'] = function(test){
+    if (typeof Set !== 'function')
+        return test.done();
+
+    var args = [];
+    var set = new Set();
+    set.add("a");
+    set.add("b");
+    async.forEachOfSeries(set, forEachOfIteratee.bind(this, args), function(err){
+        if (err) throw err;
+        test.same(args, [0, "a", 1, "b"]);
+        test.done();
+    });
+};
+
+exports['forEachOfSeries with Map (iterators)'] = function(test){
+    if (typeof Map !== 'function')
+        return test.done();
+
+    var args = [];
+    var map = new Map();
+    map.set(1, "a");
+    map.set(2, "b");
+    async.forEachOfSeries(map, forEachOfIteratee.bind(this, args), function(err){
+        if (err) throw err;
+        test.same(args, [0, [1, "a"], 1, [2, "b"]]);
+        test.done();
+    });
+};
 
 exports['eachOfLimit alias'] = function(test){
     test.equals(async.eachOfLimit, async.forEachOfLimit);
@@ -1229,6 +1288,36 @@ exports['forEachOfLimit with array'] = function(test){
     async.forEachOfLimit(arr, 1, forEachOfIteratee.bind(this, args), function (err) {
         if (err) throw err;
         test.same(args, [ 0, "a", 1, "b" ]);
+        test.done();
+    });
+};
+
+exports['forEachOfLimit with Set (iterators)'] = function(test){
+    if (typeof Set !== 'function')
+        return test.done();
+
+    var args = [];
+    var set = new Set();
+    set.add("a");
+    set.add("b");
+    async.forEachOfLimit(set, 1, forEachOfIteratee.bind(this, args), function(err){
+        if (err) throw err;
+        test.same(args, [0, "a", 1, "b"]);
+        test.done();
+    });
+};
+
+exports['forEachOfLimit with Map (iterators)'] = function(test){
+    if (typeof Map !== 'function')
+        return test.done();
+
+    var args = [];
+    var map = new Map();
+    map.set(1, "a");
+    map.set(2, "b");
+    async.forEachOfLimit(map, 1, forEachOfIteratee.bind(this, args), function(err){
+        if (err) throw err;
+        test.same(args, [0, [1, "a"], 1, [2, "b"]]);
         test.done();
     });
 };
