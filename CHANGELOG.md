@@ -24,7 +24,7 @@ Another theme is performance. We have eliminated internal deferrals in all cases
 - Async is now modularized. Individual functions can be `require()`d from the main package. (`require('async/auto')`) (#984, #996)
 - Async is also available as a collection of ES2015 modules in the new `async-es` package. (`import {forEachSeries} from 'async-es'`) (#984, #996)
 - Added `race`, analogous to `Promise.race()`. It will run an array of async tasks in parallel and will call its callback with the result of the first task to respond. (#568, #1038)
-- Array methods now accept ES2015 iterators.  Generators, Maps, Sets, and anything that implements the iterator spec can now be passed directly to `each`, `map`, `parallel`, etc.. (#579, #839, #1074)
+- Array methods now accept ES2015 iterators.  Maps, Sets, and anything that implements the iterator spec can now be passed directly to `each`, `map`, `parallel`, etc.. (#579, #839, #1074)
 - Added `timeout`, a wrapper for an async function that will make the task time-out after the specified time. (#1007, #1027)
 - `constant` supports dynamic arguments -- it will now always use its last argument as the callback. (#1016, #1052)
 - `setImmediate` and `nextTick` now support arguments to partially apply to the deferred function, like the node-native versions do. (#940, #1053)
