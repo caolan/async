@@ -239,11 +239,17 @@
       };
     }
 
+    function initialParams (fn) {
+        return rest(function (args /*..., callback*/) {
+            var callback = args.pop();
+            fn(args, callback);
+        });
+    }
+
     function applyEach$1(eachfn) {
         return rest(function (fns, args) {
-            var go = rest(function (args) {
+            var go = initialParams(function (args, callback) {
                 var that = this;
-                var callback = args.pop();
                 return eachfn(fns, function (fn, _, cb) {
                     fn.apply(that, args.concat([cb]));
                 }, callback);
@@ -414,6 +420,12 @@
      */
     function isArrayLike(value) {
       return value != null && isLength(getLength(value)) && !isFunction(value);
+    }
+
+    var iteratorSymbol = typeof Symbol === 'function' && Symbol.iterator;
+
+    function getIterator (coll) {
+        return iteratorSymbol && coll[iteratorSymbol] && coll[iteratorSymbol]();
     }
 
     /** Used for built-in method references. */
@@ -728,23 +740,34 @@
       return result;
     }
 
-    function keyIterator(coll) {
+    function iterator(coll) {
         var i = -1;
         var len;
         if (isArrayLike(coll)) {
             len = coll.length;
             return function next() {
                 i++;
-                return i < len ? i : null;
-            };
-        } else {
-            var okeys = keys(coll);
-            len = okeys.length;
-            return function next() {
-                i++;
-                return i < len ? okeys[i] : null;
+                return i < len ? { value: coll[i], key: i } : null;
             };
         }
+
+        var iterate = getIterator(coll);
+        if (iterate) {
+            return function next() {
+                var item = iterate.next();
+                if (item.done) return null;
+                i++;
+                return { value: item.value, key: i };
+            };
+        }
+
+        var okeys = keys(coll);
+        len = okeys.length;
+        return function next() {
+            i++;
+            var key = okeys[i];
+            return i < len ? { value: coll[key], key: key } : null;
+        };
     }
 
     function onlyOnce(fn) {
@@ -759,7 +782,7 @@
         return function (obj, iteratee, callback) {
             callback = once(callback || noop);
             obj = obj || [];
-            var nextKey = keyIterator(obj);
+            var nextElem = iterator(obj);
             if (limit <= 0) {
                 return callback(null);
             }
@@ -773,8 +796,8 @@
                 }
 
                 while (running < limit && !errored) {
-                    var key = nextKey();
-                    if (key === null) {
+                    var elem = nextElem();
+                    if (elem === null) {
                         done = true;
                         if (running <= 0) {
                             callback(null);
@@ -782,7 +805,7 @@
                         return;
                     }
                     running += 1;
-                    iteratee(obj[key], key, onlyOnce(function (err) {
+                    iteratee(elem.value, elem.key, onlyOnce(function (err) {
                         running -= 1;
                         if (err) {
                             callback(err);
@@ -821,8 +844,7 @@
     });
 
     function asyncify(func) {
-        return rest(function (args) {
-            var callback = args.pop();
+        return initialParams(function (args, callback) {
             var result;
             try {
                 result = func.apply(this, args);
@@ -2154,9 +2176,9 @@
     }
 
     /** Built-in value references. */
-    var Symbol = root.Symbol;
+    var Symbol$1 = root.Symbol;
 
-    var symbolProto = Symbol ? Symbol.prototype : undefined;
+    var symbolProto = Symbol$1 ? Symbol$1.prototype : undefined;
     var symbolValueOf = symbolProto ? symbolProto.valueOf : undefined;
     /**
      * Creates a clone of the `symbol` object.
@@ -2543,13 +2565,6 @@
                 } else {
                     q.tasks.push(item);
                 }
-
-                if (q.tasks.length === q.concurrency) {
-                    q.saturated();
-                }
-                if (q.tasks.length <= q.concurrency - q.buffer) {
-                    q.unsaturated();
-                }
             });
             setImmediate$1(q.process);
         }
@@ -2569,6 +2584,11 @@
 
                     task.callback.apply(task, args);
                 });
+
+                if (workers <= q.concurrency - q.buffer) {
+                    q.unsaturated();
+                }
+
                 if (q.tasks.length + workers === 0) {
                     q.drain();
                 }
@@ -2611,6 +2631,11 @@
                     }
                     workers += 1;
                     workersList.push(tasks[0]);
+
+                    if (workers === q.concurrency) {
+                        q.saturated();
+                    }
+
                     var cb = onlyOnce(_next(q, tasks));
                     worker(data, cb);
                 }
@@ -2719,10 +2744,9 @@
 
     var constant$1 = rest(function (values) {
         var args = [null].concat(values);
-        return function () {
-            var callback = [].slice.call(arguments).pop();
+        return initialParams(function (ignoredArgs, callback) {
             return callback.apply(this, args);
-        };
+        });
     });
 
     function _createTester(eachfn, check, getResult) {
@@ -2860,8 +2884,7 @@
     var eachSeries = doLimit(eachLimit, 1);
 
     function ensureAsync(fn) {
-        return rest(function (args) {
-            var callback = args.pop();
+        return initialParams(function (args, callback) {
             var sync = true;
             args.push(function () {
                 var innerArgs = arguments;
@@ -2935,7 +2958,7 @@
         next();
     }
 
-    function iterator (tasks) {
+    function iterator$1 (tasks) {
         function makeCallback(index) {
             function fn() {
                 if (tasks.length) {
@@ -2956,7 +2979,7 @@
     function _asyncMap(eachfn, arr, iteratee, callback) {
         callback = once(callback || noop);
         arr = arr || [];
-        var results = isArrayLike(arr) ? [] : {};
+        var results = isArrayLike(arr) || getIterator(arr) ? [] : {};
         eachfn(arr, function (value, index, callback) {
             iteratee(value, function (err, v) {
                 results[index] = v;
@@ -3010,7 +3033,7 @@
     var INFINITY$1 = 1 / 0;
 
     /** Used to convert symbols to primitives and strings. */
-    var symbolProto$1 = Symbol ? Symbol.prototype : undefined;
+    var symbolProto$1 = Symbol$1 ? Symbol$1.prototype : undefined;
     var symbolToString = symbolProto$1 ? symbolProto$1.toString : undefined;
     /**
      * Converts `value` to a string if it's not one. An empty string is returned
@@ -3270,8 +3293,7 @@
         var memo = Object.create(null);
         var queues = Object.create(null);
         hasher = hasher || identity;
-        var memoized = rest(function memoized(args) {
-            var callback = args.pop();
+        var memoized = initialParams(function memoized(args, callback) {
             var key = hasher.apply(null, args);
             if (has(memo, key)) {
                 setImmediate$1(function () {
@@ -3573,9 +3595,7 @@
             task = opts;
             opts = null;
         }
-        return rest(function (args) {
-            var callback = args.pop();
-
+        return initialParams(function (args, callback) {
             function taskFn(cb) {
                 task.apply(null, args.concat([cb]));
             }
@@ -3626,21 +3646,12 @@
             originalCallback(error);
         }
 
-        function injectCallback(asyncFnArgs) {
-            // replace callback in asyncFn args
-            var args = Array.prototype.slice.call(asyncFnArgs, 0);
-            originalCallback = args[args.length - 1];
-            args[args.length - 1] = injectedCallback;
-            return args;
-        }
-
-        function wrappedFn() {
+        return initialParams(function (args, origCallback) {
+            originalCallback = origCallback;
             // setup timer and call original function
             timer = setTimeout(timeoutCallback, miliseconds);
-            asyncFn.apply(null, injectCallback(arguments));
-        }
-
-        return wrappedFn;
+            asyncFn.apply(null, args.concat(injectedCallback));
+        });
     }
 
     /* Built-in method references for those with the same name as other `lodash` methods. */
@@ -3764,7 +3775,7 @@
         filterLimit: filterLimit,
         filterSeries: filterSeries,
         forever: forever,
-        iterator: iterator,
+        iterator: iterator$1,
         log: log,
         map: map,
         mapLimit: mapLimit,
@@ -3852,7 +3863,7 @@
     exports.filterLimit = filterLimit;
     exports.filterSeries = filterSeries;
     exports.forever = forever;
-    exports.iterator = iterator;
+    exports.iterator = iterator$1;
     exports.log = log;
     exports.map = map;
     exports.mapLimit = mapLimit;
