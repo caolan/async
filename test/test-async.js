@@ -1545,7 +1545,7 @@ exports['map'] = {
     async.map(map, function(val, cb) {
         cb(null, val);
     }, function (err, result) {
-        test.ok(Array.isArray(result), "map should return an array for an iteratable");
+        test.ok(Array.isArray(result), "map should return an array for an iterable");
         test.done();
     });
 }

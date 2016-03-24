@@ -267,12 +267,14 @@ Some functions are also available in the following forms:
 
 ## Collections
 
+Collection methods can iterate over Arrays, Objects, Maps, Sets, and any object that implements the ES2015 iterator protocol.
+
 <a name="forEach"></a>
 <a name="each"></a>
 
-### each(arr, iteratee, [callback])
+### each(coll, iteratee, [callback])
 
-Applies the function `iteratee` to each item in `arr`, in parallel.
+Applies the function `iteratee` to each item in `coll`, in parallel.
 The `iteratee` is called with an item from the list, and a callback for when it
 has finished. If the `iteratee` passes an error to its `callback`, the main
 `callback` (for the `each` function) is immediately called with the error.
@@ -282,8 +284,8 @@ there is no guarantee that the iteratee functions will complete in order.
 
 __Arguments__
 
-* `arr` - An array to iterate over.
-* `iteratee(item, callback)` - A function to apply to each item in `arr`.
+* `coll` - A collection to iterate over.
+* `iteratee(item, callback)` - A function to apply to each item in `coll`.
   The iteratee is passed a `callback(err)` which must be called once it has
   completed. If no error has occurred, the `callback` should be run without
   arguments or with an explicit `null` argument.  The array index is not passed
@@ -333,22 +335,22 @@ async.each(openFiles, function(file, callback) {
 
 __Related__
 
-* eachSeries(arr, iteratee, [callback])
-* eachLimit(arr, limit, iteratee, [callback])
+* eachSeries(coll, iteratee, [callback])
+* eachLimit(coll, limit, iteratee, [callback])
 
 ---------------------------------------
 
 <a name="forEachOf"></a>
 <a name="eachOf"></a>
 
-### forEachOf(obj, iteratee, [callback])
+### forEachOf(coll, iteratee, [callback])
 
-Like `each`, except that it iterates over objects, and passes the key as the second argument to the iteratee.
+Like `each`, except that it passes the key (or index) as the second argument to the iteratee.
 
 __Arguments__
 
-* `obj` - An object or array to iterate over.
-* `iteratee(item, key, callback)` - A function to apply to each item in `obj`.
+* `coll` - A collection to iterate over.
+* `iteratee(item, key, callback)` - A function to apply to each item in `coll`.
 The `key` is the item's key, or index in the case of an array. The iteratee is
 passed a `callback(err)` which must be called once it has completed. If no
 error has occurred, the callback should be run without arguments or with an
@@ -380,34 +382,34 @@ async.forEachOf(obj, function (value, key, callback) {
 
 __Related__
 
-* forEachOfSeries(obj, iteratee, [callback])
-* forEachOfLimit(obj, limit, iteratee, [callback])
+* forEachOfSeries(coll, iteratee, [callback])
+* forEachOfLimit(coll, limit, iteratee, [callback])
 
 ---------------------------------------
 
 <a name="map"></a>
 
-### map(arr, iteratee, [callback])
+### map(coll, iteratee, [callback])
 
-Produces a new array of values by mapping each value in `arr` through
-the `iteratee` function. The `iteratee` is called with an item from `arr` and a
+Produces a new collay of values by mapping each value in `coll` through
+the `iteratee` function. The `iteratee` is called with an item from `coll` and a
 callback for when it has finished processing. Each of these callback takes 2 arguments:
-an `error`, and the transformed item from `arr`. If `iteratee` passes an error to its
+an `error`, and the transformed item from `coll`. If `iteratee` passes an error to its
 callback, the main `callback` (for the `map` function) is immediately called with the error.
 
 Note, that since this function applies the `iteratee` to each item in parallel,
 there is no guarantee that the `iteratee` functions will complete in order.
-However, the results array will be in the same order as the original `arr`.
+However, the results array will be in the same order as the original `coll`.
 
 __Arguments__
 
-* `arr` - An array to iterate over.
-* `iteratee(item, callback)` - A function to apply to each item in `arr`.
+* `coll` - A collection to iterate over.
+* `iteratee(item, callback)` - A function to apply to each item in `coll`.
   The iteratee is passed a `callback(err, transformed)` which must be called once
   it has completed with an error (which can be `null`) and a transformed item.
 * `callback(err, results)` - *Optional* A callback which is called when all `iteratee`
   functions have finished, or an error occurs. Results is an array of the
-  transformed items from the `arr`.
+  transformed items from the `coll`.
 
 __Example__
 
@@ -419,26 +421,26 @@ async.map(['file1','file2','file3'], fs.stat, function(err, results){
 
 __Related__
 
-* mapSeries(arr, iteratee, [callback])
-* mapLimit(arr, limit, iteratee, [callback])
+* mapSeries(coll, iteratee, [callback])
+* mapLimit(coll, limit, iteratee, [callback])
 
 ---------------------------------------
 
 <a name="select"></a>
 <a name="filter"></a>
 
-### filter(arr, iteratee, [callback])
+### filter(coll, iteratee, [callback])
 
 __Alias:__ `select`
 
-Returns a new array of all the values in `arr` which pass an async truth test.
+Returns a new array of all the values in `coll` which pass an async truth test.
 This operation is performed in parallel,
 but the results array will be in the same order as the original.
 
 __Arguments__
 
-* `arr` - An array to iterate over.
-* `iteratee(item, callback)` - A truth test to apply to each item in `arr`.
+* `coll` - A collection to iterate over.
+* `iteratee(item, callback)` - A truth test to apply to each item in `coll`.
   The `iteratee` is passed a `callback(err, truthValue)`, which must be called with a
   boolean argument once it has completed.
 * `callback(err, results)` - *Optional* A callback which is called after all the `iteratee`
@@ -458,31 +460,31 @@ async.filter(['file1','file2','file3'], function(filePath, callback) {
 
 __Related__
 
-* filterSeries(arr, iteratee, [callback])
-* filterLimit(arr, limit, iteratee, [callback])
+* filterSeries(coll, iteratee, [callback])
+* filterLimit(coll, limit, iteratee, [callback])
 
 ---------------------------------------
 
 <a name="reject"></a>
 
-### reject(arr, iteratee, [callback])
+### reject(coll, iteratee, [callback])
 
 The opposite of [`filter`](#filter). Removes values that pass an `async` truth test.
 
 __Related__
 
-* rejectSeries(arr, iteratee, [callback])
-* rejectLimit(arr, limit, iteratee, [callback])
+* rejectSeries(coll, iteratee, [callback])
+* rejectLimit(coll, limit, iteratee, [callback])
 
 ---------------------------------------
 
 <a name="reduce"></a>
 
-### reduce(arr, memo, iteratee, [callback])
+### reduce(coll, memo, iteratee, [callback])
 
 __Aliases:__ `inject`, `foldl`
 
-Reduces `arr` into a single value using an async `iteratee` to return
+Reduces `coll` into a single value using an async `iteratee` to return
 each successive step. `memo` is the initial state of the reduction.
 This function only operates in series.
 
@@ -493,7 +495,7 @@ if you can get the data before reducing it, then it's probably a good idea to do
 
 __Arguments__
 
-* `arr` - An array to iterate over.
+* `coll` - A collection to iterate over.
 * `memo` - The initial state of the reduction.
 * `iteratee(memo, item, callback)` - A function applied to each item in the
   array to produce the next step in the reduction. The `iteratee` is passed a
@@ -521,31 +523,31 @@ async.reduce([1,2,3], 0, function(memo, item, callback){
 
 <a name="reduceRight"></a>
 
-### reduceRight(arr, memo, iteratee, [callback])
+### reduceRight(coll, memo, iteratee, [callback])
 
 __Alias:__ `foldr`
 
-Same as [`reduce`](#reduce), only operates on `arr` in reverse order.
+Same as [`reduce`](#reduce), only operates on `coll` in reverse order.
 
 ---------------------------------------
 
 <a name="detect"></a>
 
-### detect(arr, iteratee, [callback])
+### detect(coll, iteratee, [callback])
 
 __Alias:__ `find`
 
-Returns the first value in `arr` that passes an async truth test. The
+Returns the first value in `coll` that passes an async truth test. The
 `iteratee` is applied in parallel, meaning the first iteratee to return `true` will
 fire the detect `callback` with that result. That means the result might not be
-the first item in the original `arr` (in terms of order) that passes the test.
+the first item in the original `coll` (in terms of order) that passes the test.
 
-If order within the original `arr` is important, then look at `detectSeries`.
+If order within the original `coll` is important, then look at `detectSeries`.
 
 __Arguments__
 
-* `arr` - An array to iterate over.
-* `iteratee(item, callback)` - A truth test to apply to each item in `arr`.
+* `coll` - A collection to iterate over.
+* `iteratee(item, callback)` - A truth test to apply to each item in `coll`.
   The iteratee is passed a `callback(err, truthValue)` which must be called with a
   boolean argument once it has completed.
 * `callback(err, result)` - *Optional* A callback which is called as soon as any iteratee returns
@@ -567,27 +569,27 @@ async.detect(['file1','file2','file3'], function(filePath, callback) {
 
 __Related__
 
-* detectSeries(arr, iteratee, [callback])
-* detectLimit(arr, limit, iteratee, [callback])
+* detectSeries(coll, iteratee, [callback])
+* detectLimit(coll, limit, iteratee, [callback])
 
 ---------------------------------------
 
 <a name="sortBy"></a>
 
-### sortBy(arr, iteratee, [callback])
+### sortBy(coll, iteratee, [callback])
 
-Sorts a list by the results of running each `arr` value through an async `iteratee`.
+Sorts a list by the results of running each `coll` value through an async `iteratee`.
 
 __Arguments__
 
-* `arr` - An array to iterate over.
-* `iteratee(item, callback)` - A function to apply to each item in `arr`.
+* `coll` - A collection to iterate over.
+* `iteratee(item, callback)` - A function to apply to each item in `coll`.
   The iteratee is passed a `callback(err, sortValue)` which must be called once it
   has completed with an error (which can be `null`) and a value to use as the sort
   criteria.
 * `callback(err, results)` - *Optional* A callback which is called after all the `iteratee`
   functions have finished, or an error occurs. Results is the items from
-  the original `arr` sorted by the values returned by the `iteratee` calls.
+  the original `coll` sorted by the values returned by the `iteratee` calls.
 
 __Example__
 
@@ -626,16 +628,16 @@ async.sortBy([1,9,3,5], function(x, callback){
 
 <a name="some"></a>
 
-### some(arr, iteratee, [callback])
+### some(coll, iteratee, [callback])
 
 __Alias:__ `any`
 
-Returns `true` if at least one element in the `arr` satisfies an async test.
+Returns `true` if at least one element in the `coll` satisfies an async test.
 If any iteratee call returns `true`, the main `callback` is immediately called.
 
 __Arguments__
 
-* `arr` - An array to iterate over.
+* `coll` - A collection to iterate over.
 * `iteratee(item, callback)` - A truth test to apply to each item in the array
   in parallel. The iteratee is passed a `callback(err, truthValue)` which must be
   called with a boolean argument once it has completed.
@@ -657,24 +659,24 @@ async.some(['file1','file2','file3'], function(filePath, callback) {
 
 __Related__
 
-* someSeries(arr, iteratee, callback)
-* someLimit(arr, limit, iteratee, callback)
+* someSeries(coll, iteratee, callback)
+* someLimit(coll, limit, iteratee, callback)
 
 ---------------------------------------
 
 <a name="every"></a>
 
-### every(arr, iteratee, [callback])
+### every(coll, iteratee, [callback])
 
 __Alias:__ `all`
 
-Returns `true` if every element in `arr` satisfies an async test.
+Returns `true` if every element in `coll` satisfies an async test.
 If any iteratee call returns `false`, the main `callback` is immediately called.
 
 __Arguments__
 
-* `arr` - An array to iterate over.
-* `iteratee(item, callback)` - A truth test to apply to each item in the array
+* `coll` - A collection to iterate over.
+* `iteratee(item, callback)` - A truth test to apply to each item in the collection
   in parallel. The iteratee is passed a `callback(err, truthValue)` which must be
   called with a  boolean argument once it has completed.
 * `callback(err, result)` - *Optional* A callback which is called after all the `iteratee`
@@ -695,24 +697,24 @@ async.every(['file1','file2','file3'], function(filePath, callback) {
 
 __Related__
 
-* everySeries(arr, iteratee, callback)
-* everyLimit(arr, limit, iteratee, callback)
+* everySeries(coll, iteratee, callback)
+* everyLimit(coll, limit, iteratee, callback)
 
 ---------------------------------------
 
 <a name="concat"></a>
 
-### concat(arr, iteratee, [callback])
+### concat(coll, iteratee, [callback])
 
-Applies `iteratee` to each item in `arr`, concatenating the results. Returns the
+Applies `iteratee` to each item in `coll`, concatenating the results. Returns the
 concatenated list. The `iteratee`s are called in parallel, and the results are
 concatenated as they return. There is no guarantee that the results array will
-be returned in the original order of `arr` passed to the `iteratee` function.
+be returned in the original order of `coll` passed to the `iteratee` function.
 
 __Arguments__
 
-* `arr` - An array to iterate over.
-* `iteratee(item, callback)` - A function to apply to each item in `arr`.
+* `coll` - A collection to iterate over.
+* `iteratee(item, callback)` - A function to apply to each item in `coll`.
   The iteratee is passed a `callback(err, results)` which must be called once it
   has completed with an error (which can be `null`) and an array of results.
 * `callback(err, results)` - *Optional* A callback which is called after all the `iteratee`
@@ -729,7 +731,7 @@ async.concat(['dir1','dir2','dir3'], fs.readdir, function(err, files){
 
 __Related__
 
-* concatSeries(arr, iteratee, [callback])
+* concatSeries(coll, iteratee, [callback])
 
 
 ## Control Flow
@@ -738,7 +740,7 @@ __Related__
 
 ### series(tasks, [callback])
 
-Run the functions in the `tasks` array in series, each one running once the previous
+Run the functions in the `tasks` collection in series, each one running once the previous
 function has completed. If any functions in the series pass an error to its
 callback, no more functions are run, and `callback` is immediately called with the value of the error.
 Otherwise, `callback` receives an array of results when `tasks` have completed.
@@ -759,7 +761,7 @@ this to work on all platforms, consider using an array.
 
 __Arguments__
 
-* `tasks` - An array or object containing functions to run, each function is passed
+* `tasks` - A collection containing functions to run, each function is passed
   a `callback(err, result)` it must call on completion with an error `err` (which can
   be `null`) and an optional `result` value.
 * `callback(err, results)` - An optional callback to run once all the functions
@@ -809,7 +811,7 @@ function(err, results) {
 
 ### parallel(tasks, [callback])
 
-Run the `tasks` array of functions in parallel, without waiting until the previous
+Run the `tasks` collection of functions in parallel, without waiting until the previous
 function has completed. If any of the functions pass an error to its
 callback, the main `callback` is immediately called with the value of the error.
 Once the `tasks` have completed, the results are passed to the final `callback` as an
@@ -825,7 +827,7 @@ instead of an array. This can be a more readable way of handling results from
 
 __Arguments__
 
-* `tasks` - An array or object containing functions to run. Each function is passed
+* `tasks` - A collection containing functions to run. Each function is passed
   a `callback(err, result)` which it must call on completion with an error `err`
   (which can be `null`) and an optional `result` value.
 * `callback(err, results)` - An optional callback to run once all the functions
@@ -1540,7 +1542,7 @@ async.autoInject({
         callback(null, {'file':write_file, 'email':'user@example.com'});
     }]
     //...
-},
+}, done);
 ```
 
 This still has an advantage over plain `auto`, since the results a task depends on are still spread into arguments.
