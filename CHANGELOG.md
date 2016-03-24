@@ -24,13 +24,13 @@ Another theme is performance. We have eliminated internal deferrals in all cases
 - Async is now modularized. Individual functions can be `require()`d from the main package. (`require('async/auto')`) (#984, #996)
 - Async is also available as a collection of ES2015 modules in the new `async-es` package. (`import {forEachSeries} from 'async-es'`) (#984, #996)
 - Added `race`, analogous to `Promise.race()`. It will run an array of async tasks in parallel and will call its callback with the result of the first task to respond. (#568, #1038)
-- Array methods now accept ES2015 iterators.  Maps, Sets, and anything that implements the iterator spec can now be passed directly to `each`, `map`, `parallel`, etc.. (#579, #839, #1074)
+- Collection methods now accept ES2015 iterators.  Maps, Sets, and anything that implements the iterator spec can now be passed directly to `each`, `map`, `parallel`, etc.. (#579, #839, #1074)
 - Added `timeout`, a wrapper for an async function that will make the task time-out after the specified time. (#1007, #1027)
 - `constant` supports dynamic arguments -- it will now always use its last argument as the callback. (#1016, #1052)
 - `setImmediate` and `nextTick` now support arguments to partially apply to the deferred function, like the node-native versions do. (#940, #1053)
 - Added `autoInject`, a relative of `auto` that automatically spreads a task's dependencies as arguments to the task function. (#608, #1055)
 - You can now limit the concurrency of `auto` tasks. (#635, #637)
-- Added `retryable`, a relative of `retry` that wraps an async function, making it retry when called.
+- Added `retryable`, a relative of `retry` that wraps an async function, making it retry when called. (#1058)
 - Added `q.unsaturated` -- callback called when a `queue`'s number of running workers falls below a threshold. (#868, #1030, #1033, #1034)
 
 ## Breaking changes
@@ -40,7 +40,7 @@ Another theme is performance. We have eliminated internal deferrals in all cases
 - Internal `setImmediate` calls have been refactored away. This may make existing flows vulnerable to stack overflows if you use many synchronous functions in series. Use `ensureAsync` to work around this. (#696, #704, #1049, #1050)
 - `filter`, `reject`, `some`, `every`, and related functions now expect an error as the first callback argument, rather than just a simple boolean. Pass `null` as the first argument, or use `fs.access` instead of `fs.exists`. (#118, #774, #1028, #1041)
 - `{METHOD}` and `{METHOD}Series` are now implemented in terms of `{METHOD}Limit`. This is a major internal simplification, and is not expected to cause many problems, but it does subtly affect how functions execute internally. (#778, #847)
-- `retry`'s callback is now optional. Previously, omitting the callback would partially apply the function, meaning it could be passed directly as a task to `series` or `auto`. The partially applied "control-flow" behavior has been separated out into `retryable`.
+- `retry`'s callback is now optional. Previously, omitting the callback would partially apply the function, meaning it could be passed directly as a task to `series` or `auto`. The partially applied "control-flow" behavior has been separated out into `retryable`. (#1054, #1058)
 - The timing of the `q.saturated()` callback in a `queue` has been modified to better reflect when tasks pushed to the queue will start queueing. (#724, #1078)
 
 ## Other
