@@ -391,7 +391,7 @@ __Related__
 
 ### map(coll, iteratee, [callback])
 
-Produces a new collay of values by mapping each value in `coll` through
+Produces a new collection of values by mapping each value in `coll` through
 the `iteratee` function. The `iteratee` is called with an item from `coll` and a
 callback for when it has finished processing. Each of these callback takes 2 arguments:
 an `error`, and the transformed item from `coll`. If `iteratee` passes an error to its
