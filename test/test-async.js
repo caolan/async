@@ -1533,6 +1533,21 @@ exports['map'] = {
         test.equal(started, 3);
         test.done();
     }, maxTime);
+},
+
+    'map with Map': function(test) {
+    if (typeof Map !== 'function')
+        return test.done();
+
+    var map = new Map();
+    map.set(1, "a");
+    map.set(2, "b");
+    async.map(map, function(val, cb) {
+        cb(null, val);
+    }, function (err, result) {
+        test.ok(Array.isArray(result), "map should return an array for an iteratable");
+        test.done();
+    });
 }
 
 };
