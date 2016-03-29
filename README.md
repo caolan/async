@@ -1566,9 +1566,9 @@ __Arguments__
   * `interval` - The time to wait between retries, in milliseconds.  The default is `0`.
   * If `opts` is a number, the number specifies the number of times to retry, with the default interval of `0`.
 * `task(callback, results)` - A function which receives two arguments: (1) a `callback(err, result)`
-  which must be called when finished, passing `err` (which can be `null`) and the `result` of
+  which must be called when finished, passing `err` (which can be `null`) and the `result` (`null` to continue retrying) of
   the function's execution, and (2) a `results` object, containing the results of
-  the previously executed functions (if nested inside another control flow).
+  the previously executed functions (if nested inside another control flow). 
 * `callback(err, results)` - An optional callback which is called when the
   task has succeeded, or after the final failed attempt. It receives the `err` and `result` arguments of the last attempt at completing the `task`.
 
