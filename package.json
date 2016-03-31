@@ -33,8 +33,6 @@
     "chai": "^3.1.0",
     "coveralls": "^2.11.2",
     "es6-promise": "^2.3.0",
-    "fs-extra": "^0.26.3",
-    "gulp": "~3.9.0",
     "jscs": "^1.13.1",
     "jshint": "~2.8.0",
     "karma": "^0.13.2",
@@ -53,8 +51,6 @@
     "rsvp": "^3.0.18",
     "semver": "^4.3.6",
     "uglify-js": "~2.4.0",
-    "vinyl-buffer": "~1.0.0",
-    "vinyl-source-stream": "~1.1.0",
     "yargs": "~3.9.1"
   },
   "scripts": {
