@@ -7,7 +7,7 @@ describe("detect", function () {
         setTimeout(function(){
             call_order.push(x);
             callback(null, x == 2);
-        }, x*25);
+        }, x*5);
     }
 
     it('detect', function(done){
@@ -20,7 +20,7 @@ describe("detect", function () {
         setTimeout(function(){
             expect(call_order).to.eql([1,2,'callback',3]);
             done();
-        }, 100);
+        }, 25);
     });
 
     it('detect - mulitple matches', function(done){
@@ -33,7 +33,7 @@ describe("detect", function () {
         setTimeout(function(){
             expect(call_order).to.eql([1,2,'callback',2,2,3]);
             done();
-        }, 100);
+        }, 25);
     });
 
     it('detect error', function(done){
@@ -56,7 +56,7 @@ describe("detect", function () {
         setTimeout(function(){
             expect(call_order).to.eql([3,2,'callback']);
             done();
-        }, 200);
+        }, 50);
     });
 
     it('detectSeries - multiple matches', function(done){
@@ -69,7 +69,7 @@ describe("detect", function () {
         setTimeout(function(){
             expect(call_order).to.eql([3,2,'callback']);
             done();
-        }, 200);
+        }, 50);
     });
 
     it('detectSeries - ensure stop', function (done) {
@@ -93,7 +93,7 @@ describe("detect", function () {
         setTimeout(function() {
             expect(call_order).to.eql([2, 'callback', 3]);
             done();
-        }, 100);
+        }, 25);
     });
 
     it('detectLimit - multiple matches', function(done){
@@ -106,7 +106,7 @@ describe("detect", function () {
         setTimeout(function(){
             expect(call_order).to.eql([2, 'callback', 3]);
             done();
-        }, 100);
+        }, 25);
     });
 
     it('detectLimit - ensure stop', function (done) {

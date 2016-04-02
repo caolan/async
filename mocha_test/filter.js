@@ -4,7 +4,7 @@ var expect = require('chai').expect;
 function filterIteratee(x, callback) {
     setTimeout(function(){
         callback(null, x % 2);
-    }, x*25);
+    }, x*5);
 }
 
 function testLimit(arr, limitFunc, limit, iter, done) {

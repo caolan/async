@@ -55,7 +55,7 @@ describe("retry", function () {
 
     it('retry with interval when all attempts succeeds',function(done) {
         var times = 3;
-        var interval = 500;
+        var interval = 50;
         var callCount = 0;
         var error = 'ERROR';
         var erroredResult = 'RESULT';

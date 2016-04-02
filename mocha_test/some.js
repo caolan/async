@@ -29,14 +29,14 @@ describe("some", function () {
             setTimeout(function(){
                 call_order.push(x);
                 callback(null, x === 1);
-            }, x*25);
+            }, x*5);
         }, function(){
             call_order.push('callback');
         });
         setTimeout(function(){
             expect(call_order).to.eql([1,'callback',2,3]);
             done();
-        }, 100);
+        }, 25);
     });
 
     it('some error', function(done){

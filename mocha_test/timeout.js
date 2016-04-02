@@ -8,13 +8,13 @@ describe('timeout', function () {
             async.timeout(function asyncFn(callback) {
                 setTimeout(function() {
                     callback(null, 'I didn\'t time out');
-                }, 50);
-            }, 200),
+                }, 25);
+            }, 50),
             async.timeout(function asyncFn(callback) {
                 setTimeout(function() {
                     callback(null, 'I will time out');
-                }, 300);
-            }, 150)
+                }, 75);
+            }, 50)
         ],
         function(err, results) {
             expect(err.message).to.equal('Callback function timed out.');
@@ -29,13 +29,13 @@ describe('timeout', function () {
             async.timeout(function asyncFn(callback) {
                 setTimeout(function() {
                     callback(null, 'I didn\'t time out');
-                }, 50);
-            }, 200),
+                }, 25);
+            }, 50),
             async.timeout(function asyncFn(callback) {
                 setTimeout(function() {
                     callback(null, 'I will time out');
-                }, 300);
-            }, 150)
+                }, 75);
+            }, 50)
         ],
         function(err, results) {
             expect(err.message).to.equal('Callback function timed out.');
