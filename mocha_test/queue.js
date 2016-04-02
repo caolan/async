@@ -407,7 +407,7 @@ describe('queue', function(){
         var call_order = [],
             task_timeout = 40,
             pause_timeout = 20,
-            resume_timeout = 100,
+            resume_timeout = 110,
             tasks = [ 1, 2, 3, 4, 5, 6 ],
 
             elapsed = (function () {
