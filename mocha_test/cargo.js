@@ -93,7 +93,7 @@ describe('cargo', function () {
             c.push(3);
             c.push(4);
             c.push(5);
-        }, 45);
+        }, 50);
 
         setTimeout(function () {
             expect(call_order).to.eql([

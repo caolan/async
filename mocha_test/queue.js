@@ -371,7 +371,7 @@ describe('queue', function(){
                 'process 6', 'timeout 240'
             ]);
             done();
-        }, 250);
+        }, 300);
     });
 
     it('pause in worker with concurrency', function(done) {
@@ -451,7 +451,7 @@ describe('queue', function(){
                 'process 6', 'timeout 200'
             ]);
             done();
-        }, 250);
+        }, 300);
     });
 
     it('start paused', function(done) {
