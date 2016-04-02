@@ -323,15 +323,15 @@ describe('queue', function(){
 
     it('pause', function(done) {
         var call_order = [],
-            task_timeout = 100,
-            pause_timeout = 300,
-            resume_timeout = 500,
+            task_timeout = 40,
+            pause_timeout = 100,
+            resume_timeout = 180,
             tasks = [ 1, 2, 3, 4, 5, 6 ],
 
             elapsed = (function () {
                 var start = (new Date()).valueOf();
                 return function () {
-                    return Math.round(((new Date()).valueOf() - start) / 100) * 100;
+                    return Math.round(((new Date()).valueOf() - start) / 40) * 40;
                 };
             })();
 
@@ -363,15 +363,15 @@ describe('queue', function(){
 
         setTimeout(function () {
             expect(call_order).to.eql([
-                'process 1', 'timeout 100',
-                'process 2', 'timeout 200',
-                'process 3', 'timeout 500',
-                'process 4', 'timeout 500',
-                'process 5', 'timeout 500',
-                'process 6', 'timeout 600'
+                'process 1', 'timeout 40',
+                'process 2', 'timeout 80',
+                'process 3', 'timeout 200',
+                'process 4', 'timeout 200',
+                'process 5', 'timeout 200',
+                'process 6', 'timeout 240'
             ]);
             done();
-        }, 800);
+        }, 250);
     });
 
     it('pause in worker with concurrency', function(done) {
@@ -405,15 +405,15 @@ describe('queue', function(){
 
     it('pause with concurrency', function(done) {
         var call_order = [],
-            task_timeout = 100,
-            pause_timeout = 50,
-            resume_timeout = 300,
+            task_timeout = 40,
+            pause_timeout = 20,
+            resume_timeout = 100,
             tasks = [ 1, 2, 3, 4, 5, 6 ],
 
             elapsed = (function () {
                 var start = (new Date()).valueOf();
                 return function () {
-                    return Math.round(((new Date()).valueOf() - start) / 100) * 100;
+                    return Math.round(((new Date()).valueOf() - start) / 40) * 40;
                 };
             })();
 
@@ -443,15 +443,15 @@ describe('queue', function(){
 
         setTimeout(function () {
             expect(call_order).to.eql([
-                'process 1', 'timeout 100',
-                'process 2', 'timeout 100',
-                'process 3', 'timeout 400',
-                'process 4', 'timeout 400',
-                'process 5', 'timeout 500',
-                'process 6', 'timeout 500'
+                'process 1', 'timeout 40',
+                'process 2', 'timeout 40',
+                'process 3', 'timeout 160',
+                'process 4', 'timeout 160',
+                'process 5', 'timeout 200',
+                'process 6', 'timeout 200'
             ]);
             done();
-        }, 800);
+        }, 250);
     });
 
     it('start paused', function(done) {
