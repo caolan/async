@@ -47,6 +47,7 @@
     "recursive-readdir": "^1.3.0",
     "rimraf": "^2.5.0",
     "rollup": "^0.25.0",
+    "rollup-plugin-node-resolve": "^1.5.0",
     "rollup-plugin-npm": "~1.3.0",
     "rsvp": "^3.0.18",
     "semver": "^4.3.6",

@@ -2,7 +2,7 @@
 var methods = ["each", "waterfall", "queue", "eachSeries"];
 var expect = require('chai').expect;
 var rollup = require('rollup').rollup;
-var rollupPluginNpm = require('rollup-plugin-npm');
+var rollupPluginNodeResolve = require('rollup-plugin-node-resolve');
 var fs = require('fs');
 var exec = require('child_process').exec;
 
@@ -76,7 +76,7 @@ describe("ES Modules", function () {
         return rollup({
             entry: __dirname + "/es.test.js",
             plugins: [
-                rollupPluginNpm()
+                rollupPluginNodeResolve()
             ]
         }).then(function (bundle) {
             return bundle.write({
