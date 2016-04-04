@@ -1,4 +1,4 @@
-var initialParams = require('../lib/internal/initialParams');
+import initialParams from '../lib/internal/initialParams';
 var expect = require('chai').expect;
 
 describe('initialParams', function() {
@@ -9,7 +9,7 @@ describe('initialParams', function() {
 
     // call bind after wrapping with initialParams
     var contextOne = {context: "one"};
-    var postBind = initialParams.default(passContext);
+    var postBind = initialParams(passContext);
     postBind = postBind.bind(contextOne);
     postBind([], function(ref) {
       expect(ref).to.equal(contextOne);
@@ -18,7 +18,7 @@ describe('initialParams', function() {
     // call bind before wrapping with initialParams
     var contextTwo = {context: "two"};
     var preBind = passContext.bind(contextTwo);
-    preBind = initialParams.default(preBind);
+    preBind = initialParams(preBind);
     preBind([], function(ref) {
       expect(ref).to.equal(contextTwo);
     });
