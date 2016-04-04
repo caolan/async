@@ -26,7 +26,7 @@ Another theme is performance. We have eliminated internal deferrals in all cases
 - Added `race`, analogous to `Promise.race()`. It will run an array of async tasks in parallel and will call its callback with the result of the first task to respond. (#568, #1038)
 - Collection methods now accept ES2015 iterators.  Maps, Sets, and anything that implements the iterator spec can now be passed directly to `each`, `map`, `parallel`, etc.. (#579, #839, #1074)
 - Added `timeout`, a wrapper for an async function that will make the task time-out after the specified time. (#1007, #1027)
-- Added `reflect` and `reflectAll`, a wrapper for async tasks that always succeeds, by gathering results and errors into an object.  (#942, #1012, #1095)
+- Added `reflect` and `reflectAll`, analagous to [`Promise.reflect()`](http://bluebirdjs.com/docs/api/reflect.html), a wrapper for async tasks that always succeeds, by gathering results and errors into an object.  (#942, #1012, #1095)
 - `constant` supports dynamic arguments -- it will now always use its last argument as the callback. (#1016, #1052)
 - `setImmediate` and `nextTick` now support arguments to partially apply to the deferred function, like the node-native versions do. (#940, #1053)
 - Added `autoInject`, a relative of `auto` that automatically spreads a task's dependencies as arguments to the task function. (#608, #1055)
