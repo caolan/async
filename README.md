@@ -264,6 +264,8 @@ Some functions are also available in the following forms:
 * [`dir`](#dir)
 * [`noConflict`](#noConflict)
 * [`timeout`](#timeout)
+* [`reflect`](#reflect)
+* [`reflectAll`](#reflectAll)
 
 ## Collections
 
@@ -2094,4 +2096,83 @@ __Example__
 async.timeout(function(callback) {
   doAsyncTask(callback);
 }, 1000);
+```
+
+---------------------------------------
+
+<a name="reflect"></a>
+### reflect(function)
+
+Wraps the function in another function that always returns data even when it errors.
+The object returns ether has a property of error or value.
+
+__Arguments__
+
+* `function` - The function you want to wrap
+
+__Example__
+
+```js
+async.parallel([
+    async.reflect(function(callback){
+        // do some stuff ...
+        callback(null, 'one');
+    }),
+    async.reflect(function(callback){
+        // do some more stuff but error ...
+        callback('bad stuff happened');
+    }),
+    async.reflect(function(callback){
+        // do some more stuff ...
+        callback(null, 'two');
+    })
+],
+// optional callback
+function(err, results){
+  // values
+  // results[0].value = 'one'
+  // results[1].error = 'bad stuff happened'
+  // results[2].value = 'two'
+});
+```
+
+---------------------------------------
+
+<a name="reflectAll"></a>
+### reflectAll()
+
+A helper function that wraps an array of functions with reflect.
+
+__Arguments__
+
+* `tasks` - The array of functions to wrap in reflect.
+
+__Example__
+
+```javascript
+let tasks = [
+  function(callback){
+    setTimeout(function(){
+        callback(null, 'one');
+    }, 200);
+  },
+  function(callback){
+    // do some more stuff but error ...
+    callback(new Error('bad stuff happened'));
+  }
+  function(callback){
+    setTimeout(function(){
+      callback(null, 'two');
+    }, 100);
+  }
+];
+
+async.parallel(async.reflectAll(tasks),
+// optional callback
+function(err, results){
+  // values
+  // results[0].value = 'one'
+  // results[1].error = Error('bad stuff happened')
+  // results[2].value = 'two'
+});
 ```
