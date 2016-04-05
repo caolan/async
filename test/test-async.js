@@ -2770,7 +2770,7 @@ exports['asyncify'] = {
 };
 
 exports['timeout'] = function (test) {
-    test.expect(3);
+    test.expect(4);
 
     async.series([
         async.timeout(function asyncFn(callback) {
@@ -2785,15 +2785,41 @@ exports['timeout'] = function (test) {
         }, 150)
     ],
     function(err, results) {
-        test.ok(err.message === 'Callback function timed out.');
+        test.ok(err.message === 'Callback function "asyncFn" timed out.');
         test.ok(err.code === 'ETIMEDOUT');
+        test.ok(err.info === undefined);
         test.ok(results[0] === 'I didn\'t time out');
         test.done();
     });
 };
 
+exports['timeout with info'] = function (test) {
+    test.expect(4);
+
+    var info = { custom: 'info about callback' };
+    async.series([
+            async.timeout(function asyncFn(callback) {
+                setTimeout(function() {
+                    callback(null, 'I didn\'t time out');
+                }, 50);
+            }, 200),
+            async.timeout(function asyncFn(callback) {
+                setTimeout(function() {
+                    callback(null, 'I will time out');
+                }, 300);
+            }, 150, info)
+        ],
+        function(err, results) {
+            test.ok(err.message === 'Callback function "asyncFn" timed out.');
+            test.ok(err.code === 'ETIMEDOUT');
+            test.ok(err.info === info);
+            test.ok(results[0] === 'I didn\'t time out');
+            test.done();
+        });
+};
+
 exports['timeout with parallel'] = function (test) {
-    test.expect(3);
+    test.expect(4);
 
     async.parallel([
         async.timeout(function asyncFn(callback) {
@@ -2808,8 +2834,9 @@ exports['timeout with parallel'] = function (test) {
         }, 150)
     ],
     function(err, results) {
-        test.ok(err.message === 'Callback function timed out.');
+        test.ok(err.message === 'Callback function "asyncFn" timed out.');
         test.ok(err.code === 'ETIMEDOUT');
+        test.ok(err.info === undefined);
         test.ok(results[0] === 'I didn\'t time out');
         test.done();
     });

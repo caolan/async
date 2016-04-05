@@ -2089,13 +2089,15 @@ __Arguments__
 
 * `function` - The asynchronous function you want to set the time limit.
 * `miliseconds` - The specified time limit.
+* `info` - *Optional* Any variable you want attached (`string`, `object`, etc) to
+  timeout Error for more information.
 
 __Example__
 
 ```js
-async.timeout(function(callback) {
+async.timeout(function nameOfCallback(callback) {
   doAsyncTask(callback);
-}, 1000);
+}, 1000, 'more info about timeout');
 ```
 
 ---------------------------------------
