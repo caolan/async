@@ -83,7 +83,7 @@ describe("detect", function () {
         setTimeout(function () {
             expect(calls).to.eql([1, 2, 3]);
             done();
-        }, 10)
+        }, 10);
     });
 
     it('detectSeries - ensure stop', function (done) {
