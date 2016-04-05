@@ -8,7 +8,7 @@ describe('ensureAsync', function() {
 
   it('should propely bind context to the wrapped function', function(done) {
 
-    // call bind after wrapping with initialParams
+    // call bind after wrapping with ensureAsync
     var context = {context: "post"};
     var postBind = async.ensureAsync(passContext);
     postBind = postBind.bind(context);
@@ -20,7 +20,7 @@ describe('ensureAsync', function() {
 
   it('should not override the bound context of a function when wrapping', function(done) {
 
-    // call bind before wrapping with initialParams
+    // call bind before wrapping with ensureAsync
     var context = {context: "pre"};
     var preBind = passContext.bind(context);
     preBind = async.ensureAsync(preBind);
