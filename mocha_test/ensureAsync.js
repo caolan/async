@@ -1,26 +1,32 @@
-import initialParams from '../lib/internal/initialParams';
+var async = require('../lib');
 var expect = require('chai').expect;
 
-describe('initialParams', function() {
-  it('should curry any bound context to the wrapped function', function() {
-    var passContext = function(args, cb) {
-      cb(this);
-    };
+describe('ensureAsync', function() {
+  var passContext = function(cb) {
+    cb(this);
+  };
+
+  it('should propely bind context to the wrapped function', function(done) {
 
     // call bind after wrapping with initialParams
-    var contextOne = {context: "one"};
-    var postBind = initialParams(passContext);
-    postBind = postBind.bind(contextOne);
-    postBind([], function(ref) {
-      expect(ref).to.equal(contextOne);
+    var context = {context: "post"};
+    var postBind = async.ensureAsync(passContext);
+    postBind = postBind.bind(context);
+    postBind(function(ref) {
+      expect(ref).to.equal(context);
+      done();
     });
+  });
+
+  it('should not override the bound context of a function when wrapping', function(done) {
 
     // call bind before wrapping with initialParams
-    var contextTwo = {context: "two"};
-    var preBind = passContext.bind(contextTwo);
-    preBind = initialParams(preBind);
-    preBind([], function(ref) {
-      expect(ref).to.equal(contextTwo);
+    var context = {context: "pre"};
+    var preBind = passContext.bind(context);
+    preBind = async.ensureAsync(preBind);
+    preBind(function(ref) {
+      expect(ref).to.equal(context);
+      done();
     });
   });
 });
