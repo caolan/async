@@ -49,6 +49,20 @@ describe("some", function () {
         });
     });
 
+    it('some no callback', function(done) {
+        var calls = [];
+
+        async.some([1, 2, 3], function (val, cb) {
+            calls.push(val);
+            cb();
+        });
+
+        setTimeout(function () {
+            expect(calls).to.eql([1, 2, 3]);
+            done();
+        }, 10)
+    });
+
     it('someLimit true', function(done){
         async.someLimit([3,1,2], 2, function(x, callback){
             setTimeout(function(){callback(null, x === 2);}, 0);

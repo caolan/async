@@ -72,6 +72,20 @@ describe("detect", function () {
         }, 50);
     });
 
+    it('detect no callback', function(done) {
+        var calls = [];
+
+        async.detect([1, 2, 3], function (val, cb) {
+            calls.push(val);
+            cb();
+        });
+
+        setTimeout(function () {
+            expect(calls).to.eql([1, 2, 3]);
+            done();
+        }, 10)
+    });
+
     it('detectSeries - ensure stop', function (done) {
         async.detectSeries([1, 2, 3, 4, 5], function (num, cb) {
             if (num > 3) throw new Error("detectSeries did not stop iterating");
