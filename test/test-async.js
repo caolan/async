@@ -2798,24 +2798,24 @@ exports['timeout with info'] = function (test) {
 
     var info = { custom: 'info about callback' };
     async.series([
-            async.timeout(function asyncFn(callback) {
-                setTimeout(function() {
-                    callback(null, 'I didn\'t time out');
-                }, 50);
-            }, 200),
-            async.timeout(function asyncFn(callback) {
-                setTimeout(function() {
-                    callback(null, 'I will time out');
-                }, 300);
-            }, 150, info)
-        ],
-        function(err, results) {
-            test.ok(err.message === 'Callback function "asyncFn" timed out.');
-            test.ok(err.code === 'ETIMEDOUT');
-            test.ok(err.info === info);
-            test.ok(results[0] === 'I didn\'t time out');
-            test.done();
-        });
+        async.timeout(function asyncFn(callback) {
+            setTimeout(function() {
+                callback(null, 'I didn\'t time out');
+            }, 50);
+        }, 200),
+        async.timeout(function asyncFn(callback) {
+            setTimeout(function() {
+                callback(null, 'I will time out');
+            }, 300);
+        }, 150, info)
+    ],
+    function(err, results) {
+        test.ok(err.message === 'Callback function "asyncFn" timed out.');
+        test.ok(err.code === 'ETIMEDOUT');
+        test.ok(err.info === info);
+        test.ok(results[0] === 'I didn\'t time out');
+        test.done();
+    });
 };
 
 exports['timeout with parallel'] = function (test) {
