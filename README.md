@@ -1532,7 +1532,7 @@ async.autoInject({
 });
 ```
 
-If you are using a JS minifier that mangles parameter names, `autoInject` will not work with plain functions, since the parameter names will be collapsed to a single letter identifier.  To work around this, you can explicitly specify the names of the parameters your task function needs in an array, similar to Angular.js dependency injection.
+If you are using a JS minifier that mangles parameter names, `autoInject` will not work with plain functions, since the parameter names will be collapsed to a single letter identifier.  To work around this, you can explicitly specify the names of the parameters your task function needs in an array, similar to Angular.js dependency injection.  The final results callback can be provided as an array in the same way.
 
 ```js
 async.autoInject({
@@ -1544,7 +1544,10 @@ async.autoInject({
         callback(null, {'file':write_file, 'email':'user@example.com'});
     }]
     //...
-}, done);
+}, ['email_link', function(err, email_link) {
+    console.log('err = ', err);
+    console.log('email_link = ', email_link);
+}]);
 ```
 
 This still has an advantage over plain `auto`, since the results a task depends on are still spread into arguments.
