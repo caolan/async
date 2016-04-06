@@ -16,7 +16,7 @@ DIST = dist
 SRC = lib/index.js
 SCRIPTS = ./support
 JS_SRC = $(shell find lib/ -type f -name '*.js')
-LINT_FILES = lib/ test/ mocha_test/ $(shell find perf/ -maxdepth 2 -type f) support/ gulpfile.js karma.conf.js
+LINT_FILES = lib/ test/ mocha_test/ $(shell find perf/ -maxdepth 2 -type f) support/ karma.conf.js
 
 UMD_BUNDLE = $(BUILDDIR)/dist/async.js
 UMD_BUNDLE_MIN = $(BUILDDIR)/dist/async.min.js
@@ -111,8 +111,8 @@ build: clean build-bundle build-dist build-es build-config build-es-config test-
 
 .PHONY: test lint build all clean
 
-.PHONY: release-major release-minor release-patch
-release-major release-minor release-patch: all
+.PHONY: release-major release-minor release-patch release-prerelease
+release-major release-minor release-patch release-prerelease: all
 	git add --force $(DIST)
 	git commit -am "update minified build"; true
 	$(XYZ) --increment $(@:release-%=%)

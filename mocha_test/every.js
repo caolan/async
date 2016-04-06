@@ -63,14 +63,14 @@ describe("every", function () {
             setTimeout(function(){
                 call_order.push(x);
                 callback(null, x === 1);
-            }, x*25);
+            }, x*5);
         }, function(){
             call_order.push('callback');
         });
         setTimeout(function(){
             expect(call_order).to.eql([1,2,'callback',3]);
             done();
-        }, 100);
+        }, 25);
     });
 
     it('error', function(done){
@@ -85,6 +85,15 @@ describe("every", function () {
 
     it('all alias', function(){
         expect(async.all).to.equal(async.every);
+    });
+
+    it('allLimit alias', function(){
+        expect(async.allLimit).to.equal(async.everyLimit);
+    });
+
+    it('allSeries alias', function(){
+        expect(async.allSeries).to.be.a('function');
+        expect(async.allSeries).to.equal(async.everySeries);
     });
 
 });
