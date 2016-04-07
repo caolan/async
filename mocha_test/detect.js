@@ -107,7 +107,7 @@ describe("detect", function () {
         setTimeout(function() {
             expect(call_order).to.eql([2, 'callback', 3]);
             done();
-        }, 25);
+        }, 50);
     });
 
     it('detectLimit - multiple matches', function(done){
@@ -120,7 +120,7 @@ describe("detect", function () {
         setTimeout(function(){
             expect(call_order).to.eql([2, 'callback', 3]);
             done();
-        }, 25);
+        }, 50);
     });
 
     it('detectLimit - ensure stop', function (done) {

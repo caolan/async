@@ -49,7 +49,7 @@ Another theme is performance. We have eliminated internal deferrals in all cases
 
 - Added `someSeries` and `everySeries` for symmetry, as well as a complete set of `any`/`anyLimit`/`anySeries` and `all`/`/allLmit`/`allSeries` aliases.
 - Added `find` as an alias for `detect. (as well as `findLimit` and `findSeries`).
-- Various doc fixes (#1005, #1008, #1010, #1015, #1021, #1037)
+- Various doc fixes (#1005, #1008, #1010, #1015, #1021, #1037, #1102)
 
 ------------------------------------------
 
