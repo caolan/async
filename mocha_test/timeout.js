@@ -17,7 +17,7 @@ describe('timeout', function () {
             }, 50)
         ],
         function(err, results) {
-            expect(err.message).to.equal('Callback function timed out.');
+            expect(err.message).to.equal('Callback function "asyncFn" timed out.');
             expect(err.code).to.equal('ETIMEDOUT');
             expect(results[0]).to.equal('I didn\'t time out');
             done();
@@ -38,7 +38,7 @@ describe('timeout', function () {
             }, 50)
         ],
         function(err, results) {
-            expect(err.message).to.equal('Callback function timed out.');
+            expect(err.message).to.equal('Callback function "asyncFn" timed out.');
             expect(err.code).to.equal('ETIMEDOUT');
             expect(results[0]).to.equal('I didn\'t time out');
             done();
