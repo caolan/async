@@ -2104,7 +2104,7 @@ async.timeout(function(callback) {
 ### reflect(function)
 
 Wraps the function in another function that always returns data even when it errors.
-The object returns either has a property of error or value.
+The object returned has either the property `error` or `value`.
 
 __Arguments__
 
