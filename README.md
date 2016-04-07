@@ -1498,7 +1498,7 @@ __Arguments__
 * `tasks` - An object, each of whose properties is a function of the form
   'func([dependencies...], callback). The object's key of a property serves as the name of the task defined by that property, i.e. can be used when specifying requirements for other tasks.
   * The `callback` parameter is a `callback(err, result)` which must be called when finished, passing an `error` (which can be `null`) and the result of the function's execution. The remaining parameters name other tasks on which the task is dependent, and the results from those tasks are the arguments of those parameters.
-* `callback(err, [results...])` - An optional callback which is called when all the tasks have been completed. It receives the `err` argument if any `tasks` pass an error to their callback. The remaining parameters are task names whose results you are interested in. This callback will only be called when all tasks have finished or an error has occurred, and so do not not specify dependencies in the same way as `tasks` do. If an error occurs, no further `tasks` will be performed, and `results` will only be valid for those tasks which managed to complete.
+* `callback(err, [results...])` - An optional callback which is called when all the tasks have been completed. It receives the `err` argument if any `tasks` pass an error to their callback. The remaining parameters are task names whose results you are interested in. This callback will only be called when all tasks have finished or an error has occurred, and so do not specify dependencies in the same way as `tasks` do. If an error occurs, no further `tasks` will be performed, and `results` will only be valid for those tasks which managed to complete.
 
 
 __Example__
@@ -1532,7 +1532,7 @@ async.autoInject({
 });
 ```
 
-If you are using a JS minifier that mangles parameter names, `autoInject` will not work with plain functions, since the parameter names will be collapsed to a single letter identifier.  To work around this, you can explicitly specify the names of the parameters your task function needs in an array, similar to Angular.js dependency injection.
+If you are using a JS minifier that mangles parameter names, `autoInject` will not work with plain functions, since the parameter names will be collapsed to a single letter identifier.  To work around this, you can explicitly specify the names of the parameters your task function needs in an array, similar to Angular.js dependency injection.  The final results callback can be provided as an array in the same way.
 
 ```js
 async.autoInject({
@@ -1544,7 +1544,10 @@ async.autoInject({
         callback(null, {'file':write_file, 'email':'user@example.com'});
     }]
     //...
-}, done);
+}, ['email_link', function(err, email_link) {
+    console.log('err = ', err);
+    console.log('email_link = ', email_link);
+}]);
 ```
 
 This still has an advantage over plain `auto`, since the results a task depends on are still spread into arguments.
