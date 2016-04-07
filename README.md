@@ -1,4 +1,4 @@
-## Release-candidate documentation
+#### This is release-candidate documentation
 
 Note: for the current release version (Async v1.5.x), go [HERE](https://github.com/caolan/async/blob/v1.5.2/README.md)
 
