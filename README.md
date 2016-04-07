@@ -7,9 +7,10 @@
 
 ---
 
-#### Note: Current release documentation
+**Note: Regarding current release documentation**
 
 For Async v1.5.x documentation, go [HERE](https://github.com/caolan/async/blob/v1.5.2/README.md)
+
 ---
 
 Async is a utility module which provides straight-forward, powerful functions
