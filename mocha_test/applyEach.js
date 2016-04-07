@@ -27,9 +27,10 @@ describe('applyEach', function () {
                 cb(null, 3);
             }, 15);
         };
-        async.applyEach([one, two, three], 5, function (err) {
+        async.applyEach([one, two, three], 5, function (err, results) {
             assert(err === null, err + " passed instead of 'null'");
             expect(call_order).to.eql(['two', 'one', 'three']);
+            expect(results).to.eql([1, 2, 3]);
             done();
         });
     });
@@ -57,9 +58,10 @@ describe('applyEach', function () {
                 cb(null, 3);
             }, 15);
         };
-        async.applyEachSeries([one, two, three], 5, function (err) {
+        async.applyEachSeries([one, two, three], 5, function (err, results) {
             assert(err === null, err + " passed instead of 'null'");
             expect(call_order).to.eql(['one', 'two', 'three']);
+            expect(results).to.eql([1, 2, 3]);
             done();
         });
     });
@@ -87,9 +89,10 @@ describe('applyEach', function () {
                 cb(null, 3);
             }, 15);
         };
-        async.applyEach([one, two, three])(5, function (err) {
+        async.applyEach([one, two, three])(5, function (err, results) {
             if (err) throw err;
             expect(call_order).to.eql(['two', 'one', 'three']);
+            expect(results).to.eql([1, 2, 3]);
             done();
         });
     });
