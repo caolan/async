@@ -1195,7 +1195,7 @@ arguments as if it were a single function call.
 
 __Arguments__
 
-* `fns` - the asynchronous functions to all call with the same arguments
+* `fns` - A collection of asynchronous functions to all call with the same arguments
 * `args...` - any number of separate arguments to pass to the function
 * `callback` - the final argument should be the callback, called when all
   functions have completed processing
