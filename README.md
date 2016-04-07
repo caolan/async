@@ -1,6 +1,6 @@
-## Beta documentation
+## Release-candidate documentation
 
-Note: for Async v1.5.x documentation (current release version), go [HERE](https://github.com/caolan/async/blob/v1.5.2/README.md)
+Note: for the current release version (Async v1.5.x), go [HERE](https://github.com/caolan/async/blob/v1.5.2/README.md)
 
 # Async.js
 
