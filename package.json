@@ -1,7 +1,7 @@
 {
   "name": "async",
   "description": "Higher-order functions and common patterns for asynchronous code",
-  "version": "2.0.0-rc.2",
+  "version": "2.0.0-rc.3",
   "main": "dist/async.js",
   "author": "Caolan McMahon",
   "repository": {
@@ -33,8 +33,7 @@
     "chai": "^3.1.0",
     "coveralls": "^2.11.2",
     "es6-promise": "^2.3.0",
-    "fs-extra": "^0.26.3",
-    "gulp": "~3.9.0",
+    "fs-extra": "^0.26.7",
     "jscs": "^1.13.1",
     "jshint": "~2.8.0",
     "karma": "^0.13.2",
@@ -49,23 +48,22 @@
     "recursive-readdir": "^1.3.0",
     "rimraf": "^2.5.0",
     "rollup": "^0.25.0",
+    "rollup-plugin-node-resolve": "^1.5.0",
     "rollup-plugin-npm": "~1.3.0",
     "rsvp": "^3.0.18",
     "semver": "^4.3.6",
     "uglify-js": "~2.4.0",
-    "vinyl-buffer": "~1.0.0",
-    "vinyl-source-stream": "~1.1.0",
     "yargs": "~3.9.1"
   },
   "scripts": {
     "coverage": "nyc npm test && nyc report",
     "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
-    "lint": "jshint lib/ test/ mocha_test/ perf/memory.js perf/suites.js perf/benchmark.js support/ gulpfile.js karma.conf.js && jscs lib/ test/ mocha_test/ perf/memory.js perf/suites.js perf/benchmark.js support/ gulpfile.js karma.conf.js",
+    "lint": "jshint lib/ test/ mocha_test/ perf/memory.js perf/suites.js perf/benchmark.js support/ karma.conf.js && jscs lib/ test/ mocha_test/ perf/memory.js perf/suites.js perf/benchmark.js support/ karma.conf.js",
     "mocha-browser-test": "karma start",
     "mocha-node-test": "mocha mocha_test/ --compilers js:babel-core/register",
     "mocha-test": "npm run mocha-node-test && npm run mocha-browser-test",
     "nodeunit-test": "nodeunit test/test-async.js",
-    "test": "npm run-script lint && npm run nodeunit-test && npm run mocha-test"
+    "test": "npm run-script lint && npm run nodeunit-test && npm run mocha-node-test"
   },
   "license": "MIT",
   "jam": {

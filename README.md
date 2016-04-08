@@ -264,6 +264,8 @@ Some functions are also available in the following forms:
 * [`dir`](#dir)
 * [`noConflict`](#noConflict)
 * [`timeout`](#timeout)
+* [`reflect`](#reflect)
+* [`reflectAll`](#reflectAll)
 
 ## Collections
 
@@ -1193,7 +1195,7 @@ arguments as if it were a single function call.
 
 __Arguments__
 
-* `fns` - the asynchronous functions to all call with the same arguments
+* `fns` - A collection of asynchronous functions to all call with the same arguments
 * `args...` - any number of separate arguments to pass to the function
 * `callback` - the final argument should be the callback, called when all
   functions have completed processing
@@ -1496,7 +1498,7 @@ __Arguments__
 * `tasks` - An object, each of whose properties is a function of the form
   'func([dependencies...], callback). The object's key of a property serves as the name of the task defined by that property, i.e. can be used when specifying requirements for other tasks.
   * The `callback` parameter is a `callback(err, result)` which must be called when finished, passing an `error` (which can be `null`) and the result of the function's execution. The remaining parameters name other tasks on which the task is dependent, and the results from those tasks are the arguments of those parameters.
-* `callback(err, [results...])` - An optional callback which is called when all the tasks have been completed. It receives the `err` argument if any `tasks` pass an error to their callback. The remaining parameters are task names whose results you are interested in. This callback will only be called when all tasks have finished or an error has occurred, and so do not not specify dependencies in the same way as `tasks` do. If an error occurs, no further `tasks` will be performed, and `results` will only be valid for those tasks which managed to complete.
+* `callback(err, [results...])` - An optional callback which is called when all the tasks have been completed. It receives the `err` argument if any `tasks` pass an error to their callback. The remaining parameters are task names whose results you are interested in. This callback will only be called when all tasks have finished or an error has occurred, and so do not specify dependencies in the same way as `tasks` do. If an error occurs, no further `tasks` will be performed, and `results` will only be valid for those tasks which managed to complete.
 
 
 __Example__
@@ -1530,7 +1532,7 @@ async.autoInject({
 });
 ```
 
-If you are using a JS minifier that mangles parameter names, `autoInject` will not work with plain functions, since the parameter names will be collapsed to a single letter identifier.  To work around this, you can explicitly specify the names of the parameters your task function needs in an array, similar to Angular.js dependency injection.
+If you are using a JS minifier that mangles parameter names, `autoInject` will not work with plain functions, since the parameter names will be collapsed to a single letter identifier.  To work around this, you can explicitly specify the names of the parameters your task function needs in an array, similar to Angular.js dependency injection.  The final results callback can be provided as an array in the same way.
 
 ```js
 async.autoInject({
@@ -1542,7 +1544,10 @@ async.autoInject({
         callback(null, {'file':write_file, 'email':'user@example.com'});
     }]
     //...
-}, done);
+}, ['email_link', function(err, email_link) {
+    console.log('err = ', err);
+    console.log('email_link = ', email_link);
+}]);
 ```
 
 This still has an advantage over plain `auto`, since the results a task depends on are still spread into arguments.
@@ -2087,11 +2092,92 @@ __Arguments__
 
 * `function` - The asynchronous function you want to set the time limit.
 * `miliseconds` - The specified time limit.
+* `info` - *Optional* Any variable you want attached (`string`, `object`, etc) to
+  timeout Error for more information.
 
 __Example__
 
 ```js
-async.timeout(function(callback) {
+async.timeout(function nameOfCallback(callback) {
   doAsyncTask(callback);
-}, 1000);
+}, 1000, 'more info about timeout');
+```
+
+---------------------------------------
+
+<a name="reflect"></a>
+### reflect(function)
+
+Wraps the function in another function that always returns data even when it errors.
+The object returned has either the property `error` or `value`.
+
+__Arguments__
+
+* `function` - The function you want to wrap
+
+__Example__
+
+```js
+async.parallel([
+    async.reflect(function(callback){
+        // do some stuff ...
+        callback(null, 'one');
+    }),
+    async.reflect(function(callback){
+        // do some more stuff but error ...
+        callback('bad stuff happened');
+    }),
+    async.reflect(function(callback){
+        // do some more stuff ...
+        callback(null, 'two');
+    })
+],
+// optional callback
+function(err, results){
+  // values
+  // results[0].value = 'one'
+  // results[1].error = 'bad stuff happened'
+  // results[2].value = 'two'
+});
+```
+
+---------------------------------------
+
+<a name="reflectAll"></a>
+### reflectAll()
+
+A helper function that wraps an array of functions with reflect.
+
+__Arguments__
+
+* `tasks` - The array of functions to wrap in reflect.
+
+__Example__
+
+```javascript
+let tasks = [
+  function(callback){
+    setTimeout(function(){
+        callback(null, 'one');
+    }, 200);
+  },
+  function(callback){
+    // do some more stuff but error ...
+    callback(new Error('bad stuff happened'));
+  }
+  function(callback){
+    setTimeout(function(){
+      callback(null, 'two');
+    }, 100);
+  }
+];
+
+async.parallel(async.reflectAll(tasks),
+// optional callback
+function(err, results){
+  // values
+  // results[0].value = 'one'
+  // results[1].error = Error('bad stuff happened')
+  // results[2].value = 'two'
+});
 ```

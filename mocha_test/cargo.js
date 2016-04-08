@@ -6,7 +6,7 @@ describe('cargo', function () {
 
     it('cargo', function (done) {
         var call_order = [],
-            delays = [160, 160, 80];
+            delays = [40, 40, 20];
 
         // worker: --12--34--5-
         // order of completion: 1,2,3,4,5
@@ -41,7 +41,7 @@ describe('cargo', function () {
                 expect(c.length()).to.equal(1);
                 call_order.push('callback ' + 3);
             });
-        }, 60);
+        }, 15);
         setTimeout(function () {
             c.push(4, function (err, arg) {
                 expect(err).to.equal('error');
@@ -56,10 +56,10 @@ describe('cargo', function () {
                 expect(c.length()).to.equal(0);
                 call_order.push('callback ' + 5);
             });
-        }, 120);
+        }, 30);
 
 
-        setTimeout(function () {
+        c.drain = function () {
             expect(call_order).to.eql([
                 'process 1 2', 'callback 1', 'callback 2',
                 'process 3 4', 'callback 3', 'callback 4',
@@ -67,12 +67,12 @@ describe('cargo', function () {
             ]);
             expect(c.length()).to.equal(0);
             done();
-        }, 800);
+        };
     });
 
     it('without callback', function (done) {
         var call_order = [],
-            delays = [160,80,240,80];
+            delays = [40,20,60,20];
 
         // worker: --1-2---34-5-
         // order of completion: 1,2,3,4,5
@@ -88,12 +88,12 @@ describe('cargo', function () {
 
         setTimeout(function () {
             c.push(2);
-        }, 120);
+        }, 30);
         setTimeout(function () {
             c.push(3);
             c.push(4);
             c.push(5);
-        }, 180);
+        }, 50);
 
         setTimeout(function () {
             expect(call_order).to.eql([
@@ -103,12 +103,12 @@ describe('cargo', function () {
                 'process 5'
             ]);
             done();
-        }, 800);
+        }, 200);
     });
 
     it('bulk task', function (done) {
         var call_order = [],
-            delays = [120,40];
+            delays = [30,20];
 
         // worker: -123-4-
         // order of completion: 1,2,3,4
@@ -135,7 +135,7 @@ describe('cargo', function () {
             ]);
             expect(c.length()).to.equal(0);
             done();
-        }, 800);
+        }, 200);
     });
 
     it('drain once', function (done) {
@@ -156,7 +156,7 @@ describe('cargo', function () {
         setTimeout(function(){
             expect(drainCounter).to.equal(1);
             done();
-        }, 500);
+        }, 50);
     });
 
     it('drain twice', function (done) {
@@ -165,11 +165,11 @@ describe('cargo', function () {
             callback();
         }, 3);
 
-        var loadCargo = function(){
+        function loadCargo(){
             for(var i = 0; i < 10; i++){
                 c.push(i);
             }
-        };
+        }
 
         var drainCounter = 0;
         c.drain = function () {
@@ -177,12 +177,12 @@ describe('cargo', function () {
         };
 
         loadCargo();
-        setTimeout(loadCargo, 500);
+        setTimeout(loadCargo, 50);
 
         setTimeout(function(){
             expect(drainCounter).to.equal(2);
             done();
-        }, 1000);
+        }, 100);
     });
 
     it('events', function (done) {

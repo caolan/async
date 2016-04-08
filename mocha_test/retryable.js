@@ -45,7 +45,7 @@ describe('retryable', function () {
 
     it('should work as an embedded task with interval', function(done) {
         var start = new Date().getTime();
-        var opts = {times: 5, interval: 100};
+        var opts = {times: 5, interval: 20};
 
         async.auto({
             foo: function(callback){
@@ -57,7 +57,9 @@ describe('retryable', function () {
         }, function(){
             var duration = new Date().getTime() - start;
             var expectedMinimumDuration = (opts.times -1) * opts.interval;
-            assert(duration >= expectedMinimumDuration, "The duration should have been greater than " + expectedMinimumDuration + ", but was " + duration);
+            assert(duration >= expectedMinimumDuration,
+                "The duration should have been greater than " +
+                expectedMinimumDuration + ", but was " + duration);
             done();
         });
     });

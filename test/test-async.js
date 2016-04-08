@@ -78,98 +78,6 @@ function isBrowser() {
         (process + "" !== "[object process]"); // browserify
 }
 
-exports['applyEach'] = function (test) {
-    test.expect(5);
-    var call_order = [];
-    var one = function (val, cb) {
-        test.equal(val, 5);
-        setTimeout(function () {
-            call_order.push('one');
-            cb(null, 1);
-        }, 100);
-    };
-    var two = function (val, cb) {
-        test.equal(val, 5);
-        setTimeout(function () {
-            call_order.push('two');
-            cb(null, 2);
-        }, 50);
-    };
-    var three = function (val, cb) {
-        test.equal(val, 5);
-        setTimeout(function () {
-            call_order.push('three');
-            cb(null, 3);
-        }, 150);
-    };
-    async.applyEach([one, two, three], 5, function (err) {
-        test.ok(err === null, err + " passed instead of 'null'");
-        test.same(call_order, ['two', 'one', 'three']);
-        test.done();
-    });
-};
-
-exports['applyEachSeries'] = function (test) {
-    test.expect(5);
-    var call_order = [];
-    var one = function (val, cb) {
-        test.equal(val, 5);
-        setTimeout(function () {
-            call_order.push('one');
-            cb(null, 1);
-        }, 100);
-    };
-    var two = function (val, cb) {
-        test.equal(val, 5);
-        setTimeout(function () {
-            call_order.push('two');
-            cb(null, 2);
-        }, 50);
-    };
-    var three = function (val, cb) {
-        test.equal(val, 5);
-        setTimeout(function () {
-            call_order.push('three');
-            cb(null, 3);
-        }, 150);
-    };
-    async.applyEachSeries([one, two, three], 5, function (err) {
-        test.ok(err === null, err + " passed instead of 'null'");
-        test.same(call_order, ['one', 'two', 'three']);
-        test.done();
-    });
-};
-
-exports['applyEach partial application'] = function (test) {
-    test.expect(4);
-    var call_order = [];
-    var one = function (val, cb) {
-        test.equal(val, 5);
-        setTimeout(function () {
-            call_order.push('one');
-            cb(null, 1);
-        }, 100);
-    };
-    var two = function (val, cb) {
-        test.equal(val, 5);
-        setTimeout(function () {
-            call_order.push('two');
-            cb(null, 2);
-        }, 50);
-    };
-    var three = function (val, cb) {
-        test.equal(val, 5);
-        setTimeout(function () {
-            call_order.push('three');
-            cb(null, 3);
-        }, 150);
-    };
-    async.applyEach([one, two, three])(5, function (err) {
-        if (err) throw err;
-        test.same(call_order, ['two', 'one', 'three']);
-        test.done();
-    });
-};
 
 exports['seq'] = function (test) {
     test.expect(5);
@@ -491,6 +399,29 @@ exports['parallel call in another context'] = function(test) {
     vm.runInNewContext(fn, sandbox);
 };
 
+exports['parallel error with reflect'] = function(test){
+    async.parallel([
+        async.reflect(function(callback){
+            callback('error', 1);
+        }),
+        async.reflect(function(callback){
+            callback('error2', 2);
+        }),
+        async.reflect(function(callback){
+            callback(null, 2);
+        })
+    ],
+    function(err, results){
+        test.ok(err === null, err + " passed instead of 'null'");
+        test.same(results, [
+            { error: 'error' },
+            { error: 'error2' },
+            { value: 2 }
+        ]);
+        test.done();
+    });
+};
+
 exports['parallel does not continue replenishing after error'] = function (test) {
     var started = 0;
     var arr = [
@@ -558,6 +489,40 @@ exports['series'] = {
     });
 },
 
+    'with reflect': function(test){
+    var call_order = [];
+    async.series([
+        async.reflect(function(callback){
+            setTimeout(function(){
+                call_order.push(1);
+                callback(null, 1);
+            }, 25);
+        }),
+        async.reflect(function(callback){
+            setTimeout(function(){
+                call_order.push(2);
+                callback(null, 2);
+            }, 50);
+        }),
+        async.reflect(function(callback){
+            setTimeout(function(){
+                call_order.push(3);
+                callback(null, 3,3);
+            }, 15);
+        })
+    ],
+    function(err, results){
+        test.ok(err === null, err + " passed instead of 'null'");
+        test.deepEqual(results, [
+            { value: 1 },
+            { value: 2 },
+            { value: [3,3] }
+        ]);
+        test.same(call_order, [1,2,3]);
+        test.done();
+    });
+},
+
     'empty array': function(test){
     async.series([], function(err, results){
         test.equals(err, null);
@@ -581,6 +546,30 @@ exports['series'] = {
         test.equals(err, 'error');
     });
     setTimeout(test.done, 100);
+},
+
+    'error with reflect': function(test){
+    test.expect(2);
+    async.series([
+        async.reflect(function(callback){
+            callback('error', 1);
+        }),
+        async.reflect(function(callback){
+            callback('error2', 2);
+        }),
+        async.reflect(function(callback){
+            callback(null, 1);
+        })
+    ],
+    function(err, results){
+        test.ok(err === null, err + " passed instead of 'null'");
+        test.deepEqual(results, [
+            { error: 'error' },
+            { error: 'error2' },
+            { value: 1 }
+        ]);
+        test.done();
+    });
 },
 
     'no callback': function(test){
@@ -1330,6 +1319,50 @@ exports['map'] = {
         test.ok(err === null, err + " passed instead of 'null'");
         test.same(call_order, [1,2,3]);
         test.same(results, [2,6,4]);
+        test.done();
+    });
+},
+
+    'with reflect': function(test){
+    var call_order = [];
+    async.map([1,3,2], async.reflect(function(item, cb) {
+        setTimeout(function(){
+            call_order.push(item);
+            cb(null, item*2);
+        }, item*25);
+    }), function(err, results){
+        test.ok(err === null, err + " passed instead of 'null'");
+        test.same(call_order, [1,2,3]);
+        test.same(results, [
+            { value: 2 },
+            { value: 6 },
+            { value: 4 }
+        ]);
+        test.done();
+    });
+},
+
+    'error with reflect': function(test){
+    var call_order = [];
+    async.map([-1,1,3,2], async.reflect(function(item, cb) {
+        setTimeout(function(){
+            call_order.push(item);
+            if (item < 0) {
+                cb('number less then zero');
+            } else {
+                cb(null, item*2);
+            }
+
+        }, item*25);
+    }), function(err, results){
+        test.ok(err === null, err + " passed instead of 'null'");
+        test.same(call_order, [-1,1,2,3]);
+        test.same(results, [
+            { error: 'number less then zero' },
+            { value: 2 },
+            { value: 6 },
+            { value: 4 }
+        ]);
         test.done();
     });
 },
@@ -2645,7 +2678,7 @@ exports['asyncify'] = {
 };
 
 exports['timeout'] = function (test) {
-    test.expect(3);
+    test.expect(4);
 
     async.series([
         async.timeout(function asyncFn(callback) {
@@ -2660,15 +2693,41 @@ exports['timeout'] = function (test) {
         }, 150)
     ],
     function(err, results) {
-        test.ok(err.message === 'Callback function timed out.');
+        test.ok(err.message === 'Callback function "asyncFn" timed out.');
         test.ok(err.code === 'ETIMEDOUT');
+        test.ok(err.info === undefined);
+        test.ok(results[0] === 'I didn\'t time out');
+        test.done();
+    });
+};
+
+exports['timeout with info'] = function (test) {
+    test.expect(4);
+
+    var info = { custom: 'info about callback' };
+    async.series([
+        async.timeout(function asyncFn(callback) {
+            setTimeout(function() {
+                callback(null, 'I didn\'t time out');
+            }, 50);
+        }, 200),
+        async.timeout(function asyncFn(callback) {
+            setTimeout(function() {
+                callback(null, 'I will time out');
+            }, 300);
+        }, 150, info)
+    ],
+    function(err, results) {
+        test.ok(err.message === 'Callback function "asyncFn" timed out.');
+        test.ok(err.code === 'ETIMEDOUT');
+        test.ok(err.info === info);
         test.ok(results[0] === 'I didn\'t time out');
         test.done();
     });
 };
 
 exports['timeout with parallel'] = function (test) {
-    test.expect(3);
+    test.expect(4);
 
     async.parallel([
         async.timeout(function asyncFn(callback) {
@@ -2683,8 +2742,9 @@ exports['timeout with parallel'] = function (test) {
         }, 150)
     ],
     function(err, results) {
-        test.ok(err.message === 'Callback function timed out.');
+        test.ok(err.message === 'Callback function "asyncFn" timed out.');
         test.ok(err.code === 'ETIMEDOUT');
+        test.ok(err.info === undefined);
         test.ok(results[0] === 'I didn\'t time out');
         test.done();
     });

@@ -8,7 +8,7 @@ describe('queue', function(){
     it('basics', function(done) {
 
         var call_order = [];
-        var delays = [160,80,240,80];
+        var delays = [40,20,60,20];
 
 
         // worker1: --1-4
@@ -19,7 +19,7 @@ describe('queue', function(){
             setTimeout(function () {
                 call_order.push('process ' + task);
                 callback('error', 'arg');
-            }, delays.splice(0,1)[0]);
+            }, delays.shift());
         }, 2);
 
         q.push(1, function (err, arg) {
@@ -64,7 +64,7 @@ describe('queue', function(){
 
     it('default concurrency', function(done) {
         var call_order = [],
-            delays = [160,80,240,80];
+            delays = [40,20,60,20];
 
         // order of completion: 1,2,3,4
 
@@ -72,7 +72,7 @@ describe('queue', function(){
             setTimeout(function () {
                 call_order.push('process ' + task);
                 callback('error', 'arg');
-            }, delays.splice(0,1)[0]);
+            }, delays.shift());
         });
 
         q.push(1, function (err, arg) {
@@ -166,7 +166,7 @@ describe('queue', function(){
         var q = async.queue(function(task, callback){
             setTimeout(function(){
                 callback();
-            }, 100);
+            }, 10);
         }, 1);
 
         for(var i = 0; i < 50; i++){
@@ -185,14 +185,14 @@ describe('queue', function(){
                 q.concurrency = 5;
                 setTimeout(function(){
                     expect(q.running()).to.equal(5);
-                }, 500);
-            }, 500);
-        }, 500);
+                }, 40);
+            }, 40);
+        }, 40);
     });
 
     it('push without callback', function(done) {
         var call_order = [],
-            delays = [160,80,240,80];
+            delays = [40,20,60,20];
 
         // worker1: --1-4
         // worker2: -2---3
@@ -202,7 +202,7 @@ describe('queue', function(){
             setTimeout(function () {
                 call_order.push('process ' + task);
                 callback('error', 'arg');
-            }, delays.splice(0,1)[0]);
+            }, delays.shift());
         }, 2);
 
         q.push(1);
@@ -210,7 +210,7 @@ describe('queue', function(){
         q.push(3);
         q.push(4);
 
-        setTimeout(function () {
+        q.drain = function () {
             expect(call_order).to.eql([
                 'process 2',
                 'process 1',
@@ -218,7 +218,7 @@ describe('queue', function(){
                 'process 3'
             ]);
             done();
-        }, 800);
+        };
     });
 
     it('push with non-function', function(done) {
@@ -262,7 +262,7 @@ describe('queue', function(){
 
     it('bulk task', function(done) {
         var call_order = [],
-            delays = [160,80,240,80];
+            delays = [40,20,60,20];
 
         // worker1: --1-4
         // worker2: -2---3
@@ -283,7 +283,7 @@ describe('queue', function(){
         expect(q.length()).to.equal(4);
         expect(q.concurrency).to.equal(2);
 
-        setTimeout(function () {
+        q.drain = function () {
             expect(call_order).to.eql([
                 'process 2', 'callback 2',
                 'process 1', 'callback 1',
@@ -293,7 +293,7 @@ describe('queue', function(){
             expect(q.concurrency).to.equal(2);
             expect(q.length()).to.equal(0);
             done();
-        }, 800);
+        };
     });
 
     it('idle', function(done) {
@@ -323,15 +323,15 @@ describe('queue', function(){
 
     it('pause', function(done) {
         var call_order = [],
-            task_timeout = 100,
-            pause_timeout = 300,
-            resume_timeout = 500,
+            task_timeout = 40,
+            pause_timeout = 100,
+            resume_timeout = 180,
             tasks = [ 1, 2, 3, 4, 5, 6 ],
 
             elapsed = (function () {
                 var start = (new Date()).valueOf();
                 return function () {
-                    return Math.round(((new Date()).valueOf() - start) / 100) * 100;
+                    return Math.round(((new Date()).valueOf() - start) / 40) * 40;
                 };
             })();
 
@@ -363,15 +363,15 @@ describe('queue', function(){
 
         setTimeout(function () {
             expect(call_order).to.eql([
-                'process 1', 'timeout 100',
-                'process 2', 'timeout 200',
-                'process 3', 'timeout 500',
-                'process 4', 'timeout 500',
-                'process 5', 'timeout 500',
-                'process 6', 'timeout 600'
+                'process 1', 'timeout 40',
+                'process 2', 'timeout 80',
+                'process 3', 'timeout 200',
+                'process 4', 'timeout 200',
+                'process 5', 'timeout 200',
+                'process 6', 'timeout 240'
             ]);
             done();
-        }, 800);
+        }, 300);
     });
 
     it('pause in worker with concurrency', function(done) {
@@ -383,11 +383,11 @@ describe('queue', function(){
                         call_order.push(task.id);
                         q.resume();
                         callback();
-                    }, 500);
+                    }, 50);
                 }
                 else {
                     call_order.push(task.id);
-                    callback();
+                    setTimeout(callback, 10);
                 }
             }, 10);
 
@@ -397,23 +397,23 @@ describe('queue', function(){
             q.push({ id: 4 });
             q.push({ id: 5 });
 
-            setTimeout(function () {
+            q.drain = function () {
                 expect(call_order).to.eql([1, 2, 3, 4, 5]);
                 done();
-            }, 1000);
+            };
         });
 
     it('pause with concurrency', function(done) {
         var call_order = [],
-            task_timeout = 100,
-            pause_timeout = 50,
-            resume_timeout = 300,
+            task_timeout = 40,
+            pause_timeout = 20,
+            resume_timeout = 110,
             tasks = [ 1, 2, 3, 4, 5, 6 ],
 
             elapsed = (function () {
                 var start = (new Date()).valueOf();
                 return function () {
-                    return Math.round(((new Date()).valueOf() - start) / 100) * 100;
+                    return Math.round(((new Date()).valueOf() - start) / 40) * 40;
                 };
             })();
 
@@ -443,15 +443,15 @@ describe('queue', function(){
 
         setTimeout(function () {
             expect(call_order).to.eql([
-                'process 1', 'timeout 100',
-                'process 2', 'timeout 100',
-                'process 3', 'timeout 400',
-                'process 4', 'timeout 400',
-                'process 5', 'timeout 500',
-                'process 6', 'timeout 500'
+                'process 1', 'timeout 40',
+                'process 2', 'timeout 40',
+                'process 3', 'timeout 160',
+                'process 4', 'timeout 160',
+                'process 5', 'timeout 200',
+                'process 6', 'timeout 200'
             ]);
             done();
-        }, 800);
+        }, 300);
     });
 
     it('start paused', function(done) {
@@ -483,7 +483,7 @@ describe('queue', function(){
         var q = async.queue(function (task, callback) {
             setTimeout(function () {
                 throw new Error("Function should never be called");
-            }, 300);
+            }, 20);
         }, 1);
         q.drain = function() {
             throw new Error("Function should never be called");
@@ -496,7 +496,7 @@ describe('queue', function(){
         setTimeout(function() {
             expect(q.length()).to.equal(0);
             done();
-        }, 600);
+        }, 40);
     });
 
     it('events', function(done) {

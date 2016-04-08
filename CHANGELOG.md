@@ -26,12 +26,14 @@ Another theme is performance. We have eliminated internal deferrals in all cases
 - Added `race`, analogous to `Promise.race()`. It will run an array of async tasks in parallel and will call its callback with the result of the first task to respond. (#568, #1038)
 - Collection methods now accept ES2015 iterators.  Maps, Sets, and anything that implements the iterator spec can now be passed directly to `each`, `map`, `parallel`, etc.. (#579, #839, #1074)
 - Added `timeout`, a wrapper for an async function that will make the task time-out after the specified time. (#1007, #1027)
+- Added `reflect` and `reflectAll`, analagous to [`Promise.reflect()`](http://bluebirdjs.com/docs/api/reflect.html), a wrapper for async tasks that always succeeds, by gathering results and errors into an object.  (#942, #1012, #1095)
 - `constant` supports dynamic arguments -- it will now always use its last argument as the callback. (#1016, #1052)
 - `setImmediate` and `nextTick` now support arguments to partially apply to the deferred function, like the node-native versions do. (#940, #1053)
-- Added `autoInject`, a relative of `auto` that automatically spreads a task's dependencies as arguments to the task function. (#608, #1055)
+- Added `autoInject`, a relative of `auto` that automatically spreads a task's dependencies as arguments to the task function. (#608, #1055, #1099, #1100)
 - You can now limit the concurrency of `auto` tasks. (#635, #637)
 - Added `retryable`, a relative of `retry` that wraps an async function, making it retry when called. (#1058)
 - Added `q.unsaturated` -- callback called when a `queue`'s number of running workers falls below a threshold. (#868, #1030, #1033, #1034)
+- `applyEach` and `applyEachSeries` now pass results to the final callback. (#1088)
 
 ## Breaking changes
 
@@ -47,7 +49,7 @@ Another theme is performance. We have eliminated internal deferrals in all cases
 
 - Added `someSeries` and `everySeries` for symmetry, as well as a complete set of `any`/`anyLimit`/`anySeries` and `all`/`/allLmit`/`allSeries` aliases.
 - Added `find` as an alias for `detect. (as well as `findLimit` and `findSeries`).
-- Various doc fixes (#1005, #1008, #1010, #1015, #1021, #1037)
+- Various doc fixes (#1005, #1008, #1010, #1015, #1021, #1037, #1102)
 
 ------------------------------------------
 
