@@ -145,4 +145,40 @@ describe("waterfall", function () {
 
         sameStack = false;
     });
+
+
+    it('bound context with an argument', function(done){
+
+        var vm = require('vm');
+        var context = {
+            name: 'Context',
+            getContextName: function() {
+                return this.name;
+            }
+        };
+
+        var sandbox = {
+            async: async,
+            done: done,
+            context: context,
+            expect: expect
+        };
+
+        var fn = "(" + (function () {
+            async.waterfall([
+                function (cb) {
+                    cb(null, this.getContextName());
+                },
+            ], function(err, result) {
+                expect(err === null);
+                expect(result !== null);
+                expect(result.length > 0);
+                expect(result == context.getContextName());
+                done();
+            }, context);
+        }).toString() + "())";
+
+        vm.runInNewContext(fn, sandbox);
+
+    });
 });
