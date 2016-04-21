@@ -62,6 +62,7 @@ $(UMD_BUNDLE_MIN): $(UMD_BUNDLE)
 	mkdir -p "$(@D)"
 	$(UGLIFY) $< --mangle --compress \
 		--source-map $(DIST)/async.min.map \
+		--source-map-url async.min.map \
 		-o $@
 
 $(DIST)/async.js: $(UMD_BUNDLE)
