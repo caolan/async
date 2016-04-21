@@ -1,4 +1,11 @@
 {
   "validateIndentation": 4,
-  "esnext": true
+  "esnext": true,
+  "plugins": [
+    "jscs-jsdoc"
+  ],
+  "jsDoc": {
+    "checkTypes": "strictNativeCase",
+    "enforceExistence": false
+  }
 }

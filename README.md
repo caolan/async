@@ -17,7 +17,6 @@ Async is also installable via:
 - [bower](http://bower.io/): `bower install async`
 - [component](https://github.com/component/component): `component install caolan/async`
 - [jam](http://jamjs.org/): `jam install async`
-- [spm](http://spmjs.io/): `spm install async`
 
 Async provides around 70 functions that include the usual 'functional'
 suspects (`map`, `reduce`, `filter`, `each`…) as well as some common patterns
