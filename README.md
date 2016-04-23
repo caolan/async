@@ -155,7 +155,7 @@ async.map([1, 2, 3], AsyncSquaringLibrary.square.bind(AsyncSquaringLibrary), fun
 ## Download
 
 The source is available for download from
-[GitHub](https://github.com/caolan/async/blob/master/lib/async.js).
+[GitHub](https://raw.githubusercontent.com/caolan/async/master/dist/async.min.js).
 Alternatively, you can install using npm:
 
     npm install --save async
@@ -177,7 +177,7 @@ var waterfall = require("async/waterfall");
 var map = require("async/map");
 ```
 
-__Development:__ [async.js](https://github.com/caolan/async/raw/master/lib/async.js) - 29.6kb Uncompressed
+__Development:__ [async.js](https://raw.githubusercontent.com/caolan/async/master/dist/async.js) - 29.6kb Uncompressed
 
 ### In the Browser
 
