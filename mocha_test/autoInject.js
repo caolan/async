@@ -93,16 +93,16 @@ describe('autoInject', function () {
     });
 
     // Needs to be run on ES6 only - not sure how you plan to handle this
-//    it('should work with es6 arrow syntax', function (done) {
-//        async.autoInject({
-//            task1: (cb)        => cb(null, 1),
-//            task2: (task3, cb) => cb(null, 2),
-//            task3: cb          => cb(null, 3)
-//        }, (err, task3, task1) => {
-//            expect(task1).to.equal(1);
-//            expect(task3).to.equal(3);
-//            done();
-//        });
-//    });
+    // it('should work with es6 arrow syntax', function (done) {
+    //     async.autoInject({
+    //         task1: (cb)        => cb(null, 1),
+    //         task2: (task3, cb) => cb(null, 2),
+    //         task3: cb          => cb(null, 3)
+    //     }, (err, task3, task1) => {
+    //         expect(task1).to.equal(1);
+    //         expect(task3).to.equal(3);
+    //         done();
+    //     });
+    // });
 
 });
