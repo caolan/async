@@ -1486,9 +1486,9 @@ For a complicated series of `async` tasks, using the [`auto`](#auto) function ma
 <a name="autoInject" />
 ### autoInject(tasks, [callback])
 
-A dependency-injected version of the [`auto`](#auto) function. Dependent tasks are specified as parameters to the function, after the usual callback parameter, with the parameter names matching the names of the tasks it depends on. This can provide even more readable task graphs which can be easier to maintain.
+A dependency-injected version of the [`auto`](#auto) function. Dependent tasks are specified as parameters to the function, before the usual callback parameter, with the parameter names matching the names of the tasks it depends on. This can provide even more readable task graphs which can be easier to maintain.
 
-If a final callback is specified, the task results are similarly injected, specified as named parameters after the initial error parameter.
+If a final callback is specified, the task results are still provided as a composite `results` object, exactly like auto.
 
 The autoInject function is purely syntactic sugar and its semantics are otherwise equivalent to [`auto`](#auto).
 
@@ -1497,7 +1497,7 @@ __Arguments__
 * `tasks` - An object, each of whose properties is a function of the form
   'func([dependencies...], callback). The object's key of a property serves as the name of the task defined by that property, i.e. can be used when specifying requirements for other tasks.
   * The `callback` parameter is a `callback(err, result)` which must be called when finished, passing an `error` (which can be `null`) and the result of the function's execution. The remaining parameters name other tasks on which the task is dependent, and the results from those tasks are the arguments of those parameters.
-* `callback(err, [results...])` - An optional callback which is called when all the tasks have been completed. It receives the `err` argument if any `tasks` pass an error to their callback. The remaining parameters are task names whose results you are interested in. This callback will only be called when all tasks have finished or an error has occurred, and so do not specify dependencies in the same way as `tasks` do. If an error occurs, no further `tasks` will be performed, and `results` will only be valid for those tasks which managed to complete.
+* `callback(err, results)` - An optional callback which is called when all the tasks have been completed. It receives the `err` argument if any `tasks` pass an error to their callback. Results are always returned; however, if an error occurs, no further `tasks` will be performed, and the results object will only contain partial results.
 
 
 __Example__
@@ -1525,9 +1525,9 @@ async.autoInject({
         // write_file contains the filename returned by write_file.
         callback(null, {'file':write_file, 'email':'user@example.com'});
     }
-}, function(err, email_link) {
+}, function(err, results) {
     console.log('err = ', err);
-    console.log('email_link = ', email_link);
+    console.log('email_link = ', results.email_link);
 });
 ```
 
@@ -1543,10 +1543,10 @@ async.autoInject({
         callback(null, {'file':write_file, 'email':'user@example.com'});
     }]
     //...
-}, ['email_link', function(err, email_link) {
+}, function(err, results) {
     console.log('err = ', err);
-    console.log('email_link = ', email_link);
-}]);
+    console.log('email_link = ', results.email_link);
+});
 ```
 
 This still has an advantage over plain `auto`, since the results a task depends on are still spread into arguments.
