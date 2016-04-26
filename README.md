@@ -956,18 +956,26 @@ Like [`doWhilst`](#doWhilst), except the `test` is inverted. Note the argument o
 
 Like [`whilst`](#whilst), except the `test` is an asynchronous function that is passed a callback in the form of `function (err, truth)`. If error is passed to `test` or `fn`, the main callback is immediately called with the value of the error.
 
+Additionaly `during` passes any arguments passed by the iteratee function (2nd function) to the test function (1st function). The test callback will allways be the last parameter. 
+
 __Example__
 
 ```js
 var count = 0;
 
 async.during(
-    function (callback) {
-      return callback(null, count < 5);
+    function (result, callback) {
+      if(!callback) {
+        callback = result;
+        result = null;
+      }
+      return callback(null, !result || result.counter < 5);
     },
     function (callback) {
         count++;
-        setTimeout(callback, 1000);
+        setTimeout(function() {
+          callback(null, { counter: count });
+        }, 1000);
     },
     function (err) {
         // 5 seconds have passed
