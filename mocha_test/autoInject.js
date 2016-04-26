@@ -44,8 +44,8 @@ describe('autoInject', function () {
                 callback(null, 6);
             }
         },
-        function(err, task6){
-            expect(task6).to.equal(6);
+        function(err, results){
+            expect(results.task6).to.equal(6);
             expect(callOrder).to.eql(['task2','task3','task6','task5','task1','task4']);
             done();
         });
@@ -74,33 +74,15 @@ describe('autoInject', function () {
         });
     });
 
-    it('should work with array results', function (done) {
-        async.autoInject({
-            task1: function (cb) {
-                cb(null, 1);
-            },
-            task2: function (task3, cb) {
-                cb(null, 2);
-            },
-            task3: function (cb) {
-                cb(null, 3);
-            }
-        }, ['task3', 'task1', function (err, task3, task1) {
-            expect(task1).to.equal(1);
-            expect(task3).to.equal(3);
-            done();
-        }]);
-    });
-
     // Needs to be run on ES6 only - not sure how you plan to handle this
     // it('should work with es6 arrow syntax', function (done) {
     //     async.autoInject({
     //         task1: (cb)        => cb(null, 1),
     //         task2: (task3, cb) => cb(null, 2),
     //         task3: cb          => cb(null, 3)
-    //     }, (err, task3, task1) => {
-    //         expect(task1).to.equal(1);
-    //         expect(task3).to.equal(3);
+    //     }, (err, results) => {
+    //         expect(results.task1).to.equal(1);
+    //         expect(results.task3).to.equal(3);
     //         done();
     //     });
     // });
