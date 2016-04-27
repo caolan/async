@@ -148,9 +148,6 @@ describe('priorityQueue', function() {
                 expect(calls.indexOf('unsaturated')).to.be.above(-1);
                 setTimeout(function() {
                     expect(calls).eql([
-                        'unsaturated',
-                        'unsaturated',
-                        'unsaturated',
                         'process foo4',
                         'process foo3',
                         'process foo2',
