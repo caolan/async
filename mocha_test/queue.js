@@ -599,7 +599,43 @@ describe('queue', function(){
         done();
     });
 
-
+    context('q.saturated(): ', function() {
+        it('should call the saturated callback if tasks length is concurrency', function(done) {
+            var calls = [];
+            var q = async.queue(function(task, cb) {
+                calls.push('process ' + task);
+                async.setImmediate(cb);
+            }, 4);
+            q.saturated = function() {
+                calls.push('saturated');
+            };
+            q.empty = function() {
+                expect(calls.indexOf('saturated')).to.be.above(-1);
+                setTimeout(function() {
+                    expect(calls).eql([
+                        'process foo0',
+                        'process foo1',
+                        'process foo2',
+                        "saturated",
+                        'process foo3',
+                        'foo0 cb',
+                        "saturated",
+                        'process foo4',
+                        'foo1 cb',
+                        'foo2 cb',
+                        'foo3 cb',
+                        'foo4 cb'
+                    ]);
+                    done();
+                }, 50);
+            };
+            q.push('foo0', function () {calls.push('foo0 cb');});
+            q.push('foo1', function () {calls.push('foo1 cb');});
+            q.push('foo2', function () {calls.push('foo2 cb');});
+            q.push('foo3', function () {calls.push('foo3 cb');});
+            q.push('foo4', function () {calls.push('foo4 cb');});
+        });
+    });
 
     context('q.unsaturated(): ',function() {
         it('should have a default buffer property that equals 25% of the concurrenct rate', function(done){

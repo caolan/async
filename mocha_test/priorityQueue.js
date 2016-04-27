@@ -108,7 +108,43 @@ describe('priorityQueue', function() {
         };
     });
 
-
+    context('q.saturated(): ', function() {
+        it('should call the saturated callback if tasks length is concurrency', function(done) {
+            var calls = [];
+            var q = async.priorityQueue(function(task, cb) {
+                calls.push('process ' + task);
+                async.setImmediate(cb);
+            }, 4);
+            q.saturated = function() {
+                calls.push('saturated');
+            };
+            q.empty = function() {
+                expect(calls.indexOf('saturated')).to.be.above(-1);
+                setTimeout(function() {
+                    expect(calls).eql([
+                        'process foo4',
+                        'process foo3',
+                        'process foo2',
+                        "saturated",
+                        'process foo1',
+                        'foo4 cb',
+                        "saturated",
+                        'process foo0',
+                        'foo3 cb',
+                        'foo2 cb',
+                        'foo1 cb',
+                        'foo0 cb'
+                    ]);
+                    done();
+                }, 50);
+            };
+            q.push('foo0', 5, function () {calls.push('foo0 cb');});
+            q.push('foo1', 4, function () {calls.push('foo1 cb');});
+            q.push('foo2', 3, function () {calls.push('foo2 cb');});
+            q.push('foo3', 2, function () {calls.push('foo3 cb');});
+            q.push('foo4', 1, function () {calls.push('foo4 cb');});
+        });
+    });
 
     context('q.unsaturated(): ',function() {
         it('should have a default buffer property that equals 25% of the concurrenct rate', function(done) {
