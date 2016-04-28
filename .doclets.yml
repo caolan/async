@@ -1,0 +1,4 @@
+dir: lib
+articles:
+  - Readme: README.md
+  - Changelog: CHANGELOG.md
