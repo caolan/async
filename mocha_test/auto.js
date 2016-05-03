@@ -305,6 +305,23 @@ describe('auto', function () {
         done();
     });
 
+    // Issue 1092 on github: https://github.com/caolan/async/issues/1092
+    it('extended cycle detection', function(done) {
+        var task = function (name) {
+            return function (results, callback) {
+                callback(null, 'task ' + name);
+            };
+        };
+        expect(function () {
+            async.auto({
+                a: ['c', task('a')],
+                b: ['a', task('b')],
+                c: ['b', task('c')]
+            });
+        }).to.throw();
+        done();
+    });
+
     // Issue 988 on github: https://github.com/caolan/async/issues/988
     it('auto stops running tasks on error', function(done) {
         async.auto({
