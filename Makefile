@@ -120,5 +120,5 @@ release-major release-minor release-patch release-prerelease: all
 	# build again to propagate the version
 	$(MAKE) build-config
 	$(MAKE) build-es-config
-	cd build/ && npm pack
-	cd build-es/ && npm pack
+	cd build/ && npm publish
+	cd build-es/ && npm publish
