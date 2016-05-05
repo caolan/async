@@ -292,4 +292,20 @@ describe("map", function() {
             done();
         });
     });
+
+    // Issue 1106 on github: https://github.com/caolan/async/issues/1106
+    it('map main callback is called only once', function(done) {
+        async.map([1, 2], function(item, callback) {
+            try {
+                callback(item);
+            } catch (exception) {
+                expect(function() {
+                    callback(exception);
+                }).to.throw(/already called/);
+                done();
+            }
+        }, function(err) {
+            no_such_function();
+        });
+    });
 });
