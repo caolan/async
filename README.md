@@ -919,7 +919,7 @@ async.whilst(
 ### doWhilst(fn, test, callback)
 
 The post-check version of [`whilst`](#whilst). To reflect the difference in
-the order of operations, the arguments `test` and `fn` are switched.
+the order of operations, the arguments `test` and `fn` are switched. The `test` function is also passed the non-error callback results of `fn`.
 
 `doWhilst` is to `whilst` as `do while` is to `while` in plain JavaScript.
 
@@ -941,7 +941,7 @@ The inverse of [`whilst`](#whilst).
 
 ### doUntil(fn, test, callback)
 
-Like [`doWhilst`](#doWhilst), except the `test` is inverted. Note the argument ordering differs from `until`.
+Like [`doWhilst`](#doWhilst), except the `test` is inverted. Note the argument ordering differs from `until`. The `test` function is also passed the non-error callback results of `fn`.
 
 ---------------------------------------
 
