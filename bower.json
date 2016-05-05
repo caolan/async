@@ -27,6 +27,7 @@
     "es6-promise": "^2.3.0",
     "fs-extra": "^0.26.7",
     "jscs": "^1.13.1",
+    "jscs-jsdoc": "^1.3.2",
     "jshint": "~2.8.0",
     "karma": "^0.13.2",
     "karma-browserify": "^4.2.1",
