@@ -3,7 +3,7 @@ node_js:
   - "0.10"
   - "0.12"
   - "4"
-  - "5"
+  - "6"
 sudo: false
 after_success: npm run coveralls
 
