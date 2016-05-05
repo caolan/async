@@ -221,6 +221,7 @@ Some functions are also available in the following forms:
 * [`filter`](#filter), `filterSeries`, `filterLimit`
 * [`reject`](#reject), `rejectSeries`, `rejectLimit`
 * [`reduce`](#reduce), [`reduceRight`](#reduceRight)
+* [`transform`](#transform)
 * [`detect`](#detect), `detectSeries`, `detectLimit`
 * [`sortBy`](#sortBy)
 * [`some`](#some), `someLimit`, `someSeries`
