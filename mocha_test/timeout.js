@@ -1,5 +1,5 @@
 var async = require('../lib');
-var assert = require('assert');
+var expect = require('chai').expect;
 
 describe('timeout', function () {
 
@@ -17,10 +17,10 @@ describe('timeout', function () {
             }, 50)
         ],
         function(err, results) {
-            assert(err.message === 'Callback function "asyncFn" timed out.');
-            assert(err.code === 'ETIMEDOUT');
-            assert(err.info === undefined);
-            assert(results[0] === 'I didn\'t time out');
+            expect(err.message).to.equal('Callback function "asyncFn" timed out.');
+            expect(err.code).to.equal('ETIMEDOUT');
+            expect(err.info).to.equal(undefined);
+            expect(results[0]).to.equal('I didn\'t time out');
             done();
         });
     });
@@ -40,10 +40,10 @@ describe('timeout', function () {
             }, 50, info)
         ],
         function(err, results) {
-            assert(err.message === 'Callback function "asyncFn" timed out.');
-            assert(err.code === 'ETIMEDOUT');
-            assert(err.info === info);
-            assert(results[0] === 'I didn\'t time out');
+            expect(err.message).to.equal('Callback function "asyncFn" timed out.');
+            expect(err.code).to.equal('ETIMEDOUT');
+            expect(err.info).to.equal(info);
+            expect(results[0]).to.equal('I didn\'t time out');
             done();
         });
     });
@@ -62,10 +62,10 @@ describe('timeout', function () {
             }, 50)
         ],
         function(err, results) {
-            assert(err.message === 'Callback function "asyncFn" timed out.');
-            assert(err.code === 'ETIMEDOUT');
-            assert(err.info === undefined);
-            assert(results[0] === 'I didn\'t time out');
+            expect(err.message).to.equal('Callback function "asyncFn" timed out.');
+            expect(err.code).to.equal('ETIMEDOUT');
+            expect(err.info).to.equal(undefined);
+            expect(results[0]).to.equal('I didn\'t time out');
             done();
         });
     });
