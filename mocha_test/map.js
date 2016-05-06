@@ -191,7 +191,7 @@ describe("map", function() {
 
     it('mapLimit empty array', function(done) {
         async.mapLimit([], 2, function(x, callback) {
-            test.ok(false, 'iteratee should not be called');
+            assert(false, 'iteratee should not be called');
             callback();
         }, function(err) {
             if (err) throw err;
@@ -230,7 +230,7 @@ describe("map", function() {
 
     it('mapLimit zero limit', function(done) {
         async.mapLimit([0, 1, 2, 3, 4, 5], 0, function(x, callback) {
-            test.ok(false, 'iteratee should not be called');
+            assert(false, 'iteratee should not be called');
             callback();
         }, function(err, results) {
             expect(results).to.eql([]);
