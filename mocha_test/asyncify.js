@@ -1,0 +1,114 @@
+var async = require('../lib');
+var assert = require('assert');
+var isBrowser = require('./support/is_browser');
+
+describe('asyncify', function(done){
+
+    it('asyncify', function(done) {
+        var parse = async.asyncify(JSON.parse);
+        parse("{\"a\":1}", function (err, result) {
+            assert(!err);
+            assert(result.a === 1);
+            done();
+        });
+    });
+
+    it('asyncify null', function(done) {
+        var parse = async.asyncify(function() {
+            return null;
+        });
+        parse("{\"a\":1}", function (err, result) {
+            assert(!err);
+            assert(result === null);
+            done();
+        });
+    });
+
+    it('variable numbers of arguments', function(done) {
+        async.asyncify(function (x, y, z) {
+            assert(arguments.length === 3);
+            assert(x === 1);
+            assert(y === 2);
+            assert(z === 3);
+        })(1, 2, 3, function () {});
+        done();
+    });
+
+    it('catch errors', function(done) {
+        async.asyncify(function () {
+            throw new Error("foo");
+        })(function (err) {
+            assert(err);
+            assert(err.message === "foo");
+            done();
+        });
+    });
+
+    it('dont catch errors in the callback', function(done) {
+        try {
+            async.asyncify(function () {})(function (err) {
+                if (err) {
+                    return done(new Error("should not get an error here"));
+                }
+                throw new Error("callback error");
+            });
+        } catch (e) {
+            assert(e.message === "callback error");
+            done();
+        }
+    });
+
+    describe('promisified', function() {
+        if (isBrowser()) {
+            // node only tests
+            return;
+        }
+
+        var names = [
+            'native-promise-only',
+            'bluebird',
+            'es6-promise',
+            'rsvp'
+        ];
+
+        names.forEach(function(name) {
+            describe(name, function() {
+
+                var Promise = require(name);
+                if (typeof Promise.Promise === 'function') {
+                    Promise = Promise.Promise;
+                }
+
+                it('resolve', function(done) {
+                    var promisified = function(argument) {
+                        return new Promise(function (resolve) {
+                            setTimeout(function () {
+                                resolve(argument + " resolved");
+                            }, 15);
+                        });
+                    };
+                    async.asyncify(promisified)("argument", function (err, value) {
+                        if (err) {
+                            return done(new Error("should not get an error here"));
+                        }
+                        assert(value === "argument resolved");
+                        done();
+                    });
+                });
+
+                it('reject', function(done) {
+                    var promisified = function(argument) {
+                        return new Promise(function (resolve, reject) {
+                            reject(argument + " rejected");
+                        });
+                    };
+                    async.asyncify(promisified)("argument", function (err) {
+                        assert(err);
+                        assert(err.message === "argument rejected");
+                        done();
+                    });
+                });
+            });
+        });
+    });
+});
