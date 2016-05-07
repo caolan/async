@@ -9,7 +9,7 @@ describe('asyncify', function(done){
         var parse = async.asyncify(JSON.parse);
         parse("{\"a\":1}", function (err, result) {
             assert(!err);
-            assert(result.a === 1);
+            expect(result.a).to.equal(1);
             done();
         });
     });
@@ -20,7 +20,7 @@ describe('asyncify', function(done){
         });
         parse("{\"a\":1}", function (err, result) {
             assert(!err);
-            assert(result === null);
+            expect(result).to.equal(null);
             done();
         });
     });
@@ -42,7 +42,7 @@ describe('asyncify', function(done){
             throw new Error("foo");
         })(function (err) {
             assert(err);
-            assert(err.message === "foo");
+            expect(err.message).to.equal("foo");
             done();
         });
     });
@@ -55,8 +55,8 @@ describe('asyncify', function(done){
                 }
                 throw new Error("callback error");
             });
-        } catch (e) {
-            assert(e.message === "callback error");
+        } catch (err) {
+            expect(err.message).to.equal("callback error");
             done();
         }
     });
@@ -94,7 +94,7 @@ describe('asyncify', function(done){
                         if (err) {
                             return done(new Error("should not get an error here"));
                         }
-                        assert(value === "argument resolved");
+                        expect(value).to.equal("argument resolved");
                         done();
                     });
                 });
@@ -107,7 +107,7 @@ describe('asyncify', function(done){
                     };
                     async.asyncify(promisified)("argument", function (err) {
                         assert(err);
-                        assert(err.message === "argument rejected");
+                        expect(err.message).to.equal("argument rejected");
                         done();
                     });
                 });
