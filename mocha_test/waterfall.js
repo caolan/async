@@ -1,5 +1,6 @@
 var async = require('../lib');
 var expect = require('chai').expect;
+var assert = require('assert');
 
 describe("waterfall", function () {
 
@@ -80,7 +81,7 @@ describe("waterfall", function () {
                 callback('error');
             },
             function(callback){
-                test.ok(false, 'next function should not be called');
+                assert(false, 'next function should not be called');
                 callback();
             }
         ], function(err){
