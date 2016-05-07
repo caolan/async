@@ -59,7 +59,7 @@ describe('autoInject', function () {
                 callOrder.push('task1');
                 cb(null, 1);
             },
-            task2: ['task3', function (task3, cb) {
+            task2: ['task3', function ( task3 , cb ) {
                 expect(task3).to.equal(3);
                 callOrder.push('task2');
                 cb(null, 2);
@@ -90,9 +90,9 @@ describe('autoInject', function () {
         eval("(function() {                                                 " +
              "    it('should work with es6 arrow syntax', function (done) { " +
              "        async.autoInject({                                    " +
-             "            task1: (cb)        => cb(null, 1),                " +
-             "            task2: (task3, cb) => cb(null, 2),                " +
-             "            task3: cb          => cb(null, 3)                 " +
+             "            task1: (cb)           => cb(null, 1),             " +
+             "            task2: ( task3 , cb ) => cb(null, 2),             " +
+             "            task3: cb             => cb(null, 3)              " +
              "        }, (err, results) => {                                " +
              "            expect(results.task1).to.equal(1);                " +
              "            expect(results.task3).to.equal(3);                " +
