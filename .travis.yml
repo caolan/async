@@ -5,10 +5,16 @@ node_js:
   - "4"
   - "6"
 sudo: false
-after_success: npm run coveralls
+after_success:
+  - npm run coveralls
 
 # Needed to run Karma with Firefox on Travis
 # http://karma-runner.github.io/0.13/plus/travis.html
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
+
+env:
+  global:
+    - secure: "MWY50FUxGTJmtUGGgTmclky7urU6gcQqhzPfF0Y19XycFuS1Vpxws3qp1Nb8IA6L1uS0L+n6uREobpUwTwW+cMEl6FRgs9BwdAQPxwKinGvkwoAOCoTFPFR4YYnTLu4JxmX+MpM374nCe7dKa0oE3//EkM5tCtoJUuKRhxHT2Zo="
+    - secure: "dF43nVj0KI7Y/ZDKeNjFCYTAF7nDyGhuiqbg/mN9ORXTBTucanOUZ2MyuHpJvHXMmit8isIxBZvnIcsDcyO0w61+FFcLChNOlK567gO4y8NDV7oRd/eHq7nNQgHFeZUcPHrkJN8A24NIRlNXqxvgIElt4cKP3Rdi63Ee5AL1+vI="

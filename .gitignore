@@ -3,6 +3,7 @@ perf/versions
 nyc_output
 coverage
 *.log
+*.lck
 .DS_Store
 npm-debug.log
 tmp
