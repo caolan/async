@@ -366,6 +366,18 @@ describe('auto', function () {
         }).to.throw();
     });
 
+    it('should handle array tasks with just a function', function (done) {
+        async.auto({
+            a: [function (cb) {
+                cb(null, 1);
+            }],
+            b: ["a", function (results, cb) {
+                expect(results.a).to.equal(1);
+                cb();
+            }]
+        }, done)
+    });
+
     it("should avoid unncecessary deferrals", function (done) {
         var isSync = true;
 

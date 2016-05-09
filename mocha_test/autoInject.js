@@ -74,4 +74,16 @@ describe('autoInject', function () {
         });
     });
 
+    it('should handle array tasks with just a function', function (done) {
+        async.autoInject({
+            a: [function (cb) {
+                cb(null, 1);
+            }],
+            b: ["a", function (a, cb) {
+                expect(a).to.equal(1);
+                cb();
+            }]
+        }, done)
+    });
+
 });
