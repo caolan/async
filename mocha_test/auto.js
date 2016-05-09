@@ -375,7 +375,7 @@ describe('auto', function () {
                 expect(results.a).to.equal(1);
                 cb();
             }]
-        }, done)
+        }, done);
     });
 
     it("should avoid unncecessary deferrals", function (done) {

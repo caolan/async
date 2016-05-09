@@ -83,7 +83,7 @@ describe('autoInject', function () {
                 expect(a).to.equal(1);
                 cb();
             }]
-        }, done)
+        }, done);
     });
 
 });
