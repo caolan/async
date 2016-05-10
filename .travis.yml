@@ -23,5 +23,7 @@ script:
 
 env:
   global:
+    - NPM_CONFIG_PROGRESS="false"
     - secure: "MWY50FUxGTJmtUGGgTmclky7urU6gcQqhzPfF0Y19XycFuS1Vpxws3qp1Nb8IA6L1uS0L+n6uREobpUwTwW+cMEl6FRgs9BwdAQPxwKinGvkwoAOCoTFPFR4YYnTLu4JxmX+MpM374nCe7dKa0oE3//EkM5tCtoJUuKRhxHT2Zo="
     - secure: "dF43nVj0KI7Y/ZDKeNjFCYTAF7nDyGhuiqbg/mN9ORXTBTucanOUZ2MyuHpJvHXMmit8isIxBZvnIcsDcyO0w61+FFcLChNOlK567gO4y8NDV7oRd/eHq7nNQgHFeZUcPHrkJN8A24NIRlNXqxvgIElt4cKP3Rdi63Ee5AL1+vI="
+  matrix: BROWSER=false
