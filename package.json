@@ -64,7 +64,8 @@
     "mocha-browser-test": "karma start",
     "mocha-node-test": "mocha mocha_test/ --compilers js:babel-core/register",
     "mocha-test": "npm run mocha-node-test && npm run mocha-browser-test",
-    "test": "npm run-script lint && npm run mocha-node-test"
+    "test": "npm run-script lint && npm run mocha-node-test",
+    "testingbot": "karma start karma-testingbot.conf.js"
   },
   "license": "MIT",
   "jam": {

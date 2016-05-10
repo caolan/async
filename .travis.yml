@@ -3,7 +3,10 @@ node_js:
   - "0.10"
   - "0.12"
   - "4"
-  - "6"
+matrix:
+  include:
+    - node_js: "6.0"
+      env: BROWSER=true
 sudo: false
 after_success:
   - npm run coveralls
@@ -13,6 +16,10 @@ after_success:
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
+
+script:
+  - npm test
+  - "[ $BROWSER == false ] || npm run testingbot"
 
 env:
   global:

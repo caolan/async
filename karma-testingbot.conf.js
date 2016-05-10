@@ -46,9 +46,11 @@ module.exports = function(config) {
     config.set({
         customLaunchers: customLaunchers,
         browsers: Object.keys(customLaunchers),
+        // we currently are allowed to spawn 15 concurrent vms on testing bot
+        concurrency: 15,
 
         testingbot: {
-            testName: 'Karma and TestingBot demo',
+            testName: 'Async.js TestingBot suite',
             recordScreenshots: false,
             connectOptions: {
                 verbose: false,
@@ -58,7 +60,7 @@ module.exports = function(config) {
             public: 'public'
         },
         // up the no activity timeout in case of traffic
-        browserNoActivityTimeout: 100000,
+        browserNoActivityTimeout: 10000,
 
 
         files: [
@@ -69,7 +71,7 @@ module.exports = function(config) {
         preprocessors: {
             'mocha_test/*.js': ['browserify']
         },
-        reporters: ['mocha'],
+        reporters: ['mocha', 'testingbot'],
         singleRun: true,
 
         browserify: {
