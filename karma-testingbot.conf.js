@@ -57,7 +57,7 @@ module.exports = function(config) {
                 'se-port': 4445,
                 logfile: 'testingbot_tunnel.log'
             },
-            public: 'public'
+            public: true
         },
         // up the no activity timeout in case of traffic
         browserNoActivityTimeout: 10000,
