@@ -2146,7 +2146,7 @@ function(err, results){
 ---------------------------------------
 
 <a name="reflectAll"></a>
-### reflectAll()
+### reflectAll(tasks)
 
 A helper function that wraps an array of functions with reflect.
 
