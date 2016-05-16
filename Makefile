@@ -114,8 +114,9 @@ build: clean build-bundle build-dist build-es build-config build-es-config test-
 
 .PHONY: release-major release-minor release-patch release-prerelease
 release-major release-minor release-patch release-prerelease: all
+	npm i # ensure dependencies are up to date (#1158)
 	git add --force $(DIST)
-	git commit -am "update minified build"; true
+	git commit -am "Update built files"; true
 	$(XYZ) --increment $(@:release-%=%)
 	# build again to propagate the version
 	$(MAKE) build-config
