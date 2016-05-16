@@ -167,5 +167,4 @@ run "git commit --message '$message'"
 run "git tag --annotate '$tag' --message '$message'"
 run "git push '$repo' 'refs/heads/$branch' 'refs/tags/$tag'"
 
-#cd build/
-#run "npm pack"
+# npm publish is managed by the Makefile

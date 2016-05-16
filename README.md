@@ -1,7 +1,7 @@
 # Async.js
 
 [![Build Status via Travis CI](https://travis-ci.org/caolan/async.svg?branch=master)](https://travis-ci.org/caolan/async)
-[![NPM version](http://img.shields.io/npm/v/async.svg)](https://www.npmjs.org/package/async)
+[![NPM version](https://img.shields.io/npm/v/async.svg)](https://www.npmjs.com/package/async)
 [![Coverage Status](https://coveralls.io/repos/caolan/async/badge.svg?branch=master)](https://coveralls.io/r/caolan/async?branch=master)
 [![Join the chat at https://gitter.im/caolan/async](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/caolan/async?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -9,13 +9,13 @@
 
 Async is a utility module which provides straight-forward, powerful functions
 for working with asynchronous JavaScript. Although originally designed for
-use with [Node.js](http://nodejs.org) and installable via `npm install --save async`,
+use with [Node.js](https://nodejs.org/) and installable via `npm install --save async`,
 it can also be used directly in the browser.
 
 Async is also installable via:
 
 - [bower](http://bower.io/): `bower install async`
-- [component](https://github.com/component/component): `component install caolan/async`
+- [component](https://github.com/componentjs/component): `component install caolan/async`
 - [jam](http://jamjs.org/): `jam install async`
 
 Async provides around 70 functions that include the usual 'functional'
@@ -221,6 +221,7 @@ Some functions are also available in the following forms:
 * [`filter`](#filter), `filterSeries`, `filterLimit`
 * [`reject`](#reject), `rejectSeries`, `rejectLimit`
 * [`reduce`](#reduce), [`reduceRight`](#reduceRight)
+* [`transform`](#transform)
 * [`detect`](#detect), `detectSeries`, `detectLimit`
 * [`sortBy`](#sortBy)
 * [`some`](#some), `someLimit`, `someSeries`
@@ -442,8 +443,7 @@ __Arguments__
 
 * `coll` - A collection to iterate over.
 * `iteratee(item, callback)` - A truth test to apply to each item in `coll`.
-  The `iteratee` is passed a `callback(err, truthValue)`, which must be called with a
-  boolean argument once it has completed.
+  The `iteratee` is passed a `callback(err, truthValue)` , which must be called with a boolean argument once it has completed. **Callback arguments changed in 2.0**
 * `callback(err, results)` - *Optional* A callback which is called after all the `iteratee`
   functions have finished.
 
@@ -548,9 +548,7 @@ If order within the original `coll` is important, then look at `detectSeries`.
 __Arguments__
 
 * `coll` - A collection to iterate over.
-* `iteratee(item, callback)` - A truth test to apply to each item in `coll`.
-  The iteratee is passed a `callback(err, truthValue)` which must be called with a
-  boolean argument once it has completed.
+* `iteratee(item, callback)` - A truth test to apply to each item in `coll`. The iteratee is passed a `callback(err, truthValue)` which must be called with a boolean argument once it has completed. **Callback arguments changed in 2.0**
 * `callback(err, result)` - *Optional* A callback which is called as soon as any iteratee returns
   `true`, or after all the `iteratee` functions have finished. Result will be
   the first item in the array that passes the truth test (iteratee) or the
@@ -640,8 +638,7 @@ __Arguments__
 
 * `coll` - A collection to iterate over.
 * `iteratee(item, callback)` - A truth test to apply to each item in the array
-  in parallel. The iteratee is passed a `callback(err, truthValue)` which must be
-  called with a boolean argument once it has completed.
+  in parallel. The iteratee is passed a `callback(err, truthValue)` which must be called with a boolean argument once it has completed. **Callback arguments changed in 2.0**
 * `callback(err, result)` - *Optional* A callback which is called as soon as any iteratee returns
   `true`, or after all the iteratee functions have finished. Result will be
   either `true` or `false` depending on the values of the async tests.
@@ -677,9 +674,7 @@ If any iteratee call returns `false`, the main `callback` is immediately called.
 __Arguments__
 
 * `coll` - A collection to iterate over.
-* `iteratee(item, callback)` - A truth test to apply to each item in the collection
-  in parallel. The iteratee is passed a `callback(err, truthValue)` which must be
-  called with a  boolean argument once it has completed.
+* `iteratee(item, callback)` - A truth test to apply to each item in the collection in parallel. The iteratee is passed a `callback(err, truthValue)` which must be called with a  boolean argument once it has completed. **Callback arguments changed in 2.0**
 * `callback(err, result)` - *Optional* A callback which is called after all the `iteratee`
   functions have finished. Result will be either `true` or `false` depending on
   the values of the async tests.
@@ -924,7 +919,7 @@ async.whilst(
 ### doWhilst(fn, test, callback)
 
 The post-check version of [`whilst`](#whilst). To reflect the difference in
-the order of operations, the arguments `test` and `fn` are switched.
+the order of operations, the arguments `test` and `fn` are switched. The `test` function is also passed the non-error callback results of `fn`.
 
 `doWhilst` is to `whilst` as `do while` is to `while` in plain JavaScript.
 
@@ -946,7 +941,7 @@ The inverse of [`whilst`](#whilst).
 
 ### doUntil(fn, test, callback)
 
-Like [`doWhilst`](#doWhilst), except the `test` is inverted. Note the argument ordering differs from `until`.
+Like [`doWhilst`](#doWhilst), except the `test` is inverted. Note the argument ordering differs from `until`. The `test` function is also passed the non-error callback results of `fn`.
 
 ---------------------------------------
 
@@ -956,18 +951,26 @@ Like [`doWhilst`](#doWhilst), except the `test` is inverted. Note the argument o
 
 Like [`whilst`](#whilst), except the `test` is an asynchronous function that is passed a callback in the form of `function (err, truth)`. If error is passed to `test` or `fn`, the main callback is immediately called with the value of the error.
 
+Additionaly `during` passes any arguments passed by the iteratee function (2nd function) to the test function (1st function). The test callback will allways be the last parameter.
+
 __Example__
 
 ```js
 var count = 0;
 
 async.during(
-    function (callback) {
-      return callback(null, count < 5);
+    function (result, callback) {
+      if(!callback) {
+        callback = result;
+        result = null;
+      }
+      return callback(null, !result || result.counter < 5);
     },
     function (callback) {
         count++;
-        setTimeout(callback, 1000);
+        setTimeout(function() {
+          callback(null, { counter: count });
+        }, 1000);
     },
     function (err) {
         // 5 seconds have passed
@@ -1408,8 +1411,8 @@ async.auto({
 __Arguments__
 
 * `tasks` - An object. Each of its properties is either a function or an array of requirements, with the function itself the last item in the array. The object's key of a property serves as the name of the task defined by that property, i.e. can be used when specifying requirements for other tasks. The function receives one or two arguments:
-  * a `results` object, containing the results of the previously executed functions, only passed if the task has any dependencies,
-  * a `callback(err, result)` function, which must be called when finished, passing an `error` (which can be `null`) and the result of the function's execution.
+  * a `results` object, containing the results of the previously executed functions, only passed if the task has any dependencies, **Argument order changed in 2.0**
+  * a `callback(err, result)` function, which must be called when finished, passing an `error` (which can be `null`) and the result of the function's execution. **Argument order changed in 2.0**
 * `concurrency` - An optional `integer` for determining the maximum number of tasks that can be run in parallel. By default, as many as possible.
 * `callback(err, results)` - An optional callback which is called when all the tasks have been completed. It receives the `err` argument if any `tasks` pass an error to their callback. Results are always returned; however, if an error occurs, no further `tasks` will be performed, and the results object will only contain partial results.
 
@@ -1574,7 +1577,7 @@ __Arguments__
   the function's execution, and (2) a `results` object, containing the results of
   the previously executed functions (if nested inside another control flow).
 * `callback(err, results)` - An optional callback which is called when the
-  task has succeeded, or after the final failed attempt. It receives the `err` and `result` arguments of the last attempt at completing the `task`.
+  task has succeeded, or after the final failed attempt. It receives the `err` and `result` arguments of the last attempt at completing the `task`. **Callback made optional in 2.0, use `retryable` for previous behavior.**
 
 The [`retry`](#retry) function can be used as a stand-alone control flow by passing a callback, as shown below:
 
@@ -2143,7 +2146,7 @@ function(err, results){
 ---------------------------------------
 
 <a name="reflectAll"></a>
-### reflectAll()
+### reflectAll(tasks)
 
 A helper function that wraps an array of functions with reflect.
 

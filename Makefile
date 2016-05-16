@@ -16,7 +16,7 @@ DIST = dist
 SRC = lib/index.js
 SCRIPTS = ./support
 JS_SRC = $(shell find lib/ -type f -name '*.js')
-LINT_FILES = lib/ test/ mocha_test/ $(shell find perf/ -maxdepth 2 -type f) support/ karma.conf.js
+LINT_FILES = lib/ mocha_test/ $(shell find perf/ -maxdepth 2 -type f) support/ karma.conf.js
 
 UMD_BUNDLE = $(BUILDDIR)/dist/async.js
 UMD_BUNDLE_MIN = $(BUILDDIR)/dist/async.min.js
@@ -120,5 +120,5 @@ release-major release-minor release-patch release-prerelease: all
 	# build again to propagate the version
 	$(MAKE) build-config
 	$(MAKE) build-es-config
-	cd build/ && npm pack
-	cd build-es/ && npm pack
+	cd build/ && npm publish
+	cd build-es/ && npm publish

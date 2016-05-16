@@ -1,7 +1,7 @@
 {
   "name": "async",
   "description": "Higher-order functions and common patterns for asynchronous code",
-  "version": "2.0.0-rc.3",
+  "version": "2.0.0-rc.4",
   "main": "dist/async.js",
   "author": "Caolan McMahon",
   "repository": {
@@ -44,7 +44,6 @@
     "karma-mocha-reporter": "^1.0.2",
     "mocha": "^2.2.5",
     "native-promise-only": "^0.8.0-a",
-    "nodeunit": ">0.0.0",
     "nyc": "^2.1.0",
     "recursive-readdir": "^1.3.0",
     "rimraf": "^2.5.0",
@@ -59,12 +58,11 @@
   "scripts": {
     "coverage": "nyc npm test && nyc report",
     "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
-    "lint": "jshint lib/ test/ mocha_test/ perf/memory.js perf/suites.js perf/benchmark.js support/ karma.conf.js && jscs lib/ test/ mocha_test/ perf/memory.js perf/suites.js perf/benchmark.js support/ karma.conf.js",
+    "lint": "jshint lib/ mocha_test/ perf/memory.js perf/suites.js perf/benchmark.js support/ karma.conf.js && jscs lib/ mocha_test/ perf/memory.js perf/suites.js perf/benchmark.js support/ karma.conf.js",
     "mocha-browser-test": "karma start",
     "mocha-node-test": "mocha mocha_test/ --compilers js:babel-core/register",
     "mocha-test": "npm run mocha-node-test && npm run mocha-browser-test",
-    "nodeunit-test": "nodeunit test/test-async.js",
-    "test": "npm run-script lint && npm run nodeunit-test && npm run mocha-node-test"
+    "test": "npm run-script lint && npm run mocha-node-test"
   },
   "license": "MIT",
   "jam": {
