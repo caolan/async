@@ -323,15 +323,15 @@ describe('queue', function(){
 
     it('pause', function(done) {
         var call_order = [],
-            task_timeout = 40,
-            pause_timeout = 100,
-            resume_timeout = 180,
+            task_timeout = 80,
+            pause_timeout = task_timeout * 2.5,
+            resume_timeout = task_timeout * 4.5,
             tasks = [ 1, 2, 3, 4, 5, 6 ],
 
             elapsed = (function () {
-                var start = (new Date()).valueOf();
+                var start = Date.now();
                 return function () {
-                    return Math.round(((new Date()).valueOf() - start) / 40) * 40;
+                    return Math.round((Date.now() - start) / task_timeout) * task_timeout;
                 };
             })();
 
@@ -363,15 +363,15 @@ describe('queue', function(){
 
         setTimeout(function () {
             expect(call_order).to.eql([
-                'process 1', 'timeout 40',
-                'process 2', 'timeout 80',
-                'process 3', 'timeout 200',
-                'process 4', 'timeout 200',
-                'process 5', 'timeout 200',
-                'process 6', 'timeout 240'
+                'process 1', 'timeout ' + task_timeout,
+                'process 2', 'timeout ' + task_timeout * 2,
+                'process 3', 'timeout ' + task_timeout * 5,
+                'process 4', 'timeout ' + task_timeout * 5,
+                'process 5', 'timeout ' + task_timeout * 5,
+                'process 6', 'timeout ' + task_timeout * 6
             ]);
             done();
-        }, 300);
+        }, (task_timeout * tasks.length) + pause_timeout + resume_timeout);
     });
 
     it('pause in worker with concurrency', function(done) {
@@ -406,14 +406,14 @@ describe('queue', function(){
     it('pause with concurrency', function(done) {
         var call_order = [],
             task_timeout = 40,
-            pause_timeout = 20,
-            resume_timeout = 110,
+            pause_timeout = task_timeout / 2,
+            resume_timeout = task_timeout * 2.75,
             tasks = [ 1, 2, 3, 4, 5, 6 ],
 
             elapsed = (function () {
-                var start = (new Date()).valueOf();
+                var start = Date.now();
                 return function () {
-                    return Math.round(((new Date()).valueOf() - start) / 40) * 40;
+                    return Math.round((Date.now() - start) / task_timeout) * task_timeout;
                 };
             })();
 
@@ -443,15 +443,15 @@ describe('queue', function(){
 
         setTimeout(function () {
             expect(call_order).to.eql([
-                'process 1', 'timeout 40',
-                'process 2', 'timeout 40',
-                'process 3', 'timeout 160',
-                'process 4', 'timeout 160',
-                'process 5', 'timeout 200',
-                'process 6', 'timeout 200'
+                'process 1', 'timeout ' + task_timeout,
+                'process 2', 'timeout ' + task_timeout,
+                'process 3', 'timeout ' + task_timeout * 4,
+                'process 4', 'timeout ' + task_timeout * 4,
+                'process 5', 'timeout ' + task_timeout * 5,
+                'process 6', 'timeout ' + task_timeout * 5
             ]);
             done();
-        }, 300);
+        }, (task_timeout * tasks.length) + pause_timeout + resume_timeout);
     });
 
     it('start paused', function(done) {
