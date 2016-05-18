@@ -23,7 +23,7 @@ describe("retry", function () {
         });
     });
 
-    it('retry when all attempts succeeds',function(done) {
+    it('retry when all attempts fail',function(done) {
         var times = 3;
         var callCount = 0;
         var error = 'ERROR';
@@ -53,7 +53,7 @@ describe("retry", function () {
         done();
     });
 
-    it('retry with interval when all attempts succeeds',function(done) {
+    it('retry with interval when all attempts fail',function(done) {
         var times = 3;
         var interval = 50;
         var callCount = 0;
@@ -68,6 +68,28 @@ describe("retry", function () {
             var now = new Date().getTime();
             var duration = now - start;
             assert(duration >= (interval * (times -1)),  'did not include interval');
+            assert.equal(callCount, 3, "did not retry the correct number of times");
+            assert.equal(err, error + times, "Incorrect error was returned");
+            assert.equal(result, erroredResult + times, "Incorrect result was returned");
+            done();
+        });
+    });
+
+    it('retry with custom interval when all attempts fail',function(done) {
+        var times = 3;
+        var intervalFunc = function(retryCount) { return retryCount * 100; };
+        var callCount = 0;
+        var error = 'ERROR';
+        var erroredResult = 'RESULT';
+        function fn(callback) {
+            callCount++;
+            callback(error + callCount, erroredResult + callCount); // respond with indexed values
+        }
+        var start = new Date().getTime();
+        async.retry({ times: times, interval: intervalFunc}, fn, function(err, result){
+            var now = new Date().getTime();
+            var duration = now - start;
+            assert(duration >= 300,  'did not include custom interval');
             assert.equal(callCount, 3, "did not retry the correct number of times");
             assert.equal(err, error + times, "Incorrect error was returned");
             assert.equal(result, erroredResult + times, "Incorrect result was returned");
