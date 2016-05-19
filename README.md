@@ -1570,7 +1570,7 @@ __Arguments__
 
 * `opts` - Can be either an object with `times` and `interval` or a number.
   * `times` - The number of attempts to make before giving up.  The default is `5`.
-  * `interval` - The time to wait between retries, in milliseconds.  The default is `0`.
+  * `interval` - The time to wait between retries, in milliseconds.  The default is `0`. The interval may also be specified as a function of the retry count (see example).
   * If `opts` is a number, the number specifies the number of times to retry, with the default interval of `0`.
 * `task(callback, results)` - A function which receives two arguments: (1) a `callback(err, result)`
   which must be called when finished, passing `err` (which can be `null`) and the `result` of
@@ -1591,6 +1591,21 @@ async.retry(3, apiMethod, function(err, result) {
 ```js
 // try calling apiMethod 3 times, waiting 200 ms between each retry
 async.retry({times: 3, interval: 200}, apiMethod, function(err, result) {
+    // do something with the result
+});
+```
+
+The interval may also be specified as a function of the retry count:
+
+```js
+// try calling apiMethod 10 times with exponential backoff
+// (i.e. intervals of 100, 200, 400, 800, 1600, ... milliseconds)
+async.retry({
+  times: 10,
+  interval: function(retryCount) {
+    return 50 * Math.pow(2, retryCount);
+  }
+}, apiMethod, function(err, result) {
     // do something with the result
 });
 ```
