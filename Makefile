@@ -85,12 +85,6 @@ build-config: $(BUILDDIR)/package.json $(BUILDDIR)/component.json $(BUILDDIR)/bo
 
 build-es-config: $(BUILD_ES)/package.json $(BUILD_ES)/README.md $(BUILD_ES)/LICENSE $(BUILD_ES)/CHANGELOG.md
 
-bower.json: package.json
-	support/sync-package-managers.js
-
-component.json: package.json
-	support/sync-package-managers.js
-
 $(BUILDDIR)/package.json: package.json
 	mkdir -p "$(@D)"
 	support/sync-cjs-package.js > $@
