@@ -155,6 +155,33 @@ describe('queue', function(){
         });
     });
 
+    it('global error handler', function(done){
+        var results = [];
+
+        var q = async.queue(function (task, callback) {
+            callback(task.name === 'foo' ? new Error('fooError') : null);
+        }, 2);
+
+        q.error = function(error, task) {
+            expect(error).to.exist;
+            expect(error.message).to.equal('fooError');
+            expect(task.name).to.equal('foo');
+            results.push('fooError');
+        };
+
+        q.drain = function() {
+            expect(results).to.eql(['fooError', 'bar']);
+            done();
+        };
+
+        q.push({name: 'foo'});
+
+        q.push({name: 'bar'}, function(error) {
+            expect(error).to.not.exist;
+            results.push('bar');
+        });
+    });
+
     // The original queue implementation allowed the concurrency to be changed only
     // on the same event loop during which a task was added to the queue. This
     // test attempts to be a more robust test.
