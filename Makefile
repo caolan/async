@@ -2,6 +2,7 @@
 # created here are checked in so people on all platforms can run npm scripts.
 # This build should be run once per release.
 
+SHELL=/bin/bash
 export PATH := ./node_modules/.bin/:$(PATH):./bin/
 
 PACKAGE = asyncjs
@@ -75,7 +76,7 @@ build-es: $(ES_MODULES)
 
 $(BUILD_ES)/%.js: lib/%.js
 	mkdir -p "$(@D)"
-	sed -r "s/(import.+)lodash/\1lodash-es/g" $< > $@
+	sed -E "s/(import.+)lodash/\1lodash-es/g" $< > $@
 
 test-build:
 	mocha support/build.test.js
