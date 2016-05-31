@@ -64,29 +64,5 @@
     "mocha-test": "npm run mocha-node-test && npm run mocha-browser-test",
     "test": "npm run-script lint && npm run mocha-node-test"
   },
-  "license": "MIT",
-  "jam": {
-    "main": "dist/async.js",
-    "include": [
-      "dist/async.js",
-      "README.md",
-      "LICENSE"
-    ],
-    "categories": [
-      "Utilities"
-    ]
-  },
-  "spm": {
-    "main": "dist/async.js"
-  },
-  "volo": {
-    "main": "dist/async.js",
-    "ignore": [
-      "**/.*",
-      "node_modules",
-      "bower_components",
-      "test",
-      "tests"
-    ]
-  }
+  "license": "MIT"
 }

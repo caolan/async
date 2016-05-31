@@ -13,8 +13,6 @@ This involves updating the version number in package.json, committing this
 change (along with any staged changes), tagging the commit, pushing to the
 remote git repository, and finally publishing to the public npm registry.
 
-If present, component.json is updated along with package.json.
-
 Options:
 
 -b --branch <name>
@@ -160,7 +158,6 @@ inc() {
 
 inc package.json
 
-run "$dir/sync-package-managers.js"
 run "git add --force *.json"
 
 run "git commit --message '$message'"
