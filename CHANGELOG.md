@@ -32,7 +32,9 @@ Another theme is performance. We have eliminated internal deferrals in all cases
 - Added `autoInject`, a relative of `auto` that automatically spreads a task's dependencies as arguments to the task function. (#608, #1055, #1099, #1100)
 - You can now limit the concurrency of `auto` tasks. (#635, #637)
 - Added `retryable`, a relative of `retry` that wraps an async function, making it retry when called. (#1058)
+- `retry` now supports specifying a function that determines the next time interval, useful for exponential backoff and other retry strategies. (#1161)
 - Added `q.unsaturated` -- callback called when a `queue`'s number of running workers falls below a threshold. (#868, #1030, #1033, #1034)
+- Added `q.error` -- a callback called whenever a `queue` task calls its callback with an error. (#1170)
 - `applyEach` and `applyEachSeries` now pass results to the final callback. (#1088)
 
 ## Breaking changes
