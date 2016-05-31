@@ -122,12 +122,10 @@ describe("map", function() {
             callback(null, val * 2);
         }, function(err, result) {
             if (err) throw err;
-            expect(Object.prototype.toString.call(result)).to.equal('[object Object]');
-            expect(result).to.eql({
-                a: 2,
-                b: 4,
-                c: 6
-            });
+            expect(Object.prototype.toString.call(result)).to.equal('[object Array]');
+            expect(result).to.contain(2);
+            expect(result).to.contain(4);
+            expect(result).to.contain(6);
             done();
         });
     });
@@ -170,11 +168,9 @@ describe("map", function() {
             callback(null, val * 2);
         }, function(err, result) {
             if (err) throw err;
-            expect(result).to.eql({
-                a: 2,
-                b: 4,
-                c: 6
-            });
+            expect(result).to.contain(2);
+            expect(result).to.contain(4);
+            expect(result).to.contain(6);
             done();
         });
     });
