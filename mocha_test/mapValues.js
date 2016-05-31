@@ -7,12 +7,12 @@ describe('mapValues', function () {
 
     context('mapValuesLimit', function () {
         it('basics', function (done) {
-            var running = 0
+            var running = 0;
             var concurrency = {
                 a: 2,
                 b: 2,
                 c: 1
-            }
+            };
             async.mapValuesLimit(obj, 2, function (val, key, next) {
                 running++;
                 async.setImmediate(function () {
@@ -21,9 +21,9 @@ describe('mapValues', function () {
                     next(null, key + val);
                 });
             }, function (err, result) {
-                expect(running).to.equal(0)
+                expect(running).to.equal(0);
                 expect(err).to.eql(null);
-                expect(result).to.eql({a: 'a1', b: 'b2', c: 'c3'})
+                expect(result).to.eql({a: 'a1', b: 'b2', c: 'c3'});
                 done();
             });
         });
@@ -44,12 +44,12 @@ describe('mapValues', function () {
 
     context('mapValues', function () {
         it('basics', function (done) {
-            var running = 0
+            var running = 0;
             var concurrency = {
                 a: 3,
                 b: 2,
                 c: 1
-            }
+            };
             async.mapValues(obj, function (val, key, next) {
                 running++;
                 async.setImmediate(function () {
@@ -58,9 +58,9 @@ describe('mapValues', function () {
                     next(null, key + val);
                 });
             }, function (err, result) {
-                expect(running).to.equal(0)
+                expect(running).to.equal(0);
                 expect(err).to.eql(null);
-                expect(result).to.eql({a: 'a1', b: 'b2', c: 'c3'})
+                expect(result).to.eql({a: 'a1', b: 'b2', c: 'c3'});
                 done();
             });
         });
@@ -68,12 +68,12 @@ describe('mapValues', function () {
 
     context('mapValuesSeries', function () {
         it('basics', function (done) {
-            var running = 0
+            var running = 0;
             var concurrency = {
                 a: 1,
                 b: 1,
                 c: 1
-            }
+            };
             async.mapValuesSeries(obj, function (val, key, next) {
                 running++;
                 async.setImmediate(function () {
@@ -82,9 +82,9 @@ describe('mapValues', function () {
                     next(null, key + val);
                 });
             }, function (err, result) {
-                expect(running).to.equal(0)
+                expect(running).to.equal(0);
                 expect(err).to.eql(null);
-                expect(result).to.eql({a: 'a1', b: 'b2', c: 'c3'})
+                expect(result).to.eql({a: 'a1', b: 'b2', c: 'c3'});
                 done();
             });
         });
