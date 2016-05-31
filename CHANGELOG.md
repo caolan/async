@@ -46,6 +46,7 @@ Another theme is performance. We have eliminated internal deferrals in all cases
 - `{METHOD}` and `{METHOD}Series` are now implemented in terms of `{METHOD}Limit`. This is a major internal simplification, and is not expected to cause many problems, but it does subtly affect how functions execute internally. (#778, #847)
 - `retry`'s callback is now optional. Previously, omitting the callback would partially apply the function, meaning it could be passed directly as a task to `series` or `auto`. The partially applied "control-flow" behavior has been separated out into `retryable`. (#1054, #1058)
 - The timing of the `q.saturated()` callback in a `queue` has been modified to better reflect when tasks pushed to the queue will start queueing. (#724, #1078)
+- Dropped support for Component, Jam, SPM, and Volo (#1175, ##176)
 
 ## Other
 
