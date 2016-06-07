@@ -41,7 +41,9 @@
     "no-loop-func": 2,
     "dot-notation": 0,
     "valid-jsdoc": ["error", {
-        "requireReturn": false
+        "requireReturn": false,
+        "requireReturnDescription": false,
+        "requireReturnType": false
     }]
   }
 }

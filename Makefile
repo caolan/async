@@ -37,8 +37,7 @@ clean:
 	rm -rf tmp/
 
 lint:
-	jshint $(LINT_FILES)
-	jscs $(LINT_FILES)
+	eslint $(LINT_FILES)
 
 # Compile the ES6 modules to singular bundles, and individual bundles
 build-bundle: build-modules $(UMD_BUNDLE) $(CJS_BUNDLE)
