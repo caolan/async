@@ -259,7 +259,7 @@
     /**
      * Converts `value` to an integer.
      *
-     * **Note:** This function is loosely based on
+     * **Note:** This method is loosely based on
      * [`ToInteger`](http://www.ecma-international.org/ecma-262/6.0/#sec-tointeger).
      *
      * @static
@@ -373,8 +373,7 @@
     }
 
     /**
-     * A no-operation function that returns `undefined` regardless of the
-     * arguments it receives.
+     * A method that returns `undefined`.
      *
      * @static
      * @memberOf _
@@ -382,10 +381,8 @@
      * @category Util
      * @example
      *
-     * var object = { 'user': 'fred' };
-     *
-     * _.noop(object) === undefined;
-     * // => true
+     * _.times(2, _.noop);
+     * // => [undefined, undefined]
      */
     function noop() {
       // No operation performed.
@@ -520,7 +517,7 @@
      * The base implementation of `_.has` without support for deep paths.
      *
      * @private
-     * @param {Object} object The object to query.
+     * @param {Object} [object] The object to query.
      * @param {Array|string} key The key to check.
      * @returns {boolean} Returns `true` if `key` exists, else `false`.
      */
@@ -528,8 +525,9 @@
       // Avoid a bug in IE 10-11 where objects with a [[Prototype]] of `null`,
       // that are composed entirely of index properties, return `false` for
       // `hasOwnProperty` checks of them.
-      return hasOwnProperty.call(object, key) ||
-        (typeof object == 'object' && key in object && getPrototype(object) === null);
+      return object != null &&
+        (hasOwnProperty.call(object, key) ||
+          (typeof object == 'object' && key in object && getPrototype(object) === null));
     }
 
     /* Built-in method references for those with the same name as other `lodash` methods. */
@@ -893,8 +891,11 @@
     function _asyncMap(eachfn, arr, iteratee, callback) {
         callback = once(callback || noop);
         arr = arr || [];
-        var results = isArrayLike(arr) || getIterator(arr) ? [] : {};
-        eachfn(arr, function (value, index, callback) {
+        var results = [];
+        var counter = 0;
+
+        eachfn(arr, function (value, _, callback) {
+            var index = counter++;
             iteratee(value, function (err, v) {
                 results[index] = v;
                 callback(err);
@@ -943,6 +944,10 @@
      * in order. However, the results array will be in the same order as the
      * original `coll`.
      *
+     * If `map` is passed an Object, the results will be an Array.  The results
+     * will roughly be in the order of the original Objects' keys (but this can
+     * vary across JavaScript engines)
+     *
      * @name map
      * @static
      * @memberOf async
@@ -953,7 +958,7 @@
      * once it has completed with an error (which can be `null`) and a
      * transformed item. Invoked with (item, callback).
      * @param {Function} [callback] - A callback which is called when all `iteratee`
-     * functions have finished, or an error occurs. Results is an array of the
+     * functions have finished, or an error occurs. Results is an Array of the
      * transformed items from the `coll`. Invoked with (err, results).
      * @example
      *
@@ -1163,13 +1168,13 @@
      * iteratee shorthands.
      *
      * @private
-     * @param {Array} array The array to iterate over.
+     * @param {Array} [array] The array to iterate over.
      * @param {Function} iteratee The function invoked per iteration.
      * @returns {Array} Returns `array`.
      */
     function arrayEach(array, iteratee) {
       var index = -1,
-          length = array.length;
+          length = array ? array.length : 0;
 
       while (++index < length) {
         if (iteratee(array[index], index, array) === false) {
@@ -1469,6 +1474,49 @@
       return result;
     }
 
+    /**
+     * Checks if `value` is a global object.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @returns {null|Object} Returns `value` if it's a global object, else `null`.
+     */
+    function checkGlobal(value) {
+      return (value && value.Object === Object) ? value : null;
+    }
+
+    /** Detect free variable `global` from Node.js. */
+    var freeGlobal = checkGlobal(typeof global == 'object' && global);
+
+    /** Detect free variable `self`. */
+    var freeSelf = checkGlobal(typeof self == 'object' && self);
+
+    /** Detect `this` as the global object. */
+    var thisGlobal = checkGlobal(typeof this == 'object' && this);
+
+    /** Used as a reference to the global object. */
+    var root = freeGlobal || freeSelf || thisGlobal || Function('return this')();
+
+    /** Used to detect overreaching core-js shims. */
+    var coreJsData = root['__core-js_shared__'];
+
+    /** Used to detect methods masquerading as native. */
+    var maskSrcKey = (function() {
+      var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
+      return uid ? ('Symbol(src)_1.' + uid) : '';
+    }());
+
+    /**
+     * Checks if `func` has its source masked.
+     *
+     * @private
+     * @param {Function} func The function to check.
+     * @returns {boolean} Returns `true` if `func` is masked, else `false`.
+     */
+    function isMasked(func) {
+      return !!maskSrcKey && (maskSrcKey in func);
+    }
+
     /** Used to resolve the decompiled source of functions. */
     var funcToString$1 = Function.prototype.toString;
 
@@ -1516,29 +1564,31 @@
     );
 
     /**
-     * Checks if `value` is a native function.
+     * The base implementation of `_.isNative` without bad shim checks.
      *
-     * @static
-     * @memberOf _
-     * @since 3.0.0
-     * @category Lang
+     * @private
      * @param {*} value The value to check.
      * @returns {boolean} Returns `true` if `value` is a native function,
      *  else `false`.
-     * @example
-     *
-     * _.isNative(Array.prototype.push);
-     * // => true
-     *
-     * _.isNative(_);
-     * // => false
      */
-    function isNative(value) {
-      if (!isObject(value)) {
+    function baseIsNative(value) {
+      if (!isObject(value) || isMasked(value)) {
         return false;
       }
       var pattern = (isFunction(value) || isHostObject(value)) ? reIsNative : reIsHostCtor;
       return pattern.test(toSource(value));
+    }
+
+    /**
+     * Gets the value at `key` of `object`.
+     *
+     * @private
+     * @param {Object} [object] The object to query.
+     * @param {string} key The key of the property to get.
+     * @returns {*} Returns the property value.
+     */
+    function getValue(object, key) {
+      return object == null ? undefined : object[key];
     }
 
     /**
@@ -1550,8 +1600,8 @@
      * @returns {*} Returns the function if it's native, else `undefined`.
      */
     function getNative(object, key) {
-      var value = object[key];
-      return isNative(value) ? value : undefined;
+      var value = getValue(object, key);
+      return baseIsNative(value) ? value : undefined;
     }
 
     /* Built-in method references that are verified to be native. */
@@ -1672,55 +1722,6 @@
     Hash.prototype.get = hashGet;
     Hash.prototype.has = hashHas;
     Hash.prototype.set = hashSet;
-
-    /**
-     * Checks if `value` is a global object.
-     *
-     * @private
-     * @param {*} value The value to check.
-     * @returns {null|Object} Returns `value` if it's a global object, else `null`.
-     */
-    function checkGlobal(value) {
-      return (value && value.Object === Object) ? value : null;
-    }
-
-    /** Used to determine if values are of the language type `Object`. */
-    var objectTypes = {
-      'function': true,
-      'object': true
-    };
-
-    /** Detect free variable `exports`. */
-    var freeExports = (objectTypes[typeof exports] && exports && !exports.nodeType)
-      ? exports
-      : undefined;
-
-    /** Detect free variable `module`. */
-    var freeModule = (objectTypes[typeof module] && module && !module.nodeType)
-      ? module
-      : undefined;
-
-    /** Detect free variable `global` from Node.js. */
-    var freeGlobal = checkGlobal(freeExports && freeModule && typeof global == 'object' && global);
-
-    /** Detect free variable `self`. */
-    var freeSelf = checkGlobal(objectTypes[typeof self] && self);
-
-    /** Detect free variable `window`. */
-    var freeWindow = checkGlobal(objectTypes[typeof window] && window);
-
-    /** Detect `this` as the global object. */
-    var thisGlobal = checkGlobal(objectTypes[typeof this] && this);
-
-    /**
-     * Used as a reference to the global object.
-     *
-     * The `this` value is used if it's the global object to avoid Greasemonkey's
-     * restricted `window` object, otherwise the `window` object is used.
-     */
-    var root = freeGlobal ||
-      ((freeWindow !== (thisGlobal && thisGlobal.window)) && freeWindow) ||
-        freeSelf || thisGlobal || Function('return this')();
 
     /* Built-in method references that are verified to be native. */
     var Map = getNative(root, 'Map');
@@ -1946,14 +1947,14 @@
      * shorthands.
      *
      * @private
-     * @param {Array} array The array to iterate over.
+     * @param {Array} [array] The array to iterate over.
      * @param {Function} predicate The function invoked per iteration.
      * @returns {boolean} Returns `true` if any element passes the predicate check,
      *  else `false`.
      */
     function arraySome(array, predicate) {
       var index = -1,
-          length = array.length;
+          length = array ? array.length : 0;
 
       while (++index < length) {
         if (predicate(array[index], index, array)) {
@@ -2568,106 +2569,6 @@
     }
 
     /**
-     * A specialized version of `_.map` for arrays without support for iteratee
-     * shorthands.
-     *
-     * @private
-     * @param {Array} array The array to iterate over.
-     * @param {Function} iteratee The function invoked per iteration.
-     * @returns {Array} Returns the new mapped array.
-     */
-    function arrayMap(array, iteratee) {
-      var index = -1,
-          length = array.length,
-          result = Array(length);
-
-      while (++index < length) {
-        result[index] = iteratee(array[index], index, array);
-      }
-      return result;
-    }
-
-    /**
-     * The base implementation of `_.toPairs` and `_.toPairsIn` which creates an array
-     * of key-value pairs for `object` corresponding to the property names of `props`.
-     *
-     * @private
-     * @param {Object} object The object to query.
-     * @param {Array} props The property names to get values for.
-     * @returns {Object} Returns the key-value pairs.
-     */
-    function baseToPairs(object, props) {
-      return arrayMap(props, function(key) {
-        return [key, object[key]];
-      });
-    }
-
-    /**
-     * Converts `set` to its value-value pairs.
-     *
-     * @private
-     * @param {Object} set The set to convert.
-     * @returns {Array} Returns the value-value pairs.
-     */
-    function setToPairs(set) {
-      var index = -1,
-          result = Array(set.size);
-
-      set.forEach(function(value) {
-        result[++index] = [value, value];
-      });
-      return result;
-    }
-
-    var mapTag$3 = '[object Map]';
-    var setTag$3 = '[object Set]';
-    /**
-     * Creates a `_.toPairs` or `_.toPairsIn` function.
-     *
-     * @private
-     * @param {Function} keysFunc The function to get the keys of a given object.
-     * @returns {Function} Returns the new pairs function.
-     */
-    function createToPairs(keysFunc) {
-      return function(object) {
-        var tag = getTag$1(object);
-        if (tag == mapTag$3) {
-          return mapToArray(object);
-        }
-        if (tag == setTag$3) {
-          return setToPairs(object);
-        }
-        return baseToPairs(object, keysFunc(object));
-      };
-    }
-
-    /**
-     * Creates an array of own enumerable string keyed-value pairs for `object`
-     * which can be consumed by `_.fromPairs`. If `object` is a map or set, its
-     * entries are returned.
-     *
-     * @static
-     * @memberOf _
-     * @since 4.0.0
-     * @alias entries
-     * @category Object
-     * @param {Object} object The object to query.
-     * @returns {Array} Returns the key-value pairs.
-     * @example
-     *
-     * function Foo() {
-     *   this.a = 1;
-     *   this.b = 2;
-     * }
-     *
-     * Foo.prototype.c = 3;
-     *
-     * _.toPairs(new Foo);
-     * // => [['a', 1], ['b', 2]] (iteration order is not guaranteed)
-     */
-    var toPairs = createToPairs(keys);
-
-    /**
      * Gets the property names, values, and compare flags of `object`.
      *
      * @private
@@ -2675,11 +2576,14 @@
      * @returns {Array} Returns the match data of `object`.
      */
     function getMatchData(object) {
-      var result = toPairs(object),
+      var result = keys(object),
           length = result.length;
 
       while (length--) {
-        result[length][2] = isStrictComparable(result[length][1]);
+        var key = result[length],
+            value = object[key];
+
+        result[length] = [key, value, isStrictComparable(value)];
       }
       return result;
     }
@@ -2842,7 +2746,7 @@
     }
 
     /** Used to match property names within property paths. */
-    var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]/g;
+    var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(\.|\[\])(?:\4|$))/g;
 
     /** Used to match backslashes in property paths. */
     var reEscapeChar = /\\(\\)?/g;
@@ -2968,12 +2872,12 @@
      * The base implementation of `_.hasIn` without support for deep paths.
      *
      * @private
-     * @param {Object} object The object to query.
+     * @param {Object} [object] The object to query.
      * @param {Array|string} key The key to check.
      * @returns {boolean} Returns `true` if `key` exists, else `false`.
      */
     function baseHasIn(object, key) {
-      return key in Object(object);
+      return object != null && key in Object(object);
     }
 
     /**
@@ -3072,7 +2976,7 @@
      *
      * var object = { 'user': 'fred' };
      *
-     * _.identity(object) === object;
+     * console.log(_.identity(object) === object);
      * // => true
      */
     function identity(value) {
@@ -3185,7 +3089,7 @@
      */
     function indexOfNaN(array, fromIndex, fromRight) {
       var length = array.length,
-          index = fromIndex + (fromRight ? 0 : -1);
+          index = fromIndex + (fromRight ? 1 : -1);
 
       while ((fromRight ? index-- : ++index < length)) {
         var other = array[index];
@@ -3455,6 +3359,26 @@
             });
             return result;
         }
+    }
+
+    /**
+     * A specialized version of `_.map` for arrays without support for iteratee
+     * shorthands.
+     *
+     * @private
+     * @param {Array} [array] The array to iterate over.
+     * @param {Function} iteratee The function invoked per iteration.
+     * @returns {Array} Returns the new mapped array.
+     */
+    function arrayMap(array, iteratee) {
+      var index = -1,
+          length = array ? array.length : 0,
+          result = Array(length);
+
+      while (++index < length) {
+        result[index] = iteratee(array[index], index, array);
+      }
+      return result;
     }
 
     /**
@@ -3754,24 +3678,32 @@
         auto(newTasks, callback);
     }
 
-    var _setImmediate = typeof setImmediate === 'function' && setImmediate;
+    var hasSetImmediate = typeof setImmediate === 'function' && setImmediate;
+    var hasNextTick = typeof process === 'object' && typeof process.nextTick === 'function';
 
-    var _defer;
-    if (_setImmediate) {
-        _defer = _setImmediate;
-    } else if (typeof process === 'object' && typeof process.nextTick === 'function') {
-        _defer = process.nextTick;
-    } else {
-        _defer = function (fn) {
-            setTimeout(fn, 0);
-        };
+    function fallback(fn) {
+        setTimeout(fn, 0);
     }
 
-    var setImmediate$1 = rest(function (fn, args) {
-        _defer(function () {
-            fn.apply(null, args);
+    function wrap(defer) {
+        return rest(function (fn, args) {
+            defer(function () {
+                fn.apply(null, args);
+            });
         });
-    });
+    }
+
+    var _defer;
+
+    if (hasSetImmediate) {
+        _defer = setImmediate;
+    } else if (hasNextTick) {
+        _defer = process.nextTick;
+    } else {
+        _defer = fallback;
+    }
+
+    var setImmediate$1 = wrap(_defer);
 
     function queue(worker, concurrency, payload) {
         if (concurrency == null) {
@@ -3822,6 +3754,10 @@
                     });
 
                     task.callback.apply(task, args);
+
+                    if (args[0] != null) {
+                        q.error(args[0], task.data);
+                    }
                 });
 
                 if (workers <= q.concurrency - q.buffer) {
@@ -3846,6 +3782,7 @@
             buffer: concurrency / 4,
             empty: noop,
             drain: noop,
+            error: noop,
             started: false,
             paused: false,
             push: function (data, callback) {
@@ -5092,7 +5029,6 @@
      * node> nextfn();
      * 'three'
      */
-
     function iterator$1 (tasks) {
         function makeCallback(index) {
             function fn() {
@@ -5136,6 +5072,100 @@
      * 'hello world'
      */
     var log = consoleFunc('log');
+
+    /**
+     * The same as `mapValues` but runs a maximum of `limit` async operations at a
+     * time.
+     *
+     * @name mapValuesLimit
+     * @static
+     * @memberOf async
+     * @see async.mapValues
+     * @category Collection
+     * @param {Object} obj - A collection to iterate over.
+     * @param {number} limit - The maximum number of async operations at a time.
+     * @param {Function} iteratee - A function to apply to each value in `obj`.
+     * The iteratee is passed a `callback(err, transformed)` which must be called
+     * once it has completed with an error (which can be `null`) and a
+     * transformed value. Invoked with (value, key, callback).
+     * @param {Function} [callback] - A callback which is called when all `iteratee`
+     * functions have finished, or an error occurs. Result is an object of the
+     * transformed values from the `obj`. Invoked with (err, result).
+     */
+    function mapValuesLimit(obj, limit, iteratee, callback) {
+        var newObj = {};
+        eachOfLimit(obj, limit, function (val, key, next) {
+            iteratee(val, key, function (err, result) {
+                if (err) return next(err);
+                newObj[key] = result;
+                next();
+            });
+        }, function (err) {
+            callback(err, newObj);
+        });
+    }
+
+    /**
+     * A relative of `map`, designed for use with objects.
+     *
+     * Produces a new Object by mapping each value of `obj` through the `iteratee`
+     * function. The `iteratee` is called each `value` and `key` from `obj` and a
+     * callback for when it has finished processing. Each of these callbacks takes
+     * two arguments: an `error`, and the transformed item from `obj`. If `iteratee`
+     * passes an error to its callback, the main `callback` (for the `mapValues`
+     * function) is immediately called with the error.
+     *
+     * Note, the order of the keys in the result is not guaranteed.  The keys will
+     * be roughly in the order they complete, (but this is very engine-specific)
+     *
+     * @name mapValues
+     * @static
+     * @memberOf async
+     * @category Collection
+     * @param {Object} obj - A collection to iterate over.
+     * @param {Function} iteratee - A function to apply to each value and key in
+     * `coll`. The iteratee is passed a `callback(err, transformed)` which must be
+     * called once it has completed with an error (which can be `null`) and a
+     * transformed value. Invoked with (value, key, callback).
+     * @param {Function} [callback] - A callback which is called when all `iteratee`
+     * functions have finished, or an error occurs. Results is an array of the
+     * transformed items from the `obj`. Invoked with (err, result).
+     * @example
+     *
+     * async.mapValues({
+     *     f1: 'file1',
+     *     f2: 'file2',
+     *     f3: 'file3'
+     * }, fs.stat, function(err, result) {
+     *     // results is now a map of stats for each file, e.g.
+     *     // {
+     *     //     f1: [stats for file1],
+     *     //     f2: [stats for file2],
+     *     //     f3: [stats for file3]
+     *     // }
+     * });
+     */
+
+    var mapValues = doLimit(mapValuesLimit, Infinity);
+
+    /**
+     * The same as `mapValues` but runs only a single async operation at a time.
+     *
+     * @name mapValuesSeries
+     * @static
+     * @memberOf async
+     * @see async.mapValues
+     * @category Collection
+     * @param {Object} obj - A collection to iterate over.
+     * @param {Function} iteratee - A function to apply to each value in `obj`.
+     * The iteratee is passed a `callback(err, transformed)` which must be called
+     * once it has completed with an error (which can be `null`) and a
+     * transformed value. Invoked with (value, key, callback).
+     * @param {Function} [callback] - A callback which is called when all `iteratee`
+     * functions have finished, or an error occurs. Result is an object of the
+     * transformed values from the `obj`. Invoked with (err, result).
+     */
+    var mapValuesSeries = doLimit(mapValuesLimit, 1);
 
     function has(obj, key) {
         return key in obj;
@@ -5204,6 +5234,48 @@
         memoized.unmemoized = fn;
         return memoized;
     }
+
+    /**
+     * Calls `callback` on a later loop around the event loop. In Node.js this just
+     * calls `setImmediate`.  In the browser it will use `setImmediate` if
+     * available, otherwise `setTimeout(callback, 0)`, which means other higher
+     * priority events may precede the execution of `callback`.
+     *
+     * This is used internally for browser-compatibility purposes.
+     *
+     * @name nextTick
+     * @static
+     * @memberOf async
+     * @alias setImmediate
+     * @category Util
+     * @param {Function} callback - The function to call on a later loop around
+     * the event loop. Invoked with (args...).
+     * @param {...*} args... - any number of additional arguments to pass to the
+     * callback on the next tick.
+     * @example
+     *
+     * var call_order = [];
+     * async.nextTick(function() {
+     *     call_order.push('two');
+     *     // call_order now equals ['one','two']
+     * });
+     * call_order.push('one');
+     *
+     * async.setImmediate(function (a, b, c) {
+     *     // a, b, and c equal 1, 2, and 3
+     * }, 1, 2, 3);
+     */
+    var _defer$1;
+
+    if (hasNextTick) {
+        _defer$1 = process.nextTick;
+    } else if (hasSetImmediate) {
+        _defer$1 = setImmediate;
+    } else {
+        _defer$1 = fallback;
+    }
+
+    var nextTick = wrap(_defer$1);
 
     function _parallel(eachfn, tasks, callback) {
         callback = callback || noop;
@@ -5346,6 +5418,8 @@
      * from the `queue` is given to a `worker`.
      * @property {Function} drain - a callback that is called when the last item
      * from the `queue` has returned from the `worker`.
+     * @property {Function} error - a callback that is called when a task errors.
+     * Has the signature `function(error, task)`.
      * @property {boolean} paused - a boolean for determining whether the queue is
      * in a paused state.
      * @property {Function} pause - a function that pauses the processing of tasks
@@ -5891,6 +5965,31 @@
     }
 
     /**
+     * Creates a function that returns `value`.
+     *
+     * @static
+     * @memberOf _
+     * @since 2.4.0
+     * @category Util
+     * @param {*} value The value to return from the new function.
+     * @returns {Function} Returns the new constant function.
+     * @example
+     *
+     * var objects = _.times(2, _.constant({ 'a': 1 }));
+     *
+     * console.log(objects);
+     * // => [{ 'a': 1 }, { 'a': 1 }]
+     *
+     * console.log(objects[0] === objects[1]);
+     * // => true
+     */
+    function constant$1(value) {
+      return function() {
+        return value;
+      };
+    }
+
+    /**
      * Attempts to get a successful response from `task` no more than `times` times
      * before returning an error. If the task is successful, the `callback` will be
      * passed the result of the successful task. If all attempts fail, the callback
@@ -5905,7 +6004,8 @@
      * * `times` - The number of attempts to make before giving up.  The default
      *   is `5`.
      * * `interval` - The time to wait between retries, in milliseconds.  The
-     *   default is `0`.
+     *   default is `0`. The interval may also be specified as a function of the
+     *   retry count (see example).
      * * If `opts` is a number, the number specifies the number of times to retry,
      *   with the default interval of `0`.
      * @param {Function} task - A function which receives two arguments: (1) a
@@ -5933,7 +6033,18 @@
      *     // do something with the result
      * });
      *
-     *  // try calling apiMethod the default 5 times no delay between each retry
+     * // try calling apiMethod 10 times with exponential backoff
+     * // (i.e. intervals of 100, 200, 400, 800, 1600, ... milliseconds)
+     * async.retry({
+     *   times: 10,
+     *   interval: function(retryCount) {
+     *     return 50 * Math.pow(2, retryCount);
+     *   }
+     * }, apiMethod, function(err, result) {
+     *     // do something with the result
+     * });
+     *
+     * // try calling apiMethod the default 5 times no delay between each retry
      * async.retry(apiMethod, function(err, result) {
      *     // do something with the result
      * });
@@ -5953,13 +6064,14 @@
 
         var opts = {
             times: DEFAULT_TIMES,
-            interval: DEFAULT_INTERVAL
+            intervalFunc: constant$1(DEFAULT_INTERVAL)
         };
 
         function parseTimes(acc, t) {
             if (typeof t === 'object') {
                 acc.times = +t.times || DEFAULT_TIMES;
-                acc.interval = +t.interval || DEFAULT_INTERVAL;
+
+                acc.intervalFunc = typeof t.interval === 'function' ? t.interval : constant$1(+t.interval || DEFAULT_INTERVAL);
             } else if (typeof t === 'number' || typeof t === 'string') {
                 acc.times = +t || DEFAULT_TIMES;
             } else {
@@ -5980,11 +6092,12 @@
         }
 
         var attempts = [];
-        while (opts.times) {
-            var isFinalAttempt = !(opts.times -= 1);
+        for (var i = 1; i < opts.times + 1; i++) {
+            var isFinalAttempt = i == opts.times;
             attempts.push(retryAttempt(isFinalAttempt));
-            if (!isFinalAttempt && opts.interval > 0) {
-                attempts.push(retryInterval(opts.interval));
+            var interval = opts.intervalFunc(i);
+            if (!isFinalAttempt && interval > 0) {
+                attempts.push(retryInterval(interval));
             }
         }
 
@@ -6401,7 +6514,6 @@
      * @category Util
      * @param {Function} fn - the memoized function
      */
-
     function unmemoize(fn) {
         return function () {
             return (fn.unmemoized || fn).apply(null, arguments);
@@ -6557,8 +6669,11 @@
         map: map,
         mapLimit: mapLimit,
         mapSeries: mapSeries,
+        mapValues: mapValues,
+        mapValuesLimit: mapValuesLimit,
+        mapValuesSeries: mapValuesSeries,
         memoize: memoize$1,
-        nextTick: setImmediate$1,
+        nextTick: nextTick,
         parallel: parallel,
         parallelLimit: parallelLimit,
         priorityQueue: priorityQueue,
@@ -6647,8 +6762,11 @@
     exports.map = map;
     exports.mapLimit = mapLimit;
     exports.mapSeries = mapSeries;
+    exports.mapValues = mapValues;
+    exports.mapValuesLimit = mapValuesLimit;
+    exports.mapValuesSeries = mapValuesSeries;
     exports.memoize = memoize$1;
-    exports.nextTick = setImmediate$1;
+    exports.nextTick = nextTick;
     exports.parallel = parallel;
     exports.parallelLimit = parallelLimit;
     exports.priorityQueue = priorityQueue;
