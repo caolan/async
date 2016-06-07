@@ -1,0 +1,47 @@
+{
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "globals": {
+    "self": true,
+    "define": true,
+    "describe": true,
+    "context": true,
+    "it": true,
+    "before": true,
+    "after": true
+  },
+  "rules": {
+    "eqeqeq": 0,
+    "guard-for-in": 2,
+    "indent": [
+      2,
+      4,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "no-caller": 2,
+    "no-undef": 2,
+    "no-unused-vars": 2,
+    "no-eval": 2,
+    "comma-style": [
+      2,
+      "last"
+    ],
+    "semi": 0,
+    "no-eq-null": 2,
+    "no-unused-expressions": 0,
+    "no-loop-func": 2,
+    "dot-notation": 0,
+    "valid-jsdoc": ["error", {
+        "requireReturn": false
+    }]
+  }
+}
