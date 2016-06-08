@@ -300,8 +300,8 @@ describe("map", function() {
                 }).to.throw(/already called/);
                 done();
             }
-        }, function(err) {
-            no_such_function();
+        }, function() {
+            throw new Error();
         });
     });
 });

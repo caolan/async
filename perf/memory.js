@@ -24,9 +24,9 @@ function waterfallTest(cb) {
             function func3(cb) {return cb(); }
 
             async.waterfall([
-              func1,
-              func2,
-              func3
+                func1,
+                func2,
+                func3
             ], next);
         });
     }
@@ -38,7 +38,7 @@ function reportMemory() {
     global.gc();
     var increase = process.memoryUsage().heapUsed - startMem;
     console.log("memory increase: " +
-      (+(increase / 1024).toPrecision(3)) + "kB");
+        (+(increase / 1024).toPrecision(3)) + "kB");
 }
 
 waterfallTest(function () {

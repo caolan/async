@@ -3,7 +3,7 @@ var assert = require('assert');
 var expect = require('chai').expect;
 var isBrowser = require('./support/is_browser');
 
-describe('asyncify', function(done){
+describe('asyncify', function(){
 
     it('asyncify', function(done) {
         var parse = async.asyncify(JSON.parse);
@@ -26,16 +26,16 @@ describe('asyncify', function(done){
     });
 
     it('variable numbers of arguments', function(done) {
-         async.asyncify(function (x, y, z) {
-             return arguments;
-         })(1, 2, 3, function (err, result) {
-             expect(result.length).to.equal(3);
-             expect(result[0]).to.equal(1);
-             expect(result[1]).to.equal(2);
-             expect(result[2]).to.equal(3);
-             done();
-         });
-     });
+        async.asyncify(function (/*x, y, z*/) {
+            return arguments;
+        })(1, 2, 3, function (err, result) {
+            expect(result.length).to.equal(3);
+            expect(result[0]).to.equal(1);
+            expect(result[1]).to.equal(2);
+            expect(result[2]).to.equal(3);
+            done();
+        });
+    });
 
     it('catch errors', function(done) {
         async.asyncify(function () {

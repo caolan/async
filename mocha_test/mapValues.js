@@ -1,6 +1,5 @@
 var async = require('../lib');
 var expect = require('chai').expect;
-var assert = require('assert');
 
 describe('mapValues', function () {
     var obj = {a: 1, b: 2, c: 3};

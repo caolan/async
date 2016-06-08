@@ -402,33 +402,33 @@ describe('queue', function(){
     });
 
     it('pause in worker with concurrency', function(done) {
-            var call_order = [];
-            var q = async.queue(function (task, callback) {
-                if (task.isLongRunning) {
-                    q.pause();
-                    setTimeout(function () {
-                        call_order.push(task.id);
-                        q.resume();
-                        callback();
-                    }, 50);
-                }
-                else {
+        var call_order = [];
+        var q = async.queue(function (task, callback) {
+            if (task.isLongRunning) {
+                q.pause();
+                setTimeout(function () {
                     call_order.push(task.id);
-                    setTimeout(callback, 10);
-                }
-            }, 10);
+                    q.resume();
+                    callback();
+                }, 50);
+            }
+            else {
+                call_order.push(task.id);
+                setTimeout(callback, 10);
+            }
+        }, 10);
 
-            q.push({ id: 1, isLongRunning: true});
-            q.push({ id: 2 });
-            q.push({ id: 3 });
-            q.push({ id: 4 });
-            q.push({ id: 5 });
+        q.push({ id: 1, isLongRunning: true});
+        q.push({ id: 2 });
+        q.push({ id: 3 });
+        q.push({ id: 4 });
+        q.push({ id: 5 });
 
-            q.drain = function () {
-                expect(call_order).to.eql([1, 2, 3, 4, 5]);
-                done();
-            };
-        });
+        q.drain = function () {
+            expect(call_order).to.eql([1, 2, 3, 4, 5]);
+            done();
+        };
+    });
 
     it('pause with concurrency', function(done) {
         var call_order = [],
@@ -507,7 +507,7 @@ describe('queue', function(){
     });
 
     it('kill', function(done) {
-        var q = async.queue(function (task, callback) {
+        var q = async.queue(function (/*task, callback*/) {
             setTimeout(function () {
                 throw new Error("Function should never be called");
             }, 20);

@@ -1,6 +1,5 @@
 var async = require('../lib');
 var expect = require('chai').expect;
-var _ = require('lodash');
 
 describe('autoInject', function () {
 
@@ -88,9 +87,7 @@ describe('autoInject', function () {
 
     var arrowSupport = true;
     try {
-        /* jshint -W054 */
         new Function('x => x');
-        /* jshint +W054 */
     } catch (e) {
         arrowSupport = false;
     }
@@ -98,7 +95,7 @@ describe('autoInject', function () {
     if (arrowSupport) {
         // Needs to be run on ES6 only
 
-        /* jshint -W061 */
+        /* eslint {no-eval: 0}*/
         eval("(function() {                                                 " +
              "    it('should work with es6 arrow syntax', function (done) { " +
              "        async.autoInject({                                    " +
@@ -113,6 +110,5 @@ describe('autoInject', function () {
              "    });                                                       " +
              "})                                                            "
         )();
-        /* jshint +W061 */
     }
 });
