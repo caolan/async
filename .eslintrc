@@ -2,20 +2,12 @@
   "env": {
     "browser": true,
     "node": true,
+    "mocha": true,
     "es6": true
   },
   "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "module"
-  },
-  "globals": {
-    "self": true,
-    "define": true,
-    "describe": true,
-    "context": true,
-    "it": true,
-    "before": true,
-    "after": true
   },
   "rules": {
     "eqeqeq": 0,
