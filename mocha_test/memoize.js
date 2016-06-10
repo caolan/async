@@ -153,7 +153,7 @@ describe("memoize", function() {
 
     it('manually added memo value', function(done) {
         var fn = async.memoize(function() {
-            test(false, "Function should never be called");
+            throw new Error("Function should never be called");
         });
         fn.memo.foo = ["bar"];
         fn("foo", function(val) {

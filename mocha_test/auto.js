@@ -112,29 +112,29 @@ describe('auto', function () {
         var callOrder = [];
         async.auto({
             task1: ['task2', function(results, callback){
-              expect(results.task2).to.eql('task2');
-              setTimeout(function(){
-                  callOrder.push('task1');
-                  callback(null, 'task1a', 'task1b');
-              }, 25);
-          }],
+                expect(results.task2).to.eql('task2');
+                setTimeout(function(){
+                    callOrder.push('task1');
+                    callback(null, 'task1a', 'task1b');
+                }, 25);
+            }],
             task2: function(callback){
-              setTimeout(function(){
-                  callOrder.push('task2');
-                  callback(null, 'task2');
-              }, 50);
-          },
+                setTimeout(function(){
+                    callOrder.push('task2');
+                    callback(null, 'task2');
+                }, 50);
+            },
             task3: ['task2', function(results, callback){
-              expect(results.task2).to.eql('task2');
-              callOrder.push('task3');
-              callback(null);
-          }],
+                expect(results.task2).to.eql('task2');
+                callOrder.push('task3');
+                callback(null);
+            }],
             task4: ['task1', 'task2', function(results, callback){
-              expect(results.task1).to.eql(['task1a','task1b']);
-              expect(results.task2).to.eql('task2');
-              callOrder.push('task4');
-              callback(null, 'task4');
-          }]
+                expect(results.task1).to.eql(['task1a','task1b']);
+                expect(results.task2).to.eql('task2');
+                callOrder.push('task4');
+                callback(null, 'task4');
+            }]
         },
         function(err, results){
             expect(callOrder).to.eql(['task2','task3','task1','task4']);
@@ -155,7 +155,7 @@ describe('auto', function () {
             task1: function(callback){
                 callback('testerror');
             },
-            task2: ['task1', function(results, callback){
+            task2: ['task1', function(/*results, callback*/){
                 throw new Error('task2 should not be called');
             }],
             task3: function(callback){
@@ -328,7 +328,7 @@ describe('auto', function () {
             task1: function (callback) {
                 callback('error');
             },
-            task2: function (callback) {
+            task2: function (/*callback*/) {
                 throw new Error('test2 should not be called');
             }
         }, 1, function (error) {
