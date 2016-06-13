@@ -315,7 +315,7 @@ async.each(openFiles, function(file, callback) {
   // Perform operation on file here.
   console.log('Processing file ' + file);
 
-  if( file.length > 32 ) {
+  if (file.length > 32) {
     console.log('This file name is too long');
     callback('File name too long');
   } else {
@@ -325,7 +325,7 @@ async.each(openFiles, function(file, callback) {
   }
 }, function(err){
     // if any of the file processing produced an error, err would equal that error
-    if( err ) {
+    if (err) {
       // One of the iterations produced an error.
       // All processing will now stop.
       console.log('A file failed to process');
