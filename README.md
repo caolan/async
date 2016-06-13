@@ -1814,7 +1814,7 @@ __Related__
 
 ---------------------------------------
 
-<a name="race" />
+<a name="race"></a>
 ### race(tasks, [callback])
 
 Runs the `tasks` array of functions in parallel, without waiting until the
