@@ -41,13 +41,15 @@ async.filter(['file1','file2','file3'], function(filePath, callback) {
 });
 
 async.parallel([
-    function(){ ... },
-    function(){ ... }
-], callback);
+    function(callback){ ... },
+    function(callback){ ... }
+], function(err, results) {
+    // optional callback
+};
 
 async.series([
-    function(){ ... },
-    function(){ ... }
+    function(callback){ ... },
+    function(callback){ ... }
 ]);
 ```
 
