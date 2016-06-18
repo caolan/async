@@ -110,5 +110,25 @@ describe('autoInject', function () {
              "    });                                                       " +
              "})                                                            "
         )();
+
+        /* eslint {no-eval: 0}*/
+        eval("(function() {                                                 " +
+             "    it('should work with es6 obj method syntax', function (done) { " +
+             "        async.autoInject({                                    " +
+             "            task1 (cb){             cb(null, 1) },            " +
+             "            task2 ( task3 , cb ) {  cb(null, 2) },            " +
+             "            task3 (cb) {            cb(null, 3) },            " +
+             "            task4 ( task2 , cb ) {  cb(null) },               " +
+             "            task5 ( task4 = 4 , cb ) { cb(null, task4 + 1) }  " +
+             "        }, (err, results) => {                                " +
+             "            expect(results.task1).to.equal(1);                " +
+             "            expect(results.task3).to.equal(3);                " +
+             "            expect(results.task4).to.equal(undefined);        " +
+             "            expect(results.task5).to.equal(5);                " +
+             "            done();                                           " +
+             "        });                                                   " +
+             "    });                                                       " +
+             "})                                                            "
+        )();
     }
 });
