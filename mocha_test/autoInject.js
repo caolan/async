@@ -110,6 +110,18 @@ describe('autoInject', function () {
              "    });                                                       " +
              "})                                                            "
         )();
+    }
+
+
+    var defaultSupport = true;
+    try {
+        eval('function x(y = 1){ return y }');
+    }catch (e){
+        defaultSupport = false;
+    }
+
+    if(arrowSupport && defaultSupport){
+        // Needs to be run on ES6 only
 
         /* eslint {no-eval: 0}*/
         eval("(function() {                                                 " +
