@@ -76,10 +76,10 @@
       "trailingComments": [
         {
           "type": "Block",
-          "value": "*\n * A queue of tasks for the worker function to complete.\n * @typedef {Object} QueueObject\n * @property {Function} length - a function returning the number of items\n * waiting to be processed. Invoke with ().\n * @property {Function} started - a function returning whether or not any\n * items have been pushed and processed by the queue. Invoke with ().\n * @property {Function} running - a function returning the number of items\n * currently being processed. Invoke with ().\n * @property {Function} workersList - a function returning the array of items\n * currently being processed. Invoke with ().\n * @property {Function} idle - a function returning false if there are items\n * waiting or being processed, or true if not. Invoke with ().\n * @property {number} concurrency - an integer for determining how many `worker`\n * functions should be run in parallel. This property can be changed after a\n * `queue` is created to alter the concurrency on-the-fly.\n * @property {Function} push - add a new task to the `queue`. Calls `callback`\n * once the `worker` has finished processing the task. Instead of a single task,\n * a `tasks` array can be submitted. The respective callback is used for every\n * task in the list. Invoke with (task, [callback]),\n * @property {Function} unshift - add a new task to the front of the `queue`.\n * Invoke with (task, [callback]).\n * @property {Function} saturated - a callback that is called when the number of\n * running workers hits the `concurrency` limit, and further tasks will be\n * queued.\n * @property {Function} unsaturated - a callback that is called when the number\n * of running workers is less than the `concurrency` & `buffer` limits, and\n * further tasks will not be queued.\n * @property {number} buffer - A minimum threshold buffer in order to say that\n * the `queue` is `unsaturated`.\n * @property {Function} empty - a callback that is called when the last item\n * from the `queue` is given to a `worker`.\n * @property {Function} drain - a callback that is called when the last item\n * from the `queue` has returned from the `worker`.\n * @property {Function} error - a callback that is called when a task errors.\n * Has the signature `function(error, task)`.\n * @property {boolean} paused - a boolean for determining whether the queue is\n * in a paused state.\n * @property {Function} pause - a function that pauses the processing of tasks\n * until `resume()` is called. Invoke with ().\n * @property {Function} resume - a function that resumes the processing of\n * queued tasks when the queue is paused. Invoke with ().\n * @property {Function} kill - a function that removes the `drain` callback and\n * empties remaining tasks from the queue forcing it to go idle. Invoke with ().\n ",
+          "value": "*\n * A queue of tasks for the worker function to complete.\n * @typedef {Object} QueueObject\n * @property {Function} length - a function returning the number of items\n * waiting to be processed. Invoke with `queue.length()`.\n * @property {Function} started - a function returning whether or not any\n * items have been pushed and processed by the queue. Invoke with `queue.started()`.\n * @property {Function} running - a function returning the number of items\n * currently being processed. Invoke with `queue.running()`.\n * @property {Function} workersList - a function returning the array of items\n * currently being processed. Invoke with `queue.workersList()`.\n * @property {Function} idle - a function returning false if there are items\n * waiting or being processed, or true if not. Invoke with `queue.idle()`.\n * @property {number} concurrency - an integer for determining how many `worker`\n * functions should be run in parallel. This property can be changed after a\n * `queue` is created to alter the concurrency on-the-fly.\n * @property {Function} push - add a new task to the `queue`. Calls `callback`\n * once the `worker` has finished processing the task. Instead of a single task,\n * a `tasks` array can be submitted. The respective callback is used for every\n * task in the list. Invoke with `queue.push(task, [callback])`,\n * @property {Function} unshift - add a new task to the front of the `queue`.\n * Invoke with `queue.unshift(task, [callback])`.\n * @property {Function} saturated - a callback that is called when the number of\n * running workers hits the `concurrency` limit, and further tasks will be\n * queued.\n * @property {Function} unsaturated - a callback that is called when the number\n * of running workers is less than the `concurrency` & `buffer` limits, and\n * further tasks will not be queued.\n * @property {number} buffer - A minimum threshold buffer in order to say that\n * the `queue` is `unsaturated`.\n * @property {Function} empty - a callback that is called when the last item\n * from the `queue` is given to a `worker`.\n * @property {Function} drain - a callback that is called when the last item\n * from the `queue` has returned from the `worker`.\n * @property {Function} error - a callback that is called when a task errors.\n * Has the signature `function(error, task)`.\n * @property {boolean} paused - a boolean for determining whether the queue is\n * in a paused state.\n * @property {Function} pause - a function that pauses the processing of tasks\n * until `resume()` is called. Invoke with `queue.pause()`.\n * @property {Function} resume - a function that resumes the processing of\n * queued tasks when the queue is paused. Invoke with `queue.length()`.\n * @property {Function} kill - a function that removes the `drain` callback and\n * empties remaining tasks from the queue forcing it to go idle. Invoke with `queue.kill()`.\n ",
           "range": [
             39,
-            2772
+            2913
           ],
           "loc": {
             "start": {
@@ -96,8 +96,8 @@
           "type": "Block",
           "value": "*\n * Creates a `queue` object with the specified `concurrency`. Tasks added to the\n * `queue` are processed in parallel (up to the `concurrency` limit). If all\n * `worker`s are in progress, the task is queued until one becomes available.\n * Once a `worker` completes a `task`, that `task`'s callback is called.\n *\n * @name queue\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {Function} worker - An asynchronous function for processing a queued\n * task, which must call its `callback(err)` argument when finished, with an\n * optional `error` as an argument.  If you want to handle errors from an\n * individual task, pass a callback to `q.push()`. Invoked with\n * (task, callback).\n * @param {number} [concurrency=1] - An `integer` for determining how many\n * `worker` functions should be run in parallel.  If omitted, the concurrency\n * defaults to `1`.  If the concurrency is `0`, an error is thrown.\n * @returns {QueueObject} A queue object to manage the tasks. Callbacks can\n * attached as certain properties to listen for specific events during the\n * lifecycle of the queue.\n * @example\n *\n * // create a queue object with concurrency 2\n * var q = async.queue(function(task, callback) {\n *     console.log('hello ' + task.name);\n *     callback();\n * }, 2);\n *\n * // assign a callback\n * q.drain = function() {\n *     console.log('all items have been processed');\n * };\n *\n * // add some items to the queue\n * q.push({name: 'foo'}, function(err) {\n *     console.log('finished processing foo');\n * });\n * q.push({name: 'bar'}, function (err) {\n *     console.log('finished processing bar');\n * });\n *\n * // add some items to the queue (batch-wise)\n * q.push([{name: 'baz'},{name: 'bay'},{name: 'bax'}], function(err) {\n *     console.log('finished processing item');\n * });\n *\n * // add some items to the front of the queue\n * q.unshift({name: 'bar'}, function (err) {\n *     console.log('finished processing bar');\n * });\n ",
           "range": [
-            2774,
-            4726
+            2915,
+            4867
           ],
           "loc": {
             "start": {
@@ -122,8 +122,8 @@
             "type": "Identifier",
             "name": "worker",
             "range": [
-              4752,
-              4758
+              4893,
+              4899
             ],
             "loc": {
               "start": {
@@ -140,8 +140,8 @@
             "type": "Identifier",
             "name": "concurrency",
             "range": [
-              4760,
-              4771
+              4901,
+              4912
             ],
             "loc": {
               "start": {
@@ -166,8 +166,8 @@
                   "type": "Identifier",
                   "name": "queue",
                   "range": [
-                    4786,
-                    4791
+                    4927,
+                    4932
                   ],
                   "loc": {
                     "start": {
@@ -189,8 +189,8 @@
                         "type": "Identifier",
                         "name": "items",
                         "range": [
-                          4802,
-                          4807
+                          4943,
+                          4948
                         ],
                         "loc": {
                           "start": {
@@ -207,8 +207,8 @@
                         "type": "Identifier",
                         "name": "cb",
                         "range": [
-                          4809,
-                          4811
+                          4950,
+                          4952
                         ],
                         "loc": {
                           "start": {
@@ -233,8 +233,8 @@
                               "type": "Identifier",
                               "name": "worker",
                               "range": [
-                                4823,
-                                4829
+                                4964,
+                                4970
                               ],
                               "loc": {
                                 "start": {
@@ -255,8 +255,8 @@
                                   "type": "Identifier",
                                   "name": "items",
                                   "range": [
-                                    4830,
-                                    4835
+                                    4971,
+                                    4976
                                   ],
                                   "loc": {
                                     "start": {
@@ -274,8 +274,8 @@
                                   "value": 0,
                                   "raw": "0",
                                   "range": [
-                                    4836,
-                                    4837
+                                    4977,
+                                    4978
                                   ],
                                   "loc": {
                                     "start": {
@@ -289,8 +289,8 @@
                                   }
                                 },
                                 "range": [
-                                  4830,
-                                  4838
+                                  4971,
+                                  4979
                                 ],
                                 "loc": {
                                   "start": {
@@ -307,8 +307,8 @@
                                 "type": "Identifier",
                                 "name": "cb",
                                 "range": [
-                                  4840,
-                                  4842
+                                  4981,
+                                  4983
                                 ],
                                 "loc": {
                                   "start": {
@@ -323,8 +323,8 @@
                               }
                             ],
                             "range": [
-                              4823,
-                              4843
+                              4964,
+                              4984
                             ],
                             "loc": {
                               "start": {
@@ -338,8 +338,8 @@
                             }
                           },
                           "range": [
-                            4823,
-                            4844
+                            4964,
+                            4985
                           ],
                           "loc": {
                             "start": {
@@ -354,8 +354,8 @@
                         }
                       ],
                       "range": [
-                        4813,
-                        4850
+                        4954,
+                        4991
                       ],
                       "loc": {
                         "start": {
@@ -371,8 +371,8 @@
                     "generator": false,
                     "expression": false,
                     "range": [
-                      4792,
-                      4850
+                      4933,
+                      4991
                     ],
                     "loc": {
                       "start": {
@@ -389,8 +389,8 @@
                     "type": "Identifier",
                     "name": "concurrency",
                     "range": [
-                      4852,
-                      4863
+                      4993,
+                      5004
                     ],
                     "loc": {
                       "start": {
@@ -408,8 +408,8 @@
                     "value": 1,
                     "raw": "1",
                     "range": [
-                      4865,
-                      4866
+                      5006,
+                      5007
                     ],
                     "loc": {
                       "start": {
@@ -424,8 +424,8 @@
                   }
                 ],
                 "range": [
-                  4786,
-                  4867
+                  4927,
+                  5008
                 ],
                 "loc": {
                   "start": {
@@ -439,8 +439,8 @@
                 }
               },
               "range": [
-                4779,
-                4868
+                4920,
+                5009
               ],
               "loc": {
                 "start": {
@@ -455,8 +455,8 @@
             }
           ],
           "range": [
-            4773,
-            4870
+            4914,
+            5011
           ],
           "loc": {
             "start": {
@@ -472,8 +472,8 @@
         "generator": false,
         "expression": false,
         "range": [
-          4742,
-          4870
+          4883,
+          5011
         ],
         "loc": {
           "start": {
@@ -488,10 +488,10 @@
         "leadingComments": [
           {
             "type": "Block",
-            "value": "*\n * A queue of tasks for the worker function to complete.\n * @typedef {Object} QueueObject\n * @property {Function} length - a function returning the number of items\n * waiting to be processed. Invoke with ().\n * @property {Function} started - a function returning whether or not any\n * items have been pushed and processed by the queue. Invoke with ().\n * @property {Function} running - a function returning the number of items\n * currently being processed. Invoke with ().\n * @property {Function} workersList - a function returning the array of items\n * currently being processed. Invoke with ().\n * @property {Function} idle - a function returning false if there are items\n * waiting or being processed, or true if not. Invoke with ().\n * @property {number} concurrency - an integer for determining how many `worker`\n * functions should be run in parallel. This property can be changed after a\n * `queue` is created to alter the concurrency on-the-fly.\n * @property {Function} push - add a new task to the `queue`. Calls `callback`\n * once the `worker` has finished processing the task. Instead of a single task,\n * a `tasks` array can be submitted. The respective callback is used for every\n * task in the list. Invoke with (task, [callback]),\n * @property {Function} unshift - add a new task to the front of the `queue`.\n * Invoke with (task, [callback]).\n * @property {Function} saturated - a callback that is called when the number of\n * running workers hits the `concurrency` limit, and further tasks will be\n * queued.\n * @property {Function} unsaturated - a callback that is called when the number\n * of running workers is less than the `concurrency` & `buffer` limits, and\n * further tasks will not be queued.\n * @property {number} buffer - A minimum threshold buffer in order to say that\n * the `queue` is `unsaturated`.\n * @property {Function} empty - a callback that is called when the last item\n * from the `queue` is given to a `worker`.\n * @property {Function} drain - a callback that is called when the last item\n * from the `queue` has returned from the `worker`.\n * @property {Function} error - a callback that is called when a task errors.\n * Has the signature `function(error, task)`.\n * @property {boolean} paused - a boolean for determining whether the queue is\n * in a paused state.\n * @property {Function} pause - a function that pauses the processing of tasks\n * until `resume()` is called. Invoke with ().\n * @property {Function} resume - a function that resumes the processing of\n * queued tasks when the queue is paused. Invoke with ().\n * @property {Function} kill - a function that removes the `drain` callback and\n * empties remaining tasks from the queue forcing it to go idle. Invoke with ().\n ",
+            "value": "*\n * A queue of tasks for the worker function to complete.\n * @typedef {Object} QueueObject\n * @property {Function} length - a function returning the number of items\n * waiting to be processed. Invoke with `queue.length()`.\n * @property {Function} started - a function returning whether or not any\n * items have been pushed and processed by the queue. Invoke with `queue.started()`.\n * @property {Function} running - a function returning the number of items\n * currently being processed. Invoke with `queue.running()`.\n * @property {Function} workersList - a function returning the array of items\n * currently being processed. Invoke with `queue.workersList()`.\n * @property {Function} idle - a function returning false if there are items\n * waiting or being processed, or true if not. Invoke with `queue.idle()`.\n * @property {number} concurrency - an integer for determining how many `worker`\n * functions should be run in parallel. This property can be changed after a\n * `queue` is created to alter the concurrency on-the-fly.\n * @property {Function} push - add a new task to the `queue`. Calls `callback`\n * once the `worker` has finished processing the task. Instead of a single task,\n * a `tasks` array can be submitted. The respective callback is used for every\n * task in the list. Invoke with `queue.push(task, [callback])`,\n * @property {Function} unshift - add a new task to the front of the `queue`.\n * Invoke with `queue.unshift(task, [callback])`.\n * @property {Function} saturated - a callback that is called when the number of\n * running workers hits the `concurrency` limit, and further tasks will be\n * queued.\n * @property {Function} unsaturated - a callback that is called when the number\n * of running workers is less than the `concurrency` & `buffer` limits, and\n * further tasks will not be queued.\n * @property {number} buffer - A minimum threshold buffer in order to say that\n * the `queue` is `unsaturated`.\n * @property {Function} empty - a callback that is called when the last item\n * from the `queue` is given to a `worker`.\n * @property {Function} drain - a callback that is called when the last item\n * from the `queue` has returned from the `worker`.\n * @property {Function} error - a callback that is called when a task errors.\n * Has the signature `function(error, task)`.\n * @property {boolean} paused - a boolean for determining whether the queue is\n * in a paused state.\n * @property {Function} pause - a function that pauses the processing of tasks\n * until `resume()` is called. Invoke with `queue.pause()`.\n * @property {Function} resume - a function that resumes the processing of\n * queued tasks when the queue is paused. Invoke with `queue.length()`.\n * @property {Function} kill - a function that removes the `drain` callback and\n * empties remaining tasks from the queue forcing it to go idle. Invoke with `queue.kill()`.\n ",
             "range": [
               39,
-              2772
+              2913
             ],
             "loc": {
               "start": {
@@ -508,8 +508,8 @@
             "type": "Block",
             "value": "*\n * Creates a `queue` object with the specified `concurrency`. Tasks added to the\n * `queue` are processed in parallel (up to the `concurrency` limit). If all\n * `worker`s are in progress, the task is queued until one becomes available.\n * Once a `worker` completes a `task`, that `task`'s callback is called.\n *\n * @name queue\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {Function} worker - An asynchronous function for processing a queued\n * task, which must call its `callback(err)` argument when finished, with an\n * optional `error` as an argument.  If you want to handle errors from an\n * individual task, pass a callback to `q.push()`. Invoked with\n * (task, callback).\n * @param {number} [concurrency=1] - An `integer` for determining how many\n * `worker` functions should be run in parallel.  If omitted, the concurrency\n * defaults to `1`.  If the concurrency is `0`, an error is thrown.\n * @returns {QueueObject} A queue object to manage the tasks. Callbacks can\n * attached as certain properties to listen for specific events during the\n * lifecycle of the queue.\n * @example\n *\n * // create a queue object with concurrency 2\n * var q = async.queue(function(task, callback) {\n *     console.log('hello ' + task.name);\n *     callback();\n * }, 2);\n *\n * // assign a callback\n * q.drain = function() {\n *     console.log('all items have been processed');\n * };\n *\n * // add some items to the queue\n * q.push({name: 'foo'}, function(err) {\n *     console.log('finished processing foo');\n * });\n * q.push({name: 'bar'}, function (err) {\n *     console.log('finished processing bar');\n * });\n *\n * // add some items to the queue (batch-wise)\n * q.push([{name: 'baz'},{name: 'bay'},{name: 'bax'}], function(err) {\n *     console.log('finished processing item');\n * });\n *\n * // add some items to the front of the queue\n * q.unshift({name: 'bar'}, function (err) {\n *     console.log('finished processing bar');\n * });\n ",
             "range": [
-              2774,
-              4726
+              2915,
+              4867
             ],
             "loc": {
               "start": {
@@ -526,8 +526,8 @@
         "trailingComments": []
       },
       "range": [
-        4727,
-        4870
+        4868,
+        5011
       ],
       "loc": {
         "start": {
@@ -542,10 +542,10 @@
       "leadingComments": [
         {
           "type": "Block",
-          "value": "*\n * A queue of tasks for the worker function to complete.\n * @typedef {Object} QueueObject\n * @property {Function} length - a function returning the number of items\n * waiting to be processed. Invoke with ().\n * @property {Function} started - a function returning whether or not any\n * items have been pushed and processed by the queue. Invoke with ().\n * @property {Function} running - a function returning the number of items\n * currently being processed. Invoke with ().\n * @property {Function} workersList - a function returning the array of items\n * currently being processed. Invoke with ().\n * @property {Function} idle - a function returning false if there are items\n * waiting or being processed, or true if not. Invoke with ().\n * @property {number} concurrency - an integer for determining how many `worker`\n * functions should be run in parallel. This property can be changed after a\n * `queue` is created to alter the concurrency on-the-fly.\n * @property {Function} push - add a new task to the `queue`. Calls `callback`\n * once the `worker` has finished processing the task. Instead of a single task,\n * a `tasks` array can be submitted. The respective callback is used for every\n * task in the list. Invoke with (task, [callback]),\n * @property {Function} unshift - add a new task to the front of the `queue`.\n * Invoke with (task, [callback]).\n * @property {Function} saturated - a callback that is called when the number of\n * running workers hits the `concurrency` limit, and further tasks will be\n * queued.\n * @property {Function} unsaturated - a callback that is called when the number\n * of running workers is less than the `concurrency` & `buffer` limits, and\n * further tasks will not be queued.\n * @property {number} buffer - A minimum threshold buffer in order to say that\n * the `queue` is `unsaturated`.\n * @property {Function} empty - a callback that is called when the last item\n * from the `queue` is given to a `worker`.\n * @property {Function} drain - a callback that is called when the last item\n * from the `queue` has returned from the `worker`.\n * @property {Function} error - a callback that is called when a task errors.\n * Has the signature `function(error, task)`.\n * @property {boolean} paused - a boolean for determining whether the queue is\n * in a paused state.\n * @property {Function} pause - a function that pauses the processing of tasks\n * until `resume()` is called. Invoke with ().\n * @property {Function} resume - a function that resumes the processing of\n * queued tasks when the queue is paused. Invoke with ().\n * @property {Function} kill - a function that removes the `drain` callback and\n * empties remaining tasks from the queue forcing it to go idle. Invoke with ().\n ",
+          "value": "*\n * A queue of tasks for the worker function to complete.\n * @typedef {Object} QueueObject\n * @property {Function} length - a function returning the number of items\n * waiting to be processed. Invoke with `queue.length()`.\n * @property {Function} started - a function returning whether or not any\n * items have been pushed and processed by the queue. Invoke with `queue.started()`.\n * @property {Function} running - a function returning the number of items\n * currently being processed. Invoke with `queue.running()`.\n * @property {Function} workersList - a function returning the array of items\n * currently being processed. Invoke with `queue.workersList()`.\n * @property {Function} idle - a function returning false if there are items\n * waiting or being processed, or true if not. Invoke with `queue.idle()`.\n * @property {number} concurrency - an integer for determining how many `worker`\n * functions should be run in parallel. This property can be changed after a\n * `queue` is created to alter the concurrency on-the-fly.\n * @property {Function} push - add a new task to the `queue`. Calls `callback`\n * once the `worker` has finished processing the task. Instead of a single task,\n * a `tasks` array can be submitted. The respective callback is used for every\n * task in the list. Invoke with `queue.push(task, [callback])`,\n * @property {Function} unshift - add a new task to the front of the `queue`.\n * Invoke with `queue.unshift(task, [callback])`.\n * @property {Function} saturated - a callback that is called when the number of\n * running workers hits the `concurrency` limit, and further tasks will be\n * queued.\n * @property {Function} unsaturated - a callback that is called when the number\n * of running workers is less than the `concurrency` & `buffer` limits, and\n * further tasks will not be queued.\n * @property {number} buffer - A minimum threshold buffer in order to say that\n * the `queue` is `unsaturated`.\n * @property {Function} empty - a callback that is called when the last item\n * from the `queue` is given to a `worker`.\n * @property {Function} drain - a callback that is called when the last item\n * from the `queue` has returned from the `worker`.\n * @property {Function} error - a callback that is called when a task errors.\n * Has the signature `function(error, task)`.\n * @property {boolean} paused - a boolean for determining whether the queue is\n * in a paused state.\n * @property {Function} pause - a function that pauses the processing of tasks\n * until `resume()` is called. Invoke with `queue.pause()`.\n * @property {Function} resume - a function that resumes the processing of\n * queued tasks when the queue is paused. Invoke with `queue.length()`.\n * @property {Function} kill - a function that removes the `drain` callback and\n * empties remaining tasks from the queue forcing it to go idle. Invoke with `queue.kill()`.\n ",
           "range": [
             39,
-            2772
+            2913
           ],
           "loc": {
             "start": {
@@ -562,8 +562,8 @@
           "type": "Block",
           "value": "*\n * Creates a `queue` object with the specified `concurrency`. Tasks added to the\n * `queue` are processed in parallel (up to the `concurrency` limit). If all\n * `worker`s are in progress, the task is queued until one becomes available.\n * Once a `worker` completes a `task`, that `task`'s callback is called.\n *\n * @name queue\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {Function} worker - An asynchronous function for processing a queued\n * task, which must call its `callback(err)` argument when finished, with an\n * optional `error` as an argument.  If you want to handle errors from an\n * individual task, pass a callback to `q.push()`. Invoked with\n * (task, callback).\n * @param {number} [concurrency=1] - An `integer` for determining how many\n * `worker` functions should be run in parallel.  If omitted, the concurrency\n * defaults to `1`.  If the concurrency is `0`, an error is thrown.\n * @returns {QueueObject} A queue object to manage the tasks. Callbacks can\n * attached as certain properties to listen for specific events during the\n * lifecycle of the queue.\n * @example\n *\n * // create a queue object with concurrency 2\n * var q = async.queue(function(task, callback) {\n *     console.log('hello ' + task.name);\n *     callback();\n * }, 2);\n *\n * // assign a callback\n * q.drain = function() {\n *     console.log('all items have been processed');\n * };\n *\n * // add some items to the queue\n * q.push({name: 'foo'}, function(err) {\n *     console.log('finished processing foo');\n * });\n * q.push({name: 'bar'}, function (err) {\n *     console.log('finished processing bar');\n * });\n *\n * // add some items to the queue (batch-wise)\n * q.push([{name: 'baz'},{name: 'bay'},{name: 'bax'}], function(err) {\n *     console.log('finished processing item');\n * });\n *\n * // add some items to the front of the queue\n * q.unshift({name: 'bar'}, function (err) {\n *     console.log('finished processing bar');\n * });\n ",
           "range": [
-            2774,
-            4726
+            2915,
+            4867
           ],
           "loc": {
             "start": {
@@ -582,7 +582,7 @@
   "sourceType": "module",
   "range": [
     0,
-    4870
+    5011
   ],
   "loc": {
     "start": {
@@ -597,10 +597,10 @@
   "comments": [
     {
       "type": "Block",
-      "value": "*\n * A queue of tasks for the worker function to complete.\n * @typedef {Object} QueueObject\n * @property {Function} length - a function returning the number of items\n * waiting to be processed. Invoke with ().\n * @property {Function} started - a function returning whether or not any\n * items have been pushed and processed by the queue. Invoke with ().\n * @property {Function} running - a function returning the number of items\n * currently being processed. Invoke with ().\n * @property {Function} workersList - a function returning the array of items\n * currently being processed. Invoke with ().\n * @property {Function} idle - a function returning false if there are items\n * waiting or being processed, or true if not. Invoke with ().\n * @property {number} concurrency - an integer for determining how many `worker`\n * functions should be run in parallel. This property can be changed after a\n * `queue` is created to alter the concurrency on-the-fly.\n * @property {Function} push - add a new task to the `queue`. Calls `callback`\n * once the `worker` has finished processing the task. Instead of a single task,\n * a `tasks` array can be submitted. The respective callback is used for every\n * task in the list. Invoke with (task, [callback]),\n * @property {Function} unshift - add a new task to the front of the `queue`.\n * Invoke with (task, [callback]).\n * @property {Function} saturated - a callback that is called when the number of\n * running workers hits the `concurrency` limit, and further tasks will be\n * queued.\n * @property {Function} unsaturated - a callback that is called when the number\n * of running workers is less than the `concurrency` & `buffer` limits, and\n * further tasks will not be queued.\n * @property {number} buffer - A minimum threshold buffer in order to say that\n * the `queue` is `unsaturated`.\n * @property {Function} empty - a callback that is called when the last item\n * from the `queue` is given to a `worker`.\n * @property {Function} drain - a callback that is called when the last item\n * from the `queue` has returned from the `worker`.\n * @property {Function} error - a callback that is called when a task errors.\n * Has the signature `function(error, task)`.\n * @property {boolean} paused - a boolean for determining whether the queue is\n * in a paused state.\n * @property {Function} pause - a function that pauses the processing of tasks\n * until `resume()` is called. Invoke with ().\n * @property {Function} resume - a function that resumes the processing of\n * queued tasks when the queue is paused. Invoke with ().\n * @property {Function} kill - a function that removes the `drain` callback and\n * empties remaining tasks from the queue forcing it to go idle. Invoke with ().\n ",
+      "value": "*\n * A queue of tasks for the worker function to complete.\n * @typedef {Object} QueueObject\n * @property {Function} length - a function returning the number of items\n * waiting to be processed. Invoke with `queue.length()`.\n * @property {Function} started - a function returning whether or not any\n * items have been pushed and processed by the queue. Invoke with `queue.started()`.\n * @property {Function} running - a function returning the number of items\n * currently being processed. Invoke with `queue.running()`.\n * @property {Function} workersList - a function returning the array of items\n * currently being processed. Invoke with `queue.workersList()`.\n * @property {Function} idle - a function returning false if there are items\n * waiting or being processed, or true if not. Invoke with `queue.idle()`.\n * @property {number} concurrency - an integer for determining how many `worker`\n * functions should be run in parallel. This property can be changed after a\n * `queue` is created to alter the concurrency on-the-fly.\n * @property {Function} push - add a new task to the `queue`. Calls `callback`\n * once the `worker` has finished processing the task. Instead of a single task,\n * a `tasks` array can be submitted. The respective callback is used for every\n * task in the list. Invoke with `queue.push(task, [callback])`,\n * @property {Function} unshift - add a new task to the front of the `queue`.\n * Invoke with `queue.unshift(task, [callback])`.\n * @property {Function} saturated - a callback that is called when the number of\n * running workers hits the `concurrency` limit, and further tasks will be\n * queued.\n * @property {Function} unsaturated - a callback that is called when the number\n * of running workers is less than the `concurrency` & `buffer` limits, and\n * further tasks will not be queued.\n * @property {number} buffer - A minimum threshold buffer in order to say that\n * the `queue` is `unsaturated`.\n * @property {Function} empty - a callback that is called when the last item\n * from the `queue` is given to a `worker`.\n * @property {Function} drain - a callback that is called when the last item\n * from the `queue` has returned from the `worker`.\n * @property {Function} error - a callback that is called when a task errors.\n * Has the signature `function(error, task)`.\n * @property {boolean} paused - a boolean for determining whether the queue is\n * in a paused state.\n * @property {Function} pause - a function that pauses the processing of tasks\n * until `resume()` is called. Invoke with `queue.pause()`.\n * @property {Function} resume - a function that resumes the processing of\n * queued tasks when the queue is paused. Invoke with `queue.length()`.\n * @property {Function} kill - a function that removes the `drain` callback and\n * empties remaining tasks from the queue forcing it to go idle. Invoke with `queue.kill()`.\n ",
       "range": [
         39,
-        2772
+        2913
       ],
       "loc": {
         "start": {
@@ -617,8 +617,8 @@
       "type": "Block",
       "value": "*\n * Creates a `queue` object with the specified `concurrency`. Tasks added to the\n * `queue` are processed in parallel (up to the `concurrency` limit). If all\n * `worker`s are in progress, the task is queued until one becomes available.\n * Once a `worker` completes a `task`, that `task`'s callback is called.\n *\n * @name queue\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {Function} worker - An asynchronous function for processing a queued\n * task, which must call its `callback(err)` argument when finished, with an\n * optional `error` as an argument.  If you want to handle errors from an\n * individual task, pass a callback to `q.push()`. Invoked with\n * (task, callback).\n * @param {number} [concurrency=1] - An `integer` for determining how many\n * `worker` functions should be run in parallel.  If omitted, the concurrency\n * defaults to `1`.  If the concurrency is `0`, an error is thrown.\n * @returns {QueueObject} A queue object to manage the tasks. Callbacks can\n * attached as certain properties to listen for specific events during the\n * lifecycle of the queue.\n * @example\n *\n * // create a queue object with concurrency 2\n * var q = async.queue(function(task, callback) {\n *     console.log('hello ' + task.name);\n *     callback();\n * }, 2);\n *\n * // assign a callback\n * q.drain = function() {\n *     console.log('all items have been processed');\n * };\n *\n * // add some items to the queue\n * q.push({name: 'foo'}, function(err) {\n *     console.log('finished processing foo');\n * });\n * q.push({name: 'bar'}, function (err) {\n *     console.log('finished processing bar');\n * });\n *\n * // add some items to the queue (batch-wise)\n * q.push([{name: 'baz'},{name: 'bay'},{name: 'bax'}], function(err) {\n *     console.log('finished processing item');\n * });\n *\n * // add some items to the front of the queue\n * q.unshift({name: 'bar'}, function (err) {\n *     console.log('finished processing bar');\n * });\n ",
       "range": [
-        2774,
-        4726
+        2915,
+        4867
       ],
       "loc": {
         "start": {

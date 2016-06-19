@@ -1,15 +1,8 @@
 {
-  "coverage": "64.81%",
-  "expectCount": 54,
+  "coverage": "100%",
+  "expectCount": 35,
   "actualCount": 35,
   "files": {
-    "lib/internal/applyEach.js": {
-      "expectCount": 1,
-      "actualCount": 0,
-      "undocumentLines": [
-        4
-      ]
-    },
     "lib/asyncify.js": {
       "expectCount": 1,
       "actualCount": 1,
@@ -35,52 +28,10 @@
       "actualCount": 1,
       "undocumentLines": []
     },
-    "lib/internal/concat.js": {
-      "expectCount": 1,
-      "actualCount": 0,
-      "undocumentLines": [
-        1
-      ]
-    },
-    "lib/internal/consoleFunc.js": {
-      "expectCount": 1,
-      "actualCount": 0,
-      "undocumentLines": [
-        4
-      ]
-    },
     "lib/doDuring.js": {
       "expectCount": 1,
       "actualCount": 1,
       "undocumentLines": []
-    },
-    "lib/internal/doLimit.js": {
-      "expectCount": 1,
-      "actualCount": 0,
-      "undocumentLines": [
-        1
-      ]
-    },
-    "lib/internal/doParallel.js": {
-      "expectCount": 1,
-      "actualCount": 0,
-      "undocumentLines": [
-        3
-      ]
-    },
-    "lib/internal/doParallelLimit.js": {
-      "expectCount": 1,
-      "actualCount": 0,
-      "undocumentLines": [
-        3
-      ]
-    },
-    "lib/internal/doSeries.js": {
-      "expectCount": 1,
-      "actualCount": 0,
-      "undocumentLines": [
-        3
-      ]
     },
     "lib/doUntil.js": {
       "expectCount": 1,
@@ -112,41 +63,10 @@
       "actualCount": 1,
       "undocumentLines": []
     },
-    "lib/internal/setImmediate.js": {
-      "expectCount": 4,
-      "actualCount": 0,
-      "undocumentLines": [
-        8,
-        6,
-        5,
-        12
-      ]
-    },
     "lib/forever.js": {
       "expectCount": 1,
       "actualCount": 1,
       "undocumentLines": []
-    },
-    "lib/internal/getIterator.js": {
-      "expectCount": 1,
-      "actualCount": 0,
-      "undocumentLines": [
-        3
-      ]
-    },
-    "lib/internal/initialParams.js": {
-      "expectCount": 1,
-      "actualCount": 0,
-      "undocumentLines": [
-        3
-      ]
-    },
-    "lib/internal/iterator.js": {
-      "expectCount": 1,
-      "actualCount": 0,
-      "undocumentLines": [
-        5
-      ]
     },
     "lib/iterator.js": {
       "expectCount": 1,
@@ -163,27 +83,6 @@
       "actualCount": 1,
       "undocumentLines": []
     },
-    "lib/internal/notId.js": {
-      "expectCount": 1,
-      "actualCount": 0,
-      "undocumentLines": [
-        1
-      ]
-    },
-    "lib/internal/once.js": {
-      "expectCount": 1,
-      "actualCount": 0,
-      "undocumentLines": [
-        1
-      ]
-    },
-    "lib/internal/onlyOnce.js": {
-      "expectCount": 1,
-      "actualCount": 0,
-      "undocumentLines": [
-        1
-      ]
-    },
     "lib/parallelLimit.js": {
       "expectCount": 1,
       "actualCount": 1,
@@ -198,13 +97,6 @@
       "expectCount": 1,
       "actualCount": 1,
       "undocumentLines": []
-    },
-    "lib/internal/queue.js": {
-      "expectCount": 1,
-      "actualCount": 0,
-      "undocumentLines": [
-        10
-      ]
     },
     "lib/race.js": {
       "expectCount": 1,
@@ -230,13 +122,6 @@
       "expectCount": 1,
       "actualCount": 1,
       "undocumentLines": []
-    },
-    "lib/internal/reject.js": {
-      "expectCount": 1,
-      "actualCount": 0,
-      "undocumentLines": [
-        3
-      ]
     },
     "lib/retry.js": {
       "expectCount": 1,

@@ -69,25 +69,6 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-whilst">whilst</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-CargoObject">CargoObject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-QueueObject">QueueObject</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">internal</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-applyEach">applyEach</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-consoleFunc">consoleFunc</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doLimit">doLimit</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doParallel">doParallel</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doParallelLimit">doParallelLimit</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doSeries">doSeries</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getIterator">getIterator</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-initialParams">initialParams</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-iterator">iterator</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-notId">notId</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-once">once</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-onlyOnce">onlyOnce</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-queue">queue</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reject">reject</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-fallback">fallback</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-wrap">wrap</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-hasNextTick">hasNextTick</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-hasSetImmediate">hasSetImmediate</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -191,7 +172,7 @@ the same methods and event callbacks as <span>async.queue</span>.</p>
       <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>A function returning the number of items
-waiting to be processed. Invoke with ().</p>
+waiting to be processed. Invoke like <code>cargo.length()</code>.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
@@ -210,7 +191,7 @@ created to alter the payload on-the-fly.</p>
       <td data-ice="description"><p>Adds <code>task</code> to the <code>queue</code>. The callback is
 called once the <code>worker</code> has finished processing the task. Instead of a
 single task, an array of <code>tasks</code> can be submitted. The respective callback is
-used for every task in the list. Invoke with (task, [callback]).</p>
+used for every task in the list. Invoke like <code>cargo.push(task, [callback])</code>.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
@@ -242,7 +223,7 @@ from the <code>queue</code> has returned from the <code>worker</code>.</p>
       <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>a function returning false if there are items
-waiting or being processed, or true if not. Invoke with ().</p>
+waiting or being processed, or true if not. Invoke like <code>cargo.idle()</code>.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
@@ -250,7 +231,7 @@ waiting or being processed, or true if not. Invoke with ().</p>
       <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>a function that pauses the processing of tasks
-until <code>resume()</code> is called. Invoke with ().</p>
+until <code>resume()</code> is called. Invoke like <code>cargo.pause()</code>.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
@@ -258,7 +239,7 @@ until <code>resume()</code> is called. Invoke with ().</p>
       <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>a function that resumes the processing of
-queued tasks when the queue is paused. Invoke with ().</p>
+queued tasks when the queue is paused. Invoke like <code>cargo.resume()</code>.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
@@ -266,7 +247,7 @@ queued tasks when the queue is paused. Invoke with ().</p>
       <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>a function that removes the <code>drain</code> callback and
-empties remaining tasks from the queue forcing it to go idle. Invoke with ().</p>
+empties remaining tasks from the queue forcing it to go idle. Invoke like <code>cargo.kill()</code>.</p>
 </td>
     </tr>
 </tbody>
@@ -325,7 +306,7 @@ empties remaining tasks from the queue forcing it to go idle. Invoke with ().</p
       <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>a function returning the number of items
-waiting to be processed. Invoke with ().</p>
+waiting to be processed. Invoke with <code>queue.length()</code>.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
@@ -333,7 +314,7 @@ waiting to be processed. Invoke with ().</p>
       <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>a function returning whether or not any
-items have been pushed and processed by the queue. Invoke with ().</p>
+items have been pushed and processed by the queue. Invoke with <code>queue.started()</code>.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
@@ -341,7 +322,7 @@ items have been pushed and processed by the queue. Invoke with ().</p>
       <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>a function returning the number of items
-currently being processed. Invoke with ().</p>
+currently being processed. Invoke with <code>queue.running()</code>.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
@@ -349,7 +330,7 @@ currently being processed. Invoke with ().</p>
       <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>a function returning the array of items
-currently being processed. Invoke with ().</p>
+currently being processed. Invoke with <code>queue.workersList()</code>.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
@@ -357,7 +338,7 @@ currently being processed. Invoke with ().</p>
       <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>a function returning false if there are items
-waiting or being processed, or true if not. Invoke with ().</p>
+waiting or being processed, or true if not. Invoke with <code>queue.idle()</code>.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
@@ -376,7 +357,7 @@ functions should be run in parallel. This property can be changed after a
       <td data-ice="description"><p>add a new task to the <code>queue</code>. Calls <code>callback</code>
 once the <code>worker</code> has finished processing the task. Instead of a single task,
 a <code>tasks</code> array can be submitted. The respective callback is used for every
-task in the list. Invoke with (task, [callback]),</p>
+task in the list. Invoke with <code>queue.push(task, [callback])</code>,</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
@@ -384,7 +365,7 @@ task in the list. Invoke with (task, [callback]),</p>
       <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>add a new task to the front of the <code>queue</code>.
-Invoke with (task, [callback]).</p>
+Invoke with <code>queue.unshift(task, [callback])</code>.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
@@ -450,7 +431,7 @@ in a paused state.</p>
       <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>a function that pauses the processing of tasks
-until <code>resume()</code> is called. Invoke with ().</p>
+until <code>resume()</code> is called. Invoke with <code>queue.pause()</code>.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
@@ -458,7 +439,7 @@ until <code>resume()</code> is called. Invoke with ().</p>
       <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>a function that resumes the processing of
-queued tasks when the queue is paused. Invoke with ().</p>
+queued tasks when the queue is paused. Invoke with <code>queue.length()</code>.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
@@ -466,7 +447,7 @@ queued tasks when the queue is paused. Invoke with ().</p>
       <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>a function that removes the <code>drain</code> callback and
-empties remaining tasks from the queue forcing it to go idle. Invoke with ().</p>
+empties remaining tasks from the queue forcing it to go idle. Invoke with <code>queue.kill()</code>.</p>
 </td>
     </tr>
 </tbody>

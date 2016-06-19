@@ -76,10 +76,10 @@
       "trailingComments": [
         {
           "type": "Block",
-          "value": "*\n * A cargo of tasks for the worker function to complete. Cargo inherits all of\n * the same methods and event callbacks as {@link async.queue}.\n * @typedef {Object} CargoObject\n * @property {Function} length - A function returning the number of items\n * waiting to be processed. Invoke with ().\n * @property {number} payload - An `integer` for determining how many tasks\n * should be process per round. This property can be changed after a `cargo` is\n * created to alter the payload on-the-fly.\n * @property {Function} push - Adds `task` to the `queue`. The callback is\n * called once the `worker` has finished processing the task. Instead of a\n * single task, an array of `tasks` can be submitted. The respective callback is\n * used for every task in the list. Invoke with (task, [callback]).\n * @property {Function} saturated - A callback that is called when the\n * `queue.length()` hits the concurrency and further tasks will be queued.\n * @property {Function} empty - A callback that is called when the last item\n * from the `queue` is given to a `worker`.\n * @property {Function} drain - A callback that is called when the last item\n * from the `queue` has returned from the `worker`.\n * @property {Function} idle - a function returning false if there are items\n * waiting or being processed, or true if not. Invoke with ().\n * @property {Function} pause - a function that pauses the processing of tasks\n * until `resume()` is called. Invoke with ().\n * @property {Function} resume - a function that resumes the processing of\n * queued tasks when the queue is paused. Invoke with ().\n * @property {Function} kill - a function that removes the `drain` callback and\n * empties remaining tasks from the queue forcing it to go idle. Invoke with ().\n ",
+          "value": "*\n * A cargo of tasks for the worker function to complete. Cargo inherits all of\n * the same methods and event callbacks as {@link async.queue}.\n * @typedef {Object} CargoObject\n * @property {Function} length - A function returning the number of items\n * waiting to be processed. Invoke like `cargo.length()`.\n * @property {number} payload - An `integer` for determining how many tasks\n * should be process per round. This property can be changed after a `cargo` is\n * created to alter the payload on-the-fly.\n * @property {Function} push - Adds `task` to the `queue`. The callback is\n * called once the `worker` has finished processing the task. Instead of a\n * single task, an array of `tasks` can be submitted. The respective callback is\n * used for every task in the list. Invoke like `cargo.push(task, [callback])`.\n * @property {Function} saturated - A callback that is called when the\n * `queue.length()` hits the concurrency and further tasks will be queued.\n * @property {Function} empty - A callback that is called when the last item\n * from the `queue` is given to a `worker`.\n * @property {Function} drain - A callback that is called when the last item\n * from the `queue` has returned from the `worker`.\n * @property {Function} idle - a function returning false if there are items\n * waiting or being processed, or true if not. Invoke like `cargo.idle()`.\n * @property {Function} pause - a function that pauses the processing of tasks\n * until `resume()` is called. Invoke like `cargo.pause()`.\n * @property {Function} resume - a function that resumes the processing of\n * queued tasks when the queue is paused. Invoke like `cargo.resume()`.\n * @property {Function} kill - a function that removes the `drain` callback and\n * empties remaining tasks from the queue forcing it to go idle. Invoke like `cargo.kill()`.\n ",
           "range": [
             39,
-            1795
+            1872
           ],
           "loc": {
             "start": {
@@ -94,10 +94,10 @@
         },
         {
           "type": "Block",
-          "value": "*\n * Creates a `cargo` object with the specified payload. Tasks added to the\n * cargo will be processed altogether (up to the `payload` limit). If the\n * `worker` is in progress, the task is queued until it becomes available. Once\n * the `worker` has completed some tasks, each callback of those tasks is\n * called. Check out [these](https://camo.githubusercontent.com/6bbd36f4cf5b35a0f11a96dcd2e97711ffc2fb37/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313637363837312f36383130382f62626330636662302d356632392d313165322d393734662d3333393763363464633835382e676966) [animations](https://camo.githubusercontent.com/f4810e00e1c5f5f8addbe3e9f49064fd5d102699/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313637363837312f36383130312f38346339323036362d356632392d313165322d383134662d3964336430323431336266642e676966)\n * for how `cargo` and `queue` work.\n *\n * While [queue](#queue) passes only one task to one of a group of workers\n * at a time, cargo passes an array of tasks to a single worker, repeating\n * when the worker is finished.\n *\n * @name cargo\n * @static\n * @memberOf async\n * @see async.queue\n * @category Control Flow\n * @param {Function} worker - An asynchronous function for processing an array\n * of queued tasks, which must call its `callback(err)` argument when finished,\n * with an optional `err` argument. Invoked with (tasks, callback).\n * @param {number} [payload=Infinity] - An optional `integer` for determining\n * how many tasks should be processed per round; if omitted, the default is\n * unlimited.\n * @returns {CargoObject} A cargo object to manage the tasks. Callbacks can\n * attached as certain properties to listen for specific events during the\n * lifecycle of the cargo and inner queue.\n * @example\n *\n * // create a cargo object with payload 2\n * var cargo = async.cargo(function(tasks, callback) {\n *     for (var i=0; i<tasks.length; i++) {\n *         console.log('hello ' + tasks[i].name);\n *     }\n *     callback();\n * }, 2);\n *\n * // add some items\n * cargo.push({name: 'foo'}, function(err) {\n *     console.log('finished processing foo');\n * });\n * cargo.push({name: 'bar'}, function(err) {\n *     console.log('finished processing bar');\n * });\n * cargo.push({name: 'baz'}, function(err) {\n *     console.log('finished processing baz');\n * });\n ",
+          "value": "*\n * Creates a `cargo` object with the specified payload. Tasks added to the\n * cargo will be processed altogether (up to the `payload` limit). If the\n * `worker` is in progress, the task is queued until it becomes available. Once\n * the `worker` has completed some tasks, each callback of those tasks is\n * called. Check out [these](https://camo.githubusercontent.com/6bbd36f4cf5b35a0f11a96dcd2e97711ffc2fb37/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313637363837312f36383130382f62626330636662302d356632392d313165322d393734662d3333393763363464633835382e676966) [animations](https://camo.githubusercontent.com/f4810e00e1c5f5f8addbe3e9f49064fd5d102699/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313637363837312f36383130312f38346339323036362d356632392d313165322d383134662d3964336430323431336266642e676966)\n * for how `cargo` and `queue` work.\n *\n * While [queue](#queue) passes only one task to one of a group of workers\n * at a time, cargo passes an array of tasks to a single worker, repeating\n * when the worker is finished.\n *\n * @name cargo\n * @static\n * @memberOf async\n * @see async.queue\n * @category Control Flow\n * @param {Function} worker - An asynchronous function for processing an array\n * of queued tasks, which must call its `callback(err)` argument when finished,\n * with an optional `err` argument. Invoked with `(tasks, callback)`.\n * @param {number} [payload=Infinity] - An optional `integer` for determining\n * how many tasks should be processed per round; if omitted, the default is\n * unlimited.\n * @returns {CargoObject} A cargo object to manage the tasks. Callbacks can\n * attached as certain properties to listen for specific events during the\n * lifecycle of the cargo and inner queue.\n * @example\n *\n * // create a cargo object with payload 2\n * var cargo = async.cargo(function(tasks, callback) {\n *     for (var i=0; i<tasks.length; i++) {\n *         console.log('hello ' + tasks[i].name);\n *     }\n *     callback();\n * }, 2);\n *\n * // add some items\n * cargo.push({name: 'foo'}, function(err) {\n *     console.log('finished processing foo');\n * });\n * cargo.push({name: 'bar'}, function(err) {\n *     console.log('finished processing bar');\n * });\n * cargo.push({name: 'baz'}, function(err) {\n *     console.log('finished processing baz');\n * });\n ",
           "range": [
-            1797,
-            4128
+            1874,
+            4207
           ],
           "loc": {
             "start": {
@@ -120,8 +120,8 @@
           "type": "Identifier",
           "name": "cargo",
           "range": [
-            4153,
-            4158
+            4232,
+            4237
           ],
           "loc": {
             "start": {
@@ -139,8 +139,8 @@
             "type": "Identifier",
             "name": "worker",
             "range": [
-              4159,
-              4165
+              4238,
+              4244
             ],
             "loc": {
               "start": {
@@ -157,8 +157,8 @@
             "type": "Identifier",
             "name": "payload",
             "range": [
-              4167,
-              4174
+              4246,
+              4253
             ],
             "loc": {
               "start": {
@@ -183,8 +183,8 @@
                   "type": "Identifier",
                   "name": "queue",
                   "range": [
-                    4189,
-                    4194
+                    4268,
+                    4273
                   ],
                   "loc": {
                     "start": {
@@ -202,8 +202,8 @@
                     "type": "Identifier",
                     "name": "worker",
                     "range": [
-                      4195,
-                      4201
+                      4274,
+                      4280
                     ],
                     "loc": {
                       "start": {
@@ -221,8 +221,8 @@
                     "value": 1,
                     "raw": "1",
                     "range": [
-                      4203,
-                      4204
+                      4282,
+                      4283
                     ],
                     "loc": {
                       "start": {
@@ -239,8 +239,8 @@
                     "type": "Identifier",
                     "name": "payload",
                     "range": [
-                      4206,
-                      4213
+                      4285,
+                      4292
                     ],
                     "loc": {
                       "start": {
@@ -255,8 +255,8 @@
                   }
                 ],
                 "range": [
-                  4189,
-                  4214
+                  4268,
+                  4293
                 ],
                 "loc": {
                   "start": {
@@ -270,8 +270,8 @@
                 }
               },
               "range": [
-                4182,
-                4215
+                4261,
+                4294
               ],
               "loc": {
                 "start": {
@@ -286,8 +286,8 @@
             }
           ],
           "range": [
-            4176,
-            4217
+            4255,
+            4296
           ],
           "loc": {
             "start": {
@@ -303,8 +303,8 @@
         "generator": false,
         "expression": false,
         "range": [
-          4144,
-          4217
+          4223,
+          4296
         ],
         "loc": {
           "start": {
@@ -319,10 +319,10 @@
         "leadingComments": [
           {
             "type": "Block",
-            "value": "*\n * A cargo of tasks for the worker function to complete. Cargo inherits all of\n * the same methods and event callbacks as {@link async.queue}.\n * @typedef {Object} CargoObject\n * @property {Function} length - A function returning the number of items\n * waiting to be processed. Invoke with ().\n * @property {number} payload - An `integer` for determining how many tasks\n * should be process per round. This property can be changed after a `cargo` is\n * created to alter the payload on-the-fly.\n * @property {Function} push - Adds `task` to the `queue`. The callback is\n * called once the `worker` has finished processing the task. Instead of a\n * single task, an array of `tasks` can be submitted. The respective callback is\n * used for every task in the list. Invoke with (task, [callback]).\n * @property {Function} saturated - A callback that is called when the\n * `queue.length()` hits the concurrency and further tasks will be queued.\n * @property {Function} empty - A callback that is called when the last item\n * from the `queue` is given to a `worker`.\n * @property {Function} drain - A callback that is called when the last item\n * from the `queue` has returned from the `worker`.\n * @property {Function} idle - a function returning false if there are items\n * waiting or being processed, or true if not. Invoke with ().\n * @property {Function} pause - a function that pauses the processing of tasks\n * until `resume()` is called. Invoke with ().\n * @property {Function} resume - a function that resumes the processing of\n * queued tasks when the queue is paused. Invoke with ().\n * @property {Function} kill - a function that removes the `drain` callback and\n * empties remaining tasks from the queue forcing it to go idle. Invoke with ().\n ",
+            "value": "*\n * A cargo of tasks for the worker function to complete. Cargo inherits all of\n * the same methods and event callbacks as {@link async.queue}.\n * @typedef {Object} CargoObject\n * @property {Function} length - A function returning the number of items\n * waiting to be processed. Invoke like `cargo.length()`.\n * @property {number} payload - An `integer` for determining how many tasks\n * should be process per round. This property can be changed after a `cargo` is\n * created to alter the payload on-the-fly.\n * @property {Function} push - Adds `task` to the `queue`. The callback is\n * called once the `worker` has finished processing the task. Instead of a\n * single task, an array of `tasks` can be submitted. The respective callback is\n * used for every task in the list. Invoke like `cargo.push(task, [callback])`.\n * @property {Function} saturated - A callback that is called when the\n * `queue.length()` hits the concurrency and further tasks will be queued.\n * @property {Function} empty - A callback that is called when the last item\n * from the `queue` is given to a `worker`.\n * @property {Function} drain - A callback that is called when the last item\n * from the `queue` has returned from the `worker`.\n * @property {Function} idle - a function returning false if there are items\n * waiting or being processed, or true if not. Invoke like `cargo.idle()`.\n * @property {Function} pause - a function that pauses the processing of tasks\n * until `resume()` is called. Invoke like `cargo.pause()`.\n * @property {Function} resume - a function that resumes the processing of\n * queued tasks when the queue is paused. Invoke like `cargo.resume()`.\n * @property {Function} kill - a function that removes the `drain` callback and\n * empties remaining tasks from the queue forcing it to go idle. Invoke like `cargo.kill()`.\n ",
             "range": [
               39,
-              1795
+              1872
             ],
             "loc": {
               "start": {
@@ -337,10 +337,10 @@
           },
           {
             "type": "Block",
-            "value": "*\n * Creates a `cargo` object with the specified payload. Tasks added to the\n * cargo will be processed altogether (up to the `payload` limit). If the\n * `worker` is in progress, the task is queued until it becomes available. Once\n * the `worker` has completed some tasks, each callback of those tasks is\n * called. Check out [these](https://camo.githubusercontent.com/6bbd36f4cf5b35a0f11a96dcd2e97711ffc2fb37/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313637363837312f36383130382f62626330636662302d356632392d313165322d393734662d3333393763363464633835382e676966) [animations](https://camo.githubusercontent.com/f4810e00e1c5f5f8addbe3e9f49064fd5d102699/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313637363837312f36383130312f38346339323036362d356632392d313165322d383134662d3964336430323431336266642e676966)\n * for how `cargo` and `queue` work.\n *\n * While [queue](#queue) passes only one task to one of a group of workers\n * at a time, cargo passes an array of tasks to a single worker, repeating\n * when the worker is finished.\n *\n * @name cargo\n * @static\n * @memberOf async\n * @see async.queue\n * @category Control Flow\n * @param {Function} worker - An asynchronous function for processing an array\n * of queued tasks, which must call its `callback(err)` argument when finished,\n * with an optional `err` argument. Invoked with (tasks, callback).\n * @param {number} [payload=Infinity] - An optional `integer` for determining\n * how many tasks should be processed per round; if omitted, the default is\n * unlimited.\n * @returns {CargoObject} A cargo object to manage the tasks. Callbacks can\n * attached as certain properties to listen for specific events during the\n * lifecycle of the cargo and inner queue.\n * @example\n *\n * // create a cargo object with payload 2\n * var cargo = async.cargo(function(tasks, callback) {\n *     for (var i=0; i<tasks.length; i++) {\n *         console.log('hello ' + tasks[i].name);\n *     }\n *     callback();\n * }, 2);\n *\n * // add some items\n * cargo.push({name: 'foo'}, function(err) {\n *     console.log('finished processing foo');\n * });\n * cargo.push({name: 'bar'}, function(err) {\n *     console.log('finished processing bar');\n * });\n * cargo.push({name: 'baz'}, function(err) {\n *     console.log('finished processing baz');\n * });\n ",
+            "value": "*\n * Creates a `cargo` object with the specified payload. Tasks added to the\n * cargo will be processed altogether (up to the `payload` limit). If the\n * `worker` is in progress, the task is queued until it becomes available. Once\n * the `worker` has completed some tasks, each callback of those tasks is\n * called. Check out [these](https://camo.githubusercontent.com/6bbd36f4cf5b35a0f11a96dcd2e97711ffc2fb37/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313637363837312f36383130382f62626330636662302d356632392d313165322d393734662d3333393763363464633835382e676966) [animations](https://camo.githubusercontent.com/f4810e00e1c5f5f8addbe3e9f49064fd5d102699/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313637363837312f36383130312f38346339323036362d356632392d313165322d383134662d3964336430323431336266642e676966)\n * for how `cargo` and `queue` work.\n *\n * While [queue](#queue) passes only one task to one of a group of workers\n * at a time, cargo passes an array of tasks to a single worker, repeating\n * when the worker is finished.\n *\n * @name cargo\n * @static\n * @memberOf async\n * @see async.queue\n * @category Control Flow\n * @param {Function} worker - An asynchronous function for processing an array\n * of queued tasks, which must call its `callback(err)` argument when finished,\n * with an optional `err` argument. Invoked with `(tasks, callback)`.\n * @param {number} [payload=Infinity] - An optional `integer` for determining\n * how many tasks should be processed per round; if omitted, the default is\n * unlimited.\n * @returns {CargoObject} A cargo object to manage the tasks. Callbacks can\n * attached as certain properties to listen for specific events during the\n * lifecycle of the cargo and inner queue.\n * @example\n *\n * // create a cargo object with payload 2\n * var cargo = async.cargo(function(tasks, callback) {\n *     for (var i=0; i<tasks.length; i++) {\n *         console.log('hello ' + tasks[i].name);\n *     }\n *     callback();\n * }, 2);\n *\n * // add some items\n * cargo.push({name: 'foo'}, function(err) {\n *     console.log('finished processing foo');\n * });\n * cargo.push({name: 'bar'}, function(err) {\n *     console.log('finished processing bar');\n * });\n * cargo.push({name: 'baz'}, function(err) {\n *     console.log('finished processing baz');\n * });\n ",
             "range": [
-              1797,
-              4128
+              1874,
+              4207
             ],
             "loc": {
               "start": {
@@ -357,8 +357,8 @@
         "trailingComments": []
       },
       "range": [
-        4129,
-        4217
+        4208,
+        4296
       ],
       "loc": {
         "start": {
@@ -373,10 +373,10 @@
       "leadingComments": [
         {
           "type": "Block",
-          "value": "*\n * A cargo of tasks for the worker function to complete. Cargo inherits all of\n * the same methods and event callbacks as {@link async.queue}.\n * @typedef {Object} CargoObject\n * @property {Function} length - A function returning the number of items\n * waiting to be processed. Invoke with ().\n * @property {number} payload - An `integer` for determining how many tasks\n * should be process per round. This property can be changed after a `cargo` is\n * created to alter the payload on-the-fly.\n * @property {Function} push - Adds `task` to the `queue`. The callback is\n * called once the `worker` has finished processing the task. Instead of a\n * single task, an array of `tasks` can be submitted. The respective callback is\n * used for every task in the list. Invoke with (task, [callback]).\n * @property {Function} saturated - A callback that is called when the\n * `queue.length()` hits the concurrency and further tasks will be queued.\n * @property {Function} empty - A callback that is called when the last item\n * from the `queue` is given to a `worker`.\n * @property {Function} drain - A callback that is called when the last item\n * from the `queue` has returned from the `worker`.\n * @property {Function} idle - a function returning false if there are items\n * waiting or being processed, or true if not. Invoke with ().\n * @property {Function} pause - a function that pauses the processing of tasks\n * until `resume()` is called. Invoke with ().\n * @property {Function} resume - a function that resumes the processing of\n * queued tasks when the queue is paused. Invoke with ().\n * @property {Function} kill - a function that removes the `drain` callback and\n * empties remaining tasks from the queue forcing it to go idle. Invoke with ().\n ",
+          "value": "*\n * A cargo of tasks for the worker function to complete. Cargo inherits all of\n * the same methods and event callbacks as {@link async.queue}.\n * @typedef {Object} CargoObject\n * @property {Function} length - A function returning the number of items\n * waiting to be processed. Invoke like `cargo.length()`.\n * @property {number} payload - An `integer` for determining how many tasks\n * should be process per round. This property can be changed after a `cargo` is\n * created to alter the payload on-the-fly.\n * @property {Function} push - Adds `task` to the `queue`. The callback is\n * called once the `worker` has finished processing the task. Instead of a\n * single task, an array of `tasks` can be submitted. The respective callback is\n * used for every task in the list. Invoke like `cargo.push(task, [callback])`.\n * @property {Function} saturated - A callback that is called when the\n * `queue.length()` hits the concurrency and further tasks will be queued.\n * @property {Function} empty - A callback that is called when the last item\n * from the `queue` is given to a `worker`.\n * @property {Function} drain - A callback that is called when the last item\n * from the `queue` has returned from the `worker`.\n * @property {Function} idle - a function returning false if there are items\n * waiting or being processed, or true if not. Invoke like `cargo.idle()`.\n * @property {Function} pause - a function that pauses the processing of tasks\n * until `resume()` is called. Invoke like `cargo.pause()`.\n * @property {Function} resume - a function that resumes the processing of\n * queued tasks when the queue is paused. Invoke like `cargo.resume()`.\n * @property {Function} kill - a function that removes the `drain` callback and\n * empties remaining tasks from the queue forcing it to go idle. Invoke like `cargo.kill()`.\n ",
           "range": [
             39,
-            1795
+            1872
           ],
           "loc": {
             "start": {
@@ -391,10 +391,10 @@
         },
         {
           "type": "Block",
-          "value": "*\n * Creates a `cargo` object with the specified payload. Tasks added to the\n * cargo will be processed altogether (up to the `payload` limit). If the\n * `worker` is in progress, the task is queued until it becomes available. Once\n * the `worker` has completed some tasks, each callback of those tasks is\n * called. Check out [these](https://camo.githubusercontent.com/6bbd36f4cf5b35a0f11a96dcd2e97711ffc2fb37/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313637363837312f36383130382f62626330636662302d356632392d313165322d393734662d3333393763363464633835382e676966) [animations](https://camo.githubusercontent.com/f4810e00e1c5f5f8addbe3e9f49064fd5d102699/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313637363837312f36383130312f38346339323036362d356632392d313165322d383134662d3964336430323431336266642e676966)\n * for how `cargo` and `queue` work.\n *\n * While [queue](#queue) passes only one task to one of a group of workers\n * at a time, cargo passes an array of tasks to a single worker, repeating\n * when the worker is finished.\n *\n * @name cargo\n * @static\n * @memberOf async\n * @see async.queue\n * @category Control Flow\n * @param {Function} worker - An asynchronous function for processing an array\n * of queued tasks, which must call its `callback(err)` argument when finished,\n * with an optional `err` argument. Invoked with (tasks, callback).\n * @param {number} [payload=Infinity] - An optional `integer` for determining\n * how many tasks should be processed per round; if omitted, the default is\n * unlimited.\n * @returns {CargoObject} A cargo object to manage the tasks. Callbacks can\n * attached as certain properties to listen for specific events during the\n * lifecycle of the cargo and inner queue.\n * @example\n *\n * // create a cargo object with payload 2\n * var cargo = async.cargo(function(tasks, callback) {\n *     for (var i=0; i<tasks.length; i++) {\n *         console.log('hello ' + tasks[i].name);\n *     }\n *     callback();\n * }, 2);\n *\n * // add some items\n * cargo.push({name: 'foo'}, function(err) {\n *     console.log('finished processing foo');\n * });\n * cargo.push({name: 'bar'}, function(err) {\n *     console.log('finished processing bar');\n * });\n * cargo.push({name: 'baz'}, function(err) {\n *     console.log('finished processing baz');\n * });\n ",
+          "value": "*\n * Creates a `cargo` object with the specified payload. Tasks added to the\n * cargo will be processed altogether (up to the `payload` limit). If the\n * `worker` is in progress, the task is queued until it becomes available. Once\n * the `worker` has completed some tasks, each callback of those tasks is\n * called. Check out [these](https://camo.githubusercontent.com/6bbd36f4cf5b35a0f11a96dcd2e97711ffc2fb37/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313637363837312f36383130382f62626330636662302d356632392d313165322d393734662d3333393763363464633835382e676966) [animations](https://camo.githubusercontent.com/f4810e00e1c5f5f8addbe3e9f49064fd5d102699/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313637363837312f36383130312f38346339323036362d356632392d313165322d383134662d3964336430323431336266642e676966)\n * for how `cargo` and `queue` work.\n *\n * While [queue](#queue) passes only one task to one of a group of workers\n * at a time, cargo passes an array of tasks to a single worker, repeating\n * when the worker is finished.\n *\n * @name cargo\n * @static\n * @memberOf async\n * @see async.queue\n * @category Control Flow\n * @param {Function} worker - An asynchronous function for processing an array\n * of queued tasks, which must call its `callback(err)` argument when finished,\n * with an optional `err` argument. Invoked with `(tasks, callback)`.\n * @param {number} [payload=Infinity] - An optional `integer` for determining\n * how many tasks should be processed per round; if omitted, the default is\n * unlimited.\n * @returns {CargoObject} A cargo object to manage the tasks. Callbacks can\n * attached as certain properties to listen for specific events during the\n * lifecycle of the cargo and inner queue.\n * @example\n *\n * // create a cargo object with payload 2\n * var cargo = async.cargo(function(tasks, callback) {\n *     for (var i=0; i<tasks.length; i++) {\n *         console.log('hello ' + tasks[i].name);\n *     }\n *     callback();\n * }, 2);\n *\n * // add some items\n * cargo.push({name: 'foo'}, function(err) {\n *     console.log('finished processing foo');\n * });\n * cargo.push({name: 'bar'}, function(err) {\n *     console.log('finished processing bar');\n * });\n * cargo.push({name: 'baz'}, function(err) {\n *     console.log('finished processing baz');\n * });\n ",
           "range": [
-            1797,
-            4128
+            1874,
+            4207
           ],
           "loc": {
             "start": {
@@ -413,7 +413,7 @@
   "sourceType": "module",
   "range": [
     0,
-    4217
+    4296
   ],
   "loc": {
     "start": {
@@ -428,10 +428,10 @@
   "comments": [
     {
       "type": "Block",
-      "value": "*\n * A cargo of tasks for the worker function to complete. Cargo inherits all of\n * the same methods and event callbacks as {@link async.queue}.\n * @typedef {Object} CargoObject\n * @property {Function} length - A function returning the number of items\n * waiting to be processed. Invoke with ().\n * @property {number} payload - An `integer` for determining how many tasks\n * should be process per round. This property can be changed after a `cargo` is\n * created to alter the payload on-the-fly.\n * @property {Function} push - Adds `task` to the `queue`. The callback is\n * called once the `worker` has finished processing the task. Instead of a\n * single task, an array of `tasks` can be submitted. The respective callback is\n * used for every task in the list. Invoke with (task, [callback]).\n * @property {Function} saturated - A callback that is called when the\n * `queue.length()` hits the concurrency and further tasks will be queued.\n * @property {Function} empty - A callback that is called when the last item\n * from the `queue` is given to a `worker`.\n * @property {Function} drain - A callback that is called when the last item\n * from the `queue` has returned from the `worker`.\n * @property {Function} idle - a function returning false if there are items\n * waiting or being processed, or true if not. Invoke with ().\n * @property {Function} pause - a function that pauses the processing of tasks\n * until `resume()` is called. Invoke with ().\n * @property {Function} resume - a function that resumes the processing of\n * queued tasks when the queue is paused. Invoke with ().\n * @property {Function} kill - a function that removes the `drain` callback and\n * empties remaining tasks from the queue forcing it to go idle. Invoke with ().\n ",
+      "value": "*\n * A cargo of tasks for the worker function to complete. Cargo inherits all of\n * the same methods and event callbacks as {@link async.queue}.\n * @typedef {Object} CargoObject\n * @property {Function} length - A function returning the number of items\n * waiting to be processed. Invoke like `cargo.length()`.\n * @property {number} payload - An `integer` for determining how many tasks\n * should be process per round. This property can be changed after a `cargo` is\n * created to alter the payload on-the-fly.\n * @property {Function} push - Adds `task` to the `queue`. The callback is\n * called once the `worker` has finished processing the task. Instead of a\n * single task, an array of `tasks` can be submitted. The respective callback is\n * used for every task in the list. Invoke like `cargo.push(task, [callback])`.\n * @property {Function} saturated - A callback that is called when the\n * `queue.length()` hits the concurrency and further tasks will be queued.\n * @property {Function} empty - A callback that is called when the last item\n * from the `queue` is given to a `worker`.\n * @property {Function} drain - A callback that is called when the last item\n * from the `queue` has returned from the `worker`.\n * @property {Function} idle - a function returning false if there are items\n * waiting or being processed, or true if not. Invoke like `cargo.idle()`.\n * @property {Function} pause - a function that pauses the processing of tasks\n * until `resume()` is called. Invoke like `cargo.pause()`.\n * @property {Function} resume - a function that resumes the processing of\n * queued tasks when the queue is paused. Invoke like `cargo.resume()`.\n * @property {Function} kill - a function that removes the `drain` callback and\n * empties remaining tasks from the queue forcing it to go idle. Invoke like `cargo.kill()`.\n ",
       "range": [
         39,
-        1795
+        1872
       ],
       "loc": {
         "start": {
@@ -446,10 +446,10 @@
     },
     {
       "type": "Block",
-      "value": "*\n * Creates a `cargo` object with the specified payload. Tasks added to the\n * cargo will be processed altogether (up to the `payload` limit). If the\n * `worker` is in progress, the task is queued until it becomes available. Once\n * the `worker` has completed some tasks, each callback of those tasks is\n * called. Check out [these](https://camo.githubusercontent.com/6bbd36f4cf5b35a0f11a96dcd2e97711ffc2fb37/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313637363837312f36383130382f62626330636662302d356632392d313165322d393734662d3333393763363464633835382e676966) [animations](https://camo.githubusercontent.com/f4810e00e1c5f5f8addbe3e9f49064fd5d102699/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313637363837312f36383130312f38346339323036362d356632392d313165322d383134662d3964336430323431336266642e676966)\n * for how `cargo` and `queue` work.\n *\n * While [queue](#queue) passes only one task to one of a group of workers\n * at a time, cargo passes an array of tasks to a single worker, repeating\n * when the worker is finished.\n *\n * @name cargo\n * @static\n * @memberOf async\n * @see async.queue\n * @category Control Flow\n * @param {Function} worker - An asynchronous function for processing an array\n * of queued tasks, which must call its `callback(err)` argument when finished,\n * with an optional `err` argument. Invoked with (tasks, callback).\n * @param {number} [payload=Infinity] - An optional `integer` for determining\n * how many tasks should be processed per round; if omitted, the default is\n * unlimited.\n * @returns {CargoObject} A cargo object to manage the tasks. Callbacks can\n * attached as certain properties to listen for specific events during the\n * lifecycle of the cargo and inner queue.\n * @example\n *\n * // create a cargo object with payload 2\n * var cargo = async.cargo(function(tasks, callback) {\n *     for (var i=0; i<tasks.length; i++) {\n *         console.log('hello ' + tasks[i].name);\n *     }\n *     callback();\n * }, 2);\n *\n * // add some items\n * cargo.push({name: 'foo'}, function(err) {\n *     console.log('finished processing foo');\n * });\n * cargo.push({name: 'bar'}, function(err) {\n *     console.log('finished processing bar');\n * });\n * cargo.push({name: 'baz'}, function(err) {\n *     console.log('finished processing baz');\n * });\n ",
+      "value": "*\n * Creates a `cargo` object with the specified payload. Tasks added to the\n * cargo will be processed altogether (up to the `payload` limit). If the\n * `worker` is in progress, the task is queued until it becomes available. Once\n * the `worker` has completed some tasks, each callback of those tasks is\n * called. Check out [these](https://camo.githubusercontent.com/6bbd36f4cf5b35a0f11a96dcd2e97711ffc2fb37/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313637363837312f36383130382f62626330636662302d356632392d313165322d393734662d3333393763363464633835382e676966) [animations](https://camo.githubusercontent.com/f4810e00e1c5f5f8addbe3e9f49064fd5d102699/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313637363837312f36383130312f38346339323036362d356632392d313165322d383134662d3964336430323431336266642e676966)\n * for how `cargo` and `queue` work.\n *\n * While [queue](#queue) passes only one task to one of a group of workers\n * at a time, cargo passes an array of tasks to a single worker, repeating\n * when the worker is finished.\n *\n * @name cargo\n * @static\n * @memberOf async\n * @see async.queue\n * @category Control Flow\n * @param {Function} worker - An asynchronous function for processing an array\n * of queued tasks, which must call its `callback(err)` argument when finished,\n * with an optional `err` argument. Invoked with `(tasks, callback)`.\n * @param {number} [payload=Infinity] - An optional `integer` for determining\n * how many tasks should be processed per round; if omitted, the default is\n * unlimited.\n * @returns {CargoObject} A cargo object to manage the tasks. Callbacks can\n * attached as certain properties to listen for specific events during the\n * lifecycle of the cargo and inner queue.\n * @example\n *\n * // create a cargo object with payload 2\n * var cargo = async.cargo(function(tasks, callback) {\n *     for (var i=0; i<tasks.length; i++) {\n *         console.log('hello ' + tasks[i].name);\n *     }\n *     callback();\n * }, 2);\n *\n * // add some items\n * cargo.push({name: 'foo'}, function(err) {\n *     console.log('finished processing foo');\n * });\n * cargo.push({name: 'bar'}, function(err) {\n *     console.log('finished processing bar');\n * });\n * cargo.push({name: 'baz'}, function(err) {\n *     console.log('finished processing baz');\n * });\n ",
       "range": [
-        1797,
-        4128
+        1874,
+        4207
       ],
       "loc": {
         "start": {
