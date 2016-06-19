@@ -1,4 +1,5 @@
 {
   "source": "./lib",
-  "destination": "./docs"
+  "destination": "./docs",
+  "excludes": ["internal"]
 }
