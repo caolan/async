@@ -1,0 +1,497 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "VariableDeclaration",
+      "declarations": [
+        {
+          "type": "VariableDeclarator",
+          "id": {
+            "type": "Identifier",
+            "name": "iteratorSymbol",
+            "range": [
+              4,
+              18
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 4
+              },
+              "end": {
+                "line": 1,
+                "column": 18
+              }
+            }
+          },
+          "init": {
+            "type": "LogicalExpression",
+            "operator": "&&",
+            "left": {
+              "type": "BinaryExpression",
+              "operator": "===",
+              "left": {
+                "type": "UnaryExpression",
+                "operator": "typeof",
+                "argument": {
+                  "type": "Identifier",
+                  "name": "Symbol",
+                  "range": [
+                    28,
+                    34
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 1,
+                      "column": 28
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 34
+                    }
+                  }
+                },
+                "prefix": true,
+                "range": [
+                  21,
+                  34
+                ],
+                "loc": {
+                  "start": {
+                    "line": 1,
+                    "column": 21
+                  },
+                  "end": {
+                    "line": 1,
+                    "column": 34
+                  }
+                }
+              },
+              "right": {
+                "type": "Literal",
+                "value": "function",
+                "raw": "'function'",
+                "range": [
+                  39,
+                  49
+                ],
+                "loc": {
+                  "start": {
+                    "line": 1,
+                    "column": 39
+                  },
+                  "end": {
+                    "line": 1,
+                    "column": 49
+                  }
+                }
+              },
+              "range": [
+                21,
+                49
+              ],
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 21
+                },
+                "end": {
+                  "line": 1,
+                  "column": 49
+                }
+              }
+            },
+            "right": {
+              "type": "MemberExpression",
+              "computed": false,
+              "object": {
+                "type": "Identifier",
+                "name": "Symbol",
+                "range": [
+                  53,
+                  59
+                ],
+                "loc": {
+                  "start": {
+                    "line": 1,
+                    "column": 53
+                  },
+                  "end": {
+                    "line": 1,
+                    "column": 59
+                  }
+                }
+              },
+              "property": {
+                "type": "Identifier",
+                "name": "iterator",
+                "range": [
+                  60,
+                  68
+                ],
+                "loc": {
+                  "start": {
+                    "line": 1,
+                    "column": 60
+                  },
+                  "end": {
+                    "line": 1,
+                    "column": 68
+                  }
+                }
+              },
+              "range": [
+                53,
+                68
+              ],
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 53
+                },
+                "end": {
+                  "line": 1,
+                  "column": 68
+                }
+              }
+            },
+            "range": [
+              21,
+              68
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 21
+              },
+              "end": {
+                "line": 1,
+                "column": 68
+              }
+            }
+          },
+          "range": [
+            4,
+            68
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 4
+            },
+            "end": {
+              "line": 1,
+              "column": 68
+            }
+          }
+        }
+      ],
+      "kind": "var",
+      "range": [
+        0,
+        69
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 69
+        }
+      }
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": null,
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "coll",
+            "range": [
+              96,
+              100
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 25
+              },
+              "end": {
+                "line": 3,
+                "column": 29
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "LogicalExpression",
+                "operator": "&&",
+                "left": {
+                  "type": "LogicalExpression",
+                  "operator": "&&",
+                  "left": {
+                    "type": "Identifier",
+                    "name": "iteratorSymbol",
+                    "range": [
+                      115,
+                      129
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 4,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 4,
+                        "column": 25
+                      }
+                    }
+                  },
+                  "right": {
+                    "type": "MemberExpression",
+                    "computed": true,
+                    "object": {
+                      "type": "Identifier",
+                      "name": "coll",
+                      "range": [
+                        133,
+                        137
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 4,
+                          "column": 29
+                        },
+                        "end": {
+                          "line": 4,
+                          "column": 33
+                        }
+                      }
+                    },
+                    "property": {
+                      "type": "Identifier",
+                      "name": "iteratorSymbol",
+                      "range": [
+                        138,
+                        152
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 4,
+                          "column": 34
+                        },
+                        "end": {
+                          "line": 4,
+                          "column": 48
+                        }
+                      }
+                    },
+                    "range": [
+                      133,
+                      153
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 4,
+                        "column": 29
+                      },
+                      "end": {
+                        "line": 4,
+                        "column": 49
+                      }
+                    }
+                  },
+                  "range": [
+                    115,
+                    153
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 4,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 4,
+                      "column": 49
+                    }
+                  }
+                },
+                "right": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "MemberExpression",
+                    "computed": true,
+                    "object": {
+                      "type": "Identifier",
+                      "name": "coll",
+                      "range": [
+                        157,
+                        161
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 4,
+                          "column": 53
+                        },
+                        "end": {
+                          "line": 4,
+                          "column": 57
+                        }
+                      }
+                    },
+                    "property": {
+                      "type": "Identifier",
+                      "name": "iteratorSymbol",
+                      "range": [
+                        162,
+                        176
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 4,
+                          "column": 58
+                        },
+                        "end": {
+                          "line": 4,
+                          "column": 72
+                        }
+                      }
+                    },
+                    "range": [
+                      157,
+                      177
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 4,
+                        "column": 53
+                      },
+                      "end": {
+                        "line": 4,
+                        "column": 73
+                      }
+                    }
+                  },
+                  "arguments": [],
+                  "range": [
+                    157,
+                    179
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 4,
+                      "column": 53
+                    },
+                    "end": {
+                      "line": 4,
+                      "column": 75
+                    }
+                  }
+                },
+                "range": [
+                  115,
+                  179
+                ],
+                "loc": {
+                  "start": {
+                    "line": 4,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 4,
+                    "column": 75
+                  }
+                }
+              },
+              "range": [
+                108,
+                180
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 4
+                },
+                "end": {
+                  "line": 4,
+                  "column": 76
+                }
+              }
+            }
+          ],
+          "range": [
+            102,
+            182
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 31
+            },
+            "end": {
+              "line": 5,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          86,
+          182
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 15
+          },
+          "end": {
+            "line": 5,
+            "column": 1
+          }
+        },
+        "leadingComments": [],
+        "trailingComments": []
+      },
+      "range": [
+        71,
+        182
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 1
+        }
+      }
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    182
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 1
+    }
+  },
+  "comments": []
+}

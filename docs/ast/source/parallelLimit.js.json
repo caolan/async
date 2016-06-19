@@ -1,0 +1,521 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "eachOfLimit",
+            "range": [
+              7,
+              18
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 18
+              }
+            }
+          },
+          "range": [
+            7,
+            18
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 18
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/eachOfLimit",
+        "raw": "'./internal/eachOfLimit'",
+        "range": [
+          24,
+          48
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 24
+          },
+          "end": {
+            "line": 1,
+            "column": 48
+          }
+        }
+      },
+      "range": [
+        0,
+        49
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "parallel",
+            "range": [
+              57,
+              65
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 15
+              }
+            }
+          },
+          "range": [
+            57,
+            65
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 15
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/parallel",
+        "raw": "'./internal/parallel'",
+        "range": [
+          71,
+          92
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 21
+          },
+          "end": {
+            "line": 2,
+            "column": 42
+          }
+        }
+      },
+      "range": [
+        50,
+        93
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 43
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * The same as `parallel` but runs a maximum of `limit` async operations at a\n * time.\n *\n * @name parallel\n * @static\n * @memberOf async\n * @see async.parallel\n * @category Control Flow\n * @param {Array|Collection} tasks - A collection containing functions to run.\n * Each function is passed a `callback(err, result)` which it must call on\n * completion with an error `err` (which can be `null`) and an optional `result`\n * value.\n * @param {number} limit - The maximum number of async operations at a time.\n * @param {Function} [callback] - An optional callback to run once all the\n * functions have completed successfully. This function gets a results array\n * (or object) containing all the result arguments passed to the task callbacks.\n * Invoked with (err, results).\n ",
+          "range": [
+            95,
+            876
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 22,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "parallelLimit",
+          "range": [
+            901,
+            914
+          ],
+          "loc": {
+            "start": {
+              "line": 23,
+              "column": 24
+            },
+            "end": {
+              "line": 23,
+              "column": 37
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "tasks",
+            "range": [
+              915,
+              920
+            ],
+            "loc": {
+              "start": {
+                "line": 23,
+                "column": 38
+              },
+              "end": {
+                "line": 23,
+                "column": 43
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "limit",
+            "range": [
+              922,
+              927
+            ],
+            "loc": {
+              "start": {
+                "line": 23,
+                "column": 45
+              },
+              "end": {
+                "line": 23,
+                "column": 50
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "callback",
+            "range": [
+              929,
+              937
+            ],
+            "loc": {
+              "start": {
+                "line": 23,
+                "column": 52
+              },
+              "end": {
+                "line": 23,
+                "column": 60
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ExpressionStatement",
+              "expression": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "Identifier",
+                  "name": "parallel",
+                  "range": [
+                    945,
+                    953
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 24,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 24,
+                      "column": 12
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "CallExpression",
+                    "callee": {
+                      "type": "Identifier",
+                      "name": "eachOfLimit",
+                      "range": [
+                        954,
+                        965
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 24,
+                          "column": 13
+                        },
+                        "end": {
+                          "line": 24,
+                          "column": 24
+                        }
+                      }
+                    },
+                    "arguments": [
+                      {
+                        "type": "Identifier",
+                        "name": "limit",
+                        "range": [
+                          966,
+                          971
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 24,
+                            "column": 25
+                          },
+                          "end": {
+                            "line": 24,
+                            "column": 30
+                          }
+                        }
+                      }
+                    ],
+                    "range": [
+                      954,
+                      972
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 24,
+                        "column": 13
+                      },
+                      "end": {
+                        "line": 24,
+                        "column": 31
+                      }
+                    }
+                  },
+                  {
+                    "type": "Identifier",
+                    "name": "tasks",
+                    "range": [
+                      974,
+                      979
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 24,
+                        "column": 33
+                      },
+                      "end": {
+                        "line": 24,
+                        "column": 38
+                      }
+                    }
+                  },
+                  {
+                    "type": "Identifier",
+                    "name": "callback",
+                    "range": [
+                      981,
+                      989
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 24,
+                        "column": 40
+                      },
+                      "end": {
+                        "line": 24,
+                        "column": 48
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  945,
+                  990
+                ],
+                "loc": {
+                  "start": {
+                    "line": 24,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 24,
+                    "column": 49
+                  }
+                }
+              },
+              "range": [
+                945,
+                991
+              ],
+              "loc": {
+                "start": {
+                  "line": 24,
+                  "column": 4
+                },
+                "end": {
+                  "line": 24,
+                  "column": 50
+                }
+              }
+            }
+          ],
+          "range": [
+            939,
+            993
+          ],
+          "loc": {
+            "start": {
+              "line": 23,
+              "column": 62
+            },
+            "end": {
+              "line": 25,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          892,
+          993
+        ],
+        "loc": {
+          "start": {
+            "line": 23,
+            "column": 15
+          },
+          "end": {
+            "line": 25,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * The same as `parallel` but runs a maximum of `limit` async operations at a\n * time.\n *\n * @name parallel\n * @static\n * @memberOf async\n * @see async.parallel\n * @category Control Flow\n * @param {Array|Collection} tasks - A collection containing functions to run.\n * Each function is passed a `callback(err, result)` which it must call on\n * completion with an error `err` (which can be `null`) and an optional `result`\n * value.\n * @param {number} limit - The maximum number of async operations at a time.\n * @param {Function} [callback] - An optional callback to run once all the\n * functions have completed successfully. This function gets a results array\n * (or object) containing all the result arguments passed to the task callbacks.\n * Invoked with (err, results).\n ",
+            "range": [
+              95,
+              876
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 22,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        877,
+        993
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 0
+        },
+        "end": {
+          "line": 25,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * The same as `parallel` but runs a maximum of `limit` async operations at a\n * time.\n *\n * @name parallel\n * @static\n * @memberOf async\n * @see async.parallel\n * @category Control Flow\n * @param {Array|Collection} tasks - A collection containing functions to run.\n * Each function is passed a `callback(err, result)` which it must call on\n * completion with an error `err` (which can be `null`) and an optional `result`\n * value.\n * @param {number} limit - The maximum number of async operations at a time.\n * @param {Function} [callback] - An optional callback to run once all the\n * functions have completed successfully. This function gets a results array\n * (or object) containing all the result arguments passed to the task callbacks.\n * Invoked with (err, results).\n ",
+          "range": [
+            95,
+            876
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 22,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    993
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 25,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * The same as `parallel` but runs a maximum of `limit` async operations at a\n * time.\n *\n * @name parallel\n * @static\n * @memberOf async\n * @see async.parallel\n * @category Control Flow\n * @param {Array|Collection} tasks - A collection containing functions to run.\n * Each function is passed a `callback(err, result)` which it must call on\n * completion with an error `err` (which can be `null`) and an optional `result`\n * value.\n * @param {number} limit - The maximum number of async operations at a time.\n * @param {Function} [callback] - An optional callback to run once all the\n * functions have completed successfully. This function gets a results array\n * (or object) containing all the result arguments passed to the task callbacks.\n * Invoked with (err, results).\n ",
+      "range": [
+        95,
+        876
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 22,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,337 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "timesLimit",
+            "range": [
+              7,
+              17
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 17
+              }
+            }
+          },
+          "range": [
+            7,
+            17
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 17
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./timesLimit",
+        "raw": "'./timesLimit'",
+        "range": [
+          23,
+          37
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 23
+          },
+          "end": {
+            "line": 1,
+            "column": 37
+          }
+        }
+      },
+      "range": [
+        0,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "doLimit",
+            "range": [
+              46,
+              53
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 14
+              }
+            }
+          },
+          "range": [
+            46,
+            53
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 14
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/doLimit",
+        "raw": "'./internal/doLimit'",
+        "range": [
+          59,
+          79
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 20
+          },
+          "end": {
+            "line": 2,
+            "column": 40
+          }
+        }
+      },
+      "range": [
+        39,
+        80
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 41
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Calls the `iteratee` function `n` times, and accumulates results in the same\n * manner you would use with {@link async.map}.\n *\n * @name times\n * @static\n * @memberOf async\n * @see async.map\n * @category Control Flow\n * @param {number} n - The number of times to run the function.\n * @param {Function} iteratee - The function to call `n` times. Invoked with the\n * iteration index and a callback (n, next).\n * @param {Function} callback - see {@link async.map}.\n * @example\n *\n * // Pretend this is some complicated async factory\n * var createUser = function(id, callback) {\n *     callback(null, {\n *         id: 'user' + id\n *     });\n * };\n *\n * // generate 5 users\n * async.times(5, function(n, next) {\n *     createUser(n, function(err, user) {\n *         next(err, user);\n *     });\n * }, function(err, users) {\n *     // we should now have 5 users\n * });\n ",
+          "range": [
+            82,
+            954
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 34,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "Identifier",
+          "name": "doLimit",
+          "range": [
+            970,
+            977
+          ],
+          "loc": {
+            "start": {
+              "line": 35,
+              "column": 15
+            },
+            "end": {
+              "line": 35,
+              "column": 22
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Identifier",
+            "name": "timesLimit",
+            "range": [
+              978,
+              988
+            ],
+            "loc": {
+              "start": {
+                "line": 35,
+                "column": 23
+              },
+              "end": {
+                "line": 35,
+                "column": 33
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "Infinity",
+            "range": [
+              990,
+              998
+            ],
+            "loc": {
+              "start": {
+                "line": 35,
+                "column": 35
+              },
+              "end": {
+                "line": 35,
+                "column": 43
+              }
+            }
+          }
+        ],
+        "range": [
+          970,
+          999
+        ],
+        "loc": {
+          "start": {
+            "line": 35,
+            "column": 15
+          },
+          "end": {
+            "line": 35,
+            "column": 44
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Calls the `iteratee` function `n` times, and accumulates results in the same\n * manner you would use with {@link async.map}.\n *\n * @name times\n * @static\n * @memberOf async\n * @see async.map\n * @category Control Flow\n * @param {number} n - The number of times to run the function.\n * @param {Function} iteratee - The function to call `n` times. Invoked with the\n * iteration index and a callback (n, next).\n * @param {Function} callback - see {@link async.map}.\n * @example\n *\n * // Pretend this is some complicated async factory\n * var createUser = function(id, callback) {\n *     callback(null, {\n *         id: 'user' + id\n *     });\n * };\n *\n * // generate 5 users\n * async.times(5, function(n, next) {\n *     createUser(n, function(err, user) {\n *         next(err, user);\n *     });\n * }, function(err, users) {\n *     // we should now have 5 users\n * });\n ",
+            "range": [
+              82,
+              954
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 34,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        955,
+        1000
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 0
+        },
+        "end": {
+          "line": 35,
+          "column": 45
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Calls the `iteratee` function `n` times, and accumulates results in the same\n * manner you would use with {@link async.map}.\n *\n * @name times\n * @static\n * @memberOf async\n * @see async.map\n * @category Control Flow\n * @param {number} n - The number of times to run the function.\n * @param {Function} iteratee - The function to call `n` times. Invoked with the\n * iteration index and a callback (n, next).\n * @param {Function} callback - see {@link async.map}.\n * @example\n *\n * // Pretend this is some complicated async factory\n * var createUser = function(id, callback) {\n *     callback(null, {\n *         id: 'user' + id\n *     });\n * };\n *\n * // generate 5 users\n * async.times(5, function(n, next) {\n *     createUser(n, function(err, user) {\n *         next(err, user);\n *     });\n * }, function(err, users) {\n *     // we should now have 5 users\n * });\n ",
+          "range": [
+            82,
+            954
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 34,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1000
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 35,
+      "column": 45
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Calls the `iteratee` function `n` times, and accumulates results in the same\n * manner you would use with {@link async.map}.\n *\n * @name times\n * @static\n * @memberOf async\n * @see async.map\n * @category Control Flow\n * @param {number} n - The number of times to run the function.\n * @param {Function} iteratee - The function to call `n` times. Invoked with the\n * iteration index and a callback (n, next).\n * @param {Function} callback - see {@link async.map}.\n * @example\n *\n * // Pretend this is some complicated async factory\n * var createUser = function(id, callback) {\n *     callback(null, {\n *         id: 'user' + id\n *     });\n * };\n *\n * // generate 5 users\n * async.times(5, function(n, next) {\n *     createUser(n, function(err, user) {\n *         next(err, user);\n *     });\n * }, function(err, users) {\n *     // we should now have 5 users\n * });\n ",
+      "range": [
+        82,
+        954
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 34,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

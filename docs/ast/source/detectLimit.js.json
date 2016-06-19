@@ -1,0 +1,501 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "identity",
+            "range": [
+              7,
+              15
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 15
+              }
+            }
+          },
+          "range": [
+            7,
+            15
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 15
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "lodash/identity",
+        "raw": "'lodash/identity'",
+        "range": [
+          21,
+          38
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 21
+          },
+          "end": {
+            "line": 1,
+            "column": 38
+          }
+        }
+      },
+      "range": [
+        0,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "createTester",
+            "range": [
+              48,
+              60
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 7
+              },
+              "end": {
+                "line": 3,
+                "column": 19
+              }
+            }
+          },
+          "range": [
+            48,
+            60
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 7
+            },
+            "end": {
+              "line": 3,
+              "column": 19
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/createTester",
+        "raw": "'./internal/createTester'",
+        "range": [
+          66,
+          91
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 25
+          },
+          "end": {
+            "line": 3,
+            "column": 50
+          }
+        }
+      },
+      "range": [
+        41,
+        92
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 51
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "eachOfLimit",
+            "range": [
+              100,
+              111
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 7
+              },
+              "end": {
+                "line": 4,
+                "column": 18
+              }
+            }
+          },
+          "range": [
+            100,
+            111
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 7
+            },
+            "end": {
+              "line": 4,
+              "column": 18
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./eachOfLimit",
+        "raw": "'./eachOfLimit'",
+        "range": [
+          117,
+          132
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 24
+          },
+          "end": {
+            "line": 4,
+            "column": 39
+          }
+        }
+      },
+      "range": [
+        93,
+        133
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "findGetResult",
+            "range": [
+              141,
+              154
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 7
+              },
+              "end": {
+                "line": 5,
+                "column": 20
+              }
+            }
+          },
+          "range": [
+            141,
+            154
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 7
+            },
+            "end": {
+              "line": 5,
+              "column": 20
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/findGetResult",
+        "raw": "'./internal/findGetResult'",
+        "range": [
+          160,
+          186
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 26
+          },
+          "end": {
+            "line": 5,
+            "column": 52
+          }
+        }
+      },
+      "range": [
+        134,
+        187
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 53
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * The same as `detect` but runs a maximum of `limit` async operations at a\n * time.\n *\n * @name detectLimit\n * @static\n * @memberOf async\n * @see async.detect\n * @alias findLimit\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {number} limit - The maximum number of async operations at a time.\n * @param {Function} iteratee - A truth test to apply to each item in `coll`.\n * The iteratee is passed a `callback(err, truthValue)` which must be called\n * with a boolean argument once it has completed. Invoked with (item, callback).\n * @param {Function} [callback] - A callback which is called as soon as any\n * iteratee returns `true`, or after all the `iteratee` functions have finished.\n * Result will be the first item in the array that passes the truth test\n * (iteratee) or the value `undefined` if none passed. Invoked with\n * (err, result).\n ",
+          "range": [
+            189,
+            1091
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 0
+            },
+            "end": {
+              "line": 27,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "Identifier",
+          "name": "createTester",
+          "range": [
+            1107,
+            1119
+          ],
+          "loc": {
+            "start": {
+              "line": 28,
+              "column": 15
+            },
+            "end": {
+              "line": 28,
+              "column": 27
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Identifier",
+            "name": "eachOfLimit",
+            "range": [
+              1120,
+              1131
+            ],
+            "loc": {
+              "start": {
+                "line": 28,
+                "column": 28
+              },
+              "end": {
+                "line": 28,
+                "column": 39
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "identity",
+            "range": [
+              1133,
+              1141
+            ],
+            "loc": {
+              "start": {
+                "line": 28,
+                "column": 41
+              },
+              "end": {
+                "line": 28,
+                "column": 49
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "findGetResult",
+            "range": [
+              1143,
+              1156
+            ],
+            "loc": {
+              "start": {
+                "line": 28,
+                "column": 51
+              },
+              "end": {
+                "line": 28,
+                "column": 64
+              }
+            }
+          }
+        ],
+        "range": [
+          1107,
+          1157
+        ],
+        "loc": {
+          "start": {
+            "line": 28,
+            "column": 15
+          },
+          "end": {
+            "line": 28,
+            "column": 65
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * The same as `detect` but runs a maximum of `limit` async operations at a\n * time.\n *\n * @name detectLimit\n * @static\n * @memberOf async\n * @see async.detect\n * @alias findLimit\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {number} limit - The maximum number of async operations at a time.\n * @param {Function} iteratee - A truth test to apply to each item in `coll`.\n * The iteratee is passed a `callback(err, truthValue)` which must be called\n * with a boolean argument once it has completed. Invoked with (item, callback).\n * @param {Function} [callback] - A callback which is called as soon as any\n * iteratee returns `true`, or after all the `iteratee` functions have finished.\n * Result will be the first item in the array that passes the truth test\n * (iteratee) or the value `undefined` if none passed. Invoked with\n * (err, result).\n ",
+            "range": [
+              189,
+              1091
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 0
+              },
+              "end": {
+                "line": 27,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        1092,
+        1158
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 0
+        },
+        "end": {
+          "line": 28,
+          "column": 66
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * The same as `detect` but runs a maximum of `limit` async operations at a\n * time.\n *\n * @name detectLimit\n * @static\n * @memberOf async\n * @see async.detect\n * @alias findLimit\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {number} limit - The maximum number of async operations at a time.\n * @param {Function} iteratee - A truth test to apply to each item in `coll`.\n * The iteratee is passed a `callback(err, truthValue)` which must be called\n * with a boolean argument once it has completed. Invoked with (item, callback).\n * @param {Function} [callback] - A callback which is called as soon as any\n * iteratee returns `true`, or after all the `iteratee` functions have finished.\n * Result will be the first item in the array that passes the truth test\n * (iteratee) or the value `undefined` if none passed. Invoked with\n * (err, result).\n ",
+          "range": [
+            189,
+            1091
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 0
+            },
+            "end": {
+              "line": 27,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1158
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 28,
+      "column": 66
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * The same as `detect` but runs a maximum of `limit` async operations at a\n * time.\n *\n * @name detectLimit\n * @static\n * @memberOf async\n * @see async.detect\n * @alias findLimit\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {number} limit - The maximum number of async operations at a time.\n * @param {Function} iteratee - A truth test to apply to each item in `coll`.\n * The iteratee is passed a `callback(err, truthValue)` which must be called\n * with a boolean argument once it has completed. Invoked with (item, callback).\n * @param {Function} [callback] - A callback which is called as soon as any\n * iteratee returns `true`, or after all the `iteratee` functions have finished.\n * Result will be the first item in the array that passes the truth test\n * (iteratee) or the value `undefined` if none passed. Invoked with\n * (err, result).\n ",
+      "range": [
+        189,
+        1091
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 27,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,872 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "Literal",
+        "value": "use strict",
+        "raw": "'use strict'",
+        "range": [
+          0,
+          12
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 1,
+            "column": 12
+          }
+        }
+      },
+      "range": [
+        0,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "hasNextTick",
+            "range": [
+              24,
+              35
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 9
+              },
+              "end": {
+                "line": 3,
+                "column": 20
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "hasNextTick",
+            "range": [
+              24,
+              35
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 9
+              },
+              "end": {
+                "line": 3,
+                "column": 20
+              }
+            }
+          },
+          "range": [
+            24,
+            35
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 9
+            },
+            "end": {
+              "line": 3,
+              "column": 20
+            }
+          }
+        },
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "hasSetImmediate",
+            "range": [
+              37,
+              52
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 22
+              },
+              "end": {
+                "line": 3,
+                "column": 37
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "hasSetImmediate",
+            "range": [
+              37,
+              52
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 22
+              },
+              "end": {
+                "line": 3,
+                "column": 37
+              }
+            }
+          },
+          "range": [
+            37,
+            52
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 22
+            },
+            "end": {
+              "line": 3,
+              "column": 37
+            }
+          }
+        },
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "fallback",
+            "range": [
+              54,
+              62
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 39
+              },
+              "end": {
+                "line": 3,
+                "column": 47
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "fallback",
+            "range": [
+              54,
+              62
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 39
+              },
+              "end": {
+                "line": 3,
+                "column": 47
+              }
+            }
+          },
+          "range": [
+            54,
+            62
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 39
+            },
+            "end": {
+              "line": 3,
+              "column": 47
+            }
+          }
+        },
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "wrap",
+            "range": [
+              64,
+              68
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 49
+              },
+              "end": {
+                "line": 3,
+                "column": 53
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "wrap",
+            "range": [
+              64,
+              68
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 49
+              },
+              "end": {
+                "line": 3,
+                "column": 53
+              }
+            }
+          },
+          "range": [
+            64,
+            68
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 49
+            },
+            "end": {
+              "line": 3,
+              "column": 53
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/setImmediate",
+        "raw": "'./internal/setImmediate'",
+        "range": [
+          77,
+          102
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 62
+          },
+          "end": {
+            "line": 3,
+            "column": 87
+          }
+        }
+      },
+      "range": [
+        15,
+        103
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 88
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Calls `callback` on a later loop around the event loop. In Node.js this just\n * calls `setImmediate`.  In the browser it will use `setImmediate` if\n * available, otherwise `setTimeout(callback, 0)`, which means other higher\n * priority events may precede the execution of `callback`.\n *\n * This is used internally for browser-compatibility purposes.\n *\n * @name nextTick\n * @static\n * @memberOf async\n * @alias setImmediate\n * @category Util\n * @param {Function} callback - The function to call on a later loop around\n * the event loop. Invoked with (args...).\n * @param {...*} args... - any number of additional arguments to pass to the\n * callback on the next tick.\n * @example\n *\n * var call_order = [];\n * async.nextTick(function() {\n *     call_order.push('two');\n *     // call_order now equals ['one','two']\n * });\n * call_order.push('one');\n *\n * async.setImmediate(function (a, b, c) {\n *     // a, b, and c equal 1, 2, and 3\n * }, 1, 2, 3);\n ",
+          "range": [
+            105,
+            1066
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 34,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "VariableDeclaration",
+      "declarations": [
+        {
+          "type": "VariableDeclarator",
+          "id": {
+            "type": "Identifier",
+            "name": "_defer",
+            "range": [
+              1071,
+              1077
+            ],
+            "loc": {
+              "start": {
+                "line": 35,
+                "column": 4
+              },
+              "end": {
+                "line": 35,
+                "column": 10
+              }
+            }
+          },
+          "init": null,
+          "range": [
+            1071,
+            1077
+          ],
+          "loc": {
+            "start": {
+              "line": 35,
+              "column": 4
+            },
+            "end": {
+              "line": 35,
+              "column": 10
+            }
+          }
+        }
+      ],
+      "kind": "var",
+      "range": [
+        1067,
+        1078
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 0
+        },
+        "end": {
+          "line": 35,
+          "column": 11
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Calls `callback` on a later loop around the event loop. In Node.js this just\n * calls `setImmediate`.  In the browser it will use `setImmediate` if\n * available, otherwise `setTimeout(callback, 0)`, which means other higher\n * priority events may precede the execution of `callback`.\n *\n * This is used internally for browser-compatibility purposes.\n *\n * @name nextTick\n * @static\n * @memberOf async\n * @alias setImmediate\n * @category Util\n * @param {Function} callback - The function to call on a later loop around\n * the event loop. Invoked with (args...).\n * @param {...*} args... - any number of additional arguments to pass to the\n * callback on the next tick.\n * @example\n *\n * var call_order = [];\n * async.nextTick(function() {\n *     call_order.push('two');\n *     // call_order now equals ['one','two']\n * });\n * call_order.push('one');\n *\n * async.setImmediate(function (a, b, c) {\n *     // a, b, and c equal 1, 2, and 3\n * }, 1, 2, 3);\n ",
+          "range": [
+            105,
+            1066
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 34,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "IfStatement",
+      "test": {
+        "type": "Identifier",
+        "name": "hasNextTick",
+        "range": [
+          1084,
+          1095
+        ],
+        "loc": {
+          "start": {
+            "line": 37,
+            "column": 4
+          },
+          "end": {
+            "line": 37,
+            "column": 15
+          }
+        }
+      },
+      "consequent": {
+        "type": "BlockStatement",
+        "body": [
+          {
+            "type": "ExpressionStatement",
+            "expression": {
+              "type": "AssignmentExpression",
+              "operator": "=",
+              "left": {
+                "type": "Identifier",
+                "name": "_defer",
+                "range": [
+                  1103,
+                  1109
+                ],
+                "loc": {
+                  "start": {
+                    "line": 38,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 38,
+                    "column": 10
+                  }
+                }
+              },
+              "right": {
+                "type": "MemberExpression",
+                "computed": false,
+                "object": {
+                  "type": "Identifier",
+                  "name": "process",
+                  "range": [
+                    1112,
+                    1119
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 38,
+                      "column": 13
+                    },
+                    "end": {
+                      "line": 38,
+                      "column": 20
+                    }
+                  }
+                },
+                "property": {
+                  "type": "Identifier",
+                  "name": "nextTick",
+                  "range": [
+                    1120,
+                    1128
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 38,
+                      "column": 21
+                    },
+                    "end": {
+                      "line": 38,
+                      "column": 29
+                    }
+                  }
+                },
+                "range": [
+                  1112,
+                  1128
+                ],
+                "loc": {
+                  "start": {
+                    "line": 38,
+                    "column": 13
+                  },
+                  "end": {
+                    "line": 38,
+                    "column": 29
+                  }
+                }
+              },
+              "range": [
+                1103,
+                1128
+              ],
+              "loc": {
+                "start": {
+                  "line": 38,
+                  "column": 4
+                },
+                "end": {
+                  "line": 38,
+                  "column": 29
+                }
+              }
+            },
+            "range": [
+              1103,
+              1129
+            ],
+            "loc": {
+              "start": {
+                "line": 38,
+                "column": 4
+              },
+              "end": {
+                "line": 38,
+                "column": 30
+              }
+            }
+          }
+        ],
+        "range": [
+          1097,
+          1131
+        ],
+        "loc": {
+          "start": {
+            "line": 37,
+            "column": 17
+          },
+          "end": {
+            "line": 39,
+            "column": 1
+          }
+        }
+      },
+      "alternate": {
+        "type": "IfStatement",
+        "test": {
+          "type": "Identifier",
+          "name": "hasSetImmediate",
+          "range": [
+            1141,
+            1156
+          ],
+          "loc": {
+            "start": {
+              "line": 39,
+              "column": 11
+            },
+            "end": {
+              "line": 39,
+              "column": 26
+            }
+          }
+        },
+        "consequent": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ExpressionStatement",
+              "expression": {
+                "type": "AssignmentExpression",
+                "operator": "=",
+                "left": {
+                  "type": "Identifier",
+                  "name": "_defer",
+                  "range": [
+                    1164,
+                    1170
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 40,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 40,
+                      "column": 10
+                    }
+                  }
+                },
+                "right": {
+                  "type": "Identifier",
+                  "name": "setImmediate",
+                  "range": [
+                    1173,
+                    1185
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 40,
+                      "column": 13
+                    },
+                    "end": {
+                      "line": 40,
+                      "column": 25
+                    }
+                  }
+                },
+                "range": [
+                  1164,
+                  1185
+                ],
+                "loc": {
+                  "start": {
+                    "line": 40,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 40,
+                    "column": 25
+                  }
+                }
+              },
+              "range": [
+                1164,
+                1186
+              ],
+              "loc": {
+                "start": {
+                  "line": 40,
+                  "column": 4
+                },
+                "end": {
+                  "line": 40,
+                  "column": 26
+                }
+              }
+            }
+          ],
+          "range": [
+            1158,
+            1188
+          ],
+          "loc": {
+            "start": {
+              "line": 39,
+              "column": 28
+            },
+            "end": {
+              "line": 41,
+              "column": 1
+            }
+          }
+        },
+        "alternate": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ExpressionStatement",
+              "expression": {
+                "type": "AssignmentExpression",
+                "operator": "=",
+                "left": {
+                  "type": "Identifier",
+                  "name": "_defer",
+                  "range": [
+                    1200,
+                    1206
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 42,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 42,
+                      "column": 10
+                    }
+                  }
+                },
+                "right": {
+                  "type": "Identifier",
+                  "name": "fallback",
+                  "range": [
+                    1209,
+                    1217
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 42,
+                      "column": 13
+                    },
+                    "end": {
+                      "line": 42,
+                      "column": 21
+                    }
+                  }
+                },
+                "range": [
+                  1200,
+                  1217
+                ],
+                "loc": {
+                  "start": {
+                    "line": 42,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 42,
+                    "column": 21
+                  }
+                }
+              },
+              "range": [
+                1200,
+                1218
+              ],
+              "loc": {
+                "start": {
+                  "line": 42,
+                  "column": 4
+                },
+                "end": {
+                  "line": 42,
+                  "column": 22
+                }
+              }
+            }
+          ],
+          "range": [
+            1194,
+            1220
+          ],
+          "loc": {
+            "start": {
+              "line": 41,
+              "column": 7
+            },
+            "end": {
+              "line": 43,
+              "column": 1
+            }
+          }
+        },
+        "range": [
+          1137,
+          1220
+        ],
+        "loc": {
+          "start": {
+            "line": 39,
+            "column": 7
+          },
+          "end": {
+            "line": 43,
+            "column": 1
+          }
+        }
+      },
+      "range": [
+        1080,
+        1220
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 0
+        },
+        "end": {
+          "line": 43,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "Identifier",
+          "name": "wrap",
+          "range": [
+            1237,
+            1241
+          ],
+          "loc": {
+            "start": {
+              "line": 45,
+              "column": 15
+            },
+            "end": {
+              "line": 45,
+              "column": 19
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Identifier",
+            "name": "_defer",
+            "range": [
+              1242,
+              1248
+            ],
+            "loc": {
+              "start": {
+                "line": 45,
+                "column": 20
+              },
+              "end": {
+                "line": 45,
+                "column": 26
+              }
+            }
+          }
+        ],
+        "range": [
+          1237,
+          1249
+        ],
+        "loc": {
+          "start": {
+            "line": 45,
+            "column": 15
+          },
+          "end": {
+            "line": 45,
+            "column": 27
+          }
+        },
+        "leadingComments": [],
+        "trailingComments": []
+      },
+      "range": [
+        1222,
+        1250
+      ],
+      "loc": {
+        "start": {
+          "line": 45,
+          "column": 0
+        },
+        "end": {
+          "line": 45,
+          "column": 28
+        }
+      }
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1250
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 45,
+      "column": 28
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Calls `callback` on a later loop around the event loop. In Node.js this just\n * calls `setImmediate`.  In the browser it will use `setImmediate` if\n * available, otherwise `setTimeout(callback, 0)`, which means other higher\n * priority events may precede the execution of `callback`.\n *\n * This is used internally for browser-compatibility purposes.\n *\n * @name nextTick\n * @static\n * @memberOf async\n * @alias setImmediate\n * @category Util\n * @param {Function} callback - The function to call on a later loop around\n * the event loop. Invoked with (args...).\n * @param {...*} args... - any number of additional arguments to pass to the\n * callback on the next tick.\n * @example\n *\n * var call_order = [];\n * async.nextTick(function() {\n *     call_order.push('two');\n *     // call_order now equals ['one','two']\n * });\n * call_order.push('one');\n *\n * async.setImmediate(function (a, b, c) {\n *     // a, b, and c equal 1, 2, and 3\n * }, 1, 2, 3);\n ",
+      "range": [
+        105,
+        1066
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 34,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

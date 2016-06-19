@@ -1,0 +1,595 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "mapLimit",
+            "range": [
+              7,
+              15
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 15
+              }
+            }
+          },
+          "range": [
+            7,
+            15
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 15
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./mapLimit",
+        "raw": "'./mapLimit'",
+        "range": [
+          21,
+          33
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 21
+          },
+          "end": {
+            "line": 1,
+            "column": 33
+          }
+        }
+      },
+      "range": [
+        0,
+        34
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "range",
+            "range": [
+              42,
+              47
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 12
+              }
+            }
+          },
+          "range": [
+            42,
+            47
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 12
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "lodash/_baseRange",
+        "raw": "'lodash/_baseRange'",
+        "range": [
+          53,
+          72
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 18
+          },
+          "end": {
+            "line": 2,
+            "column": 37
+          }
+        }
+      },
+      "range": [
+        35,
+        73
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 38
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n* The same as {@link times} but runs a maximum of `limit` async operations at a\n* time.\n *\n * @name timesLimit\n * @static\n * @memberOf async\n * @see async.times\n * @category Control Flow\n * @param {number} count - The number of times to run the function.\n * @param {number} limit - The maximum number of async operations at a time.\n * @param {Function} iteratee - The function to call `n` times. Invoked with the\n * iteration index and a callback (n, next).\n * @param {Function} callback - see {@link async.map}.\n ",
+          "range": [
+            75,
+            595
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 18,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "timeLimit",
+          "range": [
+            620,
+            629
+          ],
+          "loc": {
+            "start": {
+              "line": 19,
+              "column": 24
+            },
+            "end": {
+              "line": 19,
+              "column": 33
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "count",
+            "range": [
+              630,
+              635
+            ],
+            "loc": {
+              "start": {
+                "line": 19,
+                "column": 34
+              },
+              "end": {
+                "line": 19,
+                "column": 39
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "limit",
+            "range": [
+              637,
+              642
+            ],
+            "loc": {
+              "start": {
+                "line": 19,
+                "column": 41
+              },
+              "end": {
+                "line": 19,
+                "column": 46
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "iteratee",
+            "range": [
+              644,
+              652
+            ],
+            "loc": {
+              "start": {
+                "line": 19,
+                "column": 48
+              },
+              "end": {
+                "line": 19,
+                "column": 56
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "callback",
+            "range": [
+              654,
+              662
+            ],
+            "loc": {
+              "start": {
+                "line": 19,
+                "column": 58
+              },
+              "end": {
+                "line": 19,
+                "column": 66
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ExpressionStatement",
+              "expression": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "Identifier",
+                  "name": "mapLimit",
+                  "range": [
+                    670,
+                    678
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 20,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 20,
+                      "column": 12
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "CallExpression",
+                    "callee": {
+                      "type": "Identifier",
+                      "name": "range",
+                      "range": [
+                        679,
+                        684
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 20,
+                          "column": 13
+                        },
+                        "end": {
+                          "line": 20,
+                          "column": 18
+                        }
+                      }
+                    },
+                    "arguments": [
+                      {
+                        "type": "Literal",
+                        "value": 0,
+                        "raw": "0",
+                        "range": [
+                          685,
+                          686
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 20,
+                            "column": 19
+                          },
+                          "end": {
+                            "line": 20,
+                            "column": 20
+                          }
+                        }
+                      },
+                      {
+                        "type": "Identifier",
+                        "name": "count",
+                        "range": [
+                          688,
+                          693
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 20,
+                            "column": 22
+                          },
+                          "end": {
+                            "line": 20,
+                            "column": 27
+                          }
+                        }
+                      },
+                      {
+                        "type": "Literal",
+                        "value": 1,
+                        "raw": "1",
+                        "range": [
+                          695,
+                          696
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 20,
+                            "column": 29
+                          },
+                          "end": {
+                            "line": 20,
+                            "column": 30
+                          }
+                        }
+                      }
+                    ],
+                    "range": [
+                      679,
+                      697
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 20,
+                        "column": 13
+                      },
+                      "end": {
+                        "line": 20,
+                        "column": 31
+                      }
+                    }
+                  },
+                  {
+                    "type": "Identifier",
+                    "name": "limit",
+                    "range": [
+                      699,
+                      704
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 20,
+                        "column": 33
+                      },
+                      "end": {
+                        "line": 20,
+                        "column": 38
+                      }
+                    }
+                  },
+                  {
+                    "type": "Identifier",
+                    "name": "iteratee",
+                    "range": [
+                      706,
+                      714
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 20,
+                        "column": 40
+                      },
+                      "end": {
+                        "line": 20,
+                        "column": 48
+                      }
+                    }
+                  },
+                  {
+                    "type": "Identifier",
+                    "name": "callback",
+                    "range": [
+                      716,
+                      724
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 20,
+                        "column": 50
+                      },
+                      "end": {
+                        "line": 20,
+                        "column": 58
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  670,
+                  725
+                ],
+                "loc": {
+                  "start": {
+                    "line": 20,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 20,
+                    "column": 59
+                  }
+                }
+              },
+              "range": [
+                670,
+                726
+              ],
+              "loc": {
+                "start": {
+                  "line": 20,
+                  "column": 4
+                },
+                "end": {
+                  "line": 20,
+                  "column": 60
+                }
+              }
+            }
+          ],
+          "range": [
+            664,
+            728
+          ],
+          "loc": {
+            "start": {
+              "line": 19,
+              "column": 68
+            },
+            "end": {
+              "line": 21,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          611,
+          728
+        ],
+        "loc": {
+          "start": {
+            "line": 19,
+            "column": 15
+          },
+          "end": {
+            "line": 21,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n* The same as {@link times} but runs a maximum of `limit` async operations at a\n* time.\n *\n * @name timesLimit\n * @static\n * @memberOf async\n * @see async.times\n * @category Control Flow\n * @param {number} count - The number of times to run the function.\n * @param {number} limit - The maximum number of async operations at a time.\n * @param {Function} iteratee - The function to call `n` times. Invoked with the\n * iteration index and a callback (n, next).\n * @param {Function} callback - see {@link async.map}.\n ",
+            "range": [
+              75,
+              595
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 18,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        596,
+        728
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 0
+        },
+        "end": {
+          "line": 21,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n* The same as {@link times} but runs a maximum of `limit` async operations at a\n* time.\n *\n * @name timesLimit\n * @static\n * @memberOf async\n * @see async.times\n * @category Control Flow\n * @param {number} count - The number of times to run the function.\n * @param {number} limit - The maximum number of async operations at a time.\n * @param {Function} iteratee - The function to call `n` times. Invoked with the\n * iteration index and a callback (n, next).\n * @param {Function} callback - see {@link async.map}.\n ",
+          "range": [
+            75,
+            595
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 18,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    728
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 21,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n* The same as {@link times} but runs a maximum of `limit` async operations at a\n* time.\n *\n * @name timesLimit\n * @static\n * @memberOf async\n * @see async.times\n * @category Control Flow\n * @param {number} count - The number of times to run the function.\n * @param {number} limit - The maximum number of async operations at a time.\n * @param {Function} iteratee - The function to call `n` times. Invoked with the\n * iteration index and a callback (n, next).\n * @param {Function} callback - see {@link async.map}.\n ",
+      "range": [
+        75,
+        595
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 18,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

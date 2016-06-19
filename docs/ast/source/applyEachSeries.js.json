@@ -1,0 +1,319 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "applyEach",
+            "range": [
+              7,
+              16
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 16
+              }
+            }
+          },
+          "range": [
+            7,
+            16
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 16
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/applyEach",
+        "raw": "'./internal/applyEach'",
+        "range": [
+          22,
+          44
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 22
+          },
+          "end": {
+            "line": 1,
+            "column": 44
+          }
+        }
+      },
+      "range": [
+        0,
+        45
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "mapSeries",
+            "range": [
+              53,
+              62
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 16
+              }
+            }
+          },
+          "range": [
+            53,
+            62
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 16
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./mapSeries",
+        "raw": "'./mapSeries'",
+        "range": [
+          68,
+          81
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 22
+          },
+          "end": {
+            "line": 2,
+            "column": 35
+          }
+        }
+      },
+      "range": [
+        46,
+        82
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 36
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * The same as `applyEach` but runs only a single async operation at a time.\n *\n * @name applyEachSeries\n * @static\n * @memberOf async\n * @see async.applyEach\n * @category Control Flow\n * @param {Array|Object} fns - A collection of asynchronous functions to all\n * call with the same arguments\n * @param {...*} [args] - any number of separate arguments to pass to the\n * function.\n * @param {Function} [callback] - the final argument should be the callback,\n * called when all functions have completed processing.\n * @returns {Function} - If only the first argument is provided, it will return\n * a function which lets you pass in the arguments as if it were a single\n * function call.\n ",
+          "range": [
+            84,
+            777
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 21,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "Identifier",
+          "name": "applyEach",
+          "range": [
+            793,
+            802
+          ],
+          "loc": {
+            "start": {
+              "line": 22,
+              "column": 15
+            },
+            "end": {
+              "line": 22,
+              "column": 24
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Identifier",
+            "name": "mapSeries",
+            "range": [
+              803,
+              812
+            ],
+            "loc": {
+              "start": {
+                "line": 22,
+                "column": 25
+              },
+              "end": {
+                "line": 22,
+                "column": 34
+              }
+            }
+          }
+        ],
+        "range": [
+          793,
+          813
+        ],
+        "loc": {
+          "start": {
+            "line": 22,
+            "column": 15
+          },
+          "end": {
+            "line": 22,
+            "column": 35
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * The same as `applyEach` but runs only a single async operation at a time.\n *\n * @name applyEachSeries\n * @static\n * @memberOf async\n * @see async.applyEach\n * @category Control Flow\n * @param {Array|Object} fns - A collection of asynchronous functions to all\n * call with the same arguments\n * @param {...*} [args] - any number of separate arguments to pass to the\n * function.\n * @param {Function} [callback] - the final argument should be the callback,\n * called when all functions have completed processing.\n * @returns {Function} - If only the first argument is provided, it will return\n * a function which lets you pass in the arguments as if it were a single\n * function call.\n ",
+            "range": [
+              84,
+              777
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 21,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        778,
+        814
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 0
+        },
+        "end": {
+          "line": 22,
+          "column": 36
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * The same as `applyEach` but runs only a single async operation at a time.\n *\n * @name applyEachSeries\n * @static\n * @memberOf async\n * @see async.applyEach\n * @category Control Flow\n * @param {Array|Object} fns - A collection of asynchronous functions to all\n * call with the same arguments\n * @param {...*} [args] - any number of separate arguments to pass to the\n * function.\n * @param {Function} [callback] - the final argument should be the callback,\n * called when all functions have completed processing.\n * @returns {Function} - If only the first argument is provided, it will return\n * a function which lets you pass in the arguments as if it were a single\n * function call.\n ",
+          "range": [
+            84,
+            777
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 21,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    814
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 22,
+      "column": 36
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * The same as `applyEach` but runs only a single async operation at a time.\n *\n * @name applyEachSeries\n * @static\n * @memberOf async\n * @see async.applyEach\n * @category Control Flow\n * @param {Array|Object} fns - A collection of asynchronous functions to all\n * call with the same arguments\n * @param {...*} [args] - any number of separate arguments to pass to the\n * function.\n * @param {Function} [callback] - the final argument should be the callback,\n * called when all functions have completed processing.\n * @returns {Function} - If only the first argument is provided, it will return\n * a function which lets you pass in the arguments as if it were a single\n * function call.\n ",
+      "range": [
+        84,
+        777
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 21,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

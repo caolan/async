@@ -1,0 +1,338 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "timesLimit",
+            "range": [
+              7,
+              17
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 17
+              }
+            }
+          },
+          "range": [
+            7,
+            17
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 17
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./timesLimit",
+        "raw": "'./timesLimit'",
+        "range": [
+          23,
+          37
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 23
+          },
+          "end": {
+            "line": 1,
+            "column": 37
+          }
+        }
+      },
+      "range": [
+        0,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "doLimit",
+            "range": [
+              46,
+              53
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 14
+              }
+            }
+          },
+          "range": [
+            46,
+            53
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 14
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/doLimit",
+        "raw": "'./internal/doLimit'",
+        "range": [
+          59,
+          79
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 20
+          },
+          "end": {
+            "line": 2,
+            "column": 40
+          }
+        }
+      },
+      "range": [
+        39,
+        80
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 41
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * The same as {@link async.times} but runs only a single async operation at a time.\n *\n * @name timesSeries\n * @static\n * @memberOf async\n * @see async.times\n * @category Control Flow\n * @param {number} n - The number of times to run the function.\n * @param {Function} iteratee - The function to call `n` times. Invoked with the\n * iteration index and a callback (n, next).\n * @param {Function} callback - see {@link async.map}.\n ",
+          "range": [
+            82,
+            519
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 16,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "Identifier",
+          "name": "doLimit",
+          "range": [
+            535,
+            542
+          ],
+          "loc": {
+            "start": {
+              "line": 17,
+              "column": 15
+            },
+            "end": {
+              "line": 17,
+              "column": 22
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Identifier",
+            "name": "timesLimit",
+            "range": [
+              543,
+              553
+            ],
+            "loc": {
+              "start": {
+                "line": 17,
+                "column": 23
+              },
+              "end": {
+                "line": 17,
+                "column": 33
+              }
+            }
+          },
+          {
+            "type": "Literal",
+            "value": 1,
+            "raw": "1",
+            "range": [
+              555,
+              556
+            ],
+            "loc": {
+              "start": {
+                "line": 17,
+                "column": 35
+              },
+              "end": {
+                "line": 17,
+                "column": 36
+              }
+            }
+          }
+        ],
+        "range": [
+          535,
+          557
+        ],
+        "loc": {
+          "start": {
+            "line": 17,
+            "column": 15
+          },
+          "end": {
+            "line": 17,
+            "column": 37
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * The same as {@link async.times} but runs only a single async operation at a time.\n *\n * @name timesSeries\n * @static\n * @memberOf async\n * @see async.times\n * @category Control Flow\n * @param {number} n - The number of times to run the function.\n * @param {Function} iteratee - The function to call `n` times. Invoked with the\n * iteration index and a callback (n, next).\n * @param {Function} callback - see {@link async.map}.\n ",
+            "range": [
+              82,
+              519
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 16,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        520,
+        558
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 0
+        },
+        "end": {
+          "line": 17,
+          "column": 38
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * The same as {@link async.times} but runs only a single async operation at a time.\n *\n * @name timesSeries\n * @static\n * @memberOf async\n * @see async.times\n * @category Control Flow\n * @param {number} n - The number of times to run the function.\n * @param {Function} iteratee - The function to call `n` times. Invoked with the\n * iteration index and a callback (n, next).\n * @param {Function} callback - see {@link async.map}.\n ",
+          "range": [
+            82,
+            519
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 16,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    558
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 17,
+      "column": 38
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * The same as {@link async.times} but runs only a single async operation at a time.\n *\n * @name timesSeries\n * @static\n * @memberOf async\n * @see async.times\n * @category Control Flow\n * @param {number} n - The number of times to run the function.\n * @param {Function} iteratee - The function to call `n` times. Invoked with the\n * iteration index and a callback (n, next).\n * @param {Function} callback - see {@link async.map}.\n ",
+      "range": [
+        82,
+        519
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 16,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

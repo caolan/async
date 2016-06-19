@@ -1,0 +1,782 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "rest",
+            "range": [
+              7,
+              11
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 11
+              }
+            }
+          },
+          "range": [
+            7,
+            11
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 11
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "lodash/rest",
+        "raw": "'lodash/rest'",
+        "range": [
+          17,
+          30
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 17
+          },
+          "end": {
+            "line": 1,
+            "column": 30
+          }
+        }
+      },
+      "range": [
+        0,
+        31
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "initialParams",
+            "range": [
+              39,
+              52
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 20
+              }
+            }
+          },
+          "range": [
+            39,
+            52
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 20
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/initialParams",
+        "raw": "'./internal/initialParams'",
+        "range": [
+          58,
+          84
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 26
+          },
+          "end": {
+            "line": 2,
+            "column": 52
+          }
+        }
+      },
+      "range": [
+        32,
+        85
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 53
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Returns a function that when called, calls-back with the values provided.\n * Useful as the first function in a `waterfall`, or for plugging values in to\n * `auto`.\n *\n * @name constant\n * @static\n * @memberOf async\n * @category Util\n * @param {...*} arguments... - Any number of arguments to automatically invoke\n * callback with.\n * @returns {Function} Returns a function that when invoked, automatically\n * invokes the callback with the previous given arguments.\n * @example\n *\n * async.waterfall([\n *     async.constant(42),\n *     function (value, next) {\n *         // value === 42\n *     },\n *     //...\n * ], callback);\n *\n * async.waterfall([\n *     async.constant(filename, \"utf8\"),\n *     fs.readFile,\n *     function (fileData, next) {\n *         //...\n *     }\n *     //...\n * ], callback);\n *\n * async.auto({\n *     hostname: async.constant(\"https://server.net/\"),\n *     port: findFreePort,\n *     launchServer: [\"hostname\", \"port\", function (options, cb) {\n *         startServer(options, cb);\n *     }],\n *     //...\n * }, callback);\n ",
+          "range": [
+            87,
+            1147
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 44,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "Identifier",
+          "name": "rest",
+          "range": [
+            1163,
+            1167
+          ],
+          "loc": {
+            "start": {
+              "line": 45,
+              "column": 15
+            },
+            "end": {
+              "line": 45,
+              "column": 19
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "FunctionExpression",
+            "id": null,
+            "params": [
+              {
+                "type": "Identifier",
+                "name": "values",
+                "range": [
+                  1177,
+                  1183
+                ],
+                "loc": {
+                  "start": {
+                    "line": 45,
+                    "column": 29
+                  },
+                  "end": {
+                    "line": 45,
+                    "column": 35
+                  }
+                }
+              }
+            ],
+            "body": {
+              "type": "BlockStatement",
+              "body": [
+                {
+                  "type": "VariableDeclaration",
+                  "declarations": [
+                    {
+                      "type": "VariableDeclarator",
+                      "id": {
+                        "type": "Identifier",
+                        "name": "args",
+                        "range": [
+                          1195,
+                          1199
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 46,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 46,
+                            "column": 12
+                          }
+                        }
+                      },
+                      "init": {
+                        "type": "CallExpression",
+                        "callee": {
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "ArrayExpression",
+                            "elements": [
+                              {
+                                "type": "Literal",
+                                "value": null,
+                                "raw": "null",
+                                "range": [
+                                  1203,
+                                  1207
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 46,
+                                    "column": 16
+                                  },
+                                  "end": {
+                                    "line": 46,
+                                    "column": 20
+                                  }
+                                }
+                              }
+                            ],
+                            "range": [
+                              1202,
+                              1208
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 46,
+                                "column": 15
+                              },
+                              "end": {
+                                "line": 46,
+                                "column": 21
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "concat",
+                            "range": [
+                              1209,
+                              1215
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 46,
+                                "column": 22
+                              },
+                              "end": {
+                                "line": 46,
+                                "column": 28
+                              }
+                            }
+                          },
+                          "range": [
+                            1202,
+                            1215
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 46,
+                              "column": 15
+                            },
+                            "end": {
+                              "line": 46,
+                              "column": 28
+                            }
+                          }
+                        },
+                        "arguments": [
+                          {
+                            "type": "Identifier",
+                            "name": "values",
+                            "range": [
+                              1216,
+                              1222
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 46,
+                                "column": 29
+                              },
+                              "end": {
+                                "line": 46,
+                                "column": 35
+                              }
+                            }
+                          }
+                        ],
+                        "range": [
+                          1202,
+                          1223
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 46,
+                            "column": 15
+                          },
+                          "end": {
+                            "line": 46,
+                            "column": 36
+                          }
+                        }
+                      },
+                      "range": [
+                        1195,
+                        1223
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 46,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 46,
+                          "column": 36
+                        }
+                      }
+                    }
+                  ],
+                  "kind": "var",
+                  "range": [
+                    1191,
+                    1224
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 46,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 46,
+                      "column": 37
+                    }
+                  }
+                },
+                {
+                  "type": "ReturnStatement",
+                  "argument": {
+                    "type": "CallExpression",
+                    "callee": {
+                      "type": "Identifier",
+                      "name": "initialParams",
+                      "range": [
+                        1236,
+                        1249
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 47,
+                          "column": 11
+                        },
+                        "end": {
+                          "line": 47,
+                          "column": 24
+                        }
+                      }
+                    },
+                    "arguments": [
+                      {
+                        "type": "FunctionExpression",
+                        "id": null,
+                        "params": [
+                          {
+                            "type": "Identifier",
+                            "name": "ignoredArgs",
+                            "range": [
+                              1260,
+                              1271
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 47,
+                                "column": 35
+                              },
+                              "end": {
+                                "line": 47,
+                                "column": 46
+                              }
+                            }
+                          },
+                          {
+                            "type": "Identifier",
+                            "name": "callback",
+                            "range": [
+                              1273,
+                              1281
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 47,
+                                "column": 48
+                              },
+                              "end": {
+                                "line": 47,
+                                "column": 56
+                              }
+                            }
+                          }
+                        ],
+                        "body": {
+                          "type": "BlockStatement",
+                          "body": [
+                            {
+                              "type": "ReturnStatement",
+                              "argument": {
+                                "type": "CallExpression",
+                                "callee": {
+                                  "type": "MemberExpression",
+                                  "computed": false,
+                                  "object": {
+                                    "type": "Identifier",
+                                    "name": "callback",
+                                    "range": [
+                                      1300,
+                                      1308
+                                    ],
+                                    "loc": {
+                                      "start": {
+                                        "line": 48,
+                                        "column": 15
+                                      },
+                                      "end": {
+                                        "line": 48,
+                                        "column": 23
+                                      }
+                                    }
+                                  },
+                                  "property": {
+                                    "type": "Identifier",
+                                    "name": "apply",
+                                    "range": [
+                                      1309,
+                                      1314
+                                    ],
+                                    "loc": {
+                                      "start": {
+                                        "line": 48,
+                                        "column": 24
+                                      },
+                                      "end": {
+                                        "line": 48,
+                                        "column": 29
+                                      }
+                                    }
+                                  },
+                                  "range": [
+                                    1300,
+                                    1314
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 48,
+                                      "column": 15
+                                    },
+                                    "end": {
+                                      "line": 48,
+                                      "column": 29
+                                    }
+                                  }
+                                },
+                                "arguments": [
+                                  {
+                                    "type": "ThisExpression",
+                                    "range": [
+                                      1315,
+                                      1319
+                                    ],
+                                    "loc": {
+                                      "start": {
+                                        "line": 48,
+                                        "column": 30
+                                      },
+                                      "end": {
+                                        "line": 48,
+                                        "column": 34
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "type": "Identifier",
+                                    "name": "args",
+                                    "range": [
+                                      1321,
+                                      1325
+                                    ],
+                                    "loc": {
+                                      "start": {
+                                        "line": 48,
+                                        "column": 36
+                                      },
+                                      "end": {
+                                        "line": 48,
+                                        "column": 40
+                                      }
+                                    }
+                                  }
+                                ],
+                                "range": [
+                                  1300,
+                                  1326
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 48,
+                                    "column": 15
+                                  },
+                                  "end": {
+                                    "line": 48,
+                                    "column": 41
+                                  }
+                                }
+                              },
+                              "range": [
+                                1293,
+                                1327
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 48,
+                                  "column": 8
+                                },
+                                "end": {
+                                  "line": 48,
+                                  "column": 42
+                                }
+                              }
+                            }
+                          ],
+                          "range": [
+                            1283,
+                            1333
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 47,
+                              "column": 58
+                            },
+                            "end": {
+                              "line": 49,
+                              "column": 5
+                            }
+                          }
+                        },
+                        "generator": false,
+                        "expression": false,
+                        "range": [
+                          1250,
+                          1333
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 47,
+                            "column": 25
+                          },
+                          "end": {
+                            "line": 49,
+                            "column": 5
+                          }
+                        }
+                      }
+                    ],
+                    "range": [
+                      1236,
+                      1334
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 47,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 49,
+                        "column": 6
+                      }
+                    }
+                  },
+                  "range": [
+                    1229,
+                    1335
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 47,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 49,
+                      "column": 7
+                    }
+                  }
+                }
+              ],
+              "range": [
+                1185,
+                1337
+              ],
+              "loc": {
+                "start": {
+                  "line": 45,
+                  "column": 37
+                },
+                "end": {
+                  "line": 50,
+                  "column": 1
+                }
+              }
+            },
+            "generator": false,
+            "expression": false,
+            "range": [
+              1168,
+              1337
+            ],
+            "loc": {
+              "start": {
+                "line": 45,
+                "column": 20
+              },
+              "end": {
+                "line": 50,
+                "column": 1
+              }
+            }
+          }
+        ],
+        "range": [
+          1163,
+          1338
+        ],
+        "loc": {
+          "start": {
+            "line": 45,
+            "column": 15
+          },
+          "end": {
+            "line": 50,
+            "column": 2
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Returns a function that when called, calls-back with the values provided.\n * Useful as the first function in a `waterfall`, or for plugging values in to\n * `auto`.\n *\n * @name constant\n * @static\n * @memberOf async\n * @category Util\n * @param {...*} arguments... - Any number of arguments to automatically invoke\n * callback with.\n * @returns {Function} Returns a function that when invoked, automatically\n * invokes the callback with the previous given arguments.\n * @example\n *\n * async.waterfall([\n *     async.constant(42),\n *     function (value, next) {\n *         // value === 42\n *     },\n *     //...\n * ], callback);\n *\n * async.waterfall([\n *     async.constant(filename, \"utf8\"),\n *     fs.readFile,\n *     function (fileData, next) {\n *         //...\n *     }\n *     //...\n * ], callback);\n *\n * async.auto({\n *     hostname: async.constant(\"https://server.net/\"),\n *     port: findFreePort,\n *     launchServer: [\"hostname\", \"port\", function (options, cb) {\n *         startServer(options, cb);\n *     }],\n *     //...\n * }, callback);\n ",
+            "range": [
+              87,
+              1147
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 44,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        1148,
+        1339
+      ],
+      "loc": {
+        "start": {
+          "line": 45,
+          "column": 0
+        },
+        "end": {
+          "line": 50,
+          "column": 3
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Returns a function that when called, calls-back with the values provided.\n * Useful as the first function in a `waterfall`, or for plugging values in to\n * `auto`.\n *\n * @name constant\n * @static\n * @memberOf async\n * @category Util\n * @param {...*} arguments... - Any number of arguments to automatically invoke\n * callback with.\n * @returns {Function} Returns a function that when invoked, automatically\n * invokes the callback with the previous given arguments.\n * @example\n *\n * async.waterfall([\n *     async.constant(42),\n *     function (value, next) {\n *         // value === 42\n *     },\n *     //...\n * ], callback);\n *\n * async.waterfall([\n *     async.constant(filename, \"utf8\"),\n *     fs.readFile,\n *     function (fileData, next) {\n *         //...\n *     }\n *     //...\n * ], callback);\n *\n * async.auto({\n *     hostname: async.constant(\"https://server.net/\"),\n *     port: findFreePort,\n *     launchServer: [\"hostname\", \"port\", function (options, cb) {\n *         startServer(options, cb);\n *     }],\n *     //...\n * }, callback);\n ",
+          "range": [
+            87,
+            1147
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 44,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1339
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 50,
+      "column": 3
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Returns a function that when called, calls-back with the values provided.\n * Useful as the first function in a `waterfall`, or for plugging values in to\n * `auto`.\n *\n * @name constant\n * @static\n * @memberOf async\n * @category Util\n * @param {...*} arguments... - Any number of arguments to automatically invoke\n * callback with.\n * @returns {Function} Returns a function that when invoked, automatically\n * invokes the callback with the previous given arguments.\n * @example\n *\n * async.waterfall([\n *     async.constant(42),\n *     function (value, next) {\n *         // value === 42\n *     },\n *     //...\n * ], callback);\n *\n * async.waterfall([\n *     async.constant(filename, \"utf8\"),\n *     fs.readFile,\n *     function (fileData, next) {\n *         //...\n *     }\n *     //...\n * ], callback);\n *\n * async.auto({\n *     hostname: async.constant(\"https://server.net/\"),\n *     port: findFreePort,\n *     launchServer: [\"hostname\", \"port\", function (options, cb) {\n *         startServer(options, cb);\n *     }],\n *     //...\n * }, callback);\n ",
+      "range": [
+        87,
+        1147
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 44,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

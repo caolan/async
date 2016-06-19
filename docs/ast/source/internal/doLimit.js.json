@@ -1,0 +1,372 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "doLimit",
+          "range": [
+            24,
+            31
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 24
+            },
+            "end": {
+              "line": 1,
+              "column": 31
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "fn",
+            "range": [
+              32,
+              34
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 32
+              },
+              "end": {
+                "line": 1,
+                "column": 34
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "limit",
+            "range": [
+              36,
+              41
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 36
+              },
+              "end": {
+                "line": 1,
+                "column": 41
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "FunctionExpression",
+                "id": null,
+                "params": [
+                  {
+                    "type": "Identifier",
+                    "name": "iterable",
+                    "range": [
+                      66,
+                      74
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 2,
+                        "column": 21
+                      },
+                      "end": {
+                        "line": 2,
+                        "column": 29
+                      }
+                    }
+                  },
+                  {
+                    "type": "Identifier",
+                    "name": "iteratee",
+                    "range": [
+                      76,
+                      84
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 2,
+                        "column": 31
+                      },
+                      "end": {
+                        "line": 2,
+                        "column": 39
+                      }
+                    }
+                  },
+                  {
+                    "type": "Identifier",
+                    "name": "callback",
+                    "range": [
+                      86,
+                      94
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 2,
+                        "column": 41
+                      },
+                      "end": {
+                        "line": 2,
+                        "column": 49
+                      }
+                    }
+                  }
+                ],
+                "body": {
+                  "type": "BlockStatement",
+                  "body": [
+                    {
+                      "type": "ReturnStatement",
+                      "argument": {
+                        "type": "CallExpression",
+                        "callee": {
+                          "type": "Identifier",
+                          "name": "fn",
+                          "range": [
+                            113,
+                            115
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 3,
+                              "column": 15
+                            },
+                            "end": {
+                              "line": 3,
+                              "column": 17
+                            }
+                          }
+                        },
+                        "arguments": [
+                          {
+                            "type": "Identifier",
+                            "name": "iterable",
+                            "range": [
+                              116,
+                              124
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 3,
+                                "column": 18
+                              },
+                              "end": {
+                                "line": 3,
+                                "column": 26
+                              }
+                            }
+                          },
+                          {
+                            "type": "Identifier",
+                            "name": "limit",
+                            "range": [
+                              126,
+                              131
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 3,
+                                "column": 28
+                              },
+                              "end": {
+                                "line": 3,
+                                "column": 33
+                              }
+                            }
+                          },
+                          {
+                            "type": "Identifier",
+                            "name": "iteratee",
+                            "range": [
+                              133,
+                              141
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 3,
+                                "column": 35
+                              },
+                              "end": {
+                                "line": 3,
+                                "column": 43
+                              }
+                            }
+                          },
+                          {
+                            "type": "Identifier",
+                            "name": "callback",
+                            "range": [
+                              143,
+                              151
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 3,
+                                "column": 45
+                              },
+                              "end": {
+                                "line": 3,
+                                "column": 53
+                              }
+                            }
+                          }
+                        ],
+                        "range": [
+                          113,
+                          152
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 3,
+                            "column": 15
+                          },
+                          "end": {
+                            "line": 3,
+                            "column": 54
+                          }
+                        }
+                      },
+                      "range": [
+                        106,
+                        153
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 3,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 55
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    96,
+                    159
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 2,
+                      "column": 51
+                    },
+                    "end": {
+                      "line": 4,
+                      "column": 5
+                    }
+                  }
+                },
+                "generator": false,
+                "expression": false,
+                "range": [
+                  56,
+                  159
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 4,
+                    "column": 5
+                  }
+                }
+              },
+              "range": [
+                49,
+                160
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 4
+                },
+                "end": {
+                  "line": 4,
+                  "column": 6
+                }
+              }
+            }
+          ],
+          "range": [
+            43,
+            162
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 43
+            },
+            "end": {
+              "line": 5,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          15,
+          162
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 15
+          },
+          "end": {
+            "line": 5,
+            "column": 1
+          }
+        },
+        "leadingComments": [],
+        "trailingComments": []
+      },
+      "range": [
+        0,
+        162
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 1
+        }
+      }
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    162
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 1
+    }
+  },
+  "comments": []
+}

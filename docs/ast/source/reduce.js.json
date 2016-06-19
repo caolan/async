@@ -1,0 +1,947 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "eachOfSeries",
+            "range": [
+              7,
+              19
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 19
+              }
+            }
+          },
+          "range": [
+            7,
+            19
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 19
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./eachOfSeries",
+        "raw": "'./eachOfSeries'",
+        "range": [
+          25,
+          41
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 25
+          },
+          "end": {
+            "line": 1,
+            "column": 41
+          }
+        }
+      },
+      "range": [
+        0,
+        42
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 42
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Reduces `coll` into a single value using an async `iteratee` to return each\n * successive step. `memo` is the initial state of the reduction. This function\n * only operates in series.\n *\n * For performance reasons, it may make sense to split a call to this function\n * into a parallel map, and then use the normal `Array.prototype.reduce` on the\n * results. This function is for situations where each step in the reduction\n * needs to be async; if you can get the data before reducing it, then it's\n * probably a good idea to do so.\n *\n * @name reduce\n * @static\n * @memberOf async\n * @alias inject\n * @alias foldl\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {*} memo - The initial state of the reduction.\n * @param {Function} iteratee - A function applied to each item in the\n * array to produce the next step in the reduction. The `iteratee` is passed a\n * `callback(err, reduction)` which accepts an optional error as its first\n * argument, and the state of the reduction as the second. If an error is\n * passed to the callback, the reduction is stopped and the main `callback` is\n * immediately called with the error. Invoked with (memo, item, callback).\n * @param {Function} [callback] - A callback which is called after all the\n * `iteratee` functions have finished. Result is the reduced value. Invoked with\n * (err, result).\n * @example\n *\n * async.reduce([1,2,3], 0, function(memo, item, callback) {\n *     // pointless async:\n *     process.nextTick(function() {\n *         callback(null, memo + item)\n *     });\n * }, function(err, result) {\n *     // result is now equal to the last value of memo, which is 6\n * });\n ",
+          "range": [
+            44,
+            1734
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 41,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "reduce",
+          "range": [
+            1759,
+            1765
+          ],
+          "loc": {
+            "start": {
+              "line": 42,
+              "column": 24
+            },
+            "end": {
+              "line": 42,
+              "column": 30
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "coll",
+            "range": [
+              1766,
+              1770
+            ],
+            "loc": {
+              "start": {
+                "line": 42,
+                "column": 31
+              },
+              "end": {
+                "line": 42,
+                "column": 35
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "memo",
+            "range": [
+              1772,
+              1776
+            ],
+            "loc": {
+              "start": {
+                "line": 42,
+                "column": 37
+              },
+              "end": {
+                "line": 42,
+                "column": 41
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "iteratee",
+            "range": [
+              1778,
+              1786
+            ],
+            "loc": {
+              "start": {
+                "line": 42,
+                "column": 43
+              },
+              "end": {
+                "line": 42,
+                "column": 51
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "callback",
+            "range": [
+              1788,
+              1796
+            ],
+            "loc": {
+              "start": {
+                "line": 42,
+                "column": 53
+              },
+              "end": {
+                "line": 42,
+                "column": 61
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ExpressionStatement",
+              "expression": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "Identifier",
+                  "name": "eachOfSeries",
+                  "range": [
+                    1804,
+                    1816
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 43,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 43,
+                      "column": 16
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "Identifier",
+                    "name": "coll",
+                    "range": [
+                      1817,
+                      1821
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 43,
+                        "column": 17
+                      },
+                      "end": {
+                        "line": 43,
+                        "column": 21
+                      }
+                    }
+                  },
+                  {
+                    "type": "FunctionExpression",
+                    "id": null,
+                    "params": [
+                      {
+                        "type": "Identifier",
+                        "name": "x",
+                        "range": [
+                          1832,
+                          1833
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 43,
+                            "column": 32
+                          },
+                          "end": {
+                            "line": 43,
+                            "column": 33
+                          }
+                        }
+                      },
+                      {
+                        "type": "Identifier",
+                        "name": "i",
+                        "range": [
+                          1835,
+                          1836
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 43,
+                            "column": 35
+                          },
+                          "end": {
+                            "line": 43,
+                            "column": 36
+                          }
+                        }
+                      },
+                      {
+                        "type": "Identifier",
+                        "name": "callback",
+                        "range": [
+                          1838,
+                          1846
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 43,
+                            "column": 38
+                          },
+                          "end": {
+                            "line": 43,
+                            "column": 46
+                          }
+                        }
+                      }
+                    ],
+                    "body": {
+                      "type": "BlockStatement",
+                      "body": [
+                        {
+                          "type": "ExpressionStatement",
+                          "expression": {
+                            "type": "CallExpression",
+                            "callee": {
+                              "type": "Identifier",
+                              "name": "iteratee",
+                              "range": [
+                                1858,
+                                1866
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 44,
+                                  "column": 8
+                                },
+                                "end": {
+                                  "line": 44,
+                                  "column": 16
+                                }
+                              }
+                            },
+                            "arguments": [
+                              {
+                                "type": "Identifier",
+                                "name": "memo",
+                                "range": [
+                                  1867,
+                                  1871
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 44,
+                                    "column": 17
+                                  },
+                                  "end": {
+                                    "line": 44,
+                                    "column": 21
+                                  }
+                                }
+                              },
+                              {
+                                "type": "Identifier",
+                                "name": "x",
+                                "range": [
+                                  1873,
+                                  1874
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 44,
+                                    "column": 23
+                                  },
+                                  "end": {
+                                    "line": 44,
+                                    "column": 24
+                                  }
+                                }
+                              },
+                              {
+                                "type": "FunctionExpression",
+                                "id": null,
+                                "params": [
+                                  {
+                                    "type": "Identifier",
+                                    "name": "err",
+                                    "range": [
+                                      1885,
+                                      1888
+                                    ],
+                                    "loc": {
+                                      "start": {
+                                        "line": 44,
+                                        "column": 35
+                                      },
+                                      "end": {
+                                        "line": 44,
+                                        "column": 38
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "type": "Identifier",
+                                    "name": "v",
+                                    "range": [
+                                      1890,
+                                      1891
+                                    ],
+                                    "loc": {
+                                      "start": {
+                                        "line": 44,
+                                        "column": 40
+                                      },
+                                      "end": {
+                                        "line": 44,
+                                        "column": 41
+                                      }
+                                    }
+                                  }
+                                ],
+                                "body": {
+                                  "type": "BlockStatement",
+                                  "body": [
+                                    {
+                                      "type": "ExpressionStatement",
+                                      "expression": {
+                                        "type": "AssignmentExpression",
+                                        "operator": "=",
+                                        "left": {
+                                          "type": "Identifier",
+                                          "name": "memo",
+                                          "range": [
+                                            1907,
+                                            1911
+                                          ],
+                                          "loc": {
+                                            "start": {
+                                              "line": 45,
+                                              "column": 12
+                                            },
+                                            "end": {
+                                              "line": 45,
+                                              "column": 16
+                                            }
+                                          }
+                                        },
+                                        "right": {
+                                          "type": "Identifier",
+                                          "name": "v",
+                                          "range": [
+                                            1914,
+                                            1915
+                                          ],
+                                          "loc": {
+                                            "start": {
+                                              "line": 45,
+                                              "column": 19
+                                            },
+                                            "end": {
+                                              "line": 45,
+                                              "column": 20
+                                            }
+                                          }
+                                        },
+                                        "range": [
+                                          1907,
+                                          1915
+                                        ],
+                                        "loc": {
+                                          "start": {
+                                            "line": 45,
+                                            "column": 12
+                                          },
+                                          "end": {
+                                            "line": 45,
+                                            "column": 20
+                                          }
+                                        }
+                                      },
+                                      "range": [
+                                        1907,
+                                        1916
+                                      ],
+                                      "loc": {
+                                        "start": {
+                                          "line": 45,
+                                          "column": 12
+                                        },
+                                        "end": {
+                                          "line": 45,
+                                          "column": 21
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "type": "ExpressionStatement",
+                                      "expression": {
+                                        "type": "CallExpression",
+                                        "callee": {
+                                          "type": "Identifier",
+                                          "name": "callback",
+                                          "range": [
+                                            1929,
+                                            1937
+                                          ],
+                                          "loc": {
+                                            "start": {
+                                              "line": 46,
+                                              "column": 12
+                                            },
+                                            "end": {
+                                              "line": 46,
+                                              "column": 20
+                                            }
+                                          }
+                                        },
+                                        "arguments": [
+                                          {
+                                            "type": "Identifier",
+                                            "name": "err",
+                                            "range": [
+                                              1938,
+                                              1941
+                                            ],
+                                            "loc": {
+                                              "start": {
+                                                "line": 46,
+                                                "column": 21
+                                              },
+                                              "end": {
+                                                "line": 46,
+                                                "column": 24
+                                              }
+                                            }
+                                          }
+                                        ],
+                                        "range": [
+                                          1929,
+                                          1942
+                                        ],
+                                        "loc": {
+                                          "start": {
+                                            "line": 46,
+                                            "column": 12
+                                          },
+                                          "end": {
+                                            "line": 46,
+                                            "column": 25
+                                          }
+                                        }
+                                      },
+                                      "range": [
+                                        1929,
+                                        1943
+                                      ],
+                                      "loc": {
+                                        "start": {
+                                          "line": 46,
+                                          "column": 12
+                                        },
+                                        "end": {
+                                          "line": 46,
+                                          "column": 26
+                                        }
+                                      }
+                                    }
+                                  ],
+                                  "range": [
+                                    1893,
+                                    1953
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 44,
+                                      "column": 43
+                                    },
+                                    "end": {
+                                      "line": 47,
+                                      "column": 9
+                                    }
+                                  }
+                                },
+                                "generator": false,
+                                "expression": false,
+                                "range": [
+                                  1876,
+                                  1953
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 44,
+                                    "column": 26
+                                  },
+                                  "end": {
+                                    "line": 47,
+                                    "column": 9
+                                  }
+                                }
+                              }
+                            ],
+                            "range": [
+                              1858,
+                              1954
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 44,
+                                "column": 8
+                              },
+                              "end": {
+                                "line": 47,
+                                "column": 10
+                              }
+                            }
+                          },
+                          "range": [
+                            1858,
+                            1955
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 44,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 47,
+                              "column": 11
+                            }
+                          }
+                        }
+                      ],
+                      "range": [
+                        1848,
+                        1961
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 43,
+                          "column": 48
+                        },
+                        "end": {
+                          "line": 48,
+                          "column": 5
+                        }
+                      }
+                    },
+                    "generator": false,
+                    "expression": false,
+                    "range": [
+                      1823,
+                      1961
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 43,
+                        "column": 23
+                      },
+                      "end": {
+                        "line": 48,
+                        "column": 5
+                      }
+                    }
+                  },
+                  {
+                    "type": "FunctionExpression",
+                    "id": null,
+                    "params": [
+                      {
+                        "type": "Identifier",
+                        "name": "err",
+                        "range": [
+                          1972,
+                          1975
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 48,
+                            "column": 16
+                          },
+                          "end": {
+                            "line": 48,
+                            "column": 19
+                          }
+                        }
+                      }
+                    ],
+                    "body": {
+                      "type": "BlockStatement",
+                      "body": [
+                        {
+                          "type": "ExpressionStatement",
+                          "expression": {
+                            "type": "CallExpression",
+                            "callee": {
+                              "type": "Identifier",
+                              "name": "callback",
+                              "range": [
+                                1987,
+                                1995
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 49,
+                                  "column": 8
+                                },
+                                "end": {
+                                  "line": 49,
+                                  "column": 16
+                                }
+                              }
+                            },
+                            "arguments": [
+                              {
+                                "type": "Identifier",
+                                "name": "err",
+                                "range": [
+                                  1996,
+                                  1999
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 49,
+                                    "column": 17
+                                  },
+                                  "end": {
+                                    "line": 49,
+                                    "column": 20
+                                  }
+                                }
+                              },
+                              {
+                                "type": "Identifier",
+                                "name": "memo",
+                                "range": [
+                                  2001,
+                                  2005
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 49,
+                                    "column": 22
+                                  },
+                                  "end": {
+                                    "line": 49,
+                                    "column": 26
+                                  }
+                                }
+                              }
+                            ],
+                            "range": [
+                              1987,
+                              2006
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 49,
+                                "column": 8
+                              },
+                              "end": {
+                                "line": 49,
+                                "column": 27
+                              }
+                            }
+                          },
+                          "range": [
+                            1987,
+                            2007
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 49,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 49,
+                              "column": 28
+                            }
+                          }
+                        }
+                      ],
+                      "range": [
+                        1977,
+                        2013
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 48,
+                          "column": 21
+                        },
+                        "end": {
+                          "line": 50,
+                          "column": 5
+                        }
+                      }
+                    },
+                    "generator": false,
+                    "expression": false,
+                    "range": [
+                      1963,
+                      2013
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 48,
+                        "column": 7
+                      },
+                      "end": {
+                        "line": 50,
+                        "column": 5
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1804,
+                  2014
+                ],
+                "loc": {
+                  "start": {
+                    "line": 43,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 50,
+                    "column": 6
+                  }
+                }
+              },
+              "range": [
+                1804,
+                2015
+              ],
+              "loc": {
+                "start": {
+                  "line": 43,
+                  "column": 4
+                },
+                "end": {
+                  "line": 50,
+                  "column": 7
+                }
+              }
+            }
+          ],
+          "range": [
+            1798,
+            2017
+          ],
+          "loc": {
+            "start": {
+              "line": 42,
+              "column": 63
+            },
+            "end": {
+              "line": 51,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          1750,
+          2017
+        ],
+        "loc": {
+          "start": {
+            "line": 42,
+            "column": 15
+          },
+          "end": {
+            "line": 51,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Reduces `coll` into a single value using an async `iteratee` to return each\n * successive step. `memo` is the initial state of the reduction. This function\n * only operates in series.\n *\n * For performance reasons, it may make sense to split a call to this function\n * into a parallel map, and then use the normal `Array.prototype.reduce` on the\n * results. This function is for situations where each step in the reduction\n * needs to be async; if you can get the data before reducing it, then it's\n * probably a good idea to do so.\n *\n * @name reduce\n * @static\n * @memberOf async\n * @alias inject\n * @alias foldl\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {*} memo - The initial state of the reduction.\n * @param {Function} iteratee - A function applied to each item in the\n * array to produce the next step in the reduction. The `iteratee` is passed a\n * `callback(err, reduction)` which accepts an optional error as its first\n * argument, and the state of the reduction as the second. If an error is\n * passed to the callback, the reduction is stopped and the main `callback` is\n * immediately called with the error. Invoked with (memo, item, callback).\n * @param {Function} [callback] - A callback which is called after all the\n * `iteratee` functions have finished. Result is the reduced value. Invoked with\n * (err, result).\n * @example\n *\n * async.reduce([1,2,3], 0, function(memo, item, callback) {\n *     // pointless async:\n *     process.nextTick(function() {\n *         callback(null, memo + item)\n *     });\n * }, function(err, result) {\n *     // result is now equal to the last value of memo, which is 6\n * });\n ",
+            "range": [
+              44,
+              1734
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 41,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        1735,
+        2017
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 0
+        },
+        "end": {
+          "line": 51,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Reduces `coll` into a single value using an async `iteratee` to return each\n * successive step. `memo` is the initial state of the reduction. This function\n * only operates in series.\n *\n * For performance reasons, it may make sense to split a call to this function\n * into a parallel map, and then use the normal `Array.prototype.reduce` on the\n * results. This function is for situations where each step in the reduction\n * needs to be async; if you can get the data before reducing it, then it's\n * probably a good idea to do so.\n *\n * @name reduce\n * @static\n * @memberOf async\n * @alias inject\n * @alias foldl\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {*} memo - The initial state of the reduction.\n * @param {Function} iteratee - A function applied to each item in the\n * array to produce the next step in the reduction. The `iteratee` is passed a\n * `callback(err, reduction)` which accepts an optional error as its first\n * argument, and the state of the reduction as the second. If an error is\n * passed to the callback, the reduction is stopped and the main `callback` is\n * immediately called with the error. Invoked with (memo, item, callback).\n * @param {Function} [callback] - A callback which is called after all the\n * `iteratee` functions have finished. Result is the reduced value. Invoked with\n * (err, result).\n * @example\n *\n * async.reduce([1,2,3], 0, function(memo, item, callback) {\n *     // pointless async:\n *     process.nextTick(function() {\n *         callback(null, memo + item)\n *     });\n * }, function(err, result) {\n *     // result is now equal to the last value of memo, which is 6\n * });\n ",
+          "range": [
+            44,
+            1734
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 41,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    2017
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 51,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Reduces `coll` into a single value using an async `iteratee` to return each\n * successive step. `memo` is the initial state of the reduction. This function\n * only operates in series.\n *\n * For performance reasons, it may make sense to split a call to this function\n * into a parallel map, and then use the normal `Array.prototype.reduce` on the\n * results. This function is for situations where each step in the reduction\n * needs to be async; if you can get the data before reducing it, then it's\n * probably a good idea to do so.\n *\n * @name reduce\n * @static\n * @memberOf async\n * @alias inject\n * @alias foldl\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {*} memo - The initial state of the reduction.\n * @param {Function} iteratee - A function applied to each item in the\n * array to produce the next step in the reduction. The `iteratee` is passed a\n * `callback(err, reduction)` which accepts an optional error as its first\n * argument, and the state of the reduction as the second. If an error is\n * passed to the callback, the reduction is stopped and the main `callback` is\n * immediately called with the error. Invoked with (memo, item, callback).\n * @param {Function} [callback] - A callback which is called after all the\n * `iteratee` functions have finished. Result is the reduced value. Invoked with\n * (err, result).\n * @example\n *\n * async.reduce([1,2,3], 0, function(memo, item, callback) {\n *     // pointless async:\n *     process.nextTick(function() {\n *         callback(null, memo + item)\n *     });\n * }, function(err, result) {\n *     // result is now equal to the last value of memo, which is 6\n * });\n ",
+      "range": [
+        44,
+        1734
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 41,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

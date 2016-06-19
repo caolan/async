@@ -1,0 +1,319 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "applyEach",
+            "range": [
+              7,
+              16
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 16
+              }
+            }
+          },
+          "range": [
+            7,
+            16
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 16
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/applyEach",
+        "raw": "'./internal/applyEach'",
+        "range": [
+          22,
+          44
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 22
+          },
+          "end": {
+            "line": 1,
+            "column": 44
+          }
+        }
+      },
+      "range": [
+        0,
+        45
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "map",
+            "range": [
+              53,
+              56
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 10
+              }
+            }
+          },
+          "range": [
+            53,
+            56
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 10
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./map",
+        "raw": "'./map'",
+        "range": [
+          62,
+          69
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 16
+          },
+          "end": {
+            "line": 2,
+            "column": 23
+          }
+        }
+      },
+      "range": [
+        46,
+        70
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 24
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Applies the provided arguments to each function in the array, calling\n * `callback` after all functions have completed. If you only provide the first\n * argument, then it will return a function which lets you pass in the\n * arguments as if it were a single function call.\n *\n * @name applyEach\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {Array|Object} fns - A collection of asynchronous functions to all\n * call with the same arguments\n * @param {...*} [args] - any number of separate arguments to pass to the\n * function.\n * @param {Function} [callback] - the final argument should be the callback,\n * called when all functions have completed processing.\n * @returns {Function} - If only the first argument is provided, it will return\n * a function which lets you pass in the arguments as if it were a single\n * function call.\n * @example\n *\n * async.applyEach([enableSearch, updateSchema], 'bucket', callback);\n *\n * // partial application example:\n * async.each(\n *     buckets,\n *     async.applyEach([enableSearch, updateSchema]),\n *     callback\n * );\n ",
+          "range": [
+            72,
+            1163
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 33,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "Identifier",
+          "name": "applyEach",
+          "range": [
+            1179,
+            1188
+          ],
+          "loc": {
+            "start": {
+              "line": 34,
+              "column": 15
+            },
+            "end": {
+              "line": 34,
+              "column": 24
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Identifier",
+            "name": "map",
+            "range": [
+              1189,
+              1192
+            ],
+            "loc": {
+              "start": {
+                "line": 34,
+                "column": 25
+              },
+              "end": {
+                "line": 34,
+                "column": 28
+              }
+            }
+          }
+        ],
+        "range": [
+          1179,
+          1193
+        ],
+        "loc": {
+          "start": {
+            "line": 34,
+            "column": 15
+          },
+          "end": {
+            "line": 34,
+            "column": 29
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Applies the provided arguments to each function in the array, calling\n * `callback` after all functions have completed. If you only provide the first\n * argument, then it will return a function which lets you pass in the\n * arguments as if it were a single function call.\n *\n * @name applyEach\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {Array|Object} fns - A collection of asynchronous functions to all\n * call with the same arguments\n * @param {...*} [args] - any number of separate arguments to pass to the\n * function.\n * @param {Function} [callback] - the final argument should be the callback,\n * called when all functions have completed processing.\n * @returns {Function} - If only the first argument is provided, it will return\n * a function which lets you pass in the arguments as if it were a single\n * function call.\n * @example\n *\n * async.applyEach([enableSearch, updateSchema], 'bucket', callback);\n *\n * // partial application example:\n * async.each(\n *     buckets,\n *     async.applyEach([enableSearch, updateSchema]),\n *     callback\n * );\n ",
+            "range": [
+              72,
+              1163
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 33,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        1164,
+        1194
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 0
+        },
+        "end": {
+          "line": 34,
+          "column": 30
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Applies the provided arguments to each function in the array, calling\n * `callback` after all functions have completed. If you only provide the first\n * argument, then it will return a function which lets you pass in the\n * arguments as if it were a single function call.\n *\n * @name applyEach\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {Array|Object} fns - A collection of asynchronous functions to all\n * call with the same arguments\n * @param {...*} [args] - any number of separate arguments to pass to the\n * function.\n * @param {Function} [callback] - the final argument should be the callback,\n * called when all functions have completed processing.\n * @returns {Function} - If only the first argument is provided, it will return\n * a function which lets you pass in the arguments as if it were a single\n * function call.\n * @example\n *\n * async.applyEach([enableSearch, updateSchema], 'bucket', callback);\n *\n * // partial application example:\n * async.each(\n *     buckets,\n *     async.applyEach([enableSearch, updateSchema]),\n *     callback\n * );\n ",
+          "range": [
+            72,
+            1163
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 33,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1194
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 34,
+      "column": 30
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Applies the provided arguments to each function in the array, calling\n * `callback` after all functions have completed. If you only provide the first\n * argument, then it will return a function which lets you pass in the\n * arguments as if it were a single function call.\n *\n * @name applyEach\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {Array|Object} fns - A collection of asynchronous functions to all\n * call with the same arguments\n * @param {...*} [args] - any number of separate arguments to pass to the\n * function.\n * @param {Function} [callback] - the final argument should be the callback,\n * called when all functions have completed processing.\n * @returns {Function} - If only the first argument is provided, it will return\n * a function which lets you pass in the arguments as if it were a single\n * function call.\n * @example\n *\n * async.applyEach([enableSearch, updateSchema], 'bucket', callback);\n *\n * // partial application example:\n * async.each(\n *     buckets,\n *     async.applyEach([enableSearch, updateSchema]),\n *     callback\n * );\n ",
+      "range": [
+        72,
+        1163
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 33,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

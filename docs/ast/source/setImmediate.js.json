@@ -1,0 +1,209 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "setImmediate",
+            "range": [
+              7,
+              19
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 19
+              }
+            }
+          },
+          "range": [
+            7,
+            19
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 19
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/setImmediate",
+        "raw": "'./internal/setImmediate'",
+        "range": [
+          25,
+          50
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 25
+          },
+          "end": {
+            "line": 1,
+            "column": 50
+          }
+        }
+      },
+      "range": [
+        0,
+        51
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 51
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Calls `callback` on a later loop around the event loop. In Node.js this just\n * calls `setImmediate`.  In the browser it will use `setImmediate` if\n * available, otherwise `setTimeout(callback, 0)`, which means other higher\n * priority events may precede the execution of `callback`.\n *\n * This is used internally for browser-compatibility purposes.\n *\n * @name setImmediate\n * @static\n * @memberOf async\n * @alias nextTick\n * @category Util\n * @param {Function} callback - The function to call on a later loop around\n * the event loop. Invoked with (args...).\n * @param {...*} args... - any number of additional arguments to pass to the\n * callback on the next tick.\n * @example\n *\n * var call_order = [];\n * async.nextTick(function() {\n *     call_order.push('two');\n *     // call_order now equals ['one','two']\n * });\n * call_order.push('one');\n *\n * async.setImmediate(function (a, b, c) {\n *     // a, b, and c equal 1, 2, and 3\n * }, 1, 2, 3);\n ",
+          "range": [
+            53,
+            1014
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 32,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "Identifier",
+        "name": "setImmediate",
+        "range": [
+          1030,
+          1042
+        ],
+        "loc": {
+          "start": {
+            "line": 33,
+            "column": 15
+          },
+          "end": {
+            "line": 33,
+            "column": 27
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Calls `callback` on a later loop around the event loop. In Node.js this just\n * calls `setImmediate`.  In the browser it will use `setImmediate` if\n * available, otherwise `setTimeout(callback, 0)`, which means other higher\n * priority events may precede the execution of `callback`.\n *\n * This is used internally for browser-compatibility purposes.\n *\n * @name setImmediate\n * @static\n * @memberOf async\n * @alias nextTick\n * @category Util\n * @param {Function} callback - The function to call on a later loop around\n * the event loop. Invoked with (args...).\n * @param {...*} args... - any number of additional arguments to pass to the\n * callback on the next tick.\n * @example\n *\n * var call_order = [];\n * async.nextTick(function() {\n *     call_order.push('two');\n *     // call_order now equals ['one','two']\n * });\n * call_order.push('one');\n *\n * async.setImmediate(function (a, b, c) {\n *     // a, b, and c equal 1, 2, and 3\n * }, 1, 2, 3);\n ",
+            "range": [
+              53,
+              1014
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 32,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        1015,
+        1043
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 0
+        },
+        "end": {
+          "line": 33,
+          "column": 28
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Calls `callback` on a later loop around the event loop. In Node.js this just\n * calls `setImmediate`.  In the browser it will use `setImmediate` if\n * available, otherwise `setTimeout(callback, 0)`, which means other higher\n * priority events may precede the execution of `callback`.\n *\n * This is used internally for browser-compatibility purposes.\n *\n * @name setImmediate\n * @static\n * @memberOf async\n * @alias nextTick\n * @category Util\n * @param {Function} callback - The function to call on a later loop around\n * the event loop. Invoked with (args...).\n * @param {...*} args... - any number of additional arguments to pass to the\n * callback on the next tick.\n * @example\n *\n * var call_order = [];\n * async.nextTick(function() {\n *     call_order.push('two');\n *     // call_order now equals ['one','two']\n * });\n * call_order.push('one');\n *\n * async.setImmediate(function (a, b, c) {\n *     // a, b, and c equal 1, 2, and 3\n * }, 1, 2, 3);\n ",
+          "range": [
+            53,
+            1014
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 32,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1043
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 33,
+      "column": 28
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Calls `callback` on a later loop around the event loop. In Node.js this just\n * calls `setImmediate`.  In the browser it will use `setImmediate` if\n * available, otherwise `setTimeout(callback, 0)`, which means other higher\n * priority events may precede the execution of `callback`.\n *\n * This is used internally for browser-compatibility purposes.\n *\n * @name setImmediate\n * @static\n * @memberOf async\n * @alias nextTick\n * @category Util\n * @param {Function} callback - The function to call on a later loop around\n * the event loop. Invoked with (args...).\n * @param {...*} args... - any number of additional arguments to pass to the\n * callback on the next tick.\n * @example\n *\n * var call_order = [];\n * async.nextTick(function() {\n *     call_order.push('two');\n *     // call_order now equals ['one','two']\n * });\n * call_order.push('one');\n *\n * async.setImmediate(function (a, b, c) {\n *     // a, b, and c equal 1, 2, and 3\n * }, 1, 2, 3);\n ",
+      "range": [
+        53,
+        1014
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 32,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

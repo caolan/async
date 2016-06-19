@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">lib/retry.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/caolan/async.git" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-asyncify">asyncify</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-auto">auto</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-autoInject">autoInject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cargo">cargo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-compose">compose</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doDuring">doDuring</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doUntil">doUntil</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doWhilst">doWhilst</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-during">during</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-eachLimit">eachLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-eachOfLimit">eachOfLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-ensureAsync">ensureAsync</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-forever">forever</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-iterator">iterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-mapValuesLimit">mapValuesLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-memoize">memoize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parallelLimit">parallelLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-priorityQueue">priorityQueue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-queue">queue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-race">race</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reduce">reduce</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reduceRight">reduceRight</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reflect">reflect</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reflectAll">reflectAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-retry">retry</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-retryable">retryable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-series">series</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sortBy">sortBy</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-timeout">timeout</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-timeLimit">timeLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-transform">transform</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-unmemoize">unmemoize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-until">until</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-waterfall">waterfall</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-whilst">whilst</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-CargoObject">CargoObject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-QueueObject">QueueObject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">internal</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-applyEach">applyEach</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-consoleFunc">consoleFunc</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doLimit">doLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doParallel">doParallel</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doParallelLimit">doParallelLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doSeries">doSeries</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getIterator">getIterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-initialParams">initialParams</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-iterator">iterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-notId">notId</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-once">once</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-onlyOnce">onlyOnce</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-queue">queue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reject">reject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-fallback">fallback</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-wrap">wrap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-hasNextTick">hasNextTick</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-hasSetImmediate">hasSetImmediate</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">lib/retry.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import series from &apos;./series&apos;;
+import noop from &apos;lodash/noop&apos;;
+import constant from &apos;lodash/constant&apos;;
+
+/**
+ * Attempts to get a successful response from `task` no more than `times` times
+ * before returning an error. If the task is successful, the `callback` will be
+ * passed the result of the successful task. If all attempts fail, the callback
+ * will be passed the error and result (if any) of the final attempt.
+ *
+ * @name retry
+ * @static
+ * @memberOf async
+ * @category Control Flow
+ * @param {Object|number} [opts = {times: 5, interval: 0}| 5] - Can be either an
+ * object with `times` and `interval` or a number.
+ * * `times` - The number of attempts to make before giving up.  The default
+ *   is `5`.
+ * * `interval` - The time to wait between retries, in milliseconds.  The
+ *   default is `0`. The interval may also be specified as a function of the
+ *   retry count (see example).
+ * * If `opts` is a number, the number specifies the number of times to retry,
+ *   with the default interval of `0`.
+ * @param {Function} task - A function which receives two arguments: (1) a
+ * `callback(err, result)` which must be called when finished, passing `err`
+ * (which can be `null`) and the `result` of the function&apos;s execution, and (2)
+ * a `results` object, containing the results of the previously executed
+ * functions (if nested inside another control flow). Invoked with
+ * (callback, results).
+ * @param {Function} [callback] - An optional callback which is called when the
+ * task has succeeded, or after the final failed attempt. It receives the `err`
+ * and `result` arguments of the last attempt at completing the `task`. Invoked
+ * with (err, results).
+ * @example
+ *
+ * // The `retry` function can be used as a stand-alone control flow by passing
+ * // a callback, as shown below:
+ *
+ * // try calling apiMethod 3 times
+ * async.retry(3, apiMethod, function(err, result) {
+ *     // do something with the result
+ * });
+ *
+ * // try calling apiMethod 3 times, waiting 200 ms between each retry
+ * async.retry({times: 3, interval: 200}, apiMethod, function(err, result) {
+ *     // do something with the result
+ * });
+ *
+ * // try calling apiMethod 10 times with exponential backoff
+ * // (i.e. intervals of 100, 200, 400, 800, 1600, ... milliseconds)
+ * async.retry({
+ *   times: 10,
+ *   interval: function(retryCount) {
+ *     return 50 * Math.pow(2, retryCount);
+ *   }
+ * }, apiMethod, function(err, result) {
+ *     // do something with the result
+ * });
+ *
+ * // try calling apiMethod the default 5 times no delay between each retry
+ * async.retry(apiMethod, function(err, result) {
+ *     // do something with the result
+ * });
+ *
+ * // It can also be embedded within other control flow functions to retry
+ * // individual methods that are not as reliable, like this:
+ * async.auto({
+ *     users: api.getUsers.bind(api),
+ *     payments: async.retry(3, api.getPayments.bind(api))
+ * }, function(err, results) {
+ *     // do something with the results
+ * });
+ */
+export default function retry(opts, task, callback) {
+    var DEFAULT_TIMES = 5;
+    var DEFAULT_INTERVAL = 0;
+
+    var options = {
+        times: DEFAULT_TIMES,
+        intervalFunc: constant(DEFAULT_INTERVAL)
+    };
+
+    function parseTimes(acc, t) {
+        if (typeof t === &apos;object&apos;) {
+            acc.times = +t.times || DEFAULT_TIMES;
+
+            acc.intervalFunc = typeof t.interval === &apos;function&apos; ?
+                t.interval :
+                constant(+t.interval || DEFAULT_INTERVAL);
+        } else if (typeof t === &apos;number&apos; || typeof t === &apos;string&apos;) {
+            acc.times = +t || DEFAULT_TIMES;
+        } else {
+            throw new Error(&quot;Invalid arguments for async.retry&quot;);
+        }
+    }
+
+
+    if (arguments.length &lt; 3 &amp;&amp; typeof opts === &apos;function&apos;) {
+        callback = task || noop;
+        task = opts;
+    } else {
+        parseTimes(options, opts);
+        callback = callback || noop;
+    }
+
+
+    if (typeof task !== &apos;function&apos;) {
+        throw new Error(&quot;Invalid arguments for async.retry&quot;);
+    }
+
+    var attempts = [];
+    for (var i = 1; i &lt; options.times + 1; i++) {
+        var isFinalAttempt = (i == options.times);
+        attempts.push(retryAttempt(isFinalAttempt));
+        var interval = options.intervalFunc(i);
+        if (!isFinalAttempt &amp;&amp; interval &gt; 0) {
+            attempts.push(retryInterval(interval));
+        }
+    }
+
+    series(attempts, function(done, data) {
+        data = data[data.length - 1];
+        callback(data.err, data.result);
+    });
+
+
+    function retryAttempt(isFinalAttempt) {
+        return function(seriesCallback) {
+            task(function(err, result) {
+                seriesCallback(!err || isFinalAttempt, {
+                    err: err,
+                    result: result
+                });
+            });
+        };
+    }
+
+    function retryInterval(interval) {
+        return function(seriesCallback) {
+            setTimeout(function() {
+                seriesCallback(null);
+            }, interval);
+        };
+    }
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

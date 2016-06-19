@@ -1,0 +1,501 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "identity",
+            "range": [
+              7,
+              15
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 15
+              }
+            }
+          },
+          "range": [
+            7,
+            15
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 15
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "lodash/identity",
+        "raw": "'lodash/identity'",
+        "range": [
+          21,
+          38
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 21
+          },
+          "end": {
+            "line": 1,
+            "column": 38
+          }
+        }
+      },
+      "range": [
+        0,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "createTester",
+            "range": [
+              48,
+              60
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 7
+              },
+              "end": {
+                "line": 3,
+                "column": 19
+              }
+            }
+          },
+          "range": [
+            48,
+            60
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 7
+            },
+            "end": {
+              "line": 3,
+              "column": 19
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/createTester",
+        "raw": "'./internal/createTester'",
+        "range": [
+          66,
+          91
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 25
+          },
+          "end": {
+            "line": 3,
+            "column": 50
+          }
+        }
+      },
+      "range": [
+        41,
+        92
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 51
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "eachOf",
+            "range": [
+              100,
+              106
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 7
+              },
+              "end": {
+                "line": 4,
+                "column": 13
+              }
+            }
+          },
+          "range": [
+            100,
+            106
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 7
+            },
+            "end": {
+              "line": 4,
+              "column": 13
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./eachOf",
+        "raw": "'./eachOf'",
+        "range": [
+          112,
+          122
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 19
+          },
+          "end": {
+            "line": 4,
+            "column": 29
+          }
+        }
+      },
+      "range": [
+        93,
+        123
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "findGetResult",
+            "range": [
+              131,
+              144
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 7
+              },
+              "end": {
+                "line": 5,
+                "column": 20
+              }
+            }
+          },
+          "range": [
+            131,
+            144
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 7
+            },
+            "end": {
+              "line": 5,
+              "column": 20
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/findGetResult",
+        "raw": "'./internal/findGetResult'",
+        "range": [
+          150,
+          176
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 26
+          },
+          "end": {
+            "line": 5,
+            "column": 52
+          }
+        }
+      },
+      "range": [
+        124,
+        177
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 53
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Returns the first value in `coll` that passes an async truth test. The\n * `iteratee` is applied in parallel, meaning the first iteratee to return\n * `true` will fire the detect `callback` with that result. That means the\n * result might not be the first item in the original `coll` (in terms of order)\n * that passes the test.\n\n * If order within the original `coll` is important, then look at\n * `detectSeries`.\n *\n * @name detect\n * @static\n * @memberOf async\n * @alias find\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A truth test to apply to each item in `coll`.\n * The iteratee is passed a `callback(err, truthValue)` which must be called\n * with a boolean argument once it has completed. Invoked with (item, callback).\n * @param {Function} [callback] - A callback which is called as soon as any\n * iteratee returns `true`, or after all the `iteratee` functions have finished.\n * Result will be the first item in the array that passes the truth test\n * (iteratee) or the value `undefined` if none passed. Invoked with\n * (err, result).\n * @example\n *\n * async.detect(['file1','file2','file3'], function(filePath, callback) {\n *     fs.access(filePath, function(err) {\n *         callback(null, !err)\n *     });\n * }, function(err, result) {\n *     // result now equals the first file in the list that exists\n * });\n ",
+          "range": [
+            179,
+            1583
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 0
+            },
+            "end": {
+              "line": 40,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "Identifier",
+          "name": "createTester",
+          "range": [
+            1599,
+            1611
+          ],
+          "loc": {
+            "start": {
+              "line": 41,
+              "column": 15
+            },
+            "end": {
+              "line": 41,
+              "column": 27
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Identifier",
+            "name": "eachOf",
+            "range": [
+              1612,
+              1618
+            ],
+            "loc": {
+              "start": {
+                "line": 41,
+                "column": 28
+              },
+              "end": {
+                "line": 41,
+                "column": 34
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "identity",
+            "range": [
+              1620,
+              1628
+            ],
+            "loc": {
+              "start": {
+                "line": 41,
+                "column": 36
+              },
+              "end": {
+                "line": 41,
+                "column": 44
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "findGetResult",
+            "range": [
+              1630,
+              1643
+            ],
+            "loc": {
+              "start": {
+                "line": 41,
+                "column": 46
+              },
+              "end": {
+                "line": 41,
+                "column": 59
+              }
+            }
+          }
+        ],
+        "range": [
+          1599,
+          1644
+        ],
+        "loc": {
+          "start": {
+            "line": 41,
+            "column": 15
+          },
+          "end": {
+            "line": 41,
+            "column": 60
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Returns the first value in `coll` that passes an async truth test. The\n * `iteratee` is applied in parallel, meaning the first iteratee to return\n * `true` will fire the detect `callback` with that result. That means the\n * result might not be the first item in the original `coll` (in terms of order)\n * that passes the test.\n\n * If order within the original `coll` is important, then look at\n * `detectSeries`.\n *\n * @name detect\n * @static\n * @memberOf async\n * @alias find\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A truth test to apply to each item in `coll`.\n * The iteratee is passed a `callback(err, truthValue)` which must be called\n * with a boolean argument once it has completed. Invoked with (item, callback).\n * @param {Function} [callback] - A callback which is called as soon as any\n * iteratee returns `true`, or after all the `iteratee` functions have finished.\n * Result will be the first item in the array that passes the truth test\n * (iteratee) or the value `undefined` if none passed. Invoked with\n * (err, result).\n * @example\n *\n * async.detect(['file1','file2','file3'], function(filePath, callback) {\n *     fs.access(filePath, function(err) {\n *         callback(null, !err)\n *     });\n * }, function(err, result) {\n *     // result now equals the first file in the list that exists\n * });\n ",
+            "range": [
+              179,
+              1583
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 0
+              },
+              "end": {
+                "line": 40,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        1584,
+        1645
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 0
+        },
+        "end": {
+          "line": 41,
+          "column": 61
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Returns the first value in `coll` that passes an async truth test. The\n * `iteratee` is applied in parallel, meaning the first iteratee to return\n * `true` will fire the detect `callback` with that result. That means the\n * result might not be the first item in the original `coll` (in terms of order)\n * that passes the test.\n\n * If order within the original `coll` is important, then look at\n * `detectSeries`.\n *\n * @name detect\n * @static\n * @memberOf async\n * @alias find\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A truth test to apply to each item in `coll`.\n * The iteratee is passed a `callback(err, truthValue)` which must be called\n * with a boolean argument once it has completed. Invoked with (item, callback).\n * @param {Function} [callback] - A callback which is called as soon as any\n * iteratee returns `true`, or after all the `iteratee` functions have finished.\n * Result will be the first item in the array that passes the truth test\n * (iteratee) or the value `undefined` if none passed. Invoked with\n * (err, result).\n * @example\n *\n * async.detect(['file1','file2','file3'], function(filePath, callback) {\n *     fs.access(filePath, function(err) {\n *         callback(null, !err)\n *     });\n * }, function(err, result) {\n *     // result now equals the first file in the list that exists\n * });\n ",
+          "range": [
+            179,
+            1583
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 0
+            },
+            "end": {
+              "line": 40,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1645
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 41,
+      "column": 61
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Returns the first value in `coll` that passes an async truth test. The\n * `iteratee` is applied in parallel, meaning the first iteratee to return\n * `true` will fire the detect `callback` with that result. That means the\n * result might not be the first item in the original `coll` (in terms of order)\n * that passes the test.\n\n * If order within the original `coll` is important, then look at\n * `detectSeries`.\n *\n * @name detect\n * @static\n * @memberOf async\n * @alias find\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A truth test to apply to each item in `coll`.\n * The iteratee is passed a `callback(err, truthValue)` which must be called\n * with a boolean argument once it has completed. Invoked with (item, callback).\n * @param {Function} [callback] - A callback which is called as soon as any\n * iteratee returns `true`, or after all the `iteratee` functions have finished.\n * Result will be the first item in the array that passes the truth test\n * (iteratee) or the value `undefined` if none passed. Invoked with\n * (err, result).\n * @example\n *\n * async.detect(['file1','file2','file3'], function(filePath, callback) {\n *     fs.access(filePath, function(err) {\n *         callback(null, !err)\n *     });\n * }, function(err, result) {\n *     // result now equals the first file in the list that exists\n * });\n ",
+      "range": [
+        179,
+        1583
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 40,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

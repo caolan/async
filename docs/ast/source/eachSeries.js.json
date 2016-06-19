@@ -1,0 +1,338 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "eachLimit",
+            "range": [
+              7,
+              16
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 16
+              }
+            }
+          },
+          "range": [
+            7,
+            16
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 16
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./eachLimit",
+        "raw": "'./eachLimit'",
+        "range": [
+          22,
+          35
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 22
+          },
+          "end": {
+            "line": 1,
+            "column": 35
+          }
+        }
+      },
+      "range": [
+        0,
+        36
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "doLimit",
+            "range": [
+              44,
+              51
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 14
+              }
+            }
+          },
+          "range": [
+            44,
+            51
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 14
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/doLimit",
+        "raw": "'./internal/doLimit'",
+        "range": [
+          57,
+          77
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 20
+          },
+          "end": {
+            "line": 2,
+            "column": 40
+          }
+        }
+      },
+      "range": [
+        37,
+        78
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 41
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * The same as `each` but runs only a single async operation at a time.\n *\n * @name eachSeries\n * @static\n * @memberOf async\n * @see async.each\n * @alias forEachSeries\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each\n * item in `coll`. The iteratee is passed a `callback(err)` which must be called\n * once it has completed. If no error has occurred, the `callback` should be run\n * without arguments or with an explicit `null` argument. The array index is\n * not passed to the iteratee. Invoked with (item, callback). If you need the\n * index, use `eachOfSeries`.\n * @param {Function} [callback] - A callback which is called when all\n * `iteratee` functions have finished, or an error occurs. Invoked with (err).\n ",
+          "range": [
+            80,
+            897
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 22,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "Identifier",
+          "name": "doLimit",
+          "range": [
+            913,
+            920
+          ],
+          "loc": {
+            "start": {
+              "line": 23,
+              "column": 15
+            },
+            "end": {
+              "line": 23,
+              "column": 22
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Identifier",
+            "name": "eachLimit",
+            "range": [
+              921,
+              930
+            ],
+            "loc": {
+              "start": {
+                "line": 23,
+                "column": 23
+              },
+              "end": {
+                "line": 23,
+                "column": 32
+              }
+            }
+          },
+          {
+            "type": "Literal",
+            "value": 1,
+            "raw": "1",
+            "range": [
+              932,
+              933
+            ],
+            "loc": {
+              "start": {
+                "line": 23,
+                "column": 34
+              },
+              "end": {
+                "line": 23,
+                "column": 35
+              }
+            }
+          }
+        ],
+        "range": [
+          913,
+          934
+        ],
+        "loc": {
+          "start": {
+            "line": 23,
+            "column": 15
+          },
+          "end": {
+            "line": 23,
+            "column": 36
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * The same as `each` but runs only a single async operation at a time.\n *\n * @name eachSeries\n * @static\n * @memberOf async\n * @see async.each\n * @alias forEachSeries\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each\n * item in `coll`. The iteratee is passed a `callback(err)` which must be called\n * once it has completed. If no error has occurred, the `callback` should be run\n * without arguments or with an explicit `null` argument. The array index is\n * not passed to the iteratee. Invoked with (item, callback). If you need the\n * index, use `eachOfSeries`.\n * @param {Function} [callback] - A callback which is called when all\n * `iteratee` functions have finished, or an error occurs. Invoked with (err).\n ",
+            "range": [
+              80,
+              897
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 22,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        898,
+        935
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 0
+        },
+        "end": {
+          "line": 23,
+          "column": 37
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * The same as `each` but runs only a single async operation at a time.\n *\n * @name eachSeries\n * @static\n * @memberOf async\n * @see async.each\n * @alias forEachSeries\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each\n * item in `coll`. The iteratee is passed a `callback(err)` which must be called\n * once it has completed. If no error has occurred, the `callback` should be run\n * without arguments or with an explicit `null` argument. The array index is\n * not passed to the iteratee. Invoked with (item, callback). If you need the\n * index, use `eachOfSeries`.\n * @param {Function} [callback] - A callback which is called when all\n * `iteratee` functions have finished, or an error occurs. Invoked with (err).\n ",
+          "range": [
+            80,
+            897
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 22,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    935
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 23,
+      "column": 37
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * The same as `each` but runs only a single async operation at a time.\n *\n * @name eachSeries\n * @static\n * @memberOf async\n * @see async.each\n * @alias forEachSeries\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each\n * item in `coll`. The iteratee is passed a `callback(err)` which must be called\n * once it has completed. If no error has occurred, the `callback` should be run\n * without arguments or with an explicit `null` argument. The array index is\n * not passed to the iteratee. Invoked with (item, callback). If you need the\n * index, use `eachOfSeries`.\n * @param {Function} [callback] - A callback which is called when all\n * `iteratee` functions have finished, or an error occurs. Invoked with (err).\n ",
+      "range": [
+        80,
+        897
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 22,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,792 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "reduce",
+            "range": [
+              7,
+              13
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 13
+              }
+            }
+          },
+          "range": [
+            7,
+            13
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 13
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./reduce",
+        "raw": "'./reduce'",
+        "range": [
+          19,
+          29
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 19
+          },
+          "end": {
+            "line": 1,
+            "column": 29
+          }
+        }
+      },
+      "range": [
+        0,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "VariableDeclaration",
+      "declarations": [
+        {
+          "type": "VariableDeclarator",
+          "id": {
+            "type": "Identifier",
+            "name": "slice",
+            "range": [
+              36,
+              41
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 4
+              },
+              "end": {
+                "line": 3,
+                "column": 9
+              }
+            }
+          },
+          "init": {
+            "type": "MemberExpression",
+            "computed": false,
+            "object": {
+              "type": "MemberExpression",
+              "computed": false,
+              "object": {
+                "type": "Identifier",
+                "name": "Array",
+                "range": [
+                  44,
+                  49
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 12
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 17
+                  }
+                }
+              },
+              "property": {
+                "type": "Identifier",
+                "name": "prototype",
+                "range": [
+                  50,
+                  59
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 18
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 27
+                  }
+                }
+              },
+              "range": [
+                44,
+                59
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 12
+                },
+                "end": {
+                  "line": 3,
+                  "column": 27
+                }
+              }
+            },
+            "property": {
+              "type": "Identifier",
+              "name": "slice",
+              "range": [
+                60,
+                65
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 28
+                },
+                "end": {
+                  "line": 3,
+                  "column": 33
+                }
+              }
+            },
+            "range": [
+              44,
+              65
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 12
+              },
+              "end": {
+                "line": 3,
+                "column": 33
+              }
+            }
+          },
+          "range": [
+            36,
+            65
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 4
+            },
+            "end": {
+              "line": 3,
+              "column": 33
+            }
+          }
+        }
+      ],
+      "kind": "var",
+      "range": [
+        32,
+        66
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 34
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Same as `reduce`, only operates on `coll` in reverse order.\n *\n * @name reduceRight\n * @static\n * @memberOf async\n * @see async.reduce\n * @alias foldr\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {*} memo - The initial state of the reduction.\n * @param {Function} iteratee - A function applied to each item in the\n * array to produce the next step in the reduction. The `iteratee` is passed a\n * `callback(err, reduction)` which accepts an optional error as its first\n * argument, and the state of the reduction as the second. If an error is\n * passed to the callback, the reduction is stopped and the main `callback` is\n * immediately called with the error. Invoked with (memo, item, callback).\n * @param {Function} [callback] - A callback which is called after all the\n * `iteratee` functions have finished. Result is the reduced value. Invoked with\n * (err, result).\n ",
+          "range": [
+            68,
+            999
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 25,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "reduceRight",
+          "range": [
+            1024,
+            1035
+          ],
+          "loc": {
+            "start": {
+              "line": 26,
+              "column": 24
+            },
+            "end": {
+              "line": 26,
+              "column": 35
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "coll",
+            "range": [
+              1037,
+              1041
+            ],
+            "loc": {
+              "start": {
+                "line": 26,
+                "column": 37
+              },
+              "end": {
+                "line": 26,
+                "column": 41
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "memo",
+            "range": [
+              1043,
+              1047
+            ],
+            "loc": {
+              "start": {
+                "line": 26,
+                "column": 43
+              },
+              "end": {
+                "line": 26,
+                "column": 47
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "iteratee",
+            "range": [
+              1049,
+              1057
+            ],
+            "loc": {
+              "start": {
+                "line": 26,
+                "column": 49
+              },
+              "end": {
+                "line": 26,
+                "column": 57
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "callback",
+            "range": [
+              1059,
+              1067
+            ],
+            "loc": {
+              "start": {
+                "line": 26,
+                "column": 59
+              },
+              "end": {
+                "line": 26,
+                "column": 67
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "VariableDeclaration",
+              "declarations": [
+                {
+                  "type": "VariableDeclarator",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "reversed",
+                    "range": [
+                      1079,
+                      1087
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 27,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 27,
+                        "column": 16
+                      }
+                    }
+                  },
+                  "init": {
+                    "type": "CallExpression",
+                    "callee": {
+                      "type": "MemberExpression",
+                      "computed": false,
+                      "object": {
+                        "type": "CallExpression",
+                        "callee": {
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "Identifier",
+                            "name": "slice",
+                            "range": [
+                              1090,
+                              1095
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 27,
+                                "column": 19
+                              },
+                              "end": {
+                                "line": 27,
+                                "column": 24
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "call",
+                            "range": [
+                              1096,
+                              1100
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 27,
+                                "column": 25
+                              },
+                              "end": {
+                                "line": 27,
+                                "column": 29
+                              }
+                            }
+                          },
+                          "range": [
+                            1090,
+                            1100
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 27,
+                              "column": 19
+                            },
+                            "end": {
+                              "line": 27,
+                              "column": 29
+                            }
+                          }
+                        },
+                        "arguments": [
+                          {
+                            "type": "Identifier",
+                            "name": "coll",
+                            "range": [
+                              1101,
+                              1105
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 27,
+                                "column": 30
+                              },
+                              "end": {
+                                "line": 27,
+                                "column": 34
+                              }
+                            }
+                          }
+                        ],
+                        "range": [
+                          1090,
+                          1106
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 27,
+                            "column": 19
+                          },
+                          "end": {
+                            "line": 27,
+                            "column": 35
+                          }
+                        }
+                      },
+                      "property": {
+                        "type": "Identifier",
+                        "name": "reverse",
+                        "range": [
+                          1107,
+                          1114
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 27,
+                            "column": 36
+                          },
+                          "end": {
+                            "line": 27,
+                            "column": 43
+                          }
+                        }
+                      },
+                      "range": [
+                        1090,
+                        1114
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 27,
+                          "column": 19
+                        },
+                        "end": {
+                          "line": 27,
+                          "column": 43
+                        }
+                      }
+                    },
+                    "arguments": [],
+                    "range": [
+                      1090,
+                      1116
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 27,
+                        "column": 19
+                      },
+                      "end": {
+                        "line": 27,
+                        "column": 45
+                      }
+                    }
+                  },
+                  "range": [
+                    1079,
+                    1116
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 27,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 27,
+                      "column": 45
+                    }
+                  }
+                }
+              ],
+              "kind": "var",
+              "range": [
+                1075,
+                1117
+              ],
+              "loc": {
+                "start": {
+                  "line": 27,
+                  "column": 4
+                },
+                "end": {
+                  "line": 27,
+                  "column": 46
+                }
+              }
+            },
+            {
+              "type": "ExpressionStatement",
+              "expression": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "Identifier",
+                  "name": "reduce",
+                  "range": [
+                    1122,
+                    1128
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 28,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 28,
+                      "column": 10
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "Identifier",
+                    "name": "reversed",
+                    "range": [
+                      1129,
+                      1137
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 28,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 28,
+                        "column": 19
+                      }
+                    }
+                  },
+                  {
+                    "type": "Identifier",
+                    "name": "memo",
+                    "range": [
+                      1139,
+                      1143
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 28,
+                        "column": 21
+                      },
+                      "end": {
+                        "line": 28,
+                        "column": 25
+                      }
+                    }
+                  },
+                  {
+                    "type": "Identifier",
+                    "name": "iteratee",
+                    "range": [
+                      1145,
+                      1153
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 28,
+                        "column": 27
+                      },
+                      "end": {
+                        "line": 28,
+                        "column": 35
+                      }
+                    }
+                  },
+                  {
+                    "type": "Identifier",
+                    "name": "callback",
+                    "range": [
+                      1155,
+                      1163
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 28,
+                        "column": 37
+                      },
+                      "end": {
+                        "line": 28,
+                        "column": 45
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1122,
+                  1164
+                ],
+                "loc": {
+                  "start": {
+                    "line": 28,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 28,
+                    "column": 46
+                  }
+                }
+              },
+              "range": [
+                1122,
+                1165
+              ],
+              "loc": {
+                "start": {
+                  "line": 28,
+                  "column": 4
+                },
+                "end": {
+                  "line": 28,
+                  "column": 47
+                }
+              }
+            }
+          ],
+          "range": [
+            1069,
+            1167
+          ],
+          "loc": {
+            "start": {
+              "line": 26,
+              "column": 69
+            },
+            "end": {
+              "line": 29,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          1015,
+          1167
+        ],
+        "loc": {
+          "start": {
+            "line": 26,
+            "column": 15
+          },
+          "end": {
+            "line": 29,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Same as `reduce`, only operates on `coll` in reverse order.\n *\n * @name reduceRight\n * @static\n * @memberOf async\n * @see async.reduce\n * @alias foldr\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {*} memo - The initial state of the reduction.\n * @param {Function} iteratee - A function applied to each item in the\n * array to produce the next step in the reduction. The `iteratee` is passed a\n * `callback(err, reduction)` which accepts an optional error as its first\n * argument, and the state of the reduction as the second. If an error is\n * passed to the callback, the reduction is stopped and the main `callback` is\n * immediately called with the error. Invoked with (memo, item, callback).\n * @param {Function} [callback] - A callback which is called after all the\n * `iteratee` functions have finished. Result is the reduced value. Invoked with\n * (err, result).\n ",
+            "range": [
+              68,
+              999
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 0
+              },
+              "end": {
+                "line": 25,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        1000,
+        1167
+      ],
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 0
+        },
+        "end": {
+          "line": 29,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Same as `reduce`, only operates on `coll` in reverse order.\n *\n * @name reduceRight\n * @static\n * @memberOf async\n * @see async.reduce\n * @alias foldr\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {*} memo - The initial state of the reduction.\n * @param {Function} iteratee - A function applied to each item in the\n * array to produce the next step in the reduction. The `iteratee` is passed a\n * `callback(err, reduction)` which accepts an optional error as its first\n * argument, and the state of the reduction as the second. If an error is\n * passed to the callback, the reduction is stopped and the main `callback` is\n * immediately called with the error. Invoked with (memo, item, callback).\n * @param {Function} [callback] - A callback which is called after all the\n * `iteratee` functions have finished. Result is the reduced value. Invoked with\n * (err, result).\n ",
+          "range": [
+            68,
+            999
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 25,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1167
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 29,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Same as `reduce`, only operates on `coll` in reverse order.\n *\n * @name reduceRight\n * @static\n * @memberOf async\n * @see async.reduce\n * @alias foldr\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {*} memo - The initial state of the reduction.\n * @param {Function} iteratee - A function applied to each item in the\n * array to produce the next step in the reduction. The `iteratee` is passed a\n * `callback(err, reduction)` which accepts an optional error as its first\n * argument, and the state of the reduction as the second. If an error is\n * passed to the callback, the reduction is stopped and the main `callback` is\n * immediately called with the error. Invoked with (memo, item, callback).\n * @param {Function} [callback] - A callback which is called after all the\n * `iteratee` functions have finished. Result is the reduced value. Invoked with\n * (err, result).\n ",
+      "range": [
+        68,
+        999
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 25,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

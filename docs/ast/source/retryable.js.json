@@ -1,0 +1,1217 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "retry",
+            "range": [
+              7,
+              12
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 12
+              }
+            }
+          },
+          "range": [
+            7,
+            12
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 12
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./retry",
+        "raw": "'./retry'",
+        "range": [
+          18,
+          27
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 18
+          },
+          "end": {
+            "line": 1,
+            "column": 27
+          }
+        }
+      },
+      "range": [
+        0,
+        28
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "initialParams",
+            "range": [
+              36,
+              49
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 20
+              }
+            }
+          },
+          "range": [
+            36,
+            49
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 20
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/initialParams",
+        "raw": "'./internal/initialParams'",
+        "range": [
+          55,
+          81
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 26
+          },
+          "end": {
+            "line": 2,
+            "column": 52
+          }
+        }
+      },
+      "range": [
+        29,
+        82
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 53
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * A close relative of `retry`.  This method wraps a task and makes it\n * retryable, rather than immediately calling it with retries.\n *\n * @name retryable\n * @static\n * @memberOf async\n * @see async.retry\n * @category Control Flow\n * @param {Object|number} [opts = {times: 5, interval: 0}| 5] - optional\n * options, exactly the same as from `retry`\n * @param {Function} task - the asynchronous function to wrap\n * @returns {Functions} The wrapped function, which when invoked, will retry on\n * an error, based on the parameters specified in `opts`.\n * @example\n *\n * async.auto({\n *     dep1: async.retryable(3, getFromFlakyService),\n *     process: [\"dep1\", async.retryable(3, function (results, cb) {\n *         maybeProcessData(results.dep1, cb);\n *     })]\n * }, callback);\n ",
+          "range": [
+            84,
+            870
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 26,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": null,
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "opts",
+            "range": [
+              896,
+              900
+            ],
+            "loc": {
+              "start": {
+                "line": 27,
+                "column": 25
+              },
+              "end": {
+                "line": 27,
+                "column": 29
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "task",
+            "range": [
+              902,
+              906
+            ],
+            "loc": {
+              "start": {
+                "line": 27,
+                "column": 31
+              },
+              "end": {
+                "line": 27,
+                "column": 35
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "IfStatement",
+              "test": {
+                "type": "UnaryExpression",
+                "operator": "!",
+                "argument": {
+                  "type": "Identifier",
+                  "name": "task",
+                  "range": [
+                    919,
+                    923
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 28,
+                      "column": 9
+                    },
+                    "end": {
+                      "line": 28,
+                      "column": 13
+                    }
+                  }
+                },
+                "prefix": true,
+                "range": [
+                  918,
+                  923
+                ],
+                "loc": {
+                  "start": {
+                    "line": 28,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 28,
+                    "column": 13
+                  }
+                }
+              },
+              "consequent": {
+                "type": "BlockStatement",
+                "body": [
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "AssignmentExpression",
+                      "operator": "=",
+                      "left": {
+                        "type": "Identifier",
+                        "name": "task",
+                        "range": [
+                          935,
+                          939
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 29,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 29,
+                            "column": 12
+                          }
+                        }
+                      },
+                      "right": {
+                        "type": "Identifier",
+                        "name": "opts",
+                        "range": [
+                          942,
+                          946
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 29,
+                            "column": 15
+                          },
+                          "end": {
+                            "line": 29,
+                            "column": 19
+                          }
+                        }
+                      },
+                      "range": [
+                        935,
+                        946
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 29,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 29,
+                          "column": 19
+                        }
+                      }
+                    },
+                    "range": [
+                      935,
+                      947
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 29,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 29,
+                        "column": 20
+                      }
+                    }
+                  },
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "AssignmentExpression",
+                      "operator": "=",
+                      "left": {
+                        "type": "Identifier",
+                        "name": "opts",
+                        "range": [
+                          956,
+                          960
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 30,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 30,
+                            "column": 12
+                          }
+                        }
+                      },
+                      "right": {
+                        "type": "Literal",
+                        "value": null,
+                        "raw": "null",
+                        "range": [
+                          963,
+                          967
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 30,
+                            "column": 15
+                          },
+                          "end": {
+                            "line": 30,
+                            "column": 19
+                          }
+                        }
+                      },
+                      "range": [
+                        956,
+                        967
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 30,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 30,
+                          "column": 19
+                        }
+                      }
+                    },
+                    "range": [
+                      956,
+                      968
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 30,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 30,
+                        "column": 20
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  925,
+                  974
+                ],
+                "loc": {
+                  "start": {
+                    "line": 28,
+                    "column": 15
+                  },
+                  "end": {
+                    "line": 31,
+                    "column": 5
+                  }
+                }
+              },
+              "alternate": null,
+              "range": [
+                914,
+                974
+              ],
+              "loc": {
+                "start": {
+                  "line": 28,
+                  "column": 4
+                },
+                "end": {
+                  "line": 31,
+                  "column": 5
+                }
+              }
+            },
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "Identifier",
+                  "name": "initialParams",
+                  "range": [
+                    986,
+                    999
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 32,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 32,
+                      "column": 24
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "FunctionExpression",
+                    "id": null,
+                    "params": [
+                      {
+                        "type": "Identifier",
+                        "name": "args",
+                        "range": [
+                          1010,
+                          1014
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 32,
+                            "column": 35
+                          },
+                          "end": {
+                            "line": 32,
+                            "column": 39
+                          }
+                        }
+                      },
+                      {
+                        "type": "Identifier",
+                        "name": "callback",
+                        "range": [
+                          1016,
+                          1024
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 32,
+                            "column": 41
+                          },
+                          "end": {
+                            "line": 32,
+                            "column": 49
+                          }
+                        }
+                      }
+                    ],
+                    "body": {
+                      "type": "BlockStatement",
+                      "body": [
+                        {
+                          "type": "FunctionDeclaration",
+                          "id": {
+                            "type": "Identifier",
+                            "name": "taskFn",
+                            "range": [
+                              1045,
+                              1051
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 33,
+                                "column": 17
+                              },
+                              "end": {
+                                "line": 33,
+                                "column": 23
+                              }
+                            }
+                          },
+                          "params": [
+                            {
+                              "type": "Identifier",
+                              "name": "cb",
+                              "range": [
+                                1052,
+                                1054
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 33,
+                                  "column": 24
+                                },
+                                "end": {
+                                  "line": 33,
+                                  "column": 26
+                                }
+                              }
+                            }
+                          ],
+                          "body": {
+                            "type": "BlockStatement",
+                            "body": [
+                              {
+                                "type": "ExpressionStatement",
+                                "expression": {
+                                  "type": "CallExpression",
+                                  "callee": {
+                                    "type": "MemberExpression",
+                                    "computed": false,
+                                    "object": {
+                                      "type": "Identifier",
+                                      "name": "task",
+                                      "range": [
+                                        1070,
+                                        1074
+                                      ],
+                                      "loc": {
+                                        "start": {
+                                          "line": 34,
+                                          "column": 12
+                                        },
+                                        "end": {
+                                          "line": 34,
+                                          "column": 16
+                                        }
+                                      }
+                                    },
+                                    "property": {
+                                      "type": "Identifier",
+                                      "name": "apply",
+                                      "range": [
+                                        1075,
+                                        1080
+                                      ],
+                                      "loc": {
+                                        "start": {
+                                          "line": 34,
+                                          "column": 17
+                                        },
+                                        "end": {
+                                          "line": 34,
+                                          "column": 22
+                                        }
+                                      }
+                                    },
+                                    "range": [
+                                      1070,
+                                      1080
+                                    ],
+                                    "loc": {
+                                      "start": {
+                                        "line": 34,
+                                        "column": 12
+                                      },
+                                      "end": {
+                                        "line": 34,
+                                        "column": 22
+                                      }
+                                    }
+                                  },
+                                  "arguments": [
+                                    {
+                                      "type": "Literal",
+                                      "value": null,
+                                      "raw": "null",
+                                      "range": [
+                                        1081,
+                                        1085
+                                      ],
+                                      "loc": {
+                                        "start": {
+                                          "line": 34,
+                                          "column": 23
+                                        },
+                                        "end": {
+                                          "line": 34,
+                                          "column": 27
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "type": "CallExpression",
+                                      "callee": {
+                                        "type": "MemberExpression",
+                                        "computed": false,
+                                        "object": {
+                                          "type": "Identifier",
+                                          "name": "args",
+                                          "range": [
+                                            1087,
+                                            1091
+                                          ],
+                                          "loc": {
+                                            "start": {
+                                              "line": 34,
+                                              "column": 29
+                                            },
+                                            "end": {
+                                              "line": 34,
+                                              "column": 33
+                                            }
+                                          }
+                                        },
+                                        "property": {
+                                          "type": "Identifier",
+                                          "name": "concat",
+                                          "range": [
+                                            1092,
+                                            1098
+                                          ],
+                                          "loc": {
+                                            "start": {
+                                              "line": 34,
+                                              "column": 34
+                                            },
+                                            "end": {
+                                              "line": 34,
+                                              "column": 40
+                                            }
+                                          }
+                                        },
+                                        "range": [
+                                          1087,
+                                          1098
+                                        ],
+                                        "loc": {
+                                          "start": {
+                                            "line": 34,
+                                            "column": 29
+                                          },
+                                          "end": {
+                                            "line": 34,
+                                            "column": 40
+                                          }
+                                        }
+                                      },
+                                      "arguments": [
+                                        {
+                                          "type": "ArrayExpression",
+                                          "elements": [
+                                            {
+                                              "type": "Identifier",
+                                              "name": "cb",
+                                              "range": [
+                                                1100,
+                                                1102
+                                              ],
+                                              "loc": {
+                                                "start": {
+                                                  "line": 34,
+                                                  "column": 42
+                                                },
+                                                "end": {
+                                                  "line": 34,
+                                                  "column": 44
+                                                }
+                                              }
+                                            }
+                                          ],
+                                          "range": [
+                                            1099,
+                                            1103
+                                          ],
+                                          "loc": {
+                                            "start": {
+                                              "line": 34,
+                                              "column": 41
+                                            },
+                                            "end": {
+                                              "line": 34,
+                                              "column": 45
+                                            }
+                                          }
+                                        }
+                                      ],
+                                      "range": [
+                                        1087,
+                                        1104
+                                      ],
+                                      "loc": {
+                                        "start": {
+                                          "line": 34,
+                                          "column": 29
+                                        },
+                                        "end": {
+                                          "line": 34,
+                                          "column": 46
+                                        }
+                                      }
+                                    }
+                                  ],
+                                  "range": [
+                                    1070,
+                                    1105
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 34,
+                                      "column": 12
+                                    },
+                                    "end": {
+                                      "line": 34,
+                                      "column": 47
+                                    }
+                                  }
+                                },
+                                "range": [
+                                  1070,
+                                  1106
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 34,
+                                    "column": 12
+                                  },
+                                  "end": {
+                                    "line": 34,
+                                    "column": 48
+                                  }
+                                }
+                              }
+                            ],
+                            "range": [
+                              1056,
+                              1116
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 33,
+                                "column": 28
+                              },
+                              "end": {
+                                "line": 35,
+                                "column": 9
+                              }
+                            }
+                          },
+                          "generator": false,
+                          "expression": false,
+                          "range": [
+                            1036,
+                            1116
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 33,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 35,
+                              "column": 9
+                            }
+                          }
+                        },
+                        {
+                          "type": "IfStatement",
+                          "test": {
+                            "type": "Identifier",
+                            "name": "opts",
+                            "range": [
+                              1130,
+                              1134
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 37,
+                                "column": 12
+                              },
+                              "end": {
+                                "line": 37,
+                                "column": 16
+                              }
+                            }
+                          },
+                          "consequent": {
+                            "type": "ExpressionStatement",
+                            "expression": {
+                              "type": "CallExpression",
+                              "callee": {
+                                "type": "Identifier",
+                                "name": "retry",
+                                "range": [
+                                  1136,
+                                  1141
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 37,
+                                    "column": 18
+                                  },
+                                  "end": {
+                                    "line": 37,
+                                    "column": 23
+                                  }
+                                }
+                              },
+                              "arguments": [
+                                {
+                                  "type": "Identifier",
+                                  "name": "opts",
+                                  "range": [
+                                    1142,
+                                    1146
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 37,
+                                      "column": 24
+                                    },
+                                    "end": {
+                                      "line": 37,
+                                      "column": 28
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "Identifier",
+                                  "name": "taskFn",
+                                  "range": [
+                                    1148,
+                                    1154
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 37,
+                                      "column": 30
+                                    },
+                                    "end": {
+                                      "line": 37,
+                                      "column": 36
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "Identifier",
+                                  "name": "callback",
+                                  "range": [
+                                    1156,
+                                    1164
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 37,
+                                      "column": 38
+                                    },
+                                    "end": {
+                                      "line": 37,
+                                      "column": 46
+                                    }
+                                  }
+                                }
+                              ],
+                              "range": [
+                                1136,
+                                1165
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 37,
+                                  "column": 18
+                                },
+                                "end": {
+                                  "line": 37,
+                                  "column": 47
+                                }
+                              }
+                            },
+                            "range": [
+                              1136,
+                              1166
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 37,
+                                "column": 18
+                              },
+                              "end": {
+                                "line": 37,
+                                "column": 48
+                              }
+                            }
+                          },
+                          "alternate": {
+                            "type": "ExpressionStatement",
+                            "expression": {
+                              "type": "CallExpression",
+                              "callee": {
+                                "type": "Identifier",
+                                "name": "retry",
+                                "range": [
+                                  1180,
+                                  1185
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 38,
+                                    "column": 13
+                                  },
+                                  "end": {
+                                    "line": 38,
+                                    "column": 18
+                                  }
+                                }
+                              },
+                              "arguments": [
+                                {
+                                  "type": "Identifier",
+                                  "name": "taskFn",
+                                  "range": [
+                                    1186,
+                                    1192
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 38,
+                                      "column": 19
+                                    },
+                                    "end": {
+                                      "line": 38,
+                                      "column": 25
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "Identifier",
+                                  "name": "callback",
+                                  "range": [
+                                    1194,
+                                    1202
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 38,
+                                      "column": 27
+                                    },
+                                    "end": {
+                                      "line": 38,
+                                      "column": 35
+                                    }
+                                  }
+                                }
+                              ],
+                              "range": [
+                                1180,
+                                1203
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 38,
+                                  "column": 13
+                                },
+                                "end": {
+                                  "line": 38,
+                                  "column": 36
+                                }
+                              }
+                            },
+                            "range": [
+                              1180,
+                              1204
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 38,
+                                "column": 13
+                              },
+                              "end": {
+                                "line": 38,
+                                "column": 37
+                              }
+                            }
+                          },
+                          "range": [
+                            1126,
+                            1204
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 37,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 38,
+                              "column": 37
+                            }
+                          }
+                        }
+                      ],
+                      "range": [
+                        1026,
+                        1211
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 32,
+                          "column": 51
+                        },
+                        "end": {
+                          "line": 40,
+                          "column": 5
+                        }
+                      }
+                    },
+                    "generator": false,
+                    "expression": false,
+                    "range": [
+                      1000,
+                      1211
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 32,
+                        "column": 25
+                      },
+                      "end": {
+                        "line": 40,
+                        "column": 5
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  986,
+                  1212
+                ],
+                "loc": {
+                  "start": {
+                    "line": 32,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 40,
+                    "column": 6
+                  }
+                }
+              },
+              "range": [
+                979,
+                1213
+              ],
+              "loc": {
+                "start": {
+                  "line": 32,
+                  "column": 4
+                },
+                "end": {
+                  "line": 40,
+                  "column": 7
+                }
+              }
+            }
+          ],
+          "range": [
+            908,
+            1215
+          ],
+          "loc": {
+            "start": {
+              "line": 27,
+              "column": 37
+            },
+            "end": {
+              "line": 41,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          886,
+          1215
+        ],
+        "loc": {
+          "start": {
+            "line": 27,
+            "column": 15
+          },
+          "end": {
+            "line": 41,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * A close relative of `retry`.  This method wraps a task and makes it\n * retryable, rather than immediately calling it with retries.\n *\n * @name retryable\n * @static\n * @memberOf async\n * @see async.retry\n * @category Control Flow\n * @param {Object|number} [opts = {times: 5, interval: 0}| 5] - optional\n * options, exactly the same as from `retry`\n * @param {Function} task - the asynchronous function to wrap\n * @returns {Functions} The wrapped function, which when invoked, will retry on\n * an error, based on the parameters specified in `opts`.\n * @example\n *\n * async.auto({\n *     dep1: async.retryable(3, getFromFlakyService),\n *     process: [\"dep1\", async.retryable(3, function (results, cb) {\n *         maybeProcessData(results.dep1, cb);\n *     })]\n * }, callback);\n ",
+            "range": [
+              84,
+              870
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 26,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        871,
+        1215
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 0
+        },
+        "end": {
+          "line": 41,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * A close relative of `retry`.  This method wraps a task and makes it\n * retryable, rather than immediately calling it with retries.\n *\n * @name retryable\n * @static\n * @memberOf async\n * @see async.retry\n * @category Control Flow\n * @param {Object|number} [opts = {times: 5, interval: 0}| 5] - optional\n * options, exactly the same as from `retry`\n * @param {Function} task - the asynchronous function to wrap\n * @returns {Functions} The wrapped function, which when invoked, will retry on\n * an error, based on the parameters specified in `opts`.\n * @example\n *\n * async.auto({\n *     dep1: async.retryable(3, getFromFlakyService),\n *     process: [\"dep1\", async.retryable(3, function (results, cb) {\n *         maybeProcessData(results.dep1, cb);\n *     })]\n * }, callback);\n ",
+          "range": [
+            84,
+            870
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 26,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1215
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 41,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * A close relative of `retry`.  This method wraps a task and makes it\n * retryable, rather than immediately calling it with retries.\n *\n * @name retryable\n * @static\n * @memberOf async\n * @see async.retry\n * @category Control Flow\n * @param {Object|number} [opts = {times: 5, interval: 0}| 5] - optional\n * options, exactly the same as from `retry`\n * @param {Function} task - the asynchronous function to wrap\n * @returns {Functions} The wrapped function, which when invoked, will retry on\n * an error, based on the parameters specified in `opts`.\n * @example\n *\n * async.auto({\n *     dep1: async.retryable(3, getFromFlakyService),\n *     process: [\"dep1\", async.retryable(3, function (results, cb) {\n *         maybeProcessData(results.dep1, cb);\n *     })]\n * }, callback);\n ",
+      "range": [
+        84,
+        870
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 26,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

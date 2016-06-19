@@ -1,0 +1,618 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "rest",
+            "range": [
+              7,
+              11
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 11
+              }
+            }
+          },
+          "range": [
+            7,
+            11
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 11
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "lodash/rest",
+        "raw": "'lodash/rest'",
+        "range": [
+          17,
+          30
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 17
+          },
+          "end": {
+            "line": 1,
+            "column": 30
+          }
+        }
+      },
+      "range": [
+        0,
+        31
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 31
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Creates a continuation function with some arguments already applied.\n *\n * Useful as a shorthand when combined with other control flow functions. Any\n * arguments passed to the returned function are added to the arguments\n * originally passed to apply.\n *\n * @name apply\n * @static\n * @memberOf async\n * @category Util\n * @param {Function} function - The function you want to eventually apply all\n * arguments to. Invokes with (arguments...).\n * @param {...*} arguments... - Any number of arguments to automatically apply\n * when the continuation is called.\n * @example\n *\n * // using apply\n * async.parallel([\n *     async.apply(fs.writeFile, 'testfile1', 'test1'),\n *     async.apply(fs.writeFile, 'testfile2', 'test2')\n * ]);\n *\n *\n * // the same process without using apply\n * async.parallel([\n *     function(callback) {\n *         fs.writeFile('testfile1', 'test1', callback);\n *     },\n *     function(callback) {\n *         fs.writeFile('testfile2', 'test2', callback);\n *     }\n * ]);\n *\n * // It's possible to pass any number of additional arguments when calling the\n * // continuation:\n *\n * node> var fn = async.apply(sys.puts, 'one');\n * node> fn('two', 'three');\n * one\n * two\n * three\n ",
+          "range": [
+            33,
+            1243
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 45,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "Identifier",
+          "name": "rest",
+          "range": [
+            1259,
+            1263
+          ],
+          "loc": {
+            "start": {
+              "line": 46,
+              "column": 15
+            },
+            "end": {
+              "line": 46,
+              "column": 19
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "FunctionExpression",
+            "id": null,
+            "params": [
+              {
+                "type": "Identifier",
+                "name": "fn",
+                "range": [
+                  1273,
+                  1275
+                ],
+                "loc": {
+                  "start": {
+                    "line": 46,
+                    "column": 29
+                  },
+                  "end": {
+                    "line": 46,
+                    "column": 31
+                  }
+                }
+              },
+              {
+                "type": "Identifier",
+                "name": "args",
+                "range": [
+                  1277,
+                  1281
+                ],
+                "loc": {
+                  "start": {
+                    "line": 46,
+                    "column": 33
+                  },
+                  "end": {
+                    "line": 46,
+                    "column": 37
+                  }
+                }
+              }
+            ],
+            "body": {
+              "type": "BlockStatement",
+              "body": [
+                {
+                  "type": "ReturnStatement",
+                  "argument": {
+                    "type": "CallExpression",
+                    "callee": {
+                      "type": "Identifier",
+                      "name": "rest",
+                      "range": [
+                        1296,
+                        1300
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 47,
+                          "column": 11
+                        },
+                        "end": {
+                          "line": 47,
+                          "column": 15
+                        }
+                      }
+                    },
+                    "arguments": [
+                      {
+                        "type": "FunctionExpression",
+                        "id": null,
+                        "params": [
+                          {
+                            "type": "Identifier",
+                            "name": "callArgs",
+                            "range": [
+                              1310,
+                              1318
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 47,
+                                "column": 25
+                              },
+                              "end": {
+                                "line": 47,
+                                "column": 33
+                              }
+                            }
+                          }
+                        ],
+                        "body": {
+                          "type": "BlockStatement",
+                          "body": [
+                            {
+                              "type": "ReturnStatement",
+                              "argument": {
+                                "type": "CallExpression",
+                                "callee": {
+                                  "type": "MemberExpression",
+                                  "computed": false,
+                                  "object": {
+                                    "type": "Identifier",
+                                    "name": "fn",
+                                    "range": [
+                                      1337,
+                                      1339
+                                    ],
+                                    "loc": {
+                                      "start": {
+                                        "line": 48,
+                                        "column": 15
+                                      },
+                                      "end": {
+                                        "line": 48,
+                                        "column": 17
+                                      }
+                                    }
+                                  },
+                                  "property": {
+                                    "type": "Identifier",
+                                    "name": "apply",
+                                    "range": [
+                                      1340,
+                                      1345
+                                    ],
+                                    "loc": {
+                                      "start": {
+                                        "line": 48,
+                                        "column": 18
+                                      },
+                                      "end": {
+                                        "line": 48,
+                                        "column": 23
+                                      }
+                                    }
+                                  },
+                                  "range": [
+                                    1337,
+                                    1345
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 48,
+                                      "column": 15
+                                    },
+                                    "end": {
+                                      "line": 48,
+                                      "column": 23
+                                    }
+                                  }
+                                },
+                                "arguments": [
+                                  {
+                                    "type": "Literal",
+                                    "value": null,
+                                    "raw": "null",
+                                    "range": [
+                                      1346,
+                                      1350
+                                    ],
+                                    "loc": {
+                                      "start": {
+                                        "line": 48,
+                                        "column": 24
+                                      },
+                                      "end": {
+                                        "line": 48,
+                                        "column": 28
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "type": "CallExpression",
+                                    "callee": {
+                                      "type": "MemberExpression",
+                                      "computed": false,
+                                      "object": {
+                                        "type": "Identifier",
+                                        "name": "args",
+                                        "range": [
+                                          1352,
+                                          1356
+                                        ],
+                                        "loc": {
+                                          "start": {
+                                            "line": 48,
+                                            "column": 30
+                                          },
+                                          "end": {
+                                            "line": 48,
+                                            "column": 34
+                                          }
+                                        }
+                                      },
+                                      "property": {
+                                        "type": "Identifier",
+                                        "name": "concat",
+                                        "range": [
+                                          1357,
+                                          1363
+                                        ],
+                                        "loc": {
+                                          "start": {
+                                            "line": 48,
+                                            "column": 35
+                                          },
+                                          "end": {
+                                            "line": 48,
+                                            "column": 41
+                                          }
+                                        }
+                                      },
+                                      "range": [
+                                        1352,
+                                        1363
+                                      ],
+                                      "loc": {
+                                        "start": {
+                                          "line": 48,
+                                          "column": 30
+                                        },
+                                        "end": {
+                                          "line": 48,
+                                          "column": 41
+                                        }
+                                      }
+                                    },
+                                    "arguments": [
+                                      {
+                                        "type": "Identifier",
+                                        "name": "callArgs",
+                                        "range": [
+                                          1364,
+                                          1372
+                                        ],
+                                        "loc": {
+                                          "start": {
+                                            "line": 48,
+                                            "column": 42
+                                          },
+                                          "end": {
+                                            "line": 48,
+                                            "column": 50
+                                          }
+                                        }
+                                      }
+                                    ],
+                                    "range": [
+                                      1352,
+                                      1373
+                                    ],
+                                    "loc": {
+                                      "start": {
+                                        "line": 48,
+                                        "column": 30
+                                      },
+                                      "end": {
+                                        "line": 48,
+                                        "column": 51
+                                      }
+                                    }
+                                  }
+                                ],
+                                "range": [
+                                  1337,
+                                  1374
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 48,
+                                    "column": 15
+                                  },
+                                  "end": {
+                                    "line": 48,
+                                    "column": 52
+                                  }
+                                }
+                              },
+                              "range": [
+                                1330,
+                                1375
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 48,
+                                  "column": 8
+                                },
+                                "end": {
+                                  "line": 48,
+                                  "column": 53
+                                }
+                              }
+                            }
+                          ],
+                          "range": [
+                            1320,
+                            1381
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 47,
+                              "column": 35
+                            },
+                            "end": {
+                              "line": 49,
+                              "column": 5
+                            }
+                          }
+                        },
+                        "generator": false,
+                        "expression": false,
+                        "range": [
+                          1301,
+                          1381
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 47,
+                            "column": 16
+                          },
+                          "end": {
+                            "line": 49,
+                            "column": 5
+                          }
+                        }
+                      }
+                    ],
+                    "range": [
+                      1296,
+                      1382
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 47,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 49,
+                        "column": 6
+                      }
+                    }
+                  },
+                  "range": [
+                    1289,
+                    1383
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 47,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 49,
+                      "column": 7
+                    }
+                  }
+                }
+              ],
+              "range": [
+                1283,
+                1385
+              ],
+              "loc": {
+                "start": {
+                  "line": 46,
+                  "column": 39
+                },
+                "end": {
+                  "line": 50,
+                  "column": 1
+                }
+              }
+            },
+            "generator": false,
+            "expression": false,
+            "range": [
+              1264,
+              1385
+            ],
+            "loc": {
+              "start": {
+                "line": 46,
+                "column": 20
+              },
+              "end": {
+                "line": 50,
+                "column": 1
+              }
+            }
+          }
+        ],
+        "range": [
+          1259,
+          1386
+        ],
+        "loc": {
+          "start": {
+            "line": 46,
+            "column": 15
+          },
+          "end": {
+            "line": 50,
+            "column": 2
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Creates a continuation function with some arguments already applied.\n *\n * Useful as a shorthand when combined with other control flow functions. Any\n * arguments passed to the returned function are added to the arguments\n * originally passed to apply.\n *\n * @name apply\n * @static\n * @memberOf async\n * @category Util\n * @param {Function} function - The function you want to eventually apply all\n * arguments to. Invokes with (arguments...).\n * @param {...*} arguments... - Any number of arguments to automatically apply\n * when the continuation is called.\n * @example\n *\n * // using apply\n * async.parallel([\n *     async.apply(fs.writeFile, 'testfile1', 'test1'),\n *     async.apply(fs.writeFile, 'testfile2', 'test2')\n * ]);\n *\n *\n * // the same process without using apply\n * async.parallel([\n *     function(callback) {\n *         fs.writeFile('testfile1', 'test1', callback);\n *     },\n *     function(callback) {\n *         fs.writeFile('testfile2', 'test2', callback);\n *     }\n * ]);\n *\n * // It's possible to pass any number of additional arguments when calling the\n * // continuation:\n *\n * node> var fn = async.apply(sys.puts, 'one');\n * node> fn('two', 'three');\n * one\n * two\n * three\n ",
+            "range": [
+              33,
+              1243
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 45,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        1244,
+        1387
+      ],
+      "loc": {
+        "start": {
+          "line": 46,
+          "column": 0
+        },
+        "end": {
+          "line": 50,
+          "column": 3
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Creates a continuation function with some arguments already applied.\n *\n * Useful as a shorthand when combined with other control flow functions. Any\n * arguments passed to the returned function are added to the arguments\n * originally passed to apply.\n *\n * @name apply\n * @static\n * @memberOf async\n * @category Util\n * @param {Function} function - The function you want to eventually apply all\n * arguments to. Invokes with (arguments...).\n * @param {...*} arguments... - Any number of arguments to automatically apply\n * when the continuation is called.\n * @example\n *\n * // using apply\n * async.parallel([\n *     async.apply(fs.writeFile, 'testfile1', 'test1'),\n *     async.apply(fs.writeFile, 'testfile2', 'test2')\n * ]);\n *\n *\n * // the same process without using apply\n * async.parallel([\n *     function(callback) {\n *         fs.writeFile('testfile1', 'test1', callback);\n *     },\n *     function(callback) {\n *         fs.writeFile('testfile2', 'test2', callback);\n *     }\n * ]);\n *\n * // It's possible to pass any number of additional arguments when calling the\n * // continuation:\n *\n * node> var fn = async.apply(sys.puts, 'one');\n * node> fn('two', 'three');\n * one\n * two\n * three\n ",
+          "range": [
+            33,
+            1243
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 45,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1387
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 50,
+      "column": 3
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Creates a continuation function with some arguments already applied.\n *\n * Useful as a shorthand when combined with other control flow functions. Any\n * arguments passed to the returned function are added to the arguments\n * originally passed to apply.\n *\n * @name apply\n * @static\n * @memberOf async\n * @category Util\n * @param {Function} function - The function you want to eventually apply all\n * arguments to. Invokes with (arguments...).\n * @param {...*} arguments... - Any number of arguments to automatically apply\n * when the continuation is called.\n * @example\n *\n * // using apply\n * async.parallel([\n *     async.apply(fs.writeFile, 'testfile1', 'test1'),\n *     async.apply(fs.writeFile, 'testfile2', 'test2')\n * ]);\n *\n *\n * // the same process without using apply\n * async.parallel([\n *     function(callback) {\n *         fs.writeFile('testfile1', 'test1', callback);\n *     },\n *     function(callback) {\n *         fs.writeFile('testfile2', 'test2', callback);\n *     }\n * ]);\n *\n * // It's possible to pass any number of additional arguments when calling the\n * // continuation:\n *\n * node> var fn = async.apply(sys.puts, 'one');\n * node> fn('two', 'three');\n * one\n * two\n * three\n ",
+      "range": [
+        33,
+        1243
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 45,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

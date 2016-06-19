@@ -1,0 +1,577 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "whilst",
+            "range": [
+              7,
+              13
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 13
+              }
+            }
+          },
+          "range": [
+            7,
+            13
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 13
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./whilst",
+        "raw": "'./whilst'",
+        "range": [
+          19,
+          29
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 19
+          },
+          "end": {
+            "line": 1,
+            "column": 29
+          }
+        }
+      },
+      "range": [
+        0,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 30
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Repeatedly call `fn` until `test` returns `true`. Calls `callback` when\n * stopped, or an error occurs. `callback` will be passed an error and any\n * arguments passed to the final `fn`'s callback.\n *\n * The inverse of {@link async.whilst}.\n *\n * @name until\n * @static\n * @memberOf async\n * @see async.whilst\n * @category Control Flow\n * @param {Function} test - synchronous truth test to perform before each\n * execution of `fn`. Invoked with ().\n * @param {Function} fn - A function which is called each time `test` fails.\n * The function is passed a `callback(err)`, which must be called once it has\n * completed with an optional `err` argument. Invoked with (callback).\n * @param {Function} [callback] - A callback which is called after the test\n * function has passed and repeated execution of `fn` has stopped. `callback`\n * will be passed an error and any arguments passed to the final `fn`'s\n * callback. Invoked with (err, [results]);\n ",
+          "range": [
+            32,
+            986
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 24,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "until",
+          "range": [
+            1011,
+            1016
+          ],
+          "loc": {
+            "start": {
+              "line": 25,
+              "column": 24
+            },
+            "end": {
+              "line": 25,
+              "column": 29
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "test",
+            "range": [
+              1017,
+              1021
+            ],
+            "loc": {
+              "start": {
+                "line": 25,
+                "column": 30
+              },
+              "end": {
+                "line": 25,
+                "column": 34
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "fn",
+            "range": [
+              1023,
+              1025
+            ],
+            "loc": {
+              "start": {
+                "line": 25,
+                "column": 36
+              },
+              "end": {
+                "line": 25,
+                "column": 38
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "callback",
+            "range": [
+              1027,
+              1035
+            ],
+            "loc": {
+              "start": {
+                "line": 25,
+                "column": 40
+              },
+              "end": {
+                "line": 25,
+                "column": 48
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ExpressionStatement",
+              "expression": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "Identifier",
+                  "name": "whilst",
+                  "range": [
+                    1043,
+                    1049
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 26,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 26,
+                      "column": 10
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "FunctionExpression",
+                    "id": null,
+                    "params": [],
+                    "body": {
+                      "type": "BlockStatement",
+                      "body": [
+                        {
+                          "type": "ReturnStatement",
+                          "argument": {
+                            "type": "UnaryExpression",
+                            "operator": "!",
+                            "argument": {
+                              "type": "CallExpression",
+                              "callee": {
+                                "type": "MemberExpression",
+                                "computed": false,
+                                "object": {
+                                  "type": "Identifier",
+                                  "name": "test",
+                                  "range": [
+                                    1079,
+                                    1083
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 27,
+                                      "column": 16
+                                    },
+                                    "end": {
+                                      "line": 27,
+                                      "column": 20
+                                    }
+                                  }
+                                },
+                                "property": {
+                                  "type": "Identifier",
+                                  "name": "apply",
+                                  "range": [
+                                    1084,
+                                    1089
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 27,
+                                      "column": 21
+                                    },
+                                    "end": {
+                                      "line": 27,
+                                      "column": 26
+                                    }
+                                  }
+                                },
+                                "range": [
+                                  1079,
+                                  1089
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 27,
+                                    "column": 16
+                                  },
+                                  "end": {
+                                    "line": 27,
+                                    "column": 26
+                                  }
+                                }
+                              },
+                              "arguments": [
+                                {
+                                  "type": "ThisExpression",
+                                  "range": [
+                                    1090,
+                                    1094
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 27,
+                                      "column": 27
+                                    },
+                                    "end": {
+                                      "line": 27,
+                                      "column": 31
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "Identifier",
+                                  "name": "arguments",
+                                  "range": [
+                                    1096,
+                                    1105
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 27,
+                                      "column": 33
+                                    },
+                                    "end": {
+                                      "line": 27,
+                                      "column": 42
+                                    }
+                                  }
+                                }
+                              ],
+                              "range": [
+                                1079,
+                                1106
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 27,
+                                  "column": 16
+                                },
+                                "end": {
+                                  "line": 27,
+                                  "column": 43
+                                }
+                              }
+                            },
+                            "prefix": true,
+                            "range": [
+                              1078,
+                              1106
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 27,
+                                "column": 15
+                              },
+                              "end": {
+                                "line": 27,
+                                "column": 43
+                              }
+                            }
+                          },
+                          "range": [
+                            1071,
+                            1107
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 27,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 27,
+                              "column": 44
+                            }
+                          }
+                        }
+                      ],
+                      "range": [
+                        1061,
+                        1113
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 26,
+                          "column": 22
+                        },
+                        "end": {
+                          "line": 28,
+                          "column": 5
+                        }
+                      }
+                    },
+                    "generator": false,
+                    "expression": false,
+                    "range": [
+                      1050,
+                      1113
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 26,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 28,
+                        "column": 5
+                      }
+                    }
+                  },
+                  {
+                    "type": "Identifier",
+                    "name": "fn",
+                    "range": [
+                      1115,
+                      1117
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 28,
+                        "column": 7
+                      },
+                      "end": {
+                        "line": 28,
+                        "column": 9
+                      }
+                    }
+                  },
+                  {
+                    "type": "Identifier",
+                    "name": "callback",
+                    "range": [
+                      1119,
+                      1127
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 28,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 28,
+                        "column": 19
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1043,
+                  1128
+                ],
+                "loc": {
+                  "start": {
+                    "line": 26,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 28,
+                    "column": 20
+                  }
+                }
+              },
+              "range": [
+                1043,
+                1129
+              ],
+              "loc": {
+                "start": {
+                  "line": 26,
+                  "column": 4
+                },
+                "end": {
+                  "line": 28,
+                  "column": 21
+                }
+              }
+            }
+          ],
+          "range": [
+            1037,
+            1131
+          ],
+          "loc": {
+            "start": {
+              "line": 25,
+              "column": 50
+            },
+            "end": {
+              "line": 29,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          1002,
+          1131
+        ],
+        "loc": {
+          "start": {
+            "line": 25,
+            "column": 15
+          },
+          "end": {
+            "line": 29,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Repeatedly call `fn` until `test` returns `true`. Calls `callback` when\n * stopped, or an error occurs. `callback` will be passed an error and any\n * arguments passed to the final `fn`'s callback.\n *\n * The inverse of {@link async.whilst}.\n *\n * @name until\n * @static\n * @memberOf async\n * @see async.whilst\n * @category Control Flow\n * @param {Function} test - synchronous truth test to perform before each\n * execution of `fn`. Invoked with ().\n * @param {Function} fn - A function which is called each time `test` fails.\n * The function is passed a `callback(err)`, which must be called once it has\n * completed with an optional `err` argument. Invoked with (callback).\n * @param {Function} [callback] - A callback which is called after the test\n * function has passed and repeated execution of `fn` has stopped. `callback`\n * will be passed an error and any arguments passed to the final `fn`'s\n * callback. Invoked with (err, [results]);\n ",
+            "range": [
+              32,
+              986
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 24,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        987,
+        1131
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 0
+        },
+        "end": {
+          "line": 29,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Repeatedly call `fn` until `test` returns `true`. Calls `callback` when\n * stopped, or an error occurs. `callback` will be passed an error and any\n * arguments passed to the final `fn`'s callback.\n *\n * The inverse of {@link async.whilst}.\n *\n * @name until\n * @static\n * @memberOf async\n * @see async.whilst\n * @category Control Flow\n * @param {Function} test - synchronous truth test to perform before each\n * execution of `fn`. Invoked with ().\n * @param {Function} fn - A function which is called each time `test` fails.\n * The function is passed a `callback(err)`, which must be called once it has\n * completed with an optional `err` argument. Invoked with (callback).\n * @param {Function} [callback] - A callback which is called after the test\n * function has passed and repeated execution of `fn` has stopped. `callback`\n * will be passed an error and any arguments passed to the final `fn`'s\n * callback. Invoked with (err, [results]);\n ",
+          "range": [
+            32,
+            986
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 24,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1131
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 29,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Repeatedly call `fn` until `test` returns `true`. Calls `callback` when\n * stopped, or an error occurs. `callback` will be passed an error and any\n * arguments passed to the final `fn`'s callback.\n *\n * The inverse of {@link async.whilst}.\n *\n * @name until\n * @static\n * @memberOf async\n * @see async.whilst\n * @category Control Flow\n * @param {Function} test - synchronous truth test to perform before each\n * execution of `fn`. Invoked with ().\n * @param {Function} fn - A function which is called each time `test` fails.\n * The function is passed a `callback(err)`, which must be called once it has\n * completed with an optional `err` argument. Invoked with (callback).\n * @param {Function} [callback] - A callback which is called after the test\n * function has passed and repeated execution of `fn` has stopped. `callback`\n * will be passed an error and any arguments passed to the final `fn`'s\n * callback. Invoked with (err, [results]);\n ",
+      "range": [
+        32,
+        986
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 24,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">lib/auto.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/caolan/async.git" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-asyncify">asyncify</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-auto">auto</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-autoInject">autoInject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cargo">cargo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-compose">compose</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doDuring">doDuring</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doUntil">doUntil</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doWhilst">doWhilst</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-during">during</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-eachLimit">eachLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-eachOfLimit">eachOfLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-ensureAsync">ensureAsync</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-forever">forever</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-iterator">iterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-mapValuesLimit">mapValuesLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-memoize">memoize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parallelLimit">parallelLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-priorityQueue">priorityQueue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-queue">queue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-race">race</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reduce">reduce</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reduceRight">reduceRight</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reflect">reflect</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reflectAll">reflectAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-retry">retry</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-retryable">retryable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-series">series</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sortBy">sortBy</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-timeout">timeout</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-timeLimit">timeLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-transform">transform</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-unmemoize">unmemoize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-until">until</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-waterfall">waterfall</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-whilst">whilst</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-CargoObject">CargoObject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-QueueObject">QueueObject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">internal</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-applyEach">applyEach</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-consoleFunc">consoleFunc</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doLimit">doLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doParallel">doParallel</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doParallelLimit">doParallelLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doSeries">doSeries</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getIterator">getIterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-initialParams">initialParams</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-iterator">iterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-notId">notId</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-once">once</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-onlyOnce">onlyOnce</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-queue">queue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reject">reject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-fallback">fallback</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-wrap">wrap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-hasNextTick">hasNextTick</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-hasSetImmediate">hasSetImmediate</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">lib/auto.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import arrayEach from &apos;lodash/_arrayEach&apos;;
+import forOwn from &apos;lodash/forOwn&apos;;
+import indexOf from &apos;lodash/_baseIndexOf&apos;;
+import isArray from &apos;lodash/isArray&apos;;
+import okeys from &apos;lodash/keys&apos;;
+import noop from &apos;lodash/noop&apos;;
+import once from &apos;./internal/once&apos;;
+import rest from &apos;lodash/rest&apos;;
+
+import onlyOnce from &apos;./internal/onlyOnce&apos;;
+
+/**
+ * Determines the best order for running the functions in `tasks`, based on
+ * their requirements. Each function can optionally depend on other functions
+ * being completed first, and each function is run as soon as its requirements
+ * are satisfied.
+ *
+ * If any of the functions pass an error to their callback, the `auto` sequence
+ * will stop. Further tasks will not execute (so any other functions depending
+ * on it will not run), and the main `callback` is immediately called with the
+ * error.
+ *
+ * Functions also receive an object containing the results of functions which
+ * have completed so far as the first argument, if they have dependencies. If a
+ * task function has no dependencies, it will only be passed a callback.
+ *
+ * @name auto
+ * @static
+ * @memberOf async
+ * @category Control Flow
+ * @param {Object} tasks - An object. Each of its properties is either a
+ * function or an array of requirements, with the function itself the last item
+ * in the array. The object&apos;s key of a property serves as the name of the task
+ * defined by that property, i.e. can be used when specifying requirements for
+ * other tasks. The function receives one or two arguments:
+ * * a `results` object, containing the results of the previously executed
+ *   functions, only passed if the task has any dependencies,
+ * * a `callback(err, result)` function, which must be called when finished,
+ *   passing an `error` (which can be `null`) and the result of the function&apos;s
+ *   execution.
+ * @param {number} [concurrency=Infinity] - An optional `integer` for
+ * determining the maximum number of tasks that can be run in parallel. By
+ * default, as many as possible.
+ * @param {Function} [callback] - An optional callback which is called when all
+ * the tasks have been completed. It receives the `err` argument if any `tasks`
+ * pass an error to their callback. Results are always returned; however, if an
+ * error occurs, no further `tasks` will be performed, and the results object
+ * will only contain partial results. Invoked with (err, results).
+ * @returns undefined
+ * @example
+ *
+ * async.auto({
+ *     // this function will just be passed a callback
+ *     readData: async.apply(fs.readFile, &apos;data.txt&apos;, &apos;utf-8&apos;),
+ *     showData: [&apos;readData&apos;, function(results, cb) {
+ *         // results.readData is the file&apos;s contents
+ *         // ...
+ *     }]
+ * }, callback);
+ *
+ * async.auto({
+ *     get_data: function(callback) {
+ *         console.log(&apos;in get_data&apos;);
+ *         // async code to get some data
+ *         callback(null, &apos;data&apos;, &apos;converted to array&apos;);
+ *     },
+ *     make_folder: function(callback) {
+ *         console.log(&apos;in make_folder&apos;);
+ *         // async code to create a directory to store a file in
+ *         // this is run at the same time as getting the data
+ *         callback(null, &apos;folder&apos;);
+ *     },
+ *     write_file: [&apos;get_data&apos;, &apos;make_folder&apos;, function(results, callback) {
+ *         console.log(&apos;in write_file&apos;, JSON.stringify(results));
+ *         // once there is some data and the directory exists,
+ *         // write the data to a file in the directory
+ *         callback(null, &apos;filename&apos;);
+ *     }],
+ *     email_link: [&apos;write_file&apos;, function(results, callback) {
+ *         console.log(&apos;in email_link&apos;, JSON.stringify(results));
+ *         // once the file is written let&apos;s email a link to it...
+ *         // results.write_file contains the filename returned by write_file.
+ *         callback(null, {&apos;file&apos;:results.write_file, &apos;email&apos;:&apos;user@example.com&apos;});
+ *     }]
+ * }, function(err, results) {
+ *     console.log(&apos;err = &apos;, err);
+ *     console.log(&apos;results = &apos;, results);
+ * });
+ */
+export default function (tasks, concurrency, callback) {
+    if (typeof concurrency === &apos;function&apos;) {
+        // concurrency is optional, shift the args.
+        callback = concurrency;
+        concurrency = null;
+    }
+    callback = once(callback || noop);
+    var keys = okeys(tasks);
+    var numTasks = keys.length;
+    if (!numTasks) {
+        return callback(null);
+    }
+    if (!concurrency) {
+        concurrency = numTasks;
+    }
+
+    var results = {};
+    var runningTasks = 0;
+    var hasError = false;
+
+    var listeners = {};
+
+    var readyTasks = [];
+
+    // for cycle detection:
+    var readyToCheck = []; // tasks that have been identified as reachable
+    // without the possibility of returning to an ancestor task
+    var uncheckedDependencies = {};
+
+    forOwn(tasks, function (task, key) {
+        if (!isArray(task)) {
+            // no dependencies
+            enqueueTask(key, [task]);
+            readyToCheck.push(key);
+            return;
+        }
+
+        var dependencies = task.slice(0, task.length - 1);
+        var remainingDependencies = dependencies.length;
+        if (remainingDependencies === 0) {
+            enqueueTask(key, task);
+            readyToCheck.push(key);
+            return;
+        }
+        uncheckedDependencies[key] = remainingDependencies;
+
+        arrayEach(dependencies, function (dependencyName) {
+            if (!tasks[dependencyName]) {
+                throw new Error(&apos;async.auto task `&apos; + key +
+                    &apos;` has a non-existent dependency in &apos; +
+                    dependencies.join(&apos;, &apos;));
+            }
+            addListener(dependencyName, function () {
+                remainingDependencies--;
+                if (remainingDependencies === 0) {
+                    enqueueTask(key, task);
+                }
+            });
+        });
+    });
+
+    checkForDeadlocks();
+    processQueue();
+
+    function enqueueTask(key, task) {
+        readyTasks.push(function () {
+            runTask(key, task);
+        });
+    }
+
+    function processQueue() {
+        if (readyTasks.length === 0 &amp;&amp; runningTasks === 0) {
+            return callback(null, results);
+        }
+        while(readyTasks.length &amp;&amp; runningTasks &lt; concurrency) {
+            var run = readyTasks.shift();
+            run();
+        }
+
+    }
+
+    function addListener(taskName, fn) {
+        var taskListeners = listeners[taskName];
+        if (!taskListeners) {
+            taskListeners = listeners[taskName] = [];
+        }
+
+        taskListeners.push(fn);
+    }
+
+    function taskComplete(taskName) {
+        var taskListeners = listeners[taskName] || [];
+        arrayEach(taskListeners, function (fn) {
+            fn();
+        });
+        processQueue();
+    }
+
+
+    function runTask(key, task) {
+        if (hasError) return;
+
+        var taskCallback = onlyOnce(rest(function(err, args) {
+            runningTasks--;
+            if (args.length &lt;= 1) {
+                args = args[0];
+            }
+            if (err) {
+                var safeResults = {};
+                forOwn(results, function(val, rkey) {
+                    safeResults[rkey] = val;
+                });
+                safeResults[key] = args;
+                hasError = true;
+                listeners = [];
+
+                callback(err, safeResults);
+            } else {
+                results[key] = args;
+                taskComplete(key);
+            }
+        }));
+
+        runningTasks++;
+        var taskFn = task[task.length - 1];
+        if (task.length &gt; 1) {
+            taskFn(results, taskCallback);
+        } else {
+            taskFn(taskCallback);
+        }
+    }
+
+    function checkForDeadlocks() {
+        // Kahn&apos;s algorithm
+        // https://en.wikipedia.org/wiki/Topological_sorting#Kahn.27s_algorithm
+        // http://connalle.blogspot.com/2013/10/topological-sortingkahn-algorithm.html
+        var currentTask;
+        var counter = 0;
+        while (readyToCheck.length) {
+            currentTask = readyToCheck.pop();
+            counter++;
+            arrayEach(getDependents(currentTask), function (dependent) {
+                if (!(--uncheckedDependencies[dependent])) {
+                    readyToCheck.push(dependent);
+                }
+            });
+        }
+
+        if (counter !== numTasks) {
+            throw new Error(
+                &apos;async.auto cannot execute tasks due to a recursive dependency&apos;
+            );
+        }
+    }
+
+    function getDependents(taskName) {
+        var result = [];
+        forOwn(tasks, function (task, key) {
+            if (isArray(task) &amp;&amp; indexOf(task, taskName, 0) &gt;= 0) {
+                result.push(key);
+            }
+        });
+        return result;
+    }
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

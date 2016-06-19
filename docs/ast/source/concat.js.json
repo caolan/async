@@ -1,0 +1,319 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "concat",
+            "range": [
+              7,
+              13
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 13
+              }
+            }
+          },
+          "range": [
+            7,
+            13
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 13
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/concat",
+        "raw": "'./internal/concat'",
+        "range": [
+          19,
+          38
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 19
+          },
+          "end": {
+            "line": 1,
+            "column": 38
+          }
+        }
+      },
+      "range": [
+        0,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "doParallel",
+            "range": [
+              47,
+              57
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 17
+              }
+            }
+          },
+          "range": [
+            47,
+            57
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 17
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/doParallel",
+        "raw": "'./internal/doParallel'",
+        "range": [
+          63,
+          86
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 23
+          },
+          "end": {
+            "line": 2,
+            "column": 46
+          }
+        }
+      },
+      "range": [
+        40,
+        87
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 47
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Applies `iteratee` to each item in `coll`, concatenating the results. Returns\n * the concatenated list. The `iteratee`s are called in parallel, and the\n * results are concatenated as they return. There is no guarantee that the\n * results array will be returned in the original order of `coll` passed to the\n * `iteratee` function.\n *\n * @name concat\n * @static\n * @memberOf async\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each item in `coll`.\n * The iteratee is passed a `callback(err, results)` which must be called once\n * it has completed with an error (which can be `null`) and an array of results.\n * Invoked with (item, callback).\n * @param {Function} [callback(err)] - A callback which is called after all the\n * `iteratee` functions have finished, or an error occurs. Results is an array\n * containing the concatenated results of the `iteratee` function. Invoked with\n * (err, results).\n * @example\n *\n * async.concat(['dir1','dir2','dir3'], fs.readdir, function(err, files) {\n *     // files is now a list of filenames that exist in the 3 directories\n * });\n ",
+          "range": [
+            89,
+            1265
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 29,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "Identifier",
+          "name": "doParallel",
+          "range": [
+            1281,
+            1291
+          ],
+          "loc": {
+            "start": {
+              "line": 30,
+              "column": 15
+            },
+            "end": {
+              "line": 30,
+              "column": 25
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Identifier",
+            "name": "concat",
+            "range": [
+              1292,
+              1298
+            ],
+            "loc": {
+              "start": {
+                "line": 30,
+                "column": 26
+              },
+              "end": {
+                "line": 30,
+                "column": 32
+              }
+            }
+          }
+        ],
+        "range": [
+          1281,
+          1299
+        ],
+        "loc": {
+          "start": {
+            "line": 30,
+            "column": 15
+          },
+          "end": {
+            "line": 30,
+            "column": 33
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Applies `iteratee` to each item in `coll`, concatenating the results. Returns\n * the concatenated list. The `iteratee`s are called in parallel, and the\n * results are concatenated as they return. There is no guarantee that the\n * results array will be returned in the original order of `coll` passed to the\n * `iteratee` function.\n *\n * @name concat\n * @static\n * @memberOf async\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each item in `coll`.\n * The iteratee is passed a `callback(err, results)` which must be called once\n * it has completed with an error (which can be `null`) and an array of results.\n * Invoked with (item, callback).\n * @param {Function} [callback(err)] - A callback which is called after all the\n * `iteratee` functions have finished, or an error occurs. Results is an array\n * containing the concatenated results of the `iteratee` function. Invoked with\n * (err, results).\n * @example\n *\n * async.concat(['dir1','dir2','dir3'], fs.readdir, function(err, files) {\n *     // files is now a list of filenames that exist in the 3 directories\n * });\n ",
+            "range": [
+              89,
+              1265
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 29,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        1266,
+        1300
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 0
+        },
+        "end": {
+          "line": 30,
+          "column": 34
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Applies `iteratee` to each item in `coll`, concatenating the results. Returns\n * the concatenated list. The `iteratee`s are called in parallel, and the\n * results are concatenated as they return. There is no guarantee that the\n * results array will be returned in the original order of `coll` passed to the\n * `iteratee` function.\n *\n * @name concat\n * @static\n * @memberOf async\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each item in `coll`.\n * The iteratee is passed a `callback(err, results)` which must be called once\n * it has completed with an error (which can be `null`) and an array of results.\n * Invoked with (item, callback).\n * @param {Function} [callback(err)] - A callback which is called after all the\n * `iteratee` functions have finished, or an error occurs. Results is an array\n * containing the concatenated results of the `iteratee` function. Invoked with\n * (err, results).\n * @example\n *\n * async.concat(['dir1','dir2','dir3'], fs.readdir, function(err, files) {\n *     // files is now a list of filenames that exist in the 3 directories\n * });\n ",
+          "range": [
+            89,
+            1265
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 29,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1300
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 30,
+      "column": 34
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Applies `iteratee` to each item in `coll`, concatenating the results. Returns\n * the concatenated list. The `iteratee`s are called in parallel, and the\n * results are concatenated as they return. There is no guarantee that the\n * results array will be returned in the original order of `coll` passed to the\n * `iteratee` function.\n *\n * @name concat\n * @static\n * @memberOf async\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each item in `coll`.\n * The iteratee is passed a `callback(err, results)` which must be called once\n * it has completed with an error (which can be `null`) and an array of results.\n * Invoked with (item, callback).\n * @param {Function} [callback(err)] - A callback which is called after all the\n * `iteratee` functions have finished, or an error occurs. Results is an array\n * containing the concatenated results of the `iteratee` function. Invoked with\n * (err, results).\n * @example\n *\n * async.concat(['dir1','dir2','dir3'], fs.readdir, function(err, files) {\n *     // files is now a list of filenames that exist in the 3 directories\n * });\n ",
+      "range": [
+        89,
+        1265
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 29,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

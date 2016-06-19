@@ -1,0 +1,337 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "eachLimit",
+            "range": [
+              7,
+              16
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 16
+              }
+            }
+          },
+          "range": [
+            7,
+            16
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 16
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./eachLimit",
+        "raw": "'./eachLimit'",
+        "range": [
+          22,
+          35
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 22
+          },
+          "end": {
+            "line": 1,
+            "column": 35
+          }
+        }
+      },
+      "range": [
+        0,
+        36
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "doLimit",
+            "range": [
+              44,
+              51
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 14
+              }
+            }
+          },
+          "range": [
+            44,
+            51
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 14
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/doLimit",
+        "raw": "'./internal/doLimit'",
+        "range": [
+          57,
+          77
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 20
+          },
+          "end": {
+            "line": 2,
+            "column": 40
+          }
+        }
+      },
+      "range": [
+        37,
+        78
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 41
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Applies the function `iteratee` to each item in `coll`, in parallel.\n * The `iteratee` is called with an item from the list, and a callback for when\n * it has finished. If the `iteratee` passes an error to its `callback`, the\n * main `callback` (for the `each` function) is immediately called with the\n * error.\n *\n * Note, that since this function applies `iteratee` to each item in parallel,\n * there is no guarantee that the iteratee functions will complete in order.\n *\n * @name each\n * @static\n * @memberOf async\n * @alias forEach\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each item\n * in `coll`. The iteratee is passed a `callback(err)` which must be called once\n * it has completed. If no error has occurred, the `callback` should be run\n * without arguments or with an explicit `null` argument. The array index is not\n * passed to the iteratee. Invoked with (item, callback). If you need the index,\n * use `eachOf`.\n * @param {Function} [callback] - A callback which is called when all\n * `iteratee` functions have finished, or an error occurs. Invoked with (err).\n * @example\n *\n * // assuming openFiles is an array of file names and saveFile is a function\n * // to save the modified contents of that file:\n *\n * async.each(openFiles, saveFile, function(err){\n *   // if any of the saves produced an error, err would equal that error\n * });\n *\n * // assuming openFiles is an array of file names\n * async.each(openFiles, function(file, callback) {\n *\n *     // Perform operation on file here.\n *     console.log('Processing file ' + file);\n *\n *     if( file.length > 32 ) {\n *       console.log('This file name is too long');\n *       callback('File name too long');\n *     } else {\n *       // Do work to process file here\n *       console.log('File processed');\n *       callback();\n *     }\n * }, function(err) {\n *     // if any of the file processing produced an error, err would equal that error\n *     if( err ) {\n *       // One of the iterations produced an error.\n *       // All processing will now stop.\n *       console.log('A file failed to process');\n *     } else {\n *       console.log('All files have been processed successfully');\n *     }\n * });\n ",
+          "range": [
+            80,
+            2364
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 61,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "Identifier",
+          "name": "doLimit",
+          "range": [
+            2380,
+            2387
+          ],
+          "loc": {
+            "start": {
+              "line": 62,
+              "column": 15
+            },
+            "end": {
+              "line": 62,
+              "column": 22
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Identifier",
+            "name": "eachLimit",
+            "range": [
+              2388,
+              2397
+            ],
+            "loc": {
+              "start": {
+                "line": 62,
+                "column": 23
+              },
+              "end": {
+                "line": 62,
+                "column": 32
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "Infinity",
+            "range": [
+              2399,
+              2407
+            ],
+            "loc": {
+              "start": {
+                "line": 62,
+                "column": 34
+              },
+              "end": {
+                "line": 62,
+                "column": 42
+              }
+            }
+          }
+        ],
+        "range": [
+          2380,
+          2408
+        ],
+        "loc": {
+          "start": {
+            "line": 62,
+            "column": 15
+          },
+          "end": {
+            "line": 62,
+            "column": 43
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Applies the function `iteratee` to each item in `coll`, in parallel.\n * The `iteratee` is called with an item from the list, and a callback for when\n * it has finished. If the `iteratee` passes an error to its `callback`, the\n * main `callback` (for the `each` function) is immediately called with the\n * error.\n *\n * Note, that since this function applies `iteratee` to each item in parallel,\n * there is no guarantee that the iteratee functions will complete in order.\n *\n * @name each\n * @static\n * @memberOf async\n * @alias forEach\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each item\n * in `coll`. The iteratee is passed a `callback(err)` which must be called once\n * it has completed. If no error has occurred, the `callback` should be run\n * without arguments or with an explicit `null` argument. The array index is not\n * passed to the iteratee. Invoked with (item, callback). If you need the index,\n * use `eachOf`.\n * @param {Function} [callback] - A callback which is called when all\n * `iteratee` functions have finished, or an error occurs. Invoked with (err).\n * @example\n *\n * // assuming openFiles is an array of file names and saveFile is a function\n * // to save the modified contents of that file:\n *\n * async.each(openFiles, saveFile, function(err){\n *   // if any of the saves produced an error, err would equal that error\n * });\n *\n * // assuming openFiles is an array of file names\n * async.each(openFiles, function(file, callback) {\n *\n *     // Perform operation on file here.\n *     console.log('Processing file ' + file);\n *\n *     if( file.length > 32 ) {\n *       console.log('This file name is too long');\n *       callback('File name too long');\n *     } else {\n *       // Do work to process file here\n *       console.log('File processed');\n *       callback();\n *     }\n * }, function(err) {\n *     // if any of the file processing produced an error, err would equal that error\n *     if( err ) {\n *       // One of the iterations produced an error.\n *       // All processing will now stop.\n *       console.log('A file failed to process');\n *     } else {\n *       console.log('All files have been processed successfully');\n *     }\n * });\n ",
+            "range": [
+              80,
+              2364
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 61,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        2365,
+        2409
+      ],
+      "loc": {
+        "start": {
+          "line": 62,
+          "column": 0
+        },
+        "end": {
+          "line": 62,
+          "column": 44
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Applies the function `iteratee` to each item in `coll`, in parallel.\n * The `iteratee` is called with an item from the list, and a callback for when\n * it has finished. If the `iteratee` passes an error to its `callback`, the\n * main `callback` (for the `each` function) is immediately called with the\n * error.\n *\n * Note, that since this function applies `iteratee` to each item in parallel,\n * there is no guarantee that the iteratee functions will complete in order.\n *\n * @name each\n * @static\n * @memberOf async\n * @alias forEach\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each item\n * in `coll`. The iteratee is passed a `callback(err)` which must be called once\n * it has completed. If no error has occurred, the `callback` should be run\n * without arguments or with an explicit `null` argument. The array index is not\n * passed to the iteratee. Invoked with (item, callback). If you need the index,\n * use `eachOf`.\n * @param {Function} [callback] - A callback which is called when all\n * `iteratee` functions have finished, or an error occurs. Invoked with (err).\n * @example\n *\n * // assuming openFiles is an array of file names and saveFile is a function\n * // to save the modified contents of that file:\n *\n * async.each(openFiles, saveFile, function(err){\n *   // if any of the saves produced an error, err would equal that error\n * });\n *\n * // assuming openFiles is an array of file names\n * async.each(openFiles, function(file, callback) {\n *\n *     // Perform operation on file here.\n *     console.log('Processing file ' + file);\n *\n *     if( file.length > 32 ) {\n *       console.log('This file name is too long');\n *       callback('File name too long');\n *     } else {\n *       // Do work to process file here\n *       console.log('File processed');\n *       callback();\n *     }\n * }, function(err) {\n *     // if any of the file processing produced an error, err would equal that error\n *     if( err ) {\n *       // One of the iterations produced an error.\n *       // All processing will now stop.\n *       console.log('A file failed to process');\n *     } else {\n *       console.log('All files have been processed successfully');\n *     }\n * });\n ",
+          "range": [
+            80,
+            2364
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 61,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    2409
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 62,
+      "column": 44
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Applies the function `iteratee` to each item in `coll`, in parallel.\n * The `iteratee` is called with an item from the list, and a callback for when\n * it has finished. If the `iteratee` passes an error to its `callback`, the\n * main `callback` (for the `each` function) is immediately called with the\n * error.\n *\n * Note, that since this function applies `iteratee` to each item in parallel,\n * there is no guarantee that the iteratee functions will complete in order.\n *\n * @name each\n * @static\n * @memberOf async\n * @alias forEach\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each item\n * in `coll`. The iteratee is passed a `callback(err)` which must be called once\n * it has completed. If no error has occurred, the `callback` should be run\n * without arguments or with an explicit `null` argument. The array index is not\n * passed to the iteratee. Invoked with (item, callback). If you need the index,\n * use `eachOf`.\n * @param {Function} [callback] - A callback which is called when all\n * `iteratee` functions have finished, or an error occurs. Invoked with (err).\n * @example\n *\n * // assuming openFiles is an array of file names and saveFile is a function\n * // to save the modified contents of that file:\n *\n * async.each(openFiles, saveFile, function(err){\n *   // if any of the saves produced an error, err would equal that error\n * });\n *\n * // assuming openFiles is an array of file names\n * async.each(openFiles, function(file, callback) {\n *\n *     // Perform operation on file here.\n *     console.log('Processing file ' + file);\n *\n *     if( file.length > 32 ) {\n *       console.log('This file name is too long');\n *       callback('File name too long');\n *     } else {\n *       // Do work to process file here\n *       console.log('File processed');\n *       callback();\n *     }\n * }, function(err) {\n *     // if any of the file processing produced an error, err would equal that error\n *     if( err ) {\n *       // One of the iterations produced an error.\n *       // All processing will now stop.\n *       console.log('A file failed to process');\n *     } else {\n *       console.log('All files have been processed successfully');\n *     }\n * });\n ",
+      "range": [
+        80,
+        2364
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 61,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

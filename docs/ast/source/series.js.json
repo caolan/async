@@ -1,0 +1,466 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "parallel",
+            "range": [
+              7,
+              15
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 15
+              }
+            }
+          },
+          "range": [
+            7,
+            15
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 15
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/parallel",
+        "raw": "'./internal/parallel'",
+        "range": [
+          21,
+          42
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 21
+          },
+          "end": {
+            "line": 1,
+            "column": 42
+          }
+        }
+      },
+      "range": [
+        0,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "eachOfSeries",
+            "range": [
+              51,
+              63
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 19
+              }
+            }
+          },
+          "range": [
+            51,
+            63
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 19
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./eachOfSeries",
+        "raw": "'./eachOfSeries'",
+        "range": [
+          69,
+          85
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 25
+          },
+          "end": {
+            "line": 2,
+            "column": 41
+          }
+        }
+      },
+      "range": [
+        44,
+        86
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 42
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Run the functions in the `tasks` collection in series, each one running once\n * the previous function has completed. If any functions in the series pass an\n * error to its callback, no more functions are run, and `callback` is\n * immediately called with the value of the error. Otherwise, `callback`\n * receives an array of results when `tasks` have completed.\n *\n * It is also possible to use an object instead of an array. Each property will\n * be run as a function, and the results will be passed to the final `callback`\n * as an object instead of an array. This can be a more readable way of handling\n *  results from {@link async.series}.\n *\n * **Note** that while many implementations preserve the order of object\n * properties, the [ECMAScript Language Specification](http://www.ecma-international.org/ecma-262/5.1/#sec-8.6)\n * explicitly states that\n *\n * > The mechanics and order of enumerating the properties is not specified.\n *\n * So if you rely on the order in which your series of functions are executed,\n * and want this to work on all platforms, consider using an array.\n *\n * @name series\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {Array|Object} tasks - A collection containing functions to run, each\n * function is passed a `callback(err, result)` it must call on completion with\n * an error `err` (which can be `null`) and an optional `result` value.\n * @param {Function} [callback] - An optional callback to run once all the\n * functions have completed. This function gets a results array (or object)\n * containing all the result arguments passed to the `task` callbacks. Invoked\n * with (err, result).\n * @example\n * async.series([\n *     function(callback) {\n *         // do some stuff ...\n *         callback(null, 'one');\n *     },\n *     function(callback) {\n *         // do some more stuff ...\n *         callback(null, 'two');\n *     }\n * ],\n * // optional callback\n * function(err, results) {\n *     // results is now equal to ['one', 'two']\n * });\n *\n * async.series({\n *     one: function(callback) {\n *         setTimeout(function() {\n *             callback(null, 1);\n *         }, 200);\n *     },\n *     two: function(callback){\n *         setTimeout(function() {\n *             callback(null, 2);\n *         }, 100);\n *     }\n * }, function(err, results) {\n *     // results is now equal to: {one: 1, two: 2}\n * });\n ",
+          "range": [
+            88,
+            2475
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 66,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "series",
+          "range": [
+            2500,
+            2506
+          ],
+          "loc": {
+            "start": {
+              "line": 67,
+              "column": 24
+            },
+            "end": {
+              "line": 67,
+              "column": 30
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "tasks",
+            "range": [
+              2507,
+              2512
+            ],
+            "loc": {
+              "start": {
+                "line": 67,
+                "column": 31
+              },
+              "end": {
+                "line": 67,
+                "column": 36
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "callback",
+            "range": [
+              2514,
+              2522
+            ],
+            "loc": {
+              "start": {
+                "line": 67,
+                "column": 38
+              },
+              "end": {
+                "line": 67,
+                "column": 46
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ExpressionStatement",
+              "expression": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "Identifier",
+                  "name": "parallel",
+                  "range": [
+                    2530,
+                    2538
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 68,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 68,
+                      "column": 12
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "Identifier",
+                    "name": "eachOfSeries",
+                    "range": [
+                      2539,
+                      2551
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 68,
+                        "column": 13
+                      },
+                      "end": {
+                        "line": 68,
+                        "column": 25
+                      }
+                    }
+                  },
+                  {
+                    "type": "Identifier",
+                    "name": "tasks",
+                    "range": [
+                      2553,
+                      2558
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 68,
+                        "column": 27
+                      },
+                      "end": {
+                        "line": 68,
+                        "column": 32
+                      }
+                    }
+                  },
+                  {
+                    "type": "Identifier",
+                    "name": "callback",
+                    "range": [
+                      2560,
+                      2568
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 68,
+                        "column": 34
+                      },
+                      "end": {
+                        "line": 68,
+                        "column": 42
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  2530,
+                  2569
+                ],
+                "loc": {
+                  "start": {
+                    "line": 68,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 68,
+                    "column": 43
+                  }
+                }
+              },
+              "range": [
+                2530,
+                2570
+              ],
+              "loc": {
+                "start": {
+                  "line": 68,
+                  "column": 4
+                },
+                "end": {
+                  "line": 68,
+                  "column": 44
+                }
+              }
+            }
+          ],
+          "range": [
+            2524,
+            2572
+          ],
+          "loc": {
+            "start": {
+              "line": 67,
+              "column": 48
+            },
+            "end": {
+              "line": 69,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          2491,
+          2572
+        ],
+        "loc": {
+          "start": {
+            "line": 67,
+            "column": 15
+          },
+          "end": {
+            "line": 69,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Run the functions in the `tasks` collection in series, each one running once\n * the previous function has completed. If any functions in the series pass an\n * error to its callback, no more functions are run, and `callback` is\n * immediately called with the value of the error. Otherwise, `callback`\n * receives an array of results when `tasks` have completed.\n *\n * It is also possible to use an object instead of an array. Each property will\n * be run as a function, and the results will be passed to the final `callback`\n * as an object instead of an array. This can be a more readable way of handling\n *  results from {@link async.series}.\n *\n * **Note** that while many implementations preserve the order of object\n * properties, the [ECMAScript Language Specification](http://www.ecma-international.org/ecma-262/5.1/#sec-8.6)\n * explicitly states that\n *\n * > The mechanics and order of enumerating the properties is not specified.\n *\n * So if you rely on the order in which your series of functions are executed,\n * and want this to work on all platforms, consider using an array.\n *\n * @name series\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {Array|Object} tasks - A collection containing functions to run, each\n * function is passed a `callback(err, result)` it must call on completion with\n * an error `err` (which can be `null`) and an optional `result` value.\n * @param {Function} [callback] - An optional callback to run once all the\n * functions have completed. This function gets a results array (or object)\n * containing all the result arguments passed to the `task` callbacks. Invoked\n * with (err, result).\n * @example\n * async.series([\n *     function(callback) {\n *         // do some stuff ...\n *         callback(null, 'one');\n *     },\n *     function(callback) {\n *         // do some more stuff ...\n *         callback(null, 'two');\n *     }\n * ],\n * // optional callback\n * function(err, results) {\n *     // results is now equal to ['one', 'two']\n * });\n *\n * async.series({\n *     one: function(callback) {\n *         setTimeout(function() {\n *             callback(null, 1);\n *         }, 200);\n *     },\n *     two: function(callback){\n *         setTimeout(function() {\n *             callback(null, 2);\n *         }, 100);\n *     }\n * }, function(err, results) {\n *     // results is now equal to: {one: 1, two: 2}\n * });\n ",
+            "range": [
+              88,
+              2475
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 66,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        2476,
+        2572
+      ],
+      "loc": {
+        "start": {
+          "line": 67,
+          "column": 0
+        },
+        "end": {
+          "line": 69,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Run the functions in the `tasks` collection in series, each one running once\n * the previous function has completed. If any functions in the series pass an\n * error to its callback, no more functions are run, and `callback` is\n * immediately called with the value of the error. Otherwise, `callback`\n * receives an array of results when `tasks` have completed.\n *\n * It is also possible to use an object instead of an array. Each property will\n * be run as a function, and the results will be passed to the final `callback`\n * as an object instead of an array. This can be a more readable way of handling\n *  results from {@link async.series}.\n *\n * **Note** that while many implementations preserve the order of object\n * properties, the [ECMAScript Language Specification](http://www.ecma-international.org/ecma-262/5.1/#sec-8.6)\n * explicitly states that\n *\n * > The mechanics and order of enumerating the properties is not specified.\n *\n * So if you rely on the order in which your series of functions are executed,\n * and want this to work on all platforms, consider using an array.\n *\n * @name series\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {Array|Object} tasks - A collection containing functions to run, each\n * function is passed a `callback(err, result)` it must call on completion with\n * an error `err` (which can be `null`) and an optional `result` value.\n * @param {Function} [callback] - An optional callback to run once all the\n * functions have completed. This function gets a results array (or object)\n * containing all the result arguments passed to the `task` callbacks. Invoked\n * with (err, result).\n * @example\n * async.series([\n *     function(callback) {\n *         // do some stuff ...\n *         callback(null, 'one');\n *     },\n *     function(callback) {\n *         // do some more stuff ...\n *         callback(null, 'two');\n *     }\n * ],\n * // optional callback\n * function(err, results) {\n *     // results is now equal to ['one', 'two']\n * });\n *\n * async.series({\n *     one: function(callback) {\n *         setTimeout(function() {\n *             callback(null, 1);\n *         }, 200);\n *     },\n *     two: function(callback){\n *         setTimeout(function() {\n *             callback(null, 2);\n *         }, 100);\n *     }\n * }, function(err, results) {\n *     // results is now equal to: {one: 1, two: 2}\n * });\n ",
+          "range": [
+            88,
+            2475
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 66,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    2572
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 69,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Run the functions in the `tasks` collection in series, each one running once\n * the previous function has completed. If any functions in the series pass an\n * error to its callback, no more functions are run, and `callback` is\n * immediately called with the value of the error. Otherwise, `callback`\n * receives an array of results when `tasks` have completed.\n *\n * It is also possible to use an object instead of an array. Each property will\n * be run as a function, and the results will be passed to the final `callback`\n * as an object instead of an array. This can be a more readable way of handling\n *  results from {@link async.series}.\n *\n * **Note** that while many implementations preserve the order of object\n * properties, the [ECMAScript Language Specification](http://www.ecma-international.org/ecma-262/5.1/#sec-8.6)\n * explicitly states that\n *\n * > The mechanics and order of enumerating the properties is not specified.\n *\n * So if you rely on the order in which your series of functions are executed,\n * and want this to work on all platforms, consider using an array.\n *\n * @name series\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {Array|Object} tasks - A collection containing functions to run, each\n * function is passed a `callback(err, result)` it must call on completion with\n * an error `err` (which can be `null`) and an optional `result` value.\n * @param {Function} [callback] - An optional callback to run once all the\n * functions have completed. This function gets a results array (or object)\n * containing all the result arguments passed to the `task` callbacks. Invoked\n * with (err, result).\n * @example\n * async.series([\n *     function(callback) {\n *         // do some stuff ...\n *         callback(null, 'one');\n *     },\n *     function(callback) {\n *         // do some more stuff ...\n *         callback(null, 'two');\n *     }\n * ],\n * // optional callback\n * function(err, results) {\n *     // results is now equal to ['one', 'two']\n * });\n *\n * async.series({\n *     one: function(callback) {\n *         setTimeout(function() {\n *             callback(null, 1);\n *         }, 200);\n *     },\n *     two: function(callback){\n *         setTimeout(function() {\n *             callback(null, 2);\n *         }, 100);\n *     }\n * }, function(err, results) {\n *     // results is now equal to: {one: 1, two: 2}\n * });\n ",
+      "range": [
+        88,
+        2475
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 66,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,337 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "parallelLimit",
+            "range": [
+              7,
+              20
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 20
+              }
+            }
+          },
+          "range": [
+            7,
+            20
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 20
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./parallelLimit",
+        "raw": "'./parallelLimit'",
+        "range": [
+          26,
+          43
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 26
+          },
+          "end": {
+            "line": 1,
+            "column": 43
+          }
+        }
+      },
+      "range": [
+        0,
+        44
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "doLimit",
+            "range": [
+              52,
+              59
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 14
+              }
+            }
+          },
+          "range": [
+            52,
+            59
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 14
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/doLimit",
+        "raw": "'./internal/doLimit'",
+        "range": [
+          65,
+          85
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 20
+          },
+          "end": {
+            "line": 2,
+            "column": 40
+          }
+        }
+      },
+      "range": [
+        45,
+        86
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 41
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Run the `tasks` collection of functions in parallel, without waiting until\n * the previous function has completed. If any of the functions pass an error to\n * its callback, the main `callback` is immediately called with the value of the\n * error. Once the `tasks` have completed, the results are passed to the final\n * `callback` as an array.\n *\n * **Note:** `parallel` is about kicking-off I/O tasks in parallel, not about\n * parallel execution of code.  If your tasks do not use any timers or perform\n * any I/O, they will actually be executed in series.  Any synchronous setup\n * sections for each task will happen one after the other.  JavaScript remains\n * single-threaded.\n *\n * It is also possible to use an object instead of an array. Each property will\n * be run as a function and the results will be passed to the final `callback`\n * as an object instead of an array. This can be a more readable way of handling\n * results from {@link async.parallel}.\n *\n * @name parallel\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {Array|Object} tasks - A collection containing functions to run.\n * Each function is passed a `callback(err, result)` which it must call on\n * completion with an error `err` (which can be `null`) and an optional `result`\n * value.\n * @param {Function} [callback] - An optional callback to run once all the\n * functions have completed successfully. This function gets a results array\n * (or object) containing all the result arguments passed to the task callbacks.\n * Invoked with (err, results).\n * @example\n * async.parallel([\n *     function(callback) {\n *         setTimeout(function() {\n *             callback(null, 'one');\n *         }, 200);\n *     },\n *     function(callback) {\n *         setTimeout(function() {\n *             callback(null, 'two');\n *         }, 100);\n *     }\n * ],\n * // optional callback\n * function(err, results) {\n *     // the results array will equal ['one','two'] even though\n *     // the second function had a shorter timeout.\n * });\n *\n * // an example using an object instead of an array\n * async.parallel({\n *     one: function(callback) {\n *         setTimeout(function() {\n *             callback(null, 1);\n *         }, 200);\n *     },\n *     two: function(callback) {\n *         setTimeout(function() {\n *             callback(null, 2);\n *         }, 100);\n *     }\n * }, function(err, results) {\n *     // results is now equals to: {one: 1, two: 2}\n * });\n ",
+          "range": [
+            88,
+            2549
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 68,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "Identifier",
+          "name": "doLimit",
+          "range": [
+            2565,
+            2572
+          ],
+          "loc": {
+            "start": {
+              "line": 69,
+              "column": 15
+            },
+            "end": {
+              "line": 69,
+              "column": 22
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Identifier",
+            "name": "parallelLimit",
+            "range": [
+              2573,
+              2586
+            ],
+            "loc": {
+              "start": {
+                "line": 69,
+                "column": 23
+              },
+              "end": {
+                "line": 69,
+                "column": 36
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "Infinity",
+            "range": [
+              2588,
+              2596
+            ],
+            "loc": {
+              "start": {
+                "line": 69,
+                "column": 38
+              },
+              "end": {
+                "line": 69,
+                "column": 46
+              }
+            }
+          }
+        ],
+        "range": [
+          2565,
+          2597
+        ],
+        "loc": {
+          "start": {
+            "line": 69,
+            "column": 15
+          },
+          "end": {
+            "line": 69,
+            "column": 47
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Run the `tasks` collection of functions in parallel, without waiting until\n * the previous function has completed. If any of the functions pass an error to\n * its callback, the main `callback` is immediately called with the value of the\n * error. Once the `tasks` have completed, the results are passed to the final\n * `callback` as an array.\n *\n * **Note:** `parallel` is about kicking-off I/O tasks in parallel, not about\n * parallel execution of code.  If your tasks do not use any timers or perform\n * any I/O, they will actually be executed in series.  Any synchronous setup\n * sections for each task will happen one after the other.  JavaScript remains\n * single-threaded.\n *\n * It is also possible to use an object instead of an array. Each property will\n * be run as a function and the results will be passed to the final `callback`\n * as an object instead of an array. This can be a more readable way of handling\n * results from {@link async.parallel}.\n *\n * @name parallel\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {Array|Object} tasks - A collection containing functions to run.\n * Each function is passed a `callback(err, result)` which it must call on\n * completion with an error `err` (which can be `null`) and an optional `result`\n * value.\n * @param {Function} [callback] - An optional callback to run once all the\n * functions have completed successfully. This function gets a results array\n * (or object) containing all the result arguments passed to the task callbacks.\n * Invoked with (err, results).\n * @example\n * async.parallel([\n *     function(callback) {\n *         setTimeout(function() {\n *             callback(null, 'one');\n *         }, 200);\n *     },\n *     function(callback) {\n *         setTimeout(function() {\n *             callback(null, 'two');\n *         }, 100);\n *     }\n * ],\n * // optional callback\n * function(err, results) {\n *     // the results array will equal ['one','two'] even though\n *     // the second function had a shorter timeout.\n * });\n *\n * // an example using an object instead of an array\n * async.parallel({\n *     one: function(callback) {\n *         setTimeout(function() {\n *             callback(null, 1);\n *         }, 200);\n *     },\n *     two: function(callback) {\n *         setTimeout(function() {\n *             callback(null, 2);\n *         }, 100);\n *     }\n * }, function(err, results) {\n *     // results is now equals to: {one: 1, two: 2}\n * });\n ",
+            "range": [
+              88,
+              2549
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 68,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        2550,
+        2598
+      ],
+      "loc": {
+        "start": {
+          "line": 69,
+          "column": 0
+        },
+        "end": {
+          "line": 69,
+          "column": 48
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Run the `tasks` collection of functions in parallel, without waiting until\n * the previous function has completed. If any of the functions pass an error to\n * its callback, the main `callback` is immediately called with the value of the\n * error. Once the `tasks` have completed, the results are passed to the final\n * `callback` as an array.\n *\n * **Note:** `parallel` is about kicking-off I/O tasks in parallel, not about\n * parallel execution of code.  If your tasks do not use any timers or perform\n * any I/O, they will actually be executed in series.  Any synchronous setup\n * sections for each task will happen one after the other.  JavaScript remains\n * single-threaded.\n *\n * It is also possible to use an object instead of an array. Each property will\n * be run as a function and the results will be passed to the final `callback`\n * as an object instead of an array. This can be a more readable way of handling\n * results from {@link async.parallel}.\n *\n * @name parallel\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {Array|Object} tasks - A collection containing functions to run.\n * Each function is passed a `callback(err, result)` which it must call on\n * completion with an error `err` (which can be `null`) and an optional `result`\n * value.\n * @param {Function} [callback] - An optional callback to run once all the\n * functions have completed successfully. This function gets a results array\n * (or object) containing all the result arguments passed to the task callbacks.\n * Invoked with (err, results).\n * @example\n * async.parallel([\n *     function(callback) {\n *         setTimeout(function() {\n *             callback(null, 'one');\n *         }, 200);\n *     },\n *     function(callback) {\n *         setTimeout(function() {\n *             callback(null, 'two');\n *         }, 100);\n *     }\n * ],\n * // optional callback\n * function(err, results) {\n *     // the results array will equal ['one','two'] even though\n *     // the second function had a shorter timeout.\n * });\n *\n * // an example using an object instead of an array\n * async.parallel({\n *     one: function(callback) {\n *         setTimeout(function() {\n *             callback(null, 1);\n *         }, 200);\n *     },\n *     two: function(callback) {\n *         setTimeout(function() {\n *             callback(null, 2);\n *         }, 100);\n *     }\n * }, function(err, results) {\n *     // results is now equals to: {one: 1, two: 2}\n * });\n ",
+          "range": [
+            88,
+            2549
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 68,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    2598
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 69,
+      "column": 48
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Run the `tasks` collection of functions in parallel, without waiting until\n * the previous function has completed. If any of the functions pass an error to\n * its callback, the main `callback` is immediately called with the value of the\n * error. Once the `tasks` have completed, the results are passed to the final\n * `callback` as an array.\n *\n * **Note:** `parallel` is about kicking-off I/O tasks in parallel, not about\n * parallel execution of code.  If your tasks do not use any timers or perform\n * any I/O, they will actually be executed in series.  Any synchronous setup\n * sections for each task will happen one after the other.  JavaScript remains\n * single-threaded.\n *\n * It is also possible to use an object instead of an array. Each property will\n * be run as a function and the results will be passed to the final `callback`\n * as an object instead of an array. This can be a more readable way of handling\n * results from {@link async.parallel}.\n *\n * @name parallel\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {Array|Object} tasks - A collection containing functions to run.\n * Each function is passed a `callback(err, result)` which it must call on\n * completion with an error `err` (which can be `null`) and an optional `result`\n * value.\n * @param {Function} [callback] - An optional callback to run once all the\n * functions have completed successfully. This function gets a results array\n * (or object) containing all the result arguments passed to the task callbacks.\n * Invoked with (err, results).\n * @example\n * async.parallel([\n *     function(callback) {\n *         setTimeout(function() {\n *             callback(null, 'one');\n *         }, 200);\n *     },\n *     function(callback) {\n *         setTimeout(function() {\n *             callback(null, 'two');\n *         }, 100);\n *     }\n * ],\n * // optional callback\n * function(err, results) {\n *     // the results array will equal ['one','two'] even though\n *     // the second function had a shorter timeout.\n * });\n *\n * // an example using an object instead of an array\n * async.parallel({\n *     one: function(callback) {\n *         setTimeout(function() {\n *             callback(null, 1);\n *         }, 200);\n *     },\n *     two: function(callback) {\n *         setTimeout(function() {\n *             callback(null, 2);\n *         }, 100);\n *     }\n * }, function(err, results) {\n *     // results is now equals to: {one: 1, two: 2}\n * });\n ",
+      "range": [
+        88,
+        2549
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 68,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

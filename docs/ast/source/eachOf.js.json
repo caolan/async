@@ -1,0 +1,337 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "eachOfLimit",
+            "range": [
+              7,
+              18
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 18
+              }
+            }
+          },
+          "range": [
+            7,
+            18
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 18
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./eachOfLimit",
+        "raw": "'./eachOfLimit'",
+        "range": [
+          24,
+          39
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 24
+          },
+          "end": {
+            "line": 1,
+            "column": 39
+          }
+        }
+      },
+      "range": [
+        0,
+        40
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "doLimit",
+            "range": [
+              48,
+              55
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 14
+              }
+            }
+          },
+          "range": [
+            48,
+            55
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 14
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/doLimit",
+        "raw": "'./internal/doLimit'",
+        "range": [
+          61,
+          81
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 20
+          },
+          "end": {
+            "line": 2,
+            "column": 40
+          }
+        }
+      },
+      "range": [
+        41,
+        82
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 41
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Like `each`, except that it passes the key (or index) as the second argument\n * to the iteratee.\n *\n * @name eachOf\n * @static\n * @memberOf async\n * @alias forEachOf\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each\n * item in `coll`. The `key` is the item's key, or index in the case of an\n * array. The iteratee is passed a `callback(err)` which must be called once it\n * has completed. If no error has occurred, the callback should be run without\n * arguments or with an explicit `null` argument. Invoked with\n * (item, key, callback).\n * @param {Function} [callback] - A callback which is called when all\n * `iteratee` functions have finished, or an error occurs. Invoked with (err).\n * @example\n *\n * var obj = {dev: \"/dev.json\", test: \"/test.json\", prod: \"/prod.json\"};\n * var configs = {};\n *\n * async.forEachOf(obj, function (value, key, callback) {\n *     fs.readFile(__dirname + value, \"utf8\", function (err, data) {\n *         if (err) return callback(err);\n *         try {\n *             configs[key] = JSON.parse(data);\n *         } catch (e) {\n *             return callback(e);\n *         }\n *         callback();\n *     });\n * }, function (err) {\n *     if (err) console.error(err.message);\n *     // configs is now a map of JSON data\n *     doSomethingWith(configs);\n * });\n ",
+          "range": [
+            84,
+            1482
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 42,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "Identifier",
+          "name": "doLimit",
+          "range": [
+            1498,
+            1505
+          ],
+          "loc": {
+            "start": {
+              "line": 43,
+              "column": 15
+            },
+            "end": {
+              "line": 43,
+              "column": 22
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Identifier",
+            "name": "eachOfLimit",
+            "range": [
+              1506,
+              1517
+            ],
+            "loc": {
+              "start": {
+                "line": 43,
+                "column": 23
+              },
+              "end": {
+                "line": 43,
+                "column": 34
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "Infinity",
+            "range": [
+              1519,
+              1527
+            ],
+            "loc": {
+              "start": {
+                "line": 43,
+                "column": 36
+              },
+              "end": {
+                "line": 43,
+                "column": 44
+              }
+            }
+          }
+        ],
+        "range": [
+          1498,
+          1528
+        ],
+        "loc": {
+          "start": {
+            "line": 43,
+            "column": 15
+          },
+          "end": {
+            "line": 43,
+            "column": 45
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Like `each`, except that it passes the key (or index) as the second argument\n * to the iteratee.\n *\n * @name eachOf\n * @static\n * @memberOf async\n * @alias forEachOf\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each\n * item in `coll`. The `key` is the item's key, or index in the case of an\n * array. The iteratee is passed a `callback(err)` which must be called once it\n * has completed. If no error has occurred, the callback should be run without\n * arguments or with an explicit `null` argument. Invoked with\n * (item, key, callback).\n * @param {Function} [callback] - A callback which is called when all\n * `iteratee` functions have finished, or an error occurs. Invoked with (err).\n * @example\n *\n * var obj = {dev: \"/dev.json\", test: \"/test.json\", prod: \"/prod.json\"};\n * var configs = {};\n *\n * async.forEachOf(obj, function (value, key, callback) {\n *     fs.readFile(__dirname + value, \"utf8\", function (err, data) {\n *         if (err) return callback(err);\n *         try {\n *             configs[key] = JSON.parse(data);\n *         } catch (e) {\n *             return callback(e);\n *         }\n *         callback();\n *     });\n * }, function (err) {\n *     if (err) console.error(err.message);\n *     // configs is now a map of JSON data\n *     doSomethingWith(configs);\n * });\n ",
+            "range": [
+              84,
+              1482
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 42,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        1483,
+        1529
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 0
+        },
+        "end": {
+          "line": 43,
+          "column": 46
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Like `each`, except that it passes the key (or index) as the second argument\n * to the iteratee.\n *\n * @name eachOf\n * @static\n * @memberOf async\n * @alias forEachOf\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each\n * item in `coll`. The `key` is the item's key, or index in the case of an\n * array. The iteratee is passed a `callback(err)` which must be called once it\n * has completed. If no error has occurred, the callback should be run without\n * arguments or with an explicit `null` argument. Invoked with\n * (item, key, callback).\n * @param {Function} [callback] - A callback which is called when all\n * `iteratee` functions have finished, or an error occurs. Invoked with (err).\n * @example\n *\n * var obj = {dev: \"/dev.json\", test: \"/test.json\", prod: \"/prod.json\"};\n * var configs = {};\n *\n * async.forEachOf(obj, function (value, key, callback) {\n *     fs.readFile(__dirname + value, \"utf8\", function (err, data) {\n *         if (err) return callback(err);\n *         try {\n *             configs[key] = JSON.parse(data);\n *         } catch (e) {\n *             return callback(e);\n *         }\n *         callback();\n *     });\n * }, function (err) {\n *     if (err) console.error(err.message);\n *     // configs is now a map of JSON data\n *     doSomethingWith(configs);\n * });\n ",
+          "range": [
+            84,
+            1482
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 42,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1529
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 43,
+      "column": 46
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Like `each`, except that it passes the key (or index) as the second argument\n * to the iteratee.\n *\n * @name eachOf\n * @static\n * @memberOf async\n * @alias forEachOf\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each\n * item in `coll`. The `key` is the item's key, or index in the case of an\n * array. The iteratee is passed a `callback(err)` which must be called once it\n * has completed. If no error has occurred, the callback should be run without\n * arguments or with an explicit `null` argument. Invoked with\n * (item, key, callback).\n * @param {Function} [callback] - A callback which is called when all\n * `iteratee` functions have finished, or an error occurs. Invoked with (err).\n * @example\n *\n * var obj = {dev: \"/dev.json\", test: \"/test.json\", prod: \"/prod.json\"};\n * var configs = {};\n *\n * async.forEachOf(obj, function (value, key, callback) {\n *     fs.readFile(__dirname + value, \"utf8\", function (err, data) {\n *         if (err) return callback(err);\n *         try {\n *             configs[key] = JSON.parse(data);\n *         } catch (e) {\n *             return callback(e);\n *         }\n *         callback();\n *     });\n * }, function (err) {\n *     if (err) console.error(err.message);\n *     // configs is now a map of JSON data\n *     doSomethingWith(configs);\n * });\n ",
+      "range": [
+        84,
+        1482
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 42,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

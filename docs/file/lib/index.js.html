@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">lib/index.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/caolan/async.git" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-asyncify">asyncify</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-auto">auto</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-autoInject">autoInject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cargo">cargo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-compose">compose</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doDuring">doDuring</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doUntil">doUntil</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doWhilst">doWhilst</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-during">during</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-eachLimit">eachLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-eachOfLimit">eachOfLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-ensureAsync">ensureAsync</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-forever">forever</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-iterator">iterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-mapValuesLimit">mapValuesLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-memoize">memoize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parallelLimit">parallelLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-priorityQueue">priorityQueue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-queue">queue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-race">race</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reduce">reduce</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reduceRight">reduceRight</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reflect">reflect</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reflectAll">reflectAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-retry">retry</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-retryable">retryable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-series">series</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sortBy">sortBy</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-timeout">timeout</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-timeLimit">timeLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-transform">transform</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-unmemoize">unmemoize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-until">until</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-waterfall">waterfall</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-whilst">whilst</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-CargoObject">CargoObject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-QueueObject">QueueObject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">internal</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-applyEach">applyEach</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concat">concat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-consoleFunc">consoleFunc</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doLimit">doLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doParallel">doParallel</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doParallelLimit">doParallelLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doSeries">doSeries</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getIterator">getIterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-initialParams">initialParams</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-iterator">iterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-notId">notId</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-once">once</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-onlyOnce">onlyOnce</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-queue">queue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reject">reject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-fallback">fallback</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-wrap">wrap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-hasNextTick">hasNextTick</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-hasSetImmediate">hasSetImmediate</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">lib/index.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
+ * Async is a utility module which provides straight-forward, powerful functions
+ * for working with asynchronous JavaScript. Although originally designed for
+ * use with [Node.js](http://nodejs.org) and installable via
+ * `npm install --save async`, it can also be used directly in the browser.
+ * @namespace async
+ */
+import applyEach from &apos;./applyEach&apos;;
+import applyEachSeries from &apos;./applyEachSeries&apos;;
+import apply from &apos;./apply&apos;;
+import asyncify from &apos;./asyncify&apos;;
+import auto from &apos;./auto&apos;;
+import autoInject from &apos;./autoInject&apos;;
+import cargo from &apos;./cargo&apos;;
+import compose from &apos;./compose&apos;;
+import concat from &apos;./concat&apos;;
+import concatSeries from &apos;./concatSeries&apos;;
+import constant from &apos;./constant&apos;;
+import detect from &apos;./detect&apos;;
+import detectLimit from &apos;./detectLimit&apos;;
+import detectSeries from &apos;./detectSeries&apos;;
+import dir from &apos;./dir&apos;;
+import doDuring from &apos;./doDuring&apos;;
+import doUntil from &apos;./doUntil&apos;;
+import doWhilst from &apos;./doWhilst&apos;;
+import during from &apos;./during&apos;;
+import each from &apos;./each&apos;;
+import eachLimit from &apos;./eachLimit&apos;;
+import eachOf from &apos;./eachOf&apos;;
+import eachOfLimit from &apos;./eachOfLimit&apos;;
+import eachOfSeries from &apos;./eachOfSeries&apos;;
+import eachSeries from &apos;./eachSeries&apos;;
+import ensureAsync from &apos;./ensureAsync&apos;;
+import every from &apos;./every&apos;;
+import everyLimit from &apos;./everyLimit&apos;;
+import everySeries from &apos;./everySeries&apos;;
+import filter from &apos;./filter&apos;;
+import filterLimit from &apos;./filterLimit&apos;;
+import filterSeries from &apos;./filterSeries&apos;;
+import forever from &apos;./forever&apos;;
+import iterator from &apos;./iterator&apos;;
+import log from &apos;./log&apos;;
+import map from &apos;./map&apos;;
+import mapLimit from &apos;./mapLimit&apos;;
+import mapSeries from &apos;./mapSeries&apos;;
+import mapValues from &apos;./mapValues&apos;;
+import mapValuesLimit from &apos;./mapValuesLimit&apos;;
+import mapValuesSeries from &apos;./mapValuesSeries&apos;;
+import memoize from &apos;./memoize&apos;;
+import nextTick from &apos;./nextTick&apos;;
+import parallel from &apos;./parallel&apos;;
+import parallelLimit from &apos;./parallelLimit&apos;;
+import priorityQueue from &apos;./priorityQueue&apos;;
+import queue from &apos;./queue&apos;;
+import race from &apos;./race&apos;;
+import reduce from &apos;./reduce&apos;;
+import reduceRight from &apos;./reduceRight&apos;;
+import reflect from &apos;./reflect&apos;;
+import reject from &apos;./reject&apos;;
+import reflectAll from &apos;./reflectAll&apos;;
+import rejectLimit from &apos;./rejectLimit&apos;;
+import rejectSeries from &apos;./rejectSeries&apos;;
+import retry from &apos;./retry&apos;;
+import retryable from &apos;./retryable&apos;;
+import seq from &apos;./seq&apos;;
+import series from &apos;./series&apos;;
+import setImmediate from &apos;./setImmediate&apos;;
+import some from &apos;./some&apos;;
+import someLimit from &apos;./someLimit&apos;;
+import someSeries from &apos;./someSeries&apos;;
+import sortBy from &apos;./sortBy&apos;;
+import timeout from &apos;./timeout&apos;;
+import times from &apos;./times&apos;;
+import timesLimit from &apos;./timesLimit&apos;;
+import timesSeries from &apos;./timesSeries&apos;;
+import transform from &apos;./transform&apos;;
+import unmemoize from &apos;./unmemoize&apos;;
+import until from &apos;./until&apos;;
+import waterfall from &apos;./waterfall&apos;;
+import whilst from &apos;./whilst&apos;;
+
+export default {
+    applyEach: applyEach,
+    applyEachSeries: applyEachSeries,
+    apply: apply,
+    asyncify: asyncify,
+    auto: auto,
+    autoInject: autoInject,
+    cargo: cargo,
+    compose: compose,
+    concat: concat,
+    concatSeries: concatSeries,
+    constant: constant,
+    detect: detect,
+    detectLimit: detectLimit,
+    detectSeries: detectSeries,
+    dir: dir,
+    doDuring: doDuring,
+    doUntil: doUntil,
+    doWhilst: doWhilst,
+    during: during,
+    each: each,
+    eachLimit: eachLimit,
+    eachOf: eachOf,
+    eachOfLimit: eachOfLimit,
+    eachOfSeries: eachOfSeries,
+    eachSeries: eachSeries,
+    ensureAsync: ensureAsync,
+    every: every,
+    everyLimit: everyLimit,
+    everySeries: everySeries,
+    filter: filter,
+    filterLimit: filterLimit,
+    filterSeries: filterSeries,
+    forever: forever,
+    iterator: iterator,
+    log: log,
+    map: map,
+    mapLimit: mapLimit,
+    mapSeries: mapSeries,
+    mapValues: mapValues,
+    mapValuesLimit: mapValuesLimit,
+    mapValuesSeries: mapValuesSeries,
+    memoize: memoize,
+    nextTick: nextTick,
+    parallel: parallel,
+    parallelLimit: parallelLimit,
+    priorityQueue: priorityQueue,
+    queue: queue,
+    race: race,
+    reduce: reduce,
+    reduceRight: reduceRight,
+    reflect: reflect,
+    reflectAll: reflectAll,
+    reject: reject,
+    rejectLimit: rejectLimit,
+    rejectSeries: rejectSeries,
+    retry: retry,
+    retryable: retryable,
+    seq: seq,
+    series: series,
+    setImmediate: setImmediate,
+    some: some,
+    someLimit: someLimit,
+    someSeries: someSeries,
+    sortBy: sortBy,
+    timeout: timeout,
+    times: times,
+    timesLimit: timesLimit,
+    timesSeries: timesSeries,
+    transform: transform,
+    unmemoize: unmemoize,
+    until: until,
+    waterfall: waterfall,
+    whilst: whilst,
+
+    // aliases
+    all: every,
+    any: some,
+    forEach: each,
+    forEachSeries: eachSeries,
+    forEachLimit: eachLimit,
+    forEachOf: eachOf,
+    forEachOfSeries: eachOfSeries,
+    forEachOfLimit: eachOfLimit,
+    inject: reduce,
+    foldl: reduce,
+    foldr: reduceRight,
+    select: filter,
+    selectLimit: filterLimit,
+    selectSeries: filterSeries,
+    wrapSync: asyncify
+};
+
+export {
+    applyEach as applyEach,
+    applyEachSeries as applyEachSeries,
+    apply as apply,
+    asyncify as asyncify,
+    auto as auto,
+    autoInject as autoInject,
+    cargo as cargo,
+    compose as compose,
+    concat as concat,
+    concatSeries as concatSeries,
+    constant as constant,
+    detect as detect,
+    detectLimit as detectLimit,
+    detectSeries as detectSeries,
+    dir as dir,
+    doDuring as doDuring,
+    doUntil as doUntil,
+    doWhilst as doWhilst,
+    during as during,
+    each as each,
+    eachLimit as eachLimit,
+    eachOf as eachOf,
+    eachOfLimit as eachOfLimit,
+    eachOfSeries as eachOfSeries,
+    eachSeries as eachSeries,
+    ensureAsync as ensureAsync,
+    every as every,
+    everyLimit as everyLimit,
+    everySeries as everySeries,
+    filter as filter,
+    filterLimit as filterLimit,
+    filterSeries as filterSeries,
+    forever as forever,
+    iterator as iterator,
+    log as log,
+    map as map,
+    mapLimit as mapLimit,
+    mapSeries as mapSeries,
+    mapValues as mapValues,
+    mapValuesLimit as mapValuesLimit,
+    mapValuesSeries as mapValuesSeries,
+    memoize as memoize,
+    nextTick as nextTick,
+    parallel as parallel,
+    parallelLimit as parallelLimit,
+    priorityQueue as priorityQueue,
+    queue as queue,
+    race as race,
+    reduce as reduce,
+    reduceRight as reduceRight,
+    reflect as reflect,
+    reflectAll as reflectAll,
+    reject as reject,
+    rejectLimit as rejectLimit,
+    rejectSeries as rejectSeries,
+    retry as retry,
+    retryable as retryable,
+    seq as seq,
+    series as series,
+    setImmediate as setImmediate,
+    some as some,
+    someLimit as someLimit,
+    someSeries as someSeries,
+    sortBy as sortBy,
+    timeout as timeout,
+    times as times,
+    timesLimit as timesLimit,
+    timesSeries as timesSeries,
+    transform as transform,
+    unmemoize as unmemoize,
+    until as until,
+    waterfall as waterfall,
+    whilst as whilst,
+
+    // Aliases
+    every as all,
+    everyLimit as allLimit,
+    everySeries as allSeries,
+    some as any,
+    someLimit as anyLimit,
+    someSeries as anySeries,
+    detect as find,
+    detectLimit as findLimit,
+    detectSeries as findSeries,
+    each as forEach,
+    eachSeries as forEachSeries,
+    eachLimit as forEachLimit,
+    eachOf as forEachOf,
+    eachOfSeries as forEachOfSeries,
+    eachOfLimit as forEachOfLimit,
+    reduce as inject,
+    reduce as foldl,
+    reduceRight as foldr,
+    filter as select,
+    filterLimit as selectLimit,
+    filterSeries as selectSeries,
+    asyncify as wrapSync
+};
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
