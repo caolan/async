@@ -6,7 +6,7 @@
   "source": {
     "include": [ "./lib" ]
   },
-  "plugins": ["plugins/markdown"],
+  "plugins": ["plugins/markdown", "./jsdoc-import-path-plugin"],
   "opts": {
     "readme": "README.md",
     "template": "node_modules/minami",
