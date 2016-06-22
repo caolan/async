@@ -1,12 +1,13 @@
-var async = require('../dist/async');
+var async = require('../../dist/async');
 var fs = require('fs-extra');
 var path = require('path');
 
 var $ = require('cheerio');
 var _ = require('lodash');
 
-var docsDir = path.join(__dirname, '../docs');
-var asyncFile = path.join(__dirname, '../dist/async.js');
+var docsDir = path.join(__dirname, '../../docs');
+var asyncFile = path.join(__dirname, '../../dist/async.js');
+var customStyleSheet = path.join(__dirname, './jsdoc-custom.css');
 
 var pageTitle = 'ASYNC';
 
@@ -23,8 +24,6 @@ var pageTitlePadding = '12px';
 
 var additionalFooterText = ' Documentation has been modified from the original. ' +
     ' For more information, please see the <a href="https://github.com/caolan/async">async</a> repository.';
-
-fs.copySync(asyncFile, path.join(docsDir, 'scripts/async.js'), { clobber: 'true'});
 
 function generateHTMLFile(filename, $page, callback) {
     // generate an HTML file from a cheerio object
@@ -50,7 +49,7 @@ function combineFakeModules(files, callback) {
         var $mainPage = $(mainModuleData);
         // each 'module' (category) has a separate page, with all of the
         // important information in a 'main' div. Combine all of these divs into
-        // one on the actual module page (async) 
+        // one on the actual module page (async)
         async.eachSeries(moduleFiles, function(file, fileCallback) {
             fs.readFile(path.join(docsDir, file), 'utf8', function(err, moduleData) {
                 if (err) return fileCallback(err);
@@ -69,7 +68,7 @@ function combineFakeModules(files, callback) {
 }
 
 function applyPreCheerioFixes(data) {
-    var fixedPageTitleStyle = '<style>\n'+sectionTitleClass+' { padding-top: '+pageTitlePadding+'; }\n</style>\n'
+    var customStyle = '<link type="text/css" rel="stylesheet" href="styles/jsdoc-custom.css"></link>\n'
     var closingHeadTag = '</head>'
 
     var asyncScript = '<script src="scripts/async.js"></script>\n';
@@ -81,7 +80,7 @@ function applyPreCheerioFixes(data) {
     var rIncorrectModuleText = />module:(\w+)\.(\w+)</g
 
     // the heading needs additional padding at the top so it doesn't get cutoff
-    return data.replace(closingHeadTag, fixedPageTitleStyle+closingHeadTag)
+    return data.replace(closingHeadTag, customStyle+closingHeadTag)
         // inject the async library onto each page
         .replace(closingBodyTag, asyncScript+closingBodyTag)
         // for JSDoc to work, the module needs to be labelled 'ControlFlow', while
@@ -143,6 +142,9 @@ function fixModuleLinks(files, callback) {
         });
     }, callback);
 }
+
+fs.copySync(asyncFile, path.join(docsDir, 'scripts/async.js'), { clobber: 'true'});
+fs.copySync(customStyleSheet, path.join(docsDir, 'styles/jsdoc-custom.css'), { clobber: 'true'});
 
 fs.readdir(docsDir, function(err, files) {
     if (err) {
