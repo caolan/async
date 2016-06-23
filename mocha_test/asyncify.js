@@ -77,8 +77,14 @@ describe('asyncify', function(){
         // Both Bluebird and native promises emit these events. We handle it because Bluebird
         // will report these rejections to stderr if we don't, which is a great feature for
         // normal cases, but not here, since we expect unhandled rejections:
-        process.on('unhandledRejection', function () {
-            // Ignore.
+        function ignoreRejections() {}
+
+        before(function () {
+            process.on('unhandledRejection', ignoreRejections);
+        });
+
+        after(function () {
+            process.removeListener('unhandledRejection', ignoreRejections);
         });
 
         names.forEach(function(name) {
