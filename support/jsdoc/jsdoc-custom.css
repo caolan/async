@@ -1,3 +1,35 @@
 .page-title {
     padding-top: 12px;
 }
+
+.navbar-top {
+    position: fixed;
+    height: 50px;
+    width: 100%;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    background-color: #101010;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    padding-left: 0px;
+}
+
+body nav {
+    float: none;
+    position: fixed;
+    top: 50px;
+    left: 0px;
+    bottom: 0px;
+    padding-left: 12px;
+    overflow-y: auto;
+}
+
+#main {
+    float: none;
+    margin-left: 250px;
+    padding-top: 50px;
+}

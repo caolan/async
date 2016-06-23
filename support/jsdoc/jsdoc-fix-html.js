@@ -9,7 +9,7 @@ var docsDir = path.join(__dirname, '../../docs');
 var asyncFile = path.join(__dirname, '../../dist/async.js');
 var customStyleSheet = path.join(__dirname, './jsdoc-custom.css');
 
-var pageTitle = 'ASYNC';
+var pageTitle = 'Methods:';
 
 var docFilename = 'docs.html';
 var mainModuleFile = 'module-async.html';
@@ -67,11 +67,10 @@ function combineFakeModules(files, callback) {
     });
 }
 
-function applyPreCheerioFixes(data) {
-    var customStyle = '<link type="text/css" rel="stylesheet" href="styles/jsdoc-custom.css"></link>\n'
+function applyPreCheerioFixes(data, headLinks) {
     var closingHeadTag = '</head>'
 
-    var asyncScript = '<script src="scripts/async.js"></script>\n';
+    var customScript = '<script src="scripts/jsdoc-custom.js"></script>\n';
     var closingBodyTag = '</body>';
 
     var rIncorrectCFText = />ControlFlow</g;
@@ -80,9 +79,9 @@ function applyPreCheerioFixes(data) {
     var rIncorrectModuleText = />module:(\w+)\.(\w+)</g
 
     // the heading needs additional padding at the top so it doesn't get cutoff
-    return data.replace(closingHeadTag, customStyle+closingHeadTag)
+    return data.replace(closingHeadTag, headLinks+closingHeadTag)
         // inject the async library onto each page
-        .replace(closingBodyTag, asyncScript+closingBodyTag)
+        .replace(closingBodyTag, customScript+closingBodyTag)
         // for JSDoc to work, the module needs to be labelled 'ControlFlow', while
         // on the page it should appear as 'Control Flow'
         .replace(rIncorrectCFText, fixedCFText)
@@ -93,12 +92,26 @@ function applyPreCheerioFixes(data) {
         });
 };
 
+function addStaticHeader($file, $headerContent) {
+    var $body = $file.find('body');
+    var $mainContent = $body.find('#main');
+    // var $bodyContent = $body.children();
+    // $body.children().remove();
+    // $body.prepend('<div class="container-fluid"></div>');
+    // $body.find('div').prepend($bodyContent);
+    $body.prepend($headerContent);
+    // $mainContent.wrap('<div id="main-wrapper"></div>');
+    // $file.find('nav').wrap('<div class="fix-nav-toc"></div>');
+    // $file.find('footer').appendTo($mainContent);
+};
+
 function fixToc($page, moduleFiles) {
     // remove `async` listing from toc
     $page.find('li').find('a[href="'+mainModuleFile+'"]').parent().remove();
 
     // change toc title
     $page.find('nav').children('h3').text(pageTitle);
+    $page.find('nav').children('h2').remove();
 
     // make everything point to the same 'docs.html' page
     _.each(moduleFiles, function(filename) {
@@ -128,23 +141,35 @@ function fixFooter($page) {
 function fixModuleLinks(files, callback) {
     var moduleFiles = extractModuleFiles(files);
 
-    async.each(files, function(file, fileCallback) {
-        var filePath = path.join(docsDir, file);
-        fs.readFile(filePath, 'utf8', function(err, fileData) {
+    async.map(['head-data.html', 'navbar.html'], function(filename, fileCallback) {
+        fs.readFile(path.join(__dirname, filename), 'utf8', function(err, data) {
             if (err) return fileCallback(err);
-            var $file = $(applyPreCheerioFixes(fileData));
-
-            fixToc($file, moduleFiles);
-
-            fixFooter($file);
-            $file.find('[href="'+mainModuleFile+'"]').attr('href', docFilename);
-            generateHTMLFile(filePath, $file, fileCallback);
+            return fileCallback(null, data);
         });
-    }, callback);
+    }, function(err, results) {
+        if (err) return callback(err);
+
+        var $headerContent = $(results[1]);
+        async.each(files, function(file, fileCallback) {
+            var filePath = path.join(docsDir, file);
+            fs.readFile(filePath, 'utf8', function(err, fileData) {
+                if (err) return fileCallback(err);
+                var $file = $(applyPreCheerioFixes(fileData, results[0]));
+
+                addStaticHeader($file, $headerContent);
+                fixToc($file, moduleFiles);
+                fixFooter($file);
+                $file.find('[href="'+mainModuleFile+'"]').attr('href', docFilename);
+                generateHTMLFile(filePath, $file, fileCallback);
+            });
+        }, callback);
+    });
 }
 
-fs.copySync(asyncFile, path.join(docsDir, 'scripts/async.js'), { clobber: 'true'});
-fs.copySync(customStyleSheet, path.join(docsDir, 'styles/jsdoc-custom.css'), { clobber: 'true'});
+fs.copySync(path.join(__dirname, '../../dist/async.js'), path.join(docsDir, 'scripts/async.js'), { clobber: true });
+fs.copySync(path.join(__dirname, './jsdoc-custom.js'), path.join(docsDir, 'scripts/jsdoc-custom.js'), { clobber: true });
+fs.copySync(path.join(__dirname, './jsdoc-custom.css'), path.join(docsDir, 'styles/jsdoc-custom.css'), { clobber: true });
+
 
 fs.readdir(docsDir, function(err, files) {
     if (err) {
