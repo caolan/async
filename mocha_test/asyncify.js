@@ -74,6 +74,13 @@ describe('asyncify', function(){
             'rsvp'
         ];
 
+        // Both Bluebird and native promises emit these events. We handle it because Bluebird
+        // will report these rejections to stderr if we don't, which is a great feature for
+        // normal cases, but not here, since we expect unhandled rejections:
+        process.on('unhandledRejection', function () {
+            // Ignore.
+        });
+
         names.forEach(function(name) {
             describe(name, function() {
 
@@ -110,6 +117,25 @@ describe('asyncify', function(){
                         expect(err.message).to.equal("argument rejected");
                         done();
                     });
+                });
+
+                it('callback error', function(done) {
+                    var promisified = function(argument) {
+                        return new Promise(function (resolve) {
+                            resolve(argument + " resolved");
+                        });
+                    };
+                    var call_count = 0;
+                    async.asyncify(promisified)("argument", function () {
+                        call_count++;
+                        if (call_count === 1) {
+                            throw new Error("error in callback");
+                        }
+                    });
+                    setTimeout(function () {
+                        expect(call_count).to.equal(1);
+                        done();
+                    }, 15);
                 });
             });
         });
