@@ -85,6 +85,20 @@ describe('autoInject', function () {
         }, done);
     });
 
+    it('should throw error for function without explicit parameters', function (done) {
+        try {
+            async.autoInject({
+                a: function (){}
+            });
+        } catch (e) {
+            // It's ok. It detected a void function
+            return done();
+        }
+
+        // If didn't catch error, then it's a failed test
+        done(true)
+    });
+
     var arrowSupport = true;
     try {
         new Function('x => x');
