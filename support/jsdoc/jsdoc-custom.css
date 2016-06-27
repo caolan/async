@@ -2,14 +2,12 @@
     padding-top: 12px;
 }
 
-.navbar-top {
-    position: fixed;
-    height: 50px;
-    width: 100%;
-    z-index: 10;
-    top: 0;
-    left: 0;
+.navbar-fixed-top {
     background-color: #101010;
+}
+
+.navbar .ion-social-github {
+    font-size: 1.2em;
 }
 
 body {
@@ -31,7 +29,10 @@ body nav {
 #main {
     float: none;
     margin-left: 250px;
-    padding-top: 50px;
+    position: fixed;
+    top: 50px;
+    overflow-y: auto;
+    height: 100%;
 }
 
 .tt-menu {
