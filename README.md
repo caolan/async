@@ -161,11 +161,15 @@ The source is available for download from
 [GitHub](https://raw.githubusercontent.com/caolan/async/master/dist/async.min.js).
 Alternatively, you can install using npm:
 
-    npm install --save async
+```bash
+$ npm install --save async
+```
 
 As well as using Bower:
 
-    bower install async
+```bash
+$ bower install async
+```
 
 You can then `require()` async as normal:
 
@@ -203,7 +207,9 @@ Usage:
 
 We also provide async as a collection of ES2015 modules, in an alternative `async-es` package on npm.
 
-    npm i -S async-es
+```bash
+$ npm install --save async-es
+```
 
 ```js
 import waterfall from 'async-es/waterfall';

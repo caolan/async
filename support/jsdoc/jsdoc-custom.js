@@ -1,15 +1,4 @@
-// https://github.com/twbs/bootstrap/issues/1768
-function shiftWindow() {
-    scrollBy(0, -50);
-}
-
-function fixAnchorPosition() {
-    if (location.hash) {
-        shiftWindow();
-    }
-}
-
-function initSearchBar() {
+$(function initSearchBar() {
     var methodNames = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.whitespace,
         queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -40,13 +29,8 @@ function initSearchBar() {
         templates: {
             header: '<h3 class="search-bar-header">Source Files</h3>'
         }
+    }).on('typeahead:select', function(ev, suggestion) {
+        var $el = document.getElementById('.' + suggestion)
+        $('html, body').animate({ scrollTop: $el.offsetTop }, 500);
     });
-}
-
-function init() {
-    fixAnchorPosition();
-    window.addEventListener("hashchange", shiftWindow, false);
-    initSearchBar();
-}
-
-$(init);
+});

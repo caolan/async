@@ -6,6 +6,10 @@
     background-color: #101010;
 }
 
+.navbar-fixed-top .navbar-right {
+    padding-right: 10px;
+}
+
 .navbar .ion-social-github {
     font-size: 1.2em;
 }
@@ -27,12 +31,13 @@ body nav {
 }
 
 #main {
-    float: none;
-    margin-left: 250px;
     position: fixed;
-    top: 50px;
+    float: none;
     overflow-y: auto;
-    height: 100%;
+    margin-left: 250px;
+    
+    top: 50px;
+    height: calc(100% - 50px);
 }
 
 .tt-menu {
