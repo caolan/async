@@ -20,7 +20,7 @@ $(function initSearchBar() {
         name: 'Methods',
         source: methodNames,
         templates: {
-            header: '<h3 class="search-bar-header">Methods</h3>'
+            header: '<h3 class="search-bar-header-first">Methods</h3>'
         }
     },
     {
