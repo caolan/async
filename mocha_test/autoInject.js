@@ -85,6 +85,20 @@ describe('autoInject', function () {
         }, done);
     });
 
+    it('should throw error for function without explicit parameters', function (done) {
+        try {
+            async.autoInject({
+                a: function (){}
+            });
+        } catch (e) {
+            // It's ok. It detected a void function
+            return done();
+        }
+
+        // If didn't catch error, then it's a failed test
+        done(true)
+    });
+
     var arrowSupport = true;
     try {
         new Function('x => x');
@@ -105,6 +119,38 @@ describe('autoInject', function () {
              "        }, (err, results) => {                                " +
              "            expect(results.task1).to.equal(1);                " +
              "            expect(results.task3).to.equal(3);                " +
+             "            done();                                           " +
+             "        });                                                   " +
+             "    });                                                       " +
+             "})                                                            "
+        )();
+    }
+
+
+    var defaultSupport = true;
+    try {
+        eval('function x(y = 1){ return y }');
+    }catch (e){
+        defaultSupport = false;
+    }
+
+    if(arrowSupport && defaultSupport){
+        // Needs to be run on ES6 only
+
+        /* eslint {no-eval: 0}*/
+        eval("(function() {                                                 " +
+             "    it('should work with es6 obj method syntax', function (done) { " +
+             "        async.autoInject({                                    " +
+             "            task1 (cb){             cb(null, 1) },            " +
+             "            task2 ( task3 , cb ) {  cb(null, 2) },            " +
+             "            task3 (cb) {            cb(null, 3) },            " +
+             "            task4 ( task2 , cb ) {  cb(null) },               " +
+             "            task5 ( task4 = 4 , cb ) { cb(null, task4 + 1) }  " +
+             "        }, (err, results) => {                                " +
+             "            expect(results.task1).to.equal(1);                " +
+             "            expect(results.task3).to.equal(3);                " +
+             "            expect(results.task4).to.equal(undefined);        " +
+             "            expect(results.task5).to.equal(5);                " +
              "            done();                                           " +
              "        });                                                   " +
              "    });                                                       " +
