@@ -16,13 +16,19 @@ $(function initSearchBar() {
     var methodNames = new Bloodhound({
         datumTokenizer: matchSubstrs,
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        prefetch: './methodNames.json'
+        prefetch: {
+            url: './methodNames.json',
+            cache: false
+        }
     });
 
     var sourceFiles = new Bloodhound({
         datumTokenizer: matchSubstrs,
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        prefetch: './sourceFiles.json'
+        prefetch: {
+            url: './sourceFiles.json',
+            cache: false
+        }
     });
 
     var githubIssues = new Bloodhound({

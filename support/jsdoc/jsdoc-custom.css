@@ -30,6 +30,10 @@ body nav {
     overflow-y: auto;
 }
 
+footer {
+    margin-left: 0px;
+}
+
 #main {
     position: fixed;
     float: none;

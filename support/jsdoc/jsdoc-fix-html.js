@@ -155,6 +155,7 @@ function fixFooter($page) {
     var $footer = $page.find('footer');
     var text = $footer.text();
     $footer.append(additionalFooterText);
+    $page.find('#main').append($footer);
 };
 
 function fixModuleLinks(files, callback) {
