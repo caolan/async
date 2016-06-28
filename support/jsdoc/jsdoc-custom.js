@@ -1,18 +1,15 @@
-function matchSubstrs(methodName) {
-    var tokens = [];
-
-    var len = methodName.length;
-
-    for (var size = 1; size <= len; size++){
-        for (var i = 0; i+size<= len; i++){
-            tokens.push(methodName.substr(i, size));
+$(function initSearchBar() {
+    function matchSubstrs(methodName) {
+        var tokens = [];
+        var len = methodName.length;
+        for (var size = 1; size <= len; size++){
+            for (var i = 0; i+size<= len; i++){
+                tokens.push(methodName.substr(i, size));
+            }
         }
+        return tokens;
     }
 
-    return tokens;
-}
-
-$(function initSearchBar() {
     var methodNames = new Bloodhound({
         datumTokenizer: matchSubstrs,
         queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -55,7 +52,6 @@ $(function initSearchBar() {
         }
     });
 
-
     $('.typeahead').typeahead({
         hint: true,
         highlight: true,
@@ -83,18 +79,27 @@ $(function initSearchBar() {
             header: '<h3 class="search-bar-header">Issues</h3>'
         }
     }).on('typeahead:select', function(ev, suggestion) {
-        var protocol = window.location.protocol
-        var host = window.location.host;
-        var currentPath = window.location.pathname;
+        var host;
+        if (location.origin != "null") {
+            host = location.origin;
+        } else {
+            host = location.protocol + '//' + location.host;
+        }
+        
+        var _path = location.pathname.split("/");
+        
+        var currentPage = _path[_path.length - 1];
+        host += _path.slice(1, -1).join("/") + "/";
+
         // handle issues
         if (typeof suggestion !== 'string') {
-            window.location.href = suggestion.url;
+            location.href = suggestion.url;
         // handle source files
         } else if (suggestion.indexOf('.html') !== -1) {
-            window.location.href = protocol + '//' + host + '/' + suggestion;
+            location.href = host + suggestion;
         // handle searching from one of the source files or the home page
-        } else if (currentPath !== '/docs.html') {
-            window.location.href = protocol + '//' + host + '/docs.html#.' + suggestion;
+        } else if (currentPage !== 'docs.html') {
+            location.href = host + 'docs.html#.' + suggestion;
         } else {
             var $el = document.getElementById('.' + suggestion);
             $('#main').animate({ scrollTop: $el.offsetTop }, 500);
