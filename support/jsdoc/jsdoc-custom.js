@@ -1,12 +1,26 @@
+function matchSubstrs(methodName) {
+    var tokens = [];
+
+    var len = methodName.length;
+
+    for (var size = 1; size <= len; size++){
+        for (var i = 0; i+size<= len; i++){
+            tokens.push(methodName.substr(i, size));
+        }
+    }
+
+    return tokens;
+}
+
 $(function initSearchBar() {
     var methodNames = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.whitespace,
+        datumTokenizer: matchSubstrs,
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         prefetch: './methodNames.json'
     });
 
     var sourceFiles = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.whitespace,
+        datumTokenizer: matchSubstrs,
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         prefetch: './sourceFiles.json'
     });
@@ -16,7 +30,7 @@ $(function initSearchBar() {
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         remote: {
             url: 'https://api.github.com/search/issues?q=%QUERY+repo:caolan/async',
-            cache: false,
+            cache: true,
             wildcard: '%QUERY',
             transform: function(response) {
                 return $.map(response.items, function(issue) {
