@@ -30,6 +30,12 @@ body nav {
     overflow-y: auto;
 }
 
+/* fix bootstrap's styling */
+pre {
+    background: #fff;
+    padding: 0px;
+}
+
 footer {
     margin-left: 0px;
 }
