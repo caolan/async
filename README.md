@@ -1,4 +1,4 @@
-![Async Logo](https://raw.githubusercontent.com/ivanseidel/async/master/logo/async-logo_header.jpg)
+![Async Logo](https://raw.githubusercontent.com/ivanseidel/async/master/logo/async-logo_readme.jpg)
 
 [![Build Status via Travis CI](https://travis-ci.org/caolan/async.svg?branch=master)](https://travis-ci.org/caolan/async)
 [![NPM version](https://img.shields.io/npm/v/async.svg)](https://www.npmjs.com/package/async)
