@@ -33,3 +33,9 @@ body nav {
     margin-left: 250px;
     padding-top: 50px;
 }
+
+.tt-menu {
+    background-color: white;
+    z-index: 11;
+    overflow-y: auto;
+}

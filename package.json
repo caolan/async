@@ -63,7 +63,7 @@
     "coverage": "nyc npm test && nyc report",
     "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "doc": "esdoc -c ./support/esdoc.json",
-    "jsdocs": "jsdoc -c ./support/jsdoc/jsdoc.json && node support/jsdoc/jsdoc-fix-html.js",
+    "jsdoc": "jsdoc -c ./support/jsdoc/jsdoc.json && node support/jsdoc/jsdoc-fix-html.js",
     "lint": "eslint lib/ mocha_test/ perf/memory.js perf/suites.js perf/benchmark.js support/ karma.conf.js",
     "mocha-browser-test": "karma start",
     "mocha-node-test": "mocha mocha_test/ --compilers js:babel-core/register",

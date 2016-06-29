@@ -40,6 +40,29 @@ function extractModuleFiles(files) {
     });
 }
 
+function getSearchableInfo($page, callback) {
+    var $sourceLinks = $page.find('a[href$=".js.html"]');
+    var sourceFiles = $sourceLinks.map(function() {
+        return $(this).attr('href');
+    }).toArray().sort();
+
+    var $methodLinks = $page.find('nav').find('a');
+    var methods = $methodLinks.map(function() {
+        var methodName = $(this).text();
+        return (methodName === 'Home' ? null : methodName);
+    }).toArray().sort();
+
+    fs.mkdirsSync(path.join(docsDir, 'data'));
+    async.parallel([
+        function(fileCallback) {
+            fs.writeJson(path.join(docsDir, 'data/sourceFiles.json'), sourceFiles, fileCallback);
+        },
+        function(fileCallback) {
+            fs.writeJson(path.join(docsDir, 'data/methodNames.json'), methods, fileCallback);
+        }
+    ], callback);
+}
+
 function combineFakeModules(files, callback) {
     var moduleFiles = extractModuleFiles(files);
 
@@ -62,7 +85,10 @@ function combineFakeModules(files, callback) {
         }, function(err) {
             if (err) return callback(err);
 
-            generateHTMLFile(path.join(docsDir, docFilename), $mainPage, callback);
+            getSearchableInfo($mainPage, function(err) {
+                if (err) return callback(err);
+                generateHTMLFile(path.join(docsDir, docFilename), $mainPage, callback);
+            });
         });
     });
 }
@@ -95,14 +121,7 @@ function applyPreCheerioFixes(data, headLinks) {
 function addStaticHeader($file, $headerContent) {
     var $body = $file.find('body');
     var $mainContent = $body.find('#main');
-    // var $bodyContent = $body.children();
-    // $body.children().remove();
-    // $body.prepend('<div class="container-fluid"></div>');
-    // $body.find('div').prepend($bodyContent);
     $body.prepend($headerContent);
-    // $mainContent.wrap('<div id="main-wrapper"></div>');
-    // $file.find('nav').wrap('<div class="fix-nav-toc"></div>');
-    // $file.find('footer').appendTo($mainContent);
 };
 
 function fixToc($page, moduleFiles) {
@@ -170,7 +189,6 @@ fs.copySync(path.join(__dirname, '../../dist/async.js'), path.join(docsDir, 'scr
 fs.copySync(path.join(__dirname, './jsdoc-custom.js'), path.join(docsDir, 'scripts/jsdoc-custom.js'), { clobber: true });
 fs.copySync(path.join(__dirname, './jsdoc-custom.css'), path.join(docsDir, 'styles/jsdoc-custom.css'), { clobber: true });
 
-
 fs.readdir(docsDir, function(err, files) {
     if (err) {
         throw err;
@@ -180,14 +198,19 @@ fs.readdir(docsDir, function(err, files) {
         return path.extname(file) === '.html';
     });
 
-    combineFakeModules(HTMLFiles, function(err) {
+    async.waterfall([
+        function(callback) {
+            combineFakeModules(HTMLFiles, function(err) {
+                if (err) return callback(err);
+                HTMLFiles.push(docFilename);
+                return callback(null);
+            });
+        },
+        function(callback) {
+            fixModuleLinks(HTMLFiles, callback);
+        }
+    ], function(err) {
         if (err) throw err;
-
-        HTMLFiles.push(docFilename);
-
-        fixModuleLinks(HTMLFiles, function(err) {
-            if (err) throw err;
-            console.log('Docs generated successfully');
-        });
+        console.log('Docs generated successfully');
     });
 });
