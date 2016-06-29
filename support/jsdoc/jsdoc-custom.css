@@ -21,11 +21,13 @@ body {
 }
 
 body nav {
+    float: none;
     position: fixed;
     top: 50px;
+    left: 0px;
+    bottom: 0px;
     padding-left: 12px;
     overflow-y: auto;
-    height: calc(100% - 50px);
 }
 
 /* fix bootstrap's styling */
@@ -36,6 +38,14 @@ pre {
 
 footer {
     margin-left: 0px;
+}
+
+.navbar-brand {
+    padding: 5px;
+}
+
+.navbar-brand img {
+    height: 40px;
 }
 
 #main {
