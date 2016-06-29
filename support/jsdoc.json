@@ -15,7 +15,6 @@
     "recurse": true
   },
   "templates": {
-    "cleverLinks": false,
-    "theme": "cerulean"
+    "cleverLinks": false
   }
 }
