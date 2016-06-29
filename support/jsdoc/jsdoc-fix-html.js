@@ -6,8 +6,6 @@ var $ = require('cheerio');
 var _ = require('lodash');
 
 var docsDir = path.join(__dirname, '../../docs');
-var asyncFile = path.join(__dirname, '../../dist/async.js');
-var customStyleSheet = path.join(__dirname, './jsdoc-custom.css');
 
 var pageTitle = 'Methods:';
 
@@ -20,7 +18,6 @@ var HTMLFileBegin = '<!DOCTYPE html>\n<html lang="en">\n<head>\n';
 var HTMLFileHeadBodyJoin = '</head>\n<body>';
 var HTMLFileEnd = '</body>';
 
-var pageTitlePadding = '12px';
 
 var additionalFooterText = ' Documentation has been modified from the original. ' +
     ' For more information, please see the <a href="https://github.com/caolan/async">async</a> repository.';
@@ -120,7 +117,6 @@ function applyPreCheerioFixes(data, headLinks) {
 
 function addStaticHeader($file, $headerContent) {
     var $body = $file.find('body');
-    var $mainContent = $body.find('#main');
     $body.prepend($headerContent);
 };
 
@@ -153,7 +149,6 @@ function fixToc($page, moduleFiles) {
 function fixFooter($page) {
     // add a note to the footer that the documentation has been modified
     var $footer = $page.find('footer');
-    var text = $footer.text();
     $footer.append(additionalFooterText);
     $page.find('#main').append($footer);
 };

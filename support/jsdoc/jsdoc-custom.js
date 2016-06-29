@@ -1,3 +1,4 @@
+/* eslint no-undef: "off" */
 $(function initSearchBar() {
     function matchSubstrs(methodName) {
         var tokens = [];
@@ -56,22 +57,19 @@ $(function initSearchBar() {
         hint: true,
         highlight: true,
         minLength: 1
-    },
-    {
+    }, {
         name: 'Methods',
         source: methodNames,
         templates: {
             header: '<h3 class="search-bar-header-first">Methods</h3>'
         }
-    },
-    {
+    }, {
         name: 'Files',
         source: sourceFiles,
         templates: {
             header: '<h3 class="search-bar-header">Source Files</h3>'
         }
-    },
-    {
+    }, {
         name: 'Issues',
         source: githubIssues,
         display: 'name',
@@ -87,7 +85,6 @@ $(function initSearchBar() {
         }
 
         var _path = location.pathname.split("/");
-
         var currentPage = _path[_path.length - 1];
         host += "/" + _path.slice(1, -1).join("/") + "/";
 
