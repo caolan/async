@@ -1,0 +1,319 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "concat",
+            "range": [
+              7,
+              13
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 13
+              }
+            }
+          },
+          "range": [
+            7,
+            13
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 13
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/concat",
+        "raw": "'./internal/concat'",
+        "range": [
+          19,
+          38
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 19
+          },
+          "end": {
+            "line": 1,
+            "column": 38
+          }
+        }
+      },
+      "range": [
+        0,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "doSeries",
+            "range": [
+              47,
+              55
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 15
+              }
+            }
+          },
+          "range": [
+            47,
+            55
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 15
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/doSeries",
+        "raw": "'./internal/doSeries'",
+        "range": [
+          61,
+          82
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 21
+          },
+          "end": {
+            "line": 2,
+            "column": 42
+          }
+        }
+      },
+      "range": [
+        40,
+        83
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 43
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * The same as `concat` but runs only a single async operation at a time.\n *\n * @name concatSeries\n * @static\n * @memberOf async\n * @see async.concat\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each item in `coll`.\n * The iteratee is passed a `callback(err, results)` which must be called once\n * it has completed with an error (which can be `null`) and an array of results.\n * Invoked with (item, callback).\n * @param {Function} [callback(err)] - A callback which is called after all the\n * `iteratee` functions have finished, or an error occurs. Results is an array\n * containing the concatenated results of the `iteratee` function. Invoked with\n * (err, results).\n ",
+          "range": [
+            85,
+            856
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 21,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "Identifier",
+          "name": "doSeries",
+          "range": [
+            872,
+            880
+          ],
+          "loc": {
+            "start": {
+              "line": 22,
+              "column": 15
+            },
+            "end": {
+              "line": 22,
+              "column": 23
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Identifier",
+            "name": "concat",
+            "range": [
+              881,
+              887
+            ],
+            "loc": {
+              "start": {
+                "line": 22,
+                "column": 24
+              },
+              "end": {
+                "line": 22,
+                "column": 30
+              }
+            }
+          }
+        ],
+        "range": [
+          872,
+          888
+        ],
+        "loc": {
+          "start": {
+            "line": 22,
+            "column": 15
+          },
+          "end": {
+            "line": 22,
+            "column": 31
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * The same as `concat` but runs only a single async operation at a time.\n *\n * @name concatSeries\n * @static\n * @memberOf async\n * @see async.concat\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each item in `coll`.\n * The iteratee is passed a `callback(err, results)` which must be called once\n * it has completed with an error (which can be `null`) and an array of results.\n * Invoked with (item, callback).\n * @param {Function} [callback(err)] - A callback which is called after all the\n * `iteratee` functions have finished, or an error occurs. Results is an array\n * containing the concatenated results of the `iteratee` function. Invoked with\n * (err, results).\n ",
+            "range": [
+              85,
+              856
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 21,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        857,
+        889
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 0
+        },
+        "end": {
+          "line": 22,
+          "column": 32
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * The same as `concat` but runs only a single async operation at a time.\n *\n * @name concatSeries\n * @static\n * @memberOf async\n * @see async.concat\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each item in `coll`.\n * The iteratee is passed a `callback(err, results)` which must be called once\n * it has completed with an error (which can be `null`) and an array of results.\n * Invoked with (item, callback).\n * @param {Function} [callback(err)] - A callback which is called after all the\n * `iteratee` functions have finished, or an error occurs. Results is an array\n * containing the concatenated results of the `iteratee` function. Invoked with\n * (err, results).\n ",
+          "range": [
+            85,
+            856
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 21,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    889
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 22,
+      "column": 32
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * The same as `concat` but runs only a single async operation at a time.\n *\n * @name concatSeries\n * @static\n * @memberOf async\n * @see async.concat\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each item in `coll`.\n * The iteratee is passed a `callback(err, results)` which must be called once\n * it has completed with an error (which can be `null`) and an array of results.\n * Invoked with (item, callback).\n * @param {Function} [callback(err)] - A callback which is called after all the\n * `iteratee` functions have finished, or an error occurs. Results is an array\n * containing the concatenated results of the `iteratee` function. Invoked with\n * (err, results).\n ",
+      "range": [
+        85,
+        856
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 21,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

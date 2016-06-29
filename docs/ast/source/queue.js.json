@@ -1,0 +1,635 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "queue",
+            "range": [
+              7,
+              12
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 12
+              }
+            }
+          },
+          "range": [
+            7,
+            12
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 12
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/queue",
+        "raw": "'./internal/queue'",
+        "range": [
+          18,
+          36
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 18
+          },
+          "end": {
+            "line": 1,
+            "column": 36
+          }
+        }
+      },
+      "range": [
+        0,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 37
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * A queue of tasks for the worker function to complete.\n * @typedef {Object} QueueObject\n * @property {Function} length - a function returning the number of items\n * waiting to be processed. Invoke with `queue.length()`.\n * @property {Function} started - a function returning whether or not any\n * items have been pushed and processed by the queue. Invoke with `queue.started()`.\n * @property {Function} running - a function returning the number of items\n * currently being processed. Invoke with `queue.running()`.\n * @property {Function} workersList - a function returning the array of items\n * currently being processed. Invoke with `queue.workersList()`.\n * @property {Function} idle - a function returning false if there are items\n * waiting or being processed, or true if not. Invoke with `queue.idle()`.\n * @property {number} concurrency - an integer for determining how many `worker`\n * functions should be run in parallel. This property can be changed after a\n * `queue` is created to alter the concurrency on-the-fly.\n * @property {Function} push - add a new task to the `queue`. Calls `callback`\n * once the `worker` has finished processing the task. Instead of a single task,\n * a `tasks` array can be submitted. The respective callback is used for every\n * task in the list. Invoke with `queue.push(task, [callback])`,\n * @property {Function} unshift - add a new task to the front of the `queue`.\n * Invoke with `queue.unshift(task, [callback])`.\n * @property {Function} saturated - a callback that is called when the number of\n * running workers hits the `concurrency` limit, and further tasks will be\n * queued.\n * @property {Function} unsaturated - a callback that is called when the number\n * of running workers is less than the `concurrency` & `buffer` limits, and\n * further tasks will not be queued.\n * @property {number} buffer - A minimum threshold buffer in order to say that\n * the `queue` is `unsaturated`.\n * @property {Function} empty - a callback that is called when the last item\n * from the `queue` is given to a `worker`.\n * @property {Function} drain - a callback that is called when the last item\n * from the `queue` has returned from the `worker`.\n * @property {Function} error - a callback that is called when a task errors.\n * Has the signature `function(error, task)`.\n * @property {boolean} paused - a boolean for determining whether the queue is\n * in a paused state.\n * @property {Function} pause - a function that pauses the processing of tasks\n * until `resume()` is called. Invoke with `queue.pause()`.\n * @property {Function} resume - a function that resumes the processing of\n * queued tasks when the queue is paused. Invoke with `queue.length()`.\n * @property {Function} kill - a function that removes the `drain` callback and\n * empties remaining tasks from the queue forcing it to go idle. Invoke with `queue.kill()`.\n ",
+          "range": [
+            39,
+            2913
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 47,
+              "column": 3
+            }
+          }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * Creates a `queue` object with the specified `concurrency`. Tasks added to the\n * `queue` are processed in parallel (up to the `concurrency` limit). If all\n * `worker`s are in progress, the task is queued until one becomes available.\n * Once a `worker` completes a `task`, that `task`'s callback is called.\n *\n * @name queue\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {Function} worker - An asynchronous function for processing a queued\n * task, which must call its `callback(err)` argument when finished, with an\n * optional `error` as an argument.  If you want to handle errors from an\n * individual task, pass a callback to `q.push()`. Invoked with\n * (task, callback).\n * @param {number} [concurrency=1] - An `integer` for determining how many\n * `worker` functions should be run in parallel.  If omitted, the concurrency\n * defaults to `1`.  If the concurrency is `0`, an error is thrown.\n * @returns {QueueObject} A queue object to manage the tasks. Callbacks can\n * attached as certain properties to listen for specific events during the\n * lifecycle of the queue.\n * @example\n *\n * // create a queue object with concurrency 2\n * var q = async.queue(function(task, callback) {\n *     console.log('hello ' + task.name);\n *     callback();\n * }, 2);\n *\n * // assign a callback\n * q.drain = function() {\n *     console.log('all items have been processed');\n * };\n *\n * // add some items to the queue\n * q.push({name: 'foo'}, function(err) {\n *     console.log('finished processing foo');\n * });\n * q.push({name: 'bar'}, function (err) {\n *     console.log('finished processing bar');\n * });\n *\n * // add some items to the queue (batch-wise)\n * q.push([{name: 'baz'},{name: 'bay'},{name: 'bax'}], function(err) {\n *     console.log('finished processing item');\n * });\n *\n * // add some items to the front of the queue\n * q.unshift({name: 'bar'}, function (err) {\n *     console.log('finished processing bar');\n * });\n ",
+          "range": [
+            2915,
+            4867
+          ],
+          "loc": {
+            "start": {
+              "line": 49,
+              "column": 0
+            },
+            "end": {
+              "line": 100,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": null,
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "worker",
+            "range": [
+              4893,
+              4899
+            ],
+            "loc": {
+              "start": {
+                "line": 101,
+                "column": 25
+              },
+              "end": {
+                "line": 101,
+                "column": 31
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "concurrency",
+            "range": [
+              4901,
+              4912
+            ],
+            "loc": {
+              "start": {
+                "line": 101,
+                "column": 33
+              },
+              "end": {
+                "line": 101,
+                "column": 44
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "Identifier",
+                  "name": "queue",
+                  "range": [
+                    4927,
+                    4932
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 102,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 102,
+                      "column": 16
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "FunctionExpression",
+                    "id": null,
+                    "params": [
+                      {
+                        "type": "Identifier",
+                        "name": "items",
+                        "range": [
+                          4943,
+                          4948
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 102,
+                            "column": 27
+                          },
+                          "end": {
+                            "line": 102,
+                            "column": 32
+                          }
+                        }
+                      },
+                      {
+                        "type": "Identifier",
+                        "name": "cb",
+                        "range": [
+                          4950,
+                          4952
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 102,
+                            "column": 34
+                          },
+                          "end": {
+                            "line": 102,
+                            "column": 36
+                          }
+                        }
+                      }
+                    ],
+                    "body": {
+                      "type": "BlockStatement",
+                      "body": [
+                        {
+                          "type": "ExpressionStatement",
+                          "expression": {
+                            "type": "CallExpression",
+                            "callee": {
+                              "type": "Identifier",
+                              "name": "worker",
+                              "range": [
+                                4964,
+                                4970
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 103,
+                                  "column": 8
+                                },
+                                "end": {
+                                  "line": 103,
+                                  "column": 14
+                                }
+                              }
+                            },
+                            "arguments": [
+                              {
+                                "type": "MemberExpression",
+                                "computed": true,
+                                "object": {
+                                  "type": "Identifier",
+                                  "name": "items",
+                                  "range": [
+                                    4971,
+                                    4976
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 103,
+                                      "column": 15
+                                    },
+                                    "end": {
+                                      "line": 103,
+                                      "column": 20
+                                    }
+                                  }
+                                },
+                                "property": {
+                                  "type": "Literal",
+                                  "value": 0,
+                                  "raw": "0",
+                                  "range": [
+                                    4977,
+                                    4978
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 103,
+                                      "column": 21
+                                    },
+                                    "end": {
+                                      "line": 103,
+                                      "column": 22
+                                    }
+                                  }
+                                },
+                                "range": [
+                                  4971,
+                                  4979
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 103,
+                                    "column": 15
+                                  },
+                                  "end": {
+                                    "line": 103,
+                                    "column": 23
+                                  }
+                                }
+                              },
+                              {
+                                "type": "Identifier",
+                                "name": "cb",
+                                "range": [
+                                  4981,
+                                  4983
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 103,
+                                    "column": 25
+                                  },
+                                  "end": {
+                                    "line": 103,
+                                    "column": 27
+                                  }
+                                }
+                              }
+                            ],
+                            "range": [
+                              4964,
+                              4984
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 103,
+                                "column": 8
+                              },
+                              "end": {
+                                "line": 103,
+                                "column": 28
+                              }
+                            }
+                          },
+                          "range": [
+                            4964,
+                            4985
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 103,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 103,
+                              "column": 29
+                            }
+                          }
+                        }
+                      ],
+                      "range": [
+                        4954,
+                        4991
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 102,
+                          "column": 38
+                        },
+                        "end": {
+                          "line": 104,
+                          "column": 5
+                        }
+                      }
+                    },
+                    "generator": false,
+                    "expression": false,
+                    "range": [
+                      4933,
+                      4991
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 102,
+                        "column": 17
+                      },
+                      "end": {
+                        "line": 104,
+                        "column": 5
+                      }
+                    }
+                  },
+                  {
+                    "type": "Identifier",
+                    "name": "concurrency",
+                    "range": [
+                      4993,
+                      5004
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 104,
+                        "column": 7
+                      },
+                      "end": {
+                        "line": 104,
+                        "column": 18
+                      }
+                    }
+                  },
+                  {
+                    "type": "Literal",
+                    "value": 1,
+                    "raw": "1",
+                    "range": [
+                      5006,
+                      5007
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 104,
+                        "column": 20
+                      },
+                      "end": {
+                        "line": 104,
+                        "column": 21
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  4927,
+                  5008
+                ],
+                "loc": {
+                  "start": {
+                    "line": 102,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 104,
+                    "column": 22
+                  }
+                }
+              },
+              "range": [
+                4920,
+                5009
+              ],
+              "loc": {
+                "start": {
+                  "line": 102,
+                  "column": 4
+                },
+                "end": {
+                  "line": 104,
+                  "column": 23
+                }
+              }
+            }
+          ],
+          "range": [
+            4914,
+            5011
+          ],
+          "loc": {
+            "start": {
+              "line": 101,
+              "column": 46
+            },
+            "end": {
+              "line": 105,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          4883,
+          5011
+        ],
+        "loc": {
+          "start": {
+            "line": 101,
+            "column": 15
+          },
+          "end": {
+            "line": 105,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * A queue of tasks for the worker function to complete.\n * @typedef {Object} QueueObject\n * @property {Function} length - a function returning the number of items\n * waiting to be processed. Invoke with `queue.length()`.\n * @property {Function} started - a function returning whether or not any\n * items have been pushed and processed by the queue. Invoke with `queue.started()`.\n * @property {Function} running - a function returning the number of items\n * currently being processed. Invoke with `queue.running()`.\n * @property {Function} workersList - a function returning the array of items\n * currently being processed. Invoke with `queue.workersList()`.\n * @property {Function} idle - a function returning false if there are items\n * waiting or being processed, or true if not. Invoke with `queue.idle()`.\n * @property {number} concurrency - an integer for determining how many `worker`\n * functions should be run in parallel. This property can be changed after a\n * `queue` is created to alter the concurrency on-the-fly.\n * @property {Function} push - add a new task to the `queue`. Calls `callback`\n * once the `worker` has finished processing the task. Instead of a single task,\n * a `tasks` array can be submitted. The respective callback is used for every\n * task in the list. Invoke with `queue.push(task, [callback])`,\n * @property {Function} unshift - add a new task to the front of the `queue`.\n * Invoke with `queue.unshift(task, [callback])`.\n * @property {Function} saturated - a callback that is called when the number of\n * running workers hits the `concurrency` limit, and further tasks will be\n * queued.\n * @property {Function} unsaturated - a callback that is called when the number\n * of running workers is less than the `concurrency` & `buffer` limits, and\n * further tasks will not be queued.\n * @property {number} buffer - A minimum threshold buffer in order to say that\n * the `queue` is `unsaturated`.\n * @property {Function} empty - a callback that is called when the last item\n * from the `queue` is given to a `worker`.\n * @property {Function} drain - a callback that is called when the last item\n * from the `queue` has returned from the `worker`.\n * @property {Function} error - a callback that is called when a task errors.\n * Has the signature `function(error, task)`.\n * @property {boolean} paused - a boolean for determining whether the queue is\n * in a paused state.\n * @property {Function} pause - a function that pauses the processing of tasks\n * until `resume()` is called. Invoke with `queue.pause()`.\n * @property {Function} resume - a function that resumes the processing of\n * queued tasks when the queue is paused. Invoke with `queue.length()`.\n * @property {Function} kill - a function that removes the `drain` callback and\n * empties remaining tasks from the queue forcing it to go idle. Invoke with `queue.kill()`.\n ",
+            "range": [
+              39,
+              2913
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 47,
+                "column": 3
+              }
+            }
+          },
+          {
+            "type": "Block",
+            "value": "*\n * Creates a `queue` object with the specified `concurrency`. Tasks added to the\n * `queue` are processed in parallel (up to the `concurrency` limit). If all\n * `worker`s are in progress, the task is queued until one becomes available.\n * Once a `worker` completes a `task`, that `task`'s callback is called.\n *\n * @name queue\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {Function} worker - An asynchronous function for processing a queued\n * task, which must call its `callback(err)` argument when finished, with an\n * optional `error` as an argument.  If you want to handle errors from an\n * individual task, pass a callback to `q.push()`. Invoked with\n * (task, callback).\n * @param {number} [concurrency=1] - An `integer` for determining how many\n * `worker` functions should be run in parallel.  If omitted, the concurrency\n * defaults to `1`.  If the concurrency is `0`, an error is thrown.\n * @returns {QueueObject} A queue object to manage the tasks. Callbacks can\n * attached as certain properties to listen for specific events during the\n * lifecycle of the queue.\n * @example\n *\n * // create a queue object with concurrency 2\n * var q = async.queue(function(task, callback) {\n *     console.log('hello ' + task.name);\n *     callback();\n * }, 2);\n *\n * // assign a callback\n * q.drain = function() {\n *     console.log('all items have been processed');\n * };\n *\n * // add some items to the queue\n * q.push({name: 'foo'}, function(err) {\n *     console.log('finished processing foo');\n * });\n * q.push({name: 'bar'}, function (err) {\n *     console.log('finished processing bar');\n * });\n *\n * // add some items to the queue (batch-wise)\n * q.push([{name: 'baz'},{name: 'bay'},{name: 'bax'}], function(err) {\n *     console.log('finished processing item');\n * });\n *\n * // add some items to the front of the queue\n * q.unshift({name: 'bar'}, function (err) {\n *     console.log('finished processing bar');\n * });\n ",
+            "range": [
+              2915,
+              4867
+            ],
+            "loc": {
+              "start": {
+                "line": 49,
+                "column": 0
+              },
+              "end": {
+                "line": 100,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        4868,
+        5011
+      ],
+      "loc": {
+        "start": {
+          "line": 101,
+          "column": 0
+        },
+        "end": {
+          "line": 105,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * A queue of tasks for the worker function to complete.\n * @typedef {Object} QueueObject\n * @property {Function} length - a function returning the number of items\n * waiting to be processed. Invoke with `queue.length()`.\n * @property {Function} started - a function returning whether or not any\n * items have been pushed and processed by the queue. Invoke with `queue.started()`.\n * @property {Function} running - a function returning the number of items\n * currently being processed. Invoke with `queue.running()`.\n * @property {Function} workersList - a function returning the array of items\n * currently being processed. Invoke with `queue.workersList()`.\n * @property {Function} idle - a function returning false if there are items\n * waiting or being processed, or true if not. Invoke with `queue.idle()`.\n * @property {number} concurrency - an integer for determining how many `worker`\n * functions should be run in parallel. This property can be changed after a\n * `queue` is created to alter the concurrency on-the-fly.\n * @property {Function} push - add a new task to the `queue`. Calls `callback`\n * once the `worker` has finished processing the task. Instead of a single task,\n * a `tasks` array can be submitted. The respective callback is used for every\n * task in the list. Invoke with `queue.push(task, [callback])`,\n * @property {Function} unshift - add a new task to the front of the `queue`.\n * Invoke with `queue.unshift(task, [callback])`.\n * @property {Function} saturated - a callback that is called when the number of\n * running workers hits the `concurrency` limit, and further tasks will be\n * queued.\n * @property {Function} unsaturated - a callback that is called when the number\n * of running workers is less than the `concurrency` & `buffer` limits, and\n * further tasks will not be queued.\n * @property {number} buffer - A minimum threshold buffer in order to say that\n * the `queue` is `unsaturated`.\n * @property {Function} empty - a callback that is called when the last item\n * from the `queue` is given to a `worker`.\n * @property {Function} drain - a callback that is called when the last item\n * from the `queue` has returned from the `worker`.\n * @property {Function} error - a callback that is called when a task errors.\n * Has the signature `function(error, task)`.\n * @property {boolean} paused - a boolean for determining whether the queue is\n * in a paused state.\n * @property {Function} pause - a function that pauses the processing of tasks\n * until `resume()` is called. Invoke with `queue.pause()`.\n * @property {Function} resume - a function that resumes the processing of\n * queued tasks when the queue is paused. Invoke with `queue.length()`.\n * @property {Function} kill - a function that removes the `drain` callback and\n * empties remaining tasks from the queue forcing it to go idle. Invoke with `queue.kill()`.\n ",
+          "range": [
+            39,
+            2913
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 47,
+              "column": 3
+            }
+          }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * Creates a `queue` object with the specified `concurrency`. Tasks added to the\n * `queue` are processed in parallel (up to the `concurrency` limit). If all\n * `worker`s are in progress, the task is queued until one becomes available.\n * Once a `worker` completes a `task`, that `task`'s callback is called.\n *\n * @name queue\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {Function} worker - An asynchronous function for processing a queued\n * task, which must call its `callback(err)` argument when finished, with an\n * optional `error` as an argument.  If you want to handle errors from an\n * individual task, pass a callback to `q.push()`. Invoked with\n * (task, callback).\n * @param {number} [concurrency=1] - An `integer` for determining how many\n * `worker` functions should be run in parallel.  If omitted, the concurrency\n * defaults to `1`.  If the concurrency is `0`, an error is thrown.\n * @returns {QueueObject} A queue object to manage the tasks. Callbacks can\n * attached as certain properties to listen for specific events during the\n * lifecycle of the queue.\n * @example\n *\n * // create a queue object with concurrency 2\n * var q = async.queue(function(task, callback) {\n *     console.log('hello ' + task.name);\n *     callback();\n * }, 2);\n *\n * // assign a callback\n * q.drain = function() {\n *     console.log('all items have been processed');\n * };\n *\n * // add some items to the queue\n * q.push({name: 'foo'}, function(err) {\n *     console.log('finished processing foo');\n * });\n * q.push({name: 'bar'}, function (err) {\n *     console.log('finished processing bar');\n * });\n *\n * // add some items to the queue (batch-wise)\n * q.push([{name: 'baz'},{name: 'bay'},{name: 'bax'}], function(err) {\n *     console.log('finished processing item');\n * });\n *\n * // add some items to the front of the queue\n * q.unshift({name: 'bar'}, function (err) {\n *     console.log('finished processing bar');\n * });\n ",
+          "range": [
+            2915,
+            4867
+          ],
+          "loc": {
+            "start": {
+              "line": 49,
+              "column": 0
+            },
+            "end": {
+              "line": 100,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    5011
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 105,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * A queue of tasks for the worker function to complete.\n * @typedef {Object} QueueObject\n * @property {Function} length - a function returning the number of items\n * waiting to be processed. Invoke with `queue.length()`.\n * @property {Function} started - a function returning whether or not any\n * items have been pushed and processed by the queue. Invoke with `queue.started()`.\n * @property {Function} running - a function returning the number of items\n * currently being processed. Invoke with `queue.running()`.\n * @property {Function} workersList - a function returning the array of items\n * currently being processed. Invoke with `queue.workersList()`.\n * @property {Function} idle - a function returning false if there are items\n * waiting or being processed, or true if not. Invoke with `queue.idle()`.\n * @property {number} concurrency - an integer for determining how many `worker`\n * functions should be run in parallel. This property can be changed after a\n * `queue` is created to alter the concurrency on-the-fly.\n * @property {Function} push - add a new task to the `queue`. Calls `callback`\n * once the `worker` has finished processing the task. Instead of a single task,\n * a `tasks` array can be submitted. The respective callback is used for every\n * task in the list. Invoke with `queue.push(task, [callback])`,\n * @property {Function} unshift - add a new task to the front of the `queue`.\n * Invoke with `queue.unshift(task, [callback])`.\n * @property {Function} saturated - a callback that is called when the number of\n * running workers hits the `concurrency` limit, and further tasks will be\n * queued.\n * @property {Function} unsaturated - a callback that is called when the number\n * of running workers is less than the `concurrency` & `buffer` limits, and\n * further tasks will not be queued.\n * @property {number} buffer - A minimum threshold buffer in order to say that\n * the `queue` is `unsaturated`.\n * @property {Function} empty - a callback that is called when the last item\n * from the `queue` is given to a `worker`.\n * @property {Function} drain - a callback that is called when the last item\n * from the `queue` has returned from the `worker`.\n * @property {Function} error - a callback that is called when a task errors.\n * Has the signature `function(error, task)`.\n * @property {boolean} paused - a boolean for determining whether the queue is\n * in a paused state.\n * @property {Function} pause - a function that pauses the processing of tasks\n * until `resume()` is called. Invoke with `queue.pause()`.\n * @property {Function} resume - a function that resumes the processing of\n * queued tasks when the queue is paused. Invoke with `queue.length()`.\n * @property {Function} kill - a function that removes the `drain` callback and\n * empties remaining tasks from the queue forcing it to go idle. Invoke with `queue.kill()`.\n ",
+      "range": [
+        39,
+        2913
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 47,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n * Creates a `queue` object with the specified `concurrency`. Tasks added to the\n * `queue` are processed in parallel (up to the `concurrency` limit). If all\n * `worker`s are in progress, the task is queued until one becomes available.\n * Once a `worker` completes a `task`, that `task`'s callback is called.\n *\n * @name queue\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {Function} worker - An asynchronous function for processing a queued\n * task, which must call its `callback(err)` argument when finished, with an\n * optional `error` as an argument.  If you want to handle errors from an\n * individual task, pass a callback to `q.push()`. Invoked with\n * (task, callback).\n * @param {number} [concurrency=1] - An `integer` for determining how many\n * `worker` functions should be run in parallel.  If omitted, the concurrency\n * defaults to `1`.  If the concurrency is `0`, an error is thrown.\n * @returns {QueueObject} A queue object to manage the tasks. Callbacks can\n * attached as certain properties to listen for specific events during the\n * lifecycle of the queue.\n * @example\n *\n * // create a queue object with concurrency 2\n * var q = async.queue(function(task, callback) {\n *     console.log('hello ' + task.name);\n *     callback();\n * }, 2);\n *\n * // assign a callback\n * q.drain = function() {\n *     console.log('all items have been processed');\n * };\n *\n * // add some items to the queue\n * q.push({name: 'foo'}, function(err) {\n *     console.log('finished processing foo');\n * });\n * q.push({name: 'bar'}, function (err) {\n *     console.log('finished processing bar');\n * });\n *\n * // add some items to the queue (batch-wise)\n * q.push([{name: 'baz'},{name: 'bay'},{name: 'bax'}], function(err) {\n *     console.log('finished processing item');\n * });\n *\n * // add some items to the front of the queue\n * q.unshift({name: 'bar'}, function (err) {\n *     console.log('finished processing bar');\n * });\n ",
+      "range": [
+        2915,
+        4867
+      ],
+      "loc": {
+        "start": {
+          "line": 49,
+          "column": 0
+        },
+        "end": {
+          "line": 100,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

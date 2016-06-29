@@ -1,0 +1,430 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "unmemoize",
+          "range": [
+            365,
+            374
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 25
+            },
+            "end": {
+              "line": 13,
+              "column": 34
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "fn",
+            "range": [
+              375,
+              377
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 35
+              },
+              "end": {
+                "line": 13,
+                "column": 37
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "FunctionExpression",
+                "id": null,
+                "params": [],
+                "body": {
+                  "type": "BlockStatement",
+                  "body": [
+                    {
+                      "type": "ReturnStatement",
+                      "argument": {
+                        "type": "CallExpression",
+                        "callee": {
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "LogicalExpression",
+                            "operator": "||",
+                            "left": {
+                              "type": "MemberExpression",
+                              "computed": false,
+                              "object": {
+                                "type": "Identifier",
+                                "name": "fn",
+                                "range": [
+                                  422,
+                                  424
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 15,
+                                    "column": 16
+                                  },
+                                  "end": {
+                                    "line": 15,
+                                    "column": 18
+                                  }
+                                }
+                              },
+                              "property": {
+                                "type": "Identifier",
+                                "name": "unmemoized",
+                                "range": [
+                                  425,
+                                  435
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 15,
+                                    "column": 19
+                                  },
+                                  "end": {
+                                    "line": 15,
+                                    "column": 29
+                                  }
+                                }
+                              },
+                              "range": [
+                                422,
+                                435
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 15,
+                                  "column": 16
+                                },
+                                "end": {
+                                  "line": 15,
+                                  "column": 29
+                                }
+                              }
+                            },
+                            "right": {
+                              "type": "Identifier",
+                              "name": "fn",
+                              "range": [
+                                439,
+                                441
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 15,
+                                  "column": 33
+                                },
+                                "end": {
+                                  "line": 15,
+                                  "column": 35
+                                }
+                              }
+                            },
+                            "range": [
+                              422,
+                              441
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 15,
+                                "column": 16
+                              },
+                              "end": {
+                                "line": 15,
+                                "column": 35
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "apply",
+                            "range": [
+                              443,
+                              448
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 15,
+                                "column": 37
+                              },
+                              "end": {
+                                "line": 15,
+                                "column": 42
+                              }
+                            }
+                          },
+                          "range": [
+                            421,
+                            448
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 15,
+                              "column": 15
+                            },
+                            "end": {
+                              "line": 15,
+                              "column": 42
+                            }
+                          }
+                        },
+                        "arguments": [
+                          {
+                            "type": "Literal",
+                            "value": null,
+                            "raw": "null",
+                            "range": [
+                              449,
+                              453
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 15,
+                                "column": 43
+                              },
+                              "end": {
+                                "line": 15,
+                                "column": 47
+                              }
+                            }
+                          },
+                          {
+                            "type": "Identifier",
+                            "name": "arguments",
+                            "range": [
+                              455,
+                              464
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 15,
+                                "column": 49
+                              },
+                              "end": {
+                                "line": 15,
+                                "column": 58
+                              }
+                            }
+                          }
+                        ],
+                        "range": [
+                          421,
+                          465
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 15,
+                            "column": 15
+                          },
+                          "end": {
+                            "line": 15,
+                            "column": 59
+                          }
+                        }
+                      },
+                      "range": [
+                        414,
+                        466
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 15,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 15,
+                          "column": 60
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    404,
+                    472
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 14,
+                      "column": 23
+                    },
+                    "end": {
+                      "line": 16,
+                      "column": 5
+                    }
+                  }
+                },
+                "generator": false,
+                "expression": false,
+                "range": [
+                  392,
+                  472
+                ],
+                "loc": {
+                  "start": {
+                    "line": 14,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 16,
+                    "column": 5
+                  }
+                }
+              },
+              "range": [
+                385,
+                473
+              ],
+              "loc": {
+                "start": {
+                  "line": 14,
+                  "column": 4
+                },
+                "end": {
+                  "line": 16,
+                  "column": 6
+                }
+              }
+            }
+          ],
+          "range": [
+            379,
+            475
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 39
+            },
+            "end": {
+              "line": 17,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          356,
+          475
+        ],
+        "loc": {
+          "start": {
+            "line": 13,
+            "column": 16
+          },
+          "end": {
+            "line": 17,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Undoes a {@link async.memoize}d function, reverting it to the original,\n * unmemoized form. Handy for testing.\n *\n * @name unmemoize\n * @static\n * @memberOf async\n * @see async.memoize\n * @category Util\n * @param {Function} fn - the memoized function\n * @returns {Function} a function that calls the original unmemoized function\n ",
+            "range": [
+              0,
+              339
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 0
+              },
+              "end": {
+                "line": 12,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        340,
+        475
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 0
+        },
+        "end": {
+          "line": 17,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Undoes a {@link async.memoize}d function, reverting it to the original,\n * unmemoized form. Handy for testing.\n *\n * @name unmemoize\n * @static\n * @memberOf async\n * @see async.memoize\n * @category Util\n * @param {Function} fn - the memoized function\n * @returns {Function} a function that calls the original unmemoized function\n ",
+          "range": [
+            0,
+            339
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 12,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    340,
+    475
+  ],
+  "loc": {
+    "start": {
+      "line": 13,
+      "column": 0
+    },
+    "end": {
+      "line": 17,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Undoes a {@link async.memoize}d function, reverting it to the original,\n * unmemoized form. Handy for testing.\n *\n * @name unmemoize\n * @static\n * @memberOf async\n * @see async.memoize\n * @category Util\n * @param {Function} fn - the memoized function\n * @returns {Function} a function that calls the original unmemoized function\n ",
+      "range": [
+        0,
+        339
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 12,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

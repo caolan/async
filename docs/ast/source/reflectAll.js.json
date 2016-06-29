@@ -1,0 +1,375 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "reflect",
+            "range": [
+              7,
+              14
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 14
+              }
+            }
+          },
+          "range": [
+            7,
+            14
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 14
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./reflect",
+        "raw": "'./reflect'",
+        "range": [
+          20,
+          31
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 20
+          },
+          "end": {
+            "line": 1,
+            "column": 31
+          }
+        }
+      },
+      "range": [
+        0,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 32
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * A helper function that wraps an array of functions with reflect.\n *\n * @name reflectAll\n * @static\n * @memberOf async\n * @see async.reflect\n * @category Util\n * @param {Array} tasks - The array of functions to wrap in `async.reflect`.\n * @returns {Array} Returns an array of functions, each function wrapped in\n * `async.reflect`\n * @example\n *\n * let tasks = [\n *     function(callback) {\n *         setTimeout(function() {\n *             callback(null, 'one');\n *         }, 200);\n *     },\n *     function(callback) {\n *         // do some more stuff but error ...\n *         callback(new Error('bad stuff happened'));\n *     },\n *     function(callback) {\n *         setTimeout(function() {\n *             callback(null, 'two');\n *         }, 100);\n *     }\n * ];\n *\n * async.parallel(async.reflectAll(tasks),\n * // optional callback\n * function(err, results) {\n *     // values\n *     // results[0].value = 'one'\n *     // results[1].error = Error('bad stuff happened')\n *     // results[2].value = 'two'\n * });\n ",
+          "range": [
+            34,
+            1061
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 41,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "reflectAll",
+          "range": [
+            1086,
+            1096
+          ],
+          "loc": {
+            "start": {
+              "line": 42,
+              "column": 24
+            },
+            "end": {
+              "line": 42,
+              "column": 34
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "tasks",
+            "range": [
+              1097,
+              1102
+            ],
+            "loc": {
+              "start": {
+                "line": 42,
+                "column": 35
+              },
+              "end": {
+                "line": 42,
+                "column": 40
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "MemberExpression",
+                  "computed": false,
+                  "object": {
+                    "type": "Identifier",
+                    "name": "tasks",
+                    "range": [
+                      1117,
+                      1122
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 43,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 43,
+                        "column": 16
+                      }
+                    }
+                  },
+                  "property": {
+                    "type": "Identifier",
+                    "name": "map",
+                    "range": [
+                      1123,
+                      1126
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 43,
+                        "column": 17
+                      },
+                      "end": {
+                        "line": 43,
+                        "column": 20
+                      }
+                    }
+                  },
+                  "range": [
+                    1117,
+                    1126
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 43,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 43,
+                      "column": 20
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "Identifier",
+                    "name": "reflect",
+                    "range": [
+                      1127,
+                      1134
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 43,
+                        "column": 21
+                      },
+                      "end": {
+                        "line": 43,
+                        "column": 28
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1117,
+                  1135
+                ],
+                "loc": {
+                  "start": {
+                    "line": 43,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 43,
+                    "column": 29
+                  }
+                }
+              },
+              "range": [
+                1110,
+                1136
+              ],
+              "loc": {
+                "start": {
+                  "line": 43,
+                  "column": 4
+                },
+                "end": {
+                  "line": 43,
+                  "column": 30
+                }
+              }
+            }
+          ],
+          "range": [
+            1104,
+            1138
+          ],
+          "loc": {
+            "start": {
+              "line": 42,
+              "column": 42
+            },
+            "end": {
+              "line": 44,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          1077,
+          1138
+        ],
+        "loc": {
+          "start": {
+            "line": 42,
+            "column": 15
+          },
+          "end": {
+            "line": 44,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * A helper function that wraps an array of functions with reflect.\n *\n * @name reflectAll\n * @static\n * @memberOf async\n * @see async.reflect\n * @category Util\n * @param {Array} tasks - The array of functions to wrap in `async.reflect`.\n * @returns {Array} Returns an array of functions, each function wrapped in\n * `async.reflect`\n * @example\n *\n * let tasks = [\n *     function(callback) {\n *         setTimeout(function() {\n *             callback(null, 'one');\n *         }, 200);\n *     },\n *     function(callback) {\n *         // do some more stuff but error ...\n *         callback(new Error('bad stuff happened'));\n *     },\n *     function(callback) {\n *         setTimeout(function() {\n *             callback(null, 'two');\n *         }, 100);\n *     }\n * ];\n *\n * async.parallel(async.reflectAll(tasks),\n * // optional callback\n * function(err, results) {\n *     // values\n *     // results[0].value = 'one'\n *     // results[1].error = Error('bad stuff happened')\n *     // results[2].value = 'two'\n * });\n ",
+            "range": [
+              34,
+              1061
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 41,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        1062,
+        1138
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 0
+        },
+        "end": {
+          "line": 44,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * A helper function that wraps an array of functions with reflect.\n *\n * @name reflectAll\n * @static\n * @memberOf async\n * @see async.reflect\n * @category Util\n * @param {Array} tasks - The array of functions to wrap in `async.reflect`.\n * @returns {Array} Returns an array of functions, each function wrapped in\n * `async.reflect`\n * @example\n *\n * let tasks = [\n *     function(callback) {\n *         setTimeout(function() {\n *             callback(null, 'one');\n *         }, 200);\n *     },\n *     function(callback) {\n *         // do some more stuff but error ...\n *         callback(new Error('bad stuff happened'));\n *     },\n *     function(callback) {\n *         setTimeout(function() {\n *             callback(null, 'two');\n *         }, 100);\n *     }\n * ];\n *\n * async.parallel(async.reflectAll(tasks),\n * // optional callback\n * function(err, results) {\n *     // values\n *     // results[0].value = 'one'\n *     // results[1].error = Error('bad stuff happened')\n *     // results[2].value = 'two'\n * });\n ",
+          "range": [
+            34,
+            1061
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 41,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1138
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 44,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * A helper function that wraps an array of functions with reflect.\n *\n * @name reflectAll\n * @static\n * @memberOf async\n * @see async.reflect\n * @category Util\n * @param {Array} tasks - The array of functions to wrap in `async.reflect`.\n * @returns {Array} Returns an array of functions, each function wrapped in\n * `async.reflect`\n * @example\n *\n * let tasks = [\n *     function(callback) {\n *         setTimeout(function() {\n *             callback(null, 'one');\n *         }, 200);\n *     },\n *     function(callback) {\n *         // do some more stuff but error ...\n *         callback(new Error('bad stuff happened'));\n *     },\n *     function(callback) {\n *         setTimeout(function() {\n *             callback(null, 'two');\n *         }, 100);\n *     }\n * ];\n *\n * async.parallel(async.reflectAll(tasks),\n * // optional callback\n * function(err, results) {\n *     // values\n *     // results[0].value = 'one'\n *     // results[1].error = Error('bad stuff happened')\n *     // results[2].value = 'two'\n * });\n ",
+      "range": [
+        34,
+        1061
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 41,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

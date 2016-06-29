@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">lib/waterfall.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/caolan/async.git" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-asyncify">asyncify</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-auto">auto</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-autoInject">autoInject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cargo">cargo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-compose">compose</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doDuring">doDuring</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doUntil">doUntil</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doWhilst">doWhilst</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-during">during</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-eachLimit">eachLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-eachOfLimit">eachOfLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-ensureAsync">ensureAsync</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-forever">forever</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-iterator">iterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-mapValuesLimit">mapValuesLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-memoize">memoize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parallelLimit">parallelLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-priorityQueue">priorityQueue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-queue">queue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-race">race</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reduce">reduce</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reduceRight">reduceRight</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reflect">reflect</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reflectAll">reflectAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-retry">retry</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-retryable">retryable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-series">series</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sortBy">sortBy</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-timeout">timeout</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-timeLimit">timeLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-transform">transform</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-unmemoize">unmemoize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-until">until</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-waterfall">waterfall</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-whilst">whilst</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-CargoObject">CargoObject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-QueueObject">QueueObject</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">lib/waterfall.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import isArray from &apos;lodash/isArray&apos;;
+import noop from &apos;lodash/noop&apos;;
+import once from &apos;./internal/once&apos;;
+import rest from &apos;lodash/rest&apos;;
+
+import onlyOnce from &apos;./internal/onlyOnce&apos;;
+
+/**
+ * Runs the `tasks` array of functions in series, each passing their results to
+ * the next in the array. However, if any of the `tasks` pass an error to their
+ * own callback, the next function is not executed, and the main `callback` is
+ * immediately called with the error.
+ *
+ * @name waterfall
+ * @static
+ * @memberOf async
+ * @category Control Flow
+ * @param {Array} tasks - An array of functions to run, each function is passed
+ * a `callback(err, result1, result2, ...)` it must call on completion. The
+ * first argument is an error (which can be `null`) and any further arguments
+ * will be passed as arguments in order to the next task.
+ * @param {Function} [callback] - An optional callback to run once all the
+ * functions have completed. This will be passed the results of the last task&apos;s
+ * callback. Invoked with (err, [results]).
+ * @returns undefined
+ * @example
+ *
+ * async.waterfall([
+ *     function(callback) {
+ *         callback(null, &apos;one&apos;, &apos;two&apos;);
+ *     },
+ *     function(arg1, arg2, callback) {
+ *         // arg1 now equals &apos;one&apos; and arg2 now equals &apos;two&apos;
+ *         callback(null, &apos;three&apos;);
+ *     },
+ *     function(arg1, callback) {
+ *         // arg1 now equals &apos;three&apos;
+ *         callback(null, &apos;done&apos;);
+ *     }
+ * ], function (err, result) {
+ *     // result now equals &apos;done&apos;
+ * });
+ *
+ * // Or, with named functions:
+ * async.waterfall([
+ *     myFirstFunction,
+ *     mySecondFunction,
+ *     myLastFunction,
+ * ], function (err, result) {
+ *     // result now equals &apos;done&apos;
+ * });
+ * function myFirstFunction(callback) {
+ *     callback(null, &apos;one&apos;, &apos;two&apos;);
+ * }
+ * function mySecondFunction(arg1, arg2, callback) {
+ *     // arg1 now equals &apos;one&apos; and arg2 now equals &apos;two&apos;
+ *     callback(null, &apos;three&apos;);
+ * }
+ * function myLastFunction(arg1, callback) {
+ *     // arg1 now equals &apos;three&apos;
+ *     callback(null, &apos;done&apos;);
+ * }
+ */
+export default  function(tasks, callback) {
+    callback = once(callback || noop);
+    if (!isArray(tasks)) return callback(new Error(&apos;First argument to waterfall must be an array of functions&apos;));
+    if (!tasks.length) return callback();
+    var taskIndex = 0;
+
+    function nextTask(args) {
+        if (taskIndex === tasks.length) {
+            return callback.apply(null, [null].concat(args));
+        }
+
+        var taskCallback = onlyOnce(rest(function(err, args) {
+            if (err) {
+                return callback.apply(null, [err].concat(args));
+            }
+            nextTask(args);
+        }));
+
+        args.push(taskCallback);
+
+        var task = tasks[taskIndex++];
+        task.apply(null, args);
+    }
+
+    nextTask([]);
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

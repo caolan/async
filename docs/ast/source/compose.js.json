@@ -1,0 +1,631 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "seq",
+            "range": [
+              7,
+              10
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 10
+              }
+            }
+          },
+          "range": [
+            7,
+            10
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 10
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./seq",
+        "raw": "'./seq'",
+        "range": [
+          16,
+          23
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 16
+          },
+          "end": {
+            "line": 1,
+            "column": 23
+          }
+        }
+      },
+      "range": [
+        0,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "VariableDeclaration",
+      "declarations": [
+        {
+          "type": "VariableDeclarator",
+          "id": {
+            "type": "Identifier",
+            "name": "reverse",
+            "range": [
+              30,
+              37
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 4
+              },
+              "end": {
+                "line": 3,
+                "column": 11
+              }
+            }
+          },
+          "init": {
+            "type": "MemberExpression",
+            "computed": false,
+            "object": {
+              "type": "MemberExpression",
+              "computed": false,
+              "object": {
+                "type": "Identifier",
+                "name": "Array",
+                "range": [
+                  40,
+                  45
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 14
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 19
+                  }
+                }
+              },
+              "property": {
+                "type": "Identifier",
+                "name": "prototype",
+                "range": [
+                  46,
+                  55
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 20
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 29
+                  }
+                }
+              },
+              "range": [
+                40,
+                55
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 14
+                },
+                "end": {
+                  "line": 3,
+                  "column": 29
+                }
+              }
+            },
+            "property": {
+              "type": "Identifier",
+              "name": "reverse",
+              "range": [
+                56,
+                63
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 30
+                },
+                "end": {
+                  "line": 3,
+                  "column": 37
+                }
+              }
+            },
+            "range": [
+              40,
+              63
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 14
+              },
+              "end": {
+                "line": 3,
+                "column": 37
+              }
+            }
+          },
+          "range": [
+            30,
+            63
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 4
+            },
+            "end": {
+              "line": 3,
+              "column": 37
+            }
+          }
+        }
+      ],
+      "kind": "var",
+      "range": [
+        26,
+        64
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 38
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Creates a function which is a composition of the passed asynchronous\n * functions. Each function consumes the return value of the function that\n * follows. Composing functions `f()`, `g()`, and `h()` would produce the result\n * of `f(g(h()))`, only this version uses callbacks to obtain the return values.\n *\n * Each function is executed with the `this` binding of the composed function.\n *\n * @name compose\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {...Function} functions - the asynchronous functions to compose\n * @returns {Function} an asynchronous function that is the composed\n * asynchronous `functions`\n * @example\n *\n * function add1(n, callback) {\n *     setTimeout(function () {\n *         callback(null, n + 1);\n *     }, 10);\n * }\n *\n * function mul3(n, callback) {\n *     setTimeout(function () {\n *         callback(null, n * 3);\n *     }, 10);\n * }\n *\n * var add1mul3 = async.compose(mul3, add1);\n * add1mul3(4, function (err, result) {\n *     // result now equals 15\n * });\n ",
+          "range": [
+            66,
+            1091
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 38,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "compose",
+          "range": [
+            1116,
+            1123
+          ],
+          "loc": {
+            "start": {
+              "line": 39,
+              "column": 24
+            },
+            "end": {
+              "line": 39,
+              "column": 31
+            }
+          }
+        },
+        "params": [],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "MemberExpression",
+                  "computed": false,
+                  "object": {
+                    "type": "Identifier",
+                    "name": "seq",
+                    "range": [
+                      1157,
+                      1160
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 40,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 40,
+                        "column": 14
+                      }
+                    }
+                  },
+                  "property": {
+                    "type": "Identifier",
+                    "name": "apply",
+                    "range": [
+                      1161,
+                      1166
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 40,
+                        "column": 15
+                      },
+                      "end": {
+                        "line": 40,
+                        "column": 20
+                      }
+                    }
+                  },
+                  "range": [
+                    1157,
+                    1166
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 40,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 40,
+                      "column": 20
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "Literal",
+                    "value": null,
+                    "raw": "null",
+                    "range": [
+                      1167,
+                      1171
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 40,
+                        "column": 21
+                      },
+                      "end": {
+                        "line": 40,
+                        "column": 25
+                      }
+                    }
+                  },
+                  {
+                    "type": "CallExpression",
+                    "callee": {
+                      "type": "MemberExpression",
+                      "computed": false,
+                      "object": {
+                        "type": "Identifier",
+                        "name": "reverse",
+                        "range": [
+                          1173,
+                          1180
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 40,
+                            "column": 27
+                          },
+                          "end": {
+                            "line": 40,
+                            "column": 34
+                          }
+                        }
+                      },
+                      "property": {
+                        "type": "Identifier",
+                        "name": "call",
+                        "range": [
+                          1181,
+                          1185
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 40,
+                            "column": 35
+                          },
+                          "end": {
+                            "line": 40,
+                            "column": 39
+                          }
+                        }
+                      },
+                      "range": [
+                        1173,
+                        1185
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 40,
+                          "column": 27
+                        },
+                        "end": {
+                          "line": 40,
+                          "column": 39
+                        }
+                      }
+                    },
+                    "arguments": [
+                      {
+                        "type": "Identifier",
+                        "name": "arguments",
+                        "range": [
+                          1186,
+                          1195
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 40,
+                            "column": 40
+                          },
+                          "end": {
+                            "line": 40,
+                            "column": 49
+                          }
+                        }
+                      }
+                    ],
+                    "range": [
+                      1173,
+                      1196
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 40,
+                        "column": 27
+                      },
+                      "end": {
+                        "line": 40,
+                        "column": 50
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1157,
+                  1197
+                ],
+                "loc": {
+                  "start": {
+                    "line": 40,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 40,
+                    "column": 51
+                  }
+                }
+              },
+              "range": [
+                1150,
+                1198
+              ],
+              "loc": {
+                "start": {
+                  "line": 40,
+                  "column": 4
+                },
+                "end": {
+                  "line": 40,
+                  "column": 52
+                }
+              }
+            }
+          ],
+          "range": [
+            1144,
+            1200
+          ],
+          "loc": {
+            "start": {
+              "line": 39,
+              "column": 52
+            },
+            "end": {
+              "line": 41,
+              "column": 1
+            }
+          },
+          "leadingComments": [
+            {
+              "type": "Block",
+              "value": " functions... ",
+              "range": [
+                1124,
+                1142
+              ],
+              "loc": {
+                "start": {
+                  "line": 39,
+                  "column": 32
+                },
+                "end": {
+                  "line": 39,
+                  "column": 50
+                }
+              }
+            }
+          ]
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          1107,
+          1200
+        ],
+        "loc": {
+          "start": {
+            "line": 39,
+            "column": 15
+          },
+          "end": {
+            "line": 41,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Creates a function which is a composition of the passed asynchronous\n * functions. Each function consumes the return value of the function that\n * follows. Composing functions `f()`, `g()`, and `h()` would produce the result\n * of `f(g(h()))`, only this version uses callbacks to obtain the return values.\n *\n * Each function is executed with the `this` binding of the composed function.\n *\n * @name compose\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {...Function} functions - the asynchronous functions to compose\n * @returns {Function} an asynchronous function that is the composed\n * asynchronous `functions`\n * @example\n *\n * function add1(n, callback) {\n *     setTimeout(function () {\n *         callback(null, n + 1);\n *     }, 10);\n * }\n *\n * function mul3(n, callback) {\n *     setTimeout(function () {\n *         callback(null, n * 3);\n *     }, 10);\n * }\n *\n * var add1mul3 = async.compose(mul3, add1);\n * add1mul3(4, function (err, result) {\n *     // result now equals 15\n * });\n ",
+            "range": [
+              66,
+              1091
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 0
+              },
+              "end": {
+                "line": 38,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        1092,
+        1200
+      ],
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 0
+        },
+        "end": {
+          "line": 41,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Creates a function which is a composition of the passed asynchronous\n * functions. Each function consumes the return value of the function that\n * follows. Composing functions `f()`, `g()`, and `h()` would produce the result\n * of `f(g(h()))`, only this version uses callbacks to obtain the return values.\n *\n * Each function is executed with the `this` binding of the composed function.\n *\n * @name compose\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {...Function} functions - the asynchronous functions to compose\n * @returns {Function} an asynchronous function that is the composed\n * asynchronous `functions`\n * @example\n *\n * function add1(n, callback) {\n *     setTimeout(function () {\n *         callback(null, n + 1);\n *     }, 10);\n * }\n *\n * function mul3(n, callback) {\n *     setTimeout(function () {\n *         callback(null, n * 3);\n *     }, 10);\n * }\n *\n * var add1mul3 = async.compose(mul3, add1);\n * add1mul3(4, function (err, result) {\n *     // result now equals 15\n * });\n ",
+          "range": [
+            66,
+            1091
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 38,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1200
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 41,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Creates a function which is a composition of the passed asynchronous\n * functions. Each function consumes the return value of the function that\n * follows. Composing functions `f()`, `g()`, and `h()` would produce the result\n * of `f(g(h()))`, only this version uses callbacks to obtain the return values.\n *\n * Each function is executed with the `this` binding of the composed function.\n *\n * @name compose\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {...Function} functions - the asynchronous functions to compose\n * @returns {Function} an asynchronous function that is the composed\n * asynchronous `functions`\n * @example\n *\n * function add1(n, callback) {\n *     setTimeout(function () {\n *         callback(null, n + 1);\n *     }, 10);\n * }\n *\n * function mul3(n, callback) {\n *     setTimeout(function () {\n *         callback(null, n * 3);\n *     }, 10);\n * }\n *\n * var add1mul3 = async.compose(mul3, add1);\n * add1mul3(4, function (err, result) {\n *     // result now equals 15\n * });\n ",
+      "range": [
+        66,
+        1091
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 38,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": " functions... ",
+      "range": [
+        1124,
+        1142
+      ],
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 32
+        },
+        "end": {
+          "line": 39,
+          "column": 50
+        }
+      }
+    }
+  ]
+}

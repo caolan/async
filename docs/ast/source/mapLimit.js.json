@@ -1,0 +1,319 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "doParallelLimit",
+            "range": [
+              7,
+              22
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 22
+              }
+            }
+          },
+          "range": [
+            7,
+            22
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 22
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/doParallelLimit",
+        "raw": "'./internal/doParallelLimit'",
+        "range": [
+          28,
+          56
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 28
+          },
+          "end": {
+            "line": 1,
+            "column": 56
+          }
+        }
+      },
+      "range": [
+        0,
+        57
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 57
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "map",
+            "range": [
+              65,
+              68
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 10
+              }
+            }
+          },
+          "range": [
+            65,
+            68
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 10
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/map",
+        "raw": "'./internal/map'",
+        "range": [
+          74,
+          90
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 16
+          },
+          "end": {
+            "line": 2,
+            "column": 32
+          }
+        }
+      },
+      "range": [
+        58,
+        91
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 33
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * The same as `map` but runs a maximum of `limit` async operations at a time.\n *\n * @name mapLimit\n * @static\n * @memberOf async\n * @see async.map\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {number} limit - The maximum number of async operations at a time.\n * @param {Function} iteratee - A function to apply to each item in `coll`.\n * The iteratee is passed a `callback(err, transformed)` which must be called\n * once it has completed with an error (which can be `null`) and a transformed\n * item. Invoked with (item, callback).\n * @param {Function} [callback] - A callback which is called when all `iteratee`\n * functions have finished, or an error occurs. Results is an array of the\n * transformed items from the `coll`. Invoked with (err, results).\n ",
+          "range": [
+            93,
+            907
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 21,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "Identifier",
+          "name": "doParallelLimit",
+          "range": [
+            923,
+            938
+          ],
+          "loc": {
+            "start": {
+              "line": 22,
+              "column": 15
+            },
+            "end": {
+              "line": 22,
+              "column": 30
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Identifier",
+            "name": "map",
+            "range": [
+              939,
+              942
+            ],
+            "loc": {
+              "start": {
+                "line": 22,
+                "column": 31
+              },
+              "end": {
+                "line": 22,
+                "column": 34
+              }
+            }
+          }
+        ],
+        "range": [
+          923,
+          943
+        ],
+        "loc": {
+          "start": {
+            "line": 22,
+            "column": 15
+          },
+          "end": {
+            "line": 22,
+            "column": 35
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * The same as `map` but runs a maximum of `limit` async operations at a time.\n *\n * @name mapLimit\n * @static\n * @memberOf async\n * @see async.map\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {number} limit - The maximum number of async operations at a time.\n * @param {Function} iteratee - A function to apply to each item in `coll`.\n * The iteratee is passed a `callback(err, transformed)` which must be called\n * once it has completed with an error (which can be `null`) and a transformed\n * item. Invoked with (item, callback).\n * @param {Function} [callback] - A callback which is called when all `iteratee`\n * functions have finished, or an error occurs. Results is an array of the\n * transformed items from the `coll`. Invoked with (err, results).\n ",
+            "range": [
+              93,
+              907
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 21,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        908,
+        944
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 0
+        },
+        "end": {
+          "line": 22,
+          "column": 36
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * The same as `map` but runs a maximum of `limit` async operations at a time.\n *\n * @name mapLimit\n * @static\n * @memberOf async\n * @see async.map\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {number} limit - The maximum number of async operations at a time.\n * @param {Function} iteratee - A function to apply to each item in `coll`.\n * The iteratee is passed a `callback(err, transformed)` which must be called\n * once it has completed with an error (which can be `null`) and a transformed\n * item. Invoked with (item, callback).\n * @param {Function} [callback] - A callback which is called when all `iteratee`\n * functions have finished, or an error occurs. Results is an array of the\n * transformed items from the `coll`. Invoked with (err, results).\n ",
+          "range": [
+            93,
+            907
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 21,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    944
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 22,
+      "column": 36
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * The same as `map` but runs a maximum of `limit` async operations at a time.\n *\n * @name mapLimit\n * @static\n * @memberOf async\n * @see async.map\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {number} limit - The maximum number of async operations at a time.\n * @param {Function} iteratee - A function to apply to each item in `coll`.\n * The iteratee is passed a `callback(err, transformed)` which must be called\n * once it has completed with an error (which can be `null`) and a transformed\n * item. Invoked with (item, callback).\n * @param {Function} [callback] - A callback which is called when all `iteratee`\n * functions have finished, or an error occurs. Results is an array of the\n * transformed items from the `coll`. Invoked with (err, results).\n ",
+      "range": [
+        93,
+        907
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 21,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

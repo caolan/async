@@ -1,0 +1,996 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "noop",
+            "range": [
+              7,
+              11
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 11
+              }
+            }
+          },
+          "range": [
+            7,
+            11
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 11
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "lodash/noop",
+        "raw": "'lodash/noop'",
+        "range": [
+          17,
+          30
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 17
+          },
+          "end": {
+            "line": 1,
+            "column": 30
+          }
+        }
+      },
+      "range": [
+        0,
+        31
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "onlyOnce",
+            "range": [
+              40,
+              48
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 7
+              },
+              "end": {
+                "line": 3,
+                "column": 15
+              }
+            }
+          },
+          "range": [
+            40,
+            48
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 7
+            },
+            "end": {
+              "line": 3,
+              "column": 15
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/onlyOnce",
+        "raw": "'./internal/onlyOnce'",
+        "range": [
+          54,
+          75
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 21
+          },
+          "end": {
+            "line": 3,
+            "column": 42
+          }
+        }
+      },
+      "range": [
+        33,
+        76
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "ensureAsync",
+            "range": [
+              84,
+              95
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 7
+              },
+              "end": {
+                "line": 4,
+                "column": 18
+              }
+            }
+          },
+          "range": [
+            84,
+            95
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 7
+            },
+            "end": {
+              "line": 4,
+              "column": 18
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./ensureAsync",
+        "raw": "'./ensureAsync'",
+        "range": [
+          101,
+          116
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 24
+          },
+          "end": {
+            "line": 4,
+            "column": 39
+          }
+        }
+      },
+      "range": [
+        77,
+        117
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 40
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Calls the asynchronous function `fn` with a callback parameter that allows it\n * to call itself again, in series, indefinitely.\n\n * If an error is passed to the\n * callback then `errback` is called with the error, and execution stops,\n * otherwise it will never be called.\n *\n * @name forever\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {Function} fn - a function to call repeatedly. Invoked with (next).\n * @param {Function} [errback] - when `fn` passes an error to it's callback,\n * this function will be called, and execution stops. Invoked with (err).\n * @example\n *\n * async.forever(\n *     function(next) {\n *         // next is suitable for passing to things that need a callback(err [, whatever]);\n *         // it will result in this function being called again.\n *     },\n *     function(err) {\n *         // if next is called with a value in its first parameter, it will appear\n *         // in here as 'err', and execution will stop.\n *     }\n * );\n ",
+          "range": [
+            119,
+            1112
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 0
+            },
+            "end": {
+              "line": 33,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "forever",
+          "range": [
+            1137,
+            1144
+          ],
+          "loc": {
+            "start": {
+              "line": 34,
+              "column": 24
+            },
+            "end": {
+              "line": 34,
+              "column": 31
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "fn",
+            "range": [
+              1145,
+              1147
+            ],
+            "loc": {
+              "start": {
+                "line": 34,
+                "column": 32
+              },
+              "end": {
+                "line": 34,
+                "column": 34
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "errback",
+            "range": [
+              1149,
+              1156
+            ],
+            "loc": {
+              "start": {
+                "line": 34,
+                "column": 36
+              },
+              "end": {
+                "line": 34,
+                "column": 43
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "VariableDeclaration",
+              "declarations": [
+                {
+                  "type": "VariableDeclarator",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "done",
+                    "range": [
+                      1168,
+                      1172
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 35,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 35,
+                        "column": 12
+                      }
+                    }
+                  },
+                  "init": {
+                    "type": "CallExpression",
+                    "callee": {
+                      "type": "Identifier",
+                      "name": "onlyOnce",
+                      "range": [
+                        1175,
+                        1183
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 35,
+                          "column": 15
+                        },
+                        "end": {
+                          "line": 35,
+                          "column": 23
+                        }
+                      }
+                    },
+                    "arguments": [
+                      {
+                        "type": "LogicalExpression",
+                        "operator": "||",
+                        "left": {
+                          "type": "Identifier",
+                          "name": "errback",
+                          "range": [
+                            1184,
+                            1191
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 35,
+                              "column": 24
+                            },
+                            "end": {
+                              "line": 35,
+                              "column": 31
+                            }
+                          }
+                        },
+                        "right": {
+                          "type": "Identifier",
+                          "name": "noop",
+                          "range": [
+                            1195,
+                            1199
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 35,
+                              "column": 35
+                            },
+                            "end": {
+                              "line": 35,
+                              "column": 39
+                            }
+                          }
+                        },
+                        "range": [
+                          1184,
+                          1199
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 35,
+                            "column": 24
+                          },
+                          "end": {
+                            "line": 35,
+                            "column": 39
+                          }
+                        }
+                      }
+                    ],
+                    "range": [
+                      1175,
+                      1200
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 35,
+                        "column": 15
+                      },
+                      "end": {
+                        "line": 35,
+                        "column": 40
+                      }
+                    }
+                  },
+                  "range": [
+                    1168,
+                    1200
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 35,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 35,
+                      "column": 40
+                    }
+                  }
+                }
+              ],
+              "kind": "var",
+              "range": [
+                1164,
+                1201
+              ],
+              "loc": {
+                "start": {
+                  "line": 35,
+                  "column": 4
+                },
+                "end": {
+                  "line": 35,
+                  "column": 41
+                }
+              }
+            },
+            {
+              "type": "VariableDeclaration",
+              "declarations": [
+                {
+                  "type": "VariableDeclarator",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "task",
+                    "range": [
+                      1210,
+                      1214
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 36,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 36,
+                        "column": 12
+                      }
+                    }
+                  },
+                  "init": {
+                    "type": "CallExpression",
+                    "callee": {
+                      "type": "Identifier",
+                      "name": "ensureAsync",
+                      "range": [
+                        1217,
+                        1228
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 36,
+                          "column": 15
+                        },
+                        "end": {
+                          "line": 36,
+                          "column": 26
+                        }
+                      }
+                    },
+                    "arguments": [
+                      {
+                        "type": "Identifier",
+                        "name": "fn",
+                        "range": [
+                          1229,
+                          1231
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 36,
+                            "column": 27
+                          },
+                          "end": {
+                            "line": 36,
+                            "column": 29
+                          }
+                        }
+                      }
+                    ],
+                    "range": [
+                      1217,
+                      1232
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 36,
+                        "column": 15
+                      },
+                      "end": {
+                        "line": 36,
+                        "column": 30
+                      }
+                    }
+                  },
+                  "range": [
+                    1210,
+                    1232
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 36,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 36,
+                      "column": 30
+                    }
+                  }
+                }
+              ],
+              "kind": "var",
+              "range": [
+                1206,
+                1233
+              ],
+              "loc": {
+                "start": {
+                  "line": 36,
+                  "column": 4
+                },
+                "end": {
+                  "line": 36,
+                  "column": 31
+                }
+              }
+            },
+            {
+              "type": "FunctionDeclaration",
+              "id": {
+                "type": "Identifier",
+                "name": "next",
+                "range": [
+                  1248,
+                  1252
+                ],
+                "loc": {
+                  "start": {
+                    "line": 38,
+                    "column": 13
+                  },
+                  "end": {
+                    "line": 38,
+                    "column": 17
+                  }
+                }
+              },
+              "params": [
+                {
+                  "type": "Identifier",
+                  "name": "err",
+                  "range": [
+                    1253,
+                    1256
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 38,
+                      "column": 18
+                    },
+                    "end": {
+                      "line": 38,
+                      "column": 21
+                    }
+                  }
+                }
+              ],
+              "body": {
+                "type": "BlockStatement",
+                "body": [
+                  {
+                    "type": "IfStatement",
+                    "test": {
+                      "type": "Identifier",
+                      "name": "err",
+                      "range": [
+                        1272,
+                        1275
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 39,
+                          "column": 12
+                        },
+                        "end": {
+                          "line": 39,
+                          "column": 15
+                        }
+                      }
+                    },
+                    "consequent": {
+                      "type": "ReturnStatement",
+                      "argument": {
+                        "type": "CallExpression",
+                        "callee": {
+                          "type": "Identifier",
+                          "name": "done",
+                          "range": [
+                            1284,
+                            1288
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 39,
+                              "column": 24
+                            },
+                            "end": {
+                              "line": 39,
+                              "column": 28
+                            }
+                          }
+                        },
+                        "arguments": [
+                          {
+                            "type": "Identifier",
+                            "name": "err",
+                            "range": [
+                              1289,
+                              1292
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 39,
+                                "column": 29
+                              },
+                              "end": {
+                                "line": 39,
+                                "column": 32
+                              }
+                            }
+                          }
+                        ],
+                        "range": [
+                          1284,
+                          1293
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 39,
+                            "column": 24
+                          },
+                          "end": {
+                            "line": 39,
+                            "column": 33
+                          }
+                        }
+                      },
+                      "range": [
+                        1277,
+                        1294
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 39,
+                          "column": 17
+                        },
+                        "end": {
+                          "line": 39,
+                          "column": 34
+                        }
+                      }
+                    },
+                    "alternate": null,
+                    "range": [
+                      1268,
+                      1294
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 39,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 39,
+                        "column": 34
+                      }
+                    }
+                  },
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "CallExpression",
+                      "callee": {
+                        "type": "Identifier",
+                        "name": "task",
+                        "range": [
+                          1303,
+                          1307
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 40,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 40,
+                            "column": 12
+                          }
+                        }
+                      },
+                      "arguments": [
+                        {
+                          "type": "Identifier",
+                          "name": "next",
+                          "range": [
+                            1308,
+                            1312
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 40,
+                              "column": 13
+                            },
+                            "end": {
+                              "line": 40,
+                              "column": 17
+                            }
+                          }
+                        }
+                      ],
+                      "range": [
+                        1303,
+                        1313
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 40,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 40,
+                          "column": 18
+                        }
+                      }
+                    },
+                    "range": [
+                      1303,
+                      1314
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 40,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 40,
+                        "column": 19
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1258,
+                  1320
+                ],
+                "loc": {
+                  "start": {
+                    "line": 38,
+                    "column": 23
+                  },
+                  "end": {
+                    "line": 41,
+                    "column": 5
+                  }
+                }
+              },
+              "generator": false,
+              "expression": false,
+              "range": [
+                1239,
+                1320
+              ],
+              "loc": {
+                "start": {
+                  "line": 38,
+                  "column": 4
+                },
+                "end": {
+                  "line": 41,
+                  "column": 5
+                }
+              }
+            },
+            {
+              "type": "ExpressionStatement",
+              "expression": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "Identifier",
+                  "name": "next",
+                  "range": [
+                    1325,
+                    1329
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 42,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 42,
+                      "column": 8
+                    }
+                  }
+                },
+                "arguments": [],
+                "range": [
+                  1325,
+                  1331
+                ],
+                "loc": {
+                  "start": {
+                    "line": 42,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 42,
+                    "column": 10
+                  }
+                }
+              },
+              "range": [
+                1325,
+                1332
+              ],
+              "loc": {
+                "start": {
+                  "line": 42,
+                  "column": 4
+                },
+                "end": {
+                  "line": 42,
+                  "column": 11
+                }
+              }
+            }
+          ],
+          "range": [
+            1158,
+            1334
+          ],
+          "loc": {
+            "start": {
+              "line": 34,
+              "column": 45
+            },
+            "end": {
+              "line": 43,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          1128,
+          1334
+        ],
+        "loc": {
+          "start": {
+            "line": 34,
+            "column": 15
+          },
+          "end": {
+            "line": 43,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Calls the asynchronous function `fn` with a callback parameter that allows it\n * to call itself again, in series, indefinitely.\n\n * If an error is passed to the\n * callback then `errback` is called with the error, and execution stops,\n * otherwise it will never be called.\n *\n * @name forever\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {Function} fn - a function to call repeatedly. Invoked with (next).\n * @param {Function} [errback] - when `fn` passes an error to it's callback,\n * this function will be called, and execution stops. Invoked with (err).\n * @example\n *\n * async.forever(\n *     function(next) {\n *         // next is suitable for passing to things that need a callback(err [, whatever]);\n *         // it will result in this function being called again.\n *     },\n *     function(err) {\n *         // if next is called with a value in its first parameter, it will appear\n *         // in here as 'err', and execution will stop.\n *     }\n * );\n ",
+            "range": [
+              119,
+              1112
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 0
+              },
+              "end": {
+                "line": 33,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        1113,
+        1334
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 0
+        },
+        "end": {
+          "line": 43,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Calls the asynchronous function `fn` with a callback parameter that allows it\n * to call itself again, in series, indefinitely.\n\n * If an error is passed to the\n * callback then `errback` is called with the error, and execution stops,\n * otherwise it will never be called.\n *\n * @name forever\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {Function} fn - a function to call repeatedly. Invoked with (next).\n * @param {Function} [errback] - when `fn` passes an error to it's callback,\n * this function will be called, and execution stops. Invoked with (err).\n * @example\n *\n * async.forever(\n *     function(next) {\n *         // next is suitable for passing to things that need a callback(err [, whatever]);\n *         // it will result in this function being called again.\n *     },\n *     function(err) {\n *         // if next is called with a value in its first parameter, it will appear\n *         // in here as 'err', and execution will stop.\n *     }\n * );\n ",
+          "range": [
+            119,
+            1112
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 0
+            },
+            "end": {
+              "line": 33,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1334
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 43,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Calls the asynchronous function `fn` with a callback parameter that allows it\n * to call itself again, in series, indefinitely.\n\n * If an error is passed to the\n * callback then `errback` is called with the error, and execution stops,\n * otherwise it will never be called.\n *\n * @name forever\n * @static\n * @memberOf async\n * @category Control Flow\n * @param {Function} fn - a function to call repeatedly. Invoked with (next).\n * @param {Function} [errback] - when `fn` passes an error to it's callback,\n * this function will be called, and execution stops. Invoked with (err).\n * @example\n *\n * async.forever(\n *     function(next) {\n *         // next is suitable for passing to things that need a callback(err [, whatever]);\n *         // it will result in this function being called again.\n *     },\n *     function(err) {\n *         // if next is called with a value in its first parameter, it will appear\n *         // in here as 'err', and execution will stop.\n *     }\n * );\n ",
+      "range": [
+        119,
+        1112
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 33,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

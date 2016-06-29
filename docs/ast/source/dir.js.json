@@ -1,0 +1,247 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "consoleFunc",
+            "range": [
+              7,
+              18
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 18
+              }
+            }
+          },
+          "range": [
+            7,
+            18
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 18
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/consoleFunc",
+        "raw": "'./internal/consoleFunc'",
+        "range": [
+          24,
+          48
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 24
+          },
+          "end": {
+            "line": 1,
+            "column": 48
+          }
+        }
+      },
+      "range": [
+        0,
+        49
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 49
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Logs the result of an `async` function to the `console` using `console.dir`\n * to display the properties of the resulting object. Only works in Node.js or\n * in browsers that support `console.dir` and `console.error` (such as FF and\n * Chrome). If multiple arguments are returned from the async function,\n * `console.dir` is called on each argument in order.\n *\n * @name log\n * @static\n * @memberOf async\n * @category Util\n * @param {Function} function - The function you want to eventually apply all\n * arguments to.\n * @param {...*} arguments... - Any number of arguments to apply to the function.\n * @example\n *\n * // in a module\n * var hello = function(name, callback) {\n *     setTimeout(function() {\n *         callback(null, {hello: name});\n *     }, 1000);\n * };\n *\n * // in the node repl\n * node> async.dir(hello, 'world');\n * {hello: 'world'}\n ",
+          "range": [
+            51,
+            914
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 29,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "Identifier",
+          "name": "consoleFunc",
+          "range": [
+            930,
+            941
+          ],
+          "loc": {
+            "start": {
+              "line": 30,
+              "column": 15
+            },
+            "end": {
+              "line": 30,
+              "column": 26
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Literal",
+            "value": "dir",
+            "raw": "'dir'",
+            "range": [
+              942,
+              947
+            ],
+            "loc": {
+              "start": {
+                "line": 30,
+                "column": 27
+              },
+              "end": {
+                "line": 30,
+                "column": 32
+              }
+            }
+          }
+        ],
+        "range": [
+          930,
+          948
+        ],
+        "loc": {
+          "start": {
+            "line": 30,
+            "column": 15
+          },
+          "end": {
+            "line": 30,
+            "column": 33
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Logs the result of an `async` function to the `console` using `console.dir`\n * to display the properties of the resulting object. Only works in Node.js or\n * in browsers that support `console.dir` and `console.error` (such as FF and\n * Chrome). If multiple arguments are returned from the async function,\n * `console.dir` is called on each argument in order.\n *\n * @name log\n * @static\n * @memberOf async\n * @category Util\n * @param {Function} function - The function you want to eventually apply all\n * arguments to.\n * @param {...*} arguments... - Any number of arguments to apply to the function.\n * @example\n *\n * // in a module\n * var hello = function(name, callback) {\n *     setTimeout(function() {\n *         callback(null, {hello: name});\n *     }, 1000);\n * };\n *\n * // in the node repl\n * node> async.dir(hello, 'world');\n * {hello: 'world'}\n ",
+            "range": [
+              51,
+              914
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 29,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        915,
+        949
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 0
+        },
+        "end": {
+          "line": 30,
+          "column": 34
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Logs the result of an `async` function to the `console` using `console.dir`\n * to display the properties of the resulting object. Only works in Node.js or\n * in browsers that support `console.dir` and `console.error` (such as FF and\n * Chrome). If multiple arguments are returned from the async function,\n * `console.dir` is called on each argument in order.\n *\n * @name log\n * @static\n * @memberOf async\n * @category Util\n * @param {Function} function - The function you want to eventually apply all\n * arguments to.\n * @param {...*} arguments... - Any number of arguments to apply to the function.\n * @example\n *\n * // in a module\n * var hello = function(name, callback) {\n *     setTimeout(function() {\n *         callback(null, {hello: name});\n *     }, 1000);\n * };\n *\n * // in the node repl\n * node> async.dir(hello, 'world');\n * {hello: 'world'}\n ",
+          "range": [
+            51,
+            914
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 29,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    949
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 30,
+      "column": 34
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Logs the result of an `async` function to the `console` using `console.dir`\n * to display the properties of the resulting object. Only works in Node.js or\n * in browsers that support `console.dir` and `console.error` (such as FF and\n * Chrome). If multiple arguments are returned from the async function,\n * `console.dir` is called on each argument in order.\n *\n * @name log\n * @static\n * @memberOf async\n * @category Util\n * @param {Function} function - The function you want to eventually apply all\n * arguments to.\n * @param {...*} arguments... - Any number of arguments to apply to the function.\n * @example\n *\n * // in a module\n * var hello = function(name, callback) {\n *     setTimeout(function() {\n *         callback(null, {hello: name});\n *     }, 1000);\n * };\n *\n * // in the node repl\n * node> async.dir(hello, 'world');\n * {hello: 'world'}\n ",
+      "range": [
+        51,
+        914
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 29,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

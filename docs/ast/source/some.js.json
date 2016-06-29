@@ -1,0 +1,337 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "someLimit",
+            "range": [
+              7,
+              16
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 16
+              }
+            }
+          },
+          "range": [
+            7,
+            16
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 16
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./someLimit",
+        "raw": "'./someLimit'",
+        "range": [
+          22,
+          35
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 22
+          },
+          "end": {
+            "line": 1,
+            "column": 35
+          }
+        }
+      },
+      "range": [
+        0,
+        36
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "doLimit",
+            "range": [
+              44,
+              51
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 14
+              }
+            }
+          },
+          "range": [
+            44,
+            51
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 14
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/doLimit",
+        "raw": "'./internal/doLimit'",
+        "range": [
+          57,
+          77
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 20
+          },
+          "end": {
+            "line": 2,
+            "column": 40
+          }
+        }
+      },
+      "range": [
+        37,
+        78
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 41
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Returns `true` if at least one element in the `coll` satisfies an async test.\n * If any iteratee call returns `true`, the main `callback` is immediately\n * called.\n *\n * @name some\n * @static\n * @memberOf async\n * @alias any\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A truth test to apply to each item in the array\n * in parallel. The iteratee is passed a `callback(err, truthValue)` which must\n * be called with a boolean argument once it has completed. Invoked with\n * (item, callback).\n * @param {Function} [callback] - A callback which is called as soon as any\n * iteratee returns `true`, or after all the iteratee functions have finished.\n * Result will be either `true` or `false` depending on the values of the async\n * tests. Invoked with (err, result).\n * @example\n *\n * async.some(['file1','file2','file3'], function(filePath, callback) {\n *     fs.access(filePath, function(err) {\n *         callback(null, !err)\n *     });\n * }, function(err, result) {\n *     // if result is true then at least one of the files exists\n * });\n ",
+          "range": [
+            80,
+            1204
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 32,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "Identifier",
+          "name": "doLimit",
+          "range": [
+            1220,
+            1227
+          ],
+          "loc": {
+            "start": {
+              "line": 33,
+              "column": 15
+            },
+            "end": {
+              "line": 33,
+              "column": 22
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Identifier",
+            "name": "someLimit",
+            "range": [
+              1228,
+              1237
+            ],
+            "loc": {
+              "start": {
+                "line": 33,
+                "column": 23
+              },
+              "end": {
+                "line": 33,
+                "column": 32
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "Infinity",
+            "range": [
+              1239,
+              1247
+            ],
+            "loc": {
+              "start": {
+                "line": 33,
+                "column": 34
+              },
+              "end": {
+                "line": 33,
+                "column": 42
+              }
+            }
+          }
+        ],
+        "range": [
+          1220,
+          1248
+        ],
+        "loc": {
+          "start": {
+            "line": 33,
+            "column": 15
+          },
+          "end": {
+            "line": 33,
+            "column": 43
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Returns `true` if at least one element in the `coll` satisfies an async test.\n * If any iteratee call returns `true`, the main `callback` is immediately\n * called.\n *\n * @name some\n * @static\n * @memberOf async\n * @alias any\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A truth test to apply to each item in the array\n * in parallel. The iteratee is passed a `callback(err, truthValue)` which must\n * be called with a boolean argument once it has completed. Invoked with\n * (item, callback).\n * @param {Function} [callback] - A callback which is called as soon as any\n * iteratee returns `true`, or after all the iteratee functions have finished.\n * Result will be either `true` or `false` depending on the values of the async\n * tests. Invoked with (err, result).\n * @example\n *\n * async.some(['file1','file2','file3'], function(filePath, callback) {\n *     fs.access(filePath, function(err) {\n *         callback(null, !err)\n *     });\n * }, function(err, result) {\n *     // if result is true then at least one of the files exists\n * });\n ",
+            "range": [
+              80,
+              1204
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 32,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        1205,
+        1249
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 0
+        },
+        "end": {
+          "line": 33,
+          "column": 44
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Returns `true` if at least one element in the `coll` satisfies an async test.\n * If any iteratee call returns `true`, the main `callback` is immediately\n * called.\n *\n * @name some\n * @static\n * @memberOf async\n * @alias any\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A truth test to apply to each item in the array\n * in parallel. The iteratee is passed a `callback(err, truthValue)` which must\n * be called with a boolean argument once it has completed. Invoked with\n * (item, callback).\n * @param {Function} [callback] - A callback which is called as soon as any\n * iteratee returns `true`, or after all the iteratee functions have finished.\n * Result will be either `true` or `false` depending on the values of the async\n * tests. Invoked with (err, result).\n * @example\n *\n * async.some(['file1','file2','file3'], function(filePath, callback) {\n *     fs.access(filePath, function(err) {\n *         callback(null, !err)\n *     });\n * }, function(err, result) {\n *     // if result is true then at least one of the files exists\n * });\n ",
+          "range": [
+            80,
+            1204
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 32,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1249
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 33,
+      "column": 44
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Returns `true` if at least one element in the `coll` satisfies an async test.\n * If any iteratee call returns `true`, the main `callback` is immediately\n * called.\n *\n * @name some\n * @static\n * @memberOf async\n * @alias any\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A truth test to apply to each item in the array\n * in parallel. The iteratee is passed a `callback(err, truthValue)` which must\n * be called with a boolean argument once it has completed. Invoked with\n * (item, callback).\n * @param {Function} [callback] - A callback which is called as soon as any\n * iteratee returns `true`, or after all the iteratee functions have finished.\n * Result will be either `true` or `false` depending on the values of the async\n * tests. Invoked with (err, result).\n * @example\n *\n * async.some(['file1','file2','file3'], function(filePath, callback) {\n *     fs.access(filePath, function(err) {\n *         callback(null, !err)\n *     });\n * }, function(err, result) {\n *     // if result is true then at least one of the files exists\n * });\n ",
+      "range": [
+        80,
+        1204
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 32,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

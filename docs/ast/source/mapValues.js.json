@@ -1,0 +1,337 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "mapValuesLimit",
+            "range": [
+              7,
+              21
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 21
+              }
+            }
+          },
+          "range": [
+            7,
+            21
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 21
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./mapValuesLimit",
+        "raw": "'./mapValuesLimit'",
+        "range": [
+          27,
+          45
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 27
+          },
+          "end": {
+            "line": 1,
+            "column": 45
+          }
+        }
+      },
+      "range": [
+        0,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "doLimit",
+            "range": [
+              54,
+              61
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 14
+              }
+            }
+          },
+          "range": [
+            54,
+            61
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 14
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/doLimit",
+        "raw": "'./internal/doLimit'",
+        "range": [
+          67,
+          87
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 20
+          },
+          "end": {
+            "line": 2,
+            "column": 40
+          }
+        }
+      },
+      "range": [
+        47,
+        88
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 41
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * A relative of `map`, designed for use with objects.\n *\n * Produces a new Object by mapping each value of `obj` through the `iteratee`\n * function. The `iteratee` is called each `value` and `key` from `obj` and a\n * callback for when it has finished processing. Each of these callbacks takes\n * two arguments: an `error`, and the transformed item from `obj`. If `iteratee`\n * passes an error to its callback, the main `callback` (for the `mapValues`\n * function) is immediately called with the error.\n *\n * Note, the order of the keys in the result is not guaranteed.  The keys will\n * be roughly in the order they complete, (but this is very engine-specific)\n *\n * @name mapValues\n * @static\n * @memberOf async\n * @category Collection\n * @param {Object} obj - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each value and key in\n * `coll`. The iteratee is passed a `callback(err, transformed)` which must be\n * called once it has completed with an error (which can be `null`) and a\n * transformed value. Invoked with (value, key, callback).\n * @param {Function} [callback] - A callback which is called when all `iteratee`\n * functions have finished, or an error occurs. Results is an array of the\n * transformed items from the `obj`. Invoked with (err, result).\n * @example\n *\n * async.mapValues({\n *     f1: 'file1',\n *     f2: 'file2',\n *     f3: 'file3'\n * }, fs.stat, function(err, result) {\n *     // results is now a map of stats for each file, e.g.\n *     // {\n *     //     f1: [stats for file1],\n *     //     f2: [stats for file2],\n *     //     f3: [stats for file3]\n *     // }\n * });\n ",
+          "range": [
+            91,
+            1736
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 44,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "Identifier",
+          "name": "doLimit",
+          "range": [
+            1753,
+            1760
+          ],
+          "loc": {
+            "start": {
+              "line": 46,
+              "column": 15
+            },
+            "end": {
+              "line": 46,
+              "column": 22
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Identifier",
+            "name": "mapValuesLimit",
+            "range": [
+              1761,
+              1775
+            ],
+            "loc": {
+              "start": {
+                "line": 46,
+                "column": 23
+              },
+              "end": {
+                "line": 46,
+                "column": 37
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "Infinity",
+            "range": [
+              1777,
+              1785
+            ],
+            "loc": {
+              "start": {
+                "line": 46,
+                "column": 39
+              },
+              "end": {
+                "line": 46,
+                "column": 47
+              }
+            }
+          }
+        ],
+        "range": [
+          1753,
+          1786
+        ],
+        "loc": {
+          "start": {
+            "line": 46,
+            "column": 15
+          },
+          "end": {
+            "line": 46,
+            "column": 48
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * A relative of `map`, designed for use with objects.\n *\n * Produces a new Object by mapping each value of `obj` through the `iteratee`\n * function. The `iteratee` is called each `value` and `key` from `obj` and a\n * callback for when it has finished processing. Each of these callbacks takes\n * two arguments: an `error`, and the transformed item from `obj`. If `iteratee`\n * passes an error to its callback, the main `callback` (for the `mapValues`\n * function) is immediately called with the error.\n *\n * Note, the order of the keys in the result is not guaranteed.  The keys will\n * be roughly in the order they complete, (but this is very engine-specific)\n *\n * @name mapValues\n * @static\n * @memberOf async\n * @category Collection\n * @param {Object} obj - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each value and key in\n * `coll`. The iteratee is passed a `callback(err, transformed)` which must be\n * called once it has completed with an error (which can be `null`) and a\n * transformed value. Invoked with (value, key, callback).\n * @param {Function} [callback] - A callback which is called when all `iteratee`\n * functions have finished, or an error occurs. Results is an array of the\n * transformed items from the `obj`. Invoked with (err, result).\n * @example\n *\n * async.mapValues({\n *     f1: 'file1',\n *     f2: 'file2',\n *     f3: 'file3'\n * }, fs.stat, function(err, result) {\n *     // results is now a map of stats for each file, e.g.\n *     // {\n *     //     f1: [stats for file1],\n *     //     f2: [stats for file2],\n *     //     f3: [stats for file3]\n *     // }\n * });\n ",
+            "range": [
+              91,
+              1736
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 0
+              },
+              "end": {
+                "line": 44,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        1738,
+        1787
+      ],
+      "loc": {
+        "start": {
+          "line": 46,
+          "column": 0
+        },
+        "end": {
+          "line": 46,
+          "column": 49
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * A relative of `map`, designed for use with objects.\n *\n * Produces a new Object by mapping each value of `obj` through the `iteratee`\n * function. The `iteratee` is called each `value` and `key` from `obj` and a\n * callback for when it has finished processing. Each of these callbacks takes\n * two arguments: an `error`, and the transformed item from `obj`. If `iteratee`\n * passes an error to its callback, the main `callback` (for the `mapValues`\n * function) is immediately called with the error.\n *\n * Note, the order of the keys in the result is not guaranteed.  The keys will\n * be roughly in the order they complete, (but this is very engine-specific)\n *\n * @name mapValues\n * @static\n * @memberOf async\n * @category Collection\n * @param {Object} obj - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each value and key in\n * `coll`. The iteratee is passed a `callback(err, transformed)` which must be\n * called once it has completed with an error (which can be `null`) and a\n * transformed value. Invoked with (value, key, callback).\n * @param {Function} [callback] - A callback which is called when all `iteratee`\n * functions have finished, or an error occurs. Results is an array of the\n * transformed items from the `obj`. Invoked with (err, result).\n * @example\n *\n * async.mapValues({\n *     f1: 'file1',\n *     f2: 'file2',\n *     f3: 'file3'\n * }, fs.stat, function(err, result) {\n *     // results is now a map of stats for each file, e.g.\n *     // {\n *     //     f1: [stats for file1],\n *     //     f2: [stats for file2],\n *     //     f3: [stats for file3]\n *     // }\n * });\n ",
+          "range": [
+            91,
+            1736
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 44,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1787
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 46,
+      "column": 49
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * A relative of `map`, designed for use with objects.\n *\n * Produces a new Object by mapping each value of `obj` through the `iteratee`\n * function. The `iteratee` is called each `value` and `key` from `obj` and a\n * callback for when it has finished processing. Each of these callbacks takes\n * two arguments: an `error`, and the transformed item from `obj`. If `iteratee`\n * passes an error to its callback, the main `callback` (for the `mapValues`\n * function) is immediately called with the error.\n *\n * Note, the order of the keys in the result is not guaranteed.  The keys will\n * be roughly in the order they complete, (but this is very engine-specific)\n *\n * @name mapValues\n * @static\n * @memberOf async\n * @category Collection\n * @param {Object} obj - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each value and key in\n * `coll`. The iteratee is passed a `callback(err, transformed)` which must be\n * called once it has completed with an error (which can be `null`) and a\n * transformed value. Invoked with (value, key, callback).\n * @param {Function} [callback] - A callback which is called when all `iteratee`\n * functions have finished, or an error occurs. Results is an array of the\n * transformed items from the `obj`. Invoked with (err, result).\n * @example\n *\n * async.mapValues({\n *     f1: 'file1',\n *     f2: 'file2',\n *     f3: 'file3'\n * }, fs.stat, function(err, result) {\n *     // results is now a map of stats for each file, e.g.\n *     // {\n *     //     f1: [stats for file1],\n *     //     f2: [stats for file2],\n *     //     f3: [stats for file3]\n *     // }\n * });\n ",
+      "range": [
+        91,
+        1736
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 44,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

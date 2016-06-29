@@ -1,0 +1,337 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "rejectLimit",
+            "range": [
+              7,
+              18
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 18
+              }
+            }
+          },
+          "range": [
+            7,
+            18
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 18
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./rejectLimit",
+        "raw": "'./rejectLimit'",
+        "range": [
+          24,
+          39
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 24
+          },
+          "end": {
+            "line": 1,
+            "column": 39
+          }
+        }
+      },
+      "range": [
+        0,
+        40
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "doLimit",
+            "range": [
+              48,
+              55
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 14
+              }
+            }
+          },
+          "range": [
+            48,
+            55
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 14
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/doLimit",
+        "raw": "'./internal/doLimit'",
+        "range": [
+          61,
+          81
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 20
+          },
+          "end": {
+            "line": 2,
+            "column": 40
+          }
+        }
+      },
+      "range": [
+        41,
+        82
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 41
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * The opposite of `filter`. Removes values that pass an `async` truth test.\n *\n * @name reject\n * @static\n * @memberOf async\n * @see async.filter\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A truth test to apply to each item in `coll`.\n * The `iteratee` is passed a `callback(err, truthValue)`, which must be called\n * with a boolean argument once it has completed. Invoked with (item, callback).\n * @param {Function} [callback] - A callback which is called after all the\n * `iteratee` functions have finished. Invoked with (err, results).\n * @example\n *\n * async.reject(['file1','file2','file3'], function(filePath, callback) {\n *     fs.access(filePath, function(err) {\n *         callback(null, !err)\n *     });\n * }, function(err, results) {\n *     // results now equals an array of missing files\n *     createFiles(results);\n * });\n ",
+          "range": [
+            84,
+            1003
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 28,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "Identifier",
+          "name": "doLimit",
+          "range": [
+            1019,
+            1026
+          ],
+          "loc": {
+            "start": {
+              "line": 29,
+              "column": 15
+            },
+            "end": {
+              "line": 29,
+              "column": 22
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Identifier",
+            "name": "rejectLimit",
+            "range": [
+              1027,
+              1038
+            ],
+            "loc": {
+              "start": {
+                "line": 29,
+                "column": 23
+              },
+              "end": {
+                "line": 29,
+                "column": 34
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "Infinity",
+            "range": [
+              1040,
+              1048
+            ],
+            "loc": {
+              "start": {
+                "line": 29,
+                "column": 36
+              },
+              "end": {
+                "line": 29,
+                "column": 44
+              }
+            }
+          }
+        ],
+        "range": [
+          1019,
+          1049
+        ],
+        "loc": {
+          "start": {
+            "line": 29,
+            "column": 15
+          },
+          "end": {
+            "line": 29,
+            "column": 45
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * The opposite of `filter`. Removes values that pass an `async` truth test.\n *\n * @name reject\n * @static\n * @memberOf async\n * @see async.filter\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A truth test to apply to each item in `coll`.\n * The `iteratee` is passed a `callback(err, truthValue)`, which must be called\n * with a boolean argument once it has completed. Invoked with (item, callback).\n * @param {Function} [callback] - A callback which is called after all the\n * `iteratee` functions have finished. Invoked with (err, results).\n * @example\n *\n * async.reject(['file1','file2','file3'], function(filePath, callback) {\n *     fs.access(filePath, function(err) {\n *         callback(null, !err)\n *     });\n * }, function(err, results) {\n *     // results now equals an array of missing files\n *     createFiles(results);\n * });\n ",
+            "range": [
+              84,
+              1003
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 28,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        1004,
+        1050
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 0
+        },
+        "end": {
+          "line": 29,
+          "column": 46
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * The opposite of `filter`. Removes values that pass an `async` truth test.\n *\n * @name reject\n * @static\n * @memberOf async\n * @see async.filter\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A truth test to apply to each item in `coll`.\n * The `iteratee` is passed a `callback(err, truthValue)`, which must be called\n * with a boolean argument once it has completed. Invoked with (item, callback).\n * @param {Function} [callback] - A callback which is called after all the\n * `iteratee` functions have finished. Invoked with (err, results).\n * @example\n *\n * async.reject(['file1','file2','file3'], function(filePath, callback) {\n *     fs.access(filePath, function(err) {\n *         callback(null, !err)\n *     });\n * }, function(err, results) {\n *     // results now equals an array of missing files\n *     createFiles(results);\n * });\n ",
+          "range": [
+            84,
+            1003
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 28,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1050
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 29,
+      "column": 46
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * The opposite of `filter`. Removes values that pass an `async` truth test.\n *\n * @name reject\n * @static\n * @memberOf async\n * @see async.filter\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {Function} iteratee - A truth test to apply to each item in `coll`.\n * The `iteratee` is passed a `callback(err, truthValue)`, which must be called\n * with a boolean argument once it has completed. Invoked with (item, callback).\n * @param {Function} [callback] - A callback which is called after all the\n * `iteratee` functions have finished. Invoked with (err, results).\n * @example\n *\n * async.reject(['file1','file2','file3'], function(filePath, callback) {\n *     fs.access(filePath, function(err) {\n *         callback(null, !err)\n *     });\n * }, function(err, results) {\n *     // results now equals an array of missing files\n *     createFiles(results);\n * });\n ",
+      "range": [
+        84,
+        1003
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 28,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

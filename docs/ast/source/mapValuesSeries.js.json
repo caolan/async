@@ -1,0 +1,338 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "mapValuesLimit",
+            "range": [
+              7,
+              21
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 21
+              }
+            }
+          },
+          "range": [
+            7,
+            21
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 21
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./mapValuesLimit",
+        "raw": "'./mapValuesLimit'",
+        "range": [
+          27,
+          45
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 27
+          },
+          "end": {
+            "line": 1,
+            "column": 45
+          }
+        }
+      },
+      "range": [
+        0,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "doLimit",
+            "range": [
+              54,
+              61
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 14
+              }
+            }
+          },
+          "range": [
+            54,
+            61
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 14
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/doLimit",
+        "raw": "'./internal/doLimit'",
+        "range": [
+          67,
+          87
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 20
+          },
+          "end": {
+            "line": 2,
+            "column": 40
+          }
+        }
+      },
+      "range": [
+        47,
+        88
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 41
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * The same as `mapValues` but runs only a single async operation at a time.\n *\n * @name mapValuesSeries\n * @static\n * @memberOf async\n * @see async.mapValues\n * @category Collection\n * @param {Object} obj - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each value in `obj`.\n * The iteratee is passed a `callback(err, transformed)` which must be called\n * once it has completed with an error (which can be `null`) and a\n * transformed value. Invoked with (value, key, callback).\n * @param {Function} [callback] - A callback which is called when all `iteratee`\n * functions have finished, or an error occurs. Result is an object of the\n * transformed values from the `obj`. Invoked with (err, result).\n ",
+          "range": [
+            90,
+            837
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 20,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "Identifier",
+          "name": "doLimit",
+          "range": [
+            853,
+            860
+          ],
+          "loc": {
+            "start": {
+              "line": 21,
+              "column": 15
+            },
+            "end": {
+              "line": 21,
+              "column": 22
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Identifier",
+            "name": "mapValuesLimit",
+            "range": [
+              861,
+              875
+            ],
+            "loc": {
+              "start": {
+                "line": 21,
+                "column": 23
+              },
+              "end": {
+                "line": 21,
+                "column": 37
+              }
+            }
+          },
+          {
+            "type": "Literal",
+            "value": 1,
+            "raw": "1",
+            "range": [
+              877,
+              878
+            ],
+            "loc": {
+              "start": {
+                "line": 21,
+                "column": 39
+              },
+              "end": {
+                "line": 21,
+                "column": 40
+              }
+            }
+          }
+        ],
+        "range": [
+          853,
+          879
+        ],
+        "loc": {
+          "start": {
+            "line": 21,
+            "column": 15
+          },
+          "end": {
+            "line": 21,
+            "column": 41
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * The same as `mapValues` but runs only a single async operation at a time.\n *\n * @name mapValuesSeries\n * @static\n * @memberOf async\n * @see async.mapValues\n * @category Collection\n * @param {Object} obj - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each value in `obj`.\n * The iteratee is passed a `callback(err, transformed)` which must be called\n * once it has completed with an error (which can be `null`) and a\n * transformed value. Invoked with (value, key, callback).\n * @param {Function} [callback] - A callback which is called when all `iteratee`\n * functions have finished, or an error occurs. Result is an object of the\n * transformed values from the `obj`. Invoked with (err, result).\n ",
+            "range": [
+              90,
+              837
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 20,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        838,
+        880
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 0
+        },
+        "end": {
+          "line": 21,
+          "column": 42
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * The same as `mapValues` but runs only a single async operation at a time.\n *\n * @name mapValuesSeries\n * @static\n * @memberOf async\n * @see async.mapValues\n * @category Collection\n * @param {Object} obj - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each value in `obj`.\n * The iteratee is passed a `callback(err, transformed)` which must be called\n * once it has completed with an error (which can be `null`) and a\n * transformed value. Invoked with (value, key, callback).\n * @param {Function} [callback] - A callback which is called when all `iteratee`\n * functions have finished, or an error occurs. Result is an object of the\n * transformed values from the `obj`. Invoked with (err, result).\n ",
+          "range": [
+            90,
+            837
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 20,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    880
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 21,
+      "column": 42
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * The same as `mapValues` but runs only a single async operation at a time.\n *\n * @name mapValuesSeries\n * @static\n * @memberOf async\n * @see async.mapValues\n * @category Collection\n * @param {Object} obj - A collection to iterate over.\n * @param {Function} iteratee - A function to apply to each value in `obj`.\n * The iteratee is passed a `callback(err, transformed)` which must be called\n * once it has completed with an error (which can be `null`) and a\n * transformed value. Invoked with (value, key, callback).\n * @param {Function} [callback] - A callback which is called when all `iteratee`\n * functions have finished, or an error occurs. Result is an object of the\n * transformed values from the `obj`. Invoked with (err, result).\n ",
+      "range": [
+        90,
+        837
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 20,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

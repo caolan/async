@@ -1,0 +1,1267 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "isArray",
+            "range": [
+              7,
+              14
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 14
+              }
+            }
+          },
+          "range": [
+            7,
+            14
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 14
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "lodash/isArray",
+        "raw": "'lodash/isArray'",
+        "range": [
+          20,
+          36
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 20
+          },
+          "end": {
+            "line": 1,
+            "column": 36
+          }
+        }
+      },
+      "range": [
+        0,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "eachOf",
+            "range": [
+              46,
+              52
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 7
+              },
+              "end": {
+                "line": 3,
+                "column": 13
+              }
+            }
+          },
+          "range": [
+            46,
+            52
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 7
+            },
+            "end": {
+              "line": 3,
+              "column": 13
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./eachOf",
+        "raw": "'./eachOf'",
+        "range": [
+          58,
+          68
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 19
+          },
+          "end": {
+            "line": 3,
+            "column": 29
+          }
+        }
+      },
+      "range": [
+        39,
+        69
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 30
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * A relative of `reduce`.  Takes an Object or Array, and iterates over each\n * element in series, each step potentially mutating an `accumulator` value.\n * The type of the accumulator defaults to the type of collection passed in.\n *\n * @name transform\n * @static\n * @memberOf async\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {*} [accumulator] - The initial state of the transform.  If omitted,\n * it will default to an empty Object or Array, depending on the type of `coll`\n * @param {Function} iteratee - A function applied to each item in the\n * collection that potentially modifies the accumulator. The `iteratee` is\n * passed a `callback(err)` which accepts an optional error as its first\n * argument. If an error is passed to the callback, the transform is stopped\n * and the main `callback` is immediately called with the error.\n * Invoked with (accumulator, item, key, callback).\n * @param {Function} [callback] - A callback which is called after all the\n * `iteratee` functions have finished. Result is the transformed accumulator.\n * Invoked with (err, result).\n * @example\n *\n * async.transform([1,2,3], function(acc, item, index, callback) {\n *     // pointless async:\n *     process.nextTick(function() {\n *         acc.push(item * 2)\n *         callback(null)\n *     });\n * }, function(err, result) {\n *     // result is now equal to [2, 4, 6]\n * });\n *\n * @example\n *\n * async.transform({a: 1, b: 2, c: 3}, function (obj, val, key, callback) {\n *     setImmediate(function () {\n *         obj[key] = val * 2;\n *         callback();\n *     })\n * }, function (err, result) {\n *     // result is equal to {a: 2, b: 4, c: 6}\n * })\n ",
+          "range": [
+            71,
+            1773
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 48,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "transform",
+          "range": [
+            1798,
+            1807
+          ],
+          "loc": {
+            "start": {
+              "line": 49,
+              "column": 24
+            },
+            "end": {
+              "line": 49,
+              "column": 33
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "coll",
+            "range": [
+              1809,
+              1813
+            ],
+            "loc": {
+              "start": {
+                "line": 49,
+                "column": 35
+              },
+              "end": {
+                "line": 49,
+                "column": 39
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "accumulator",
+            "range": [
+              1815,
+              1826
+            ],
+            "loc": {
+              "start": {
+                "line": 49,
+                "column": 41
+              },
+              "end": {
+                "line": 49,
+                "column": 52
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "iteratee",
+            "range": [
+              1828,
+              1836
+            ],
+            "loc": {
+              "start": {
+                "line": 49,
+                "column": 54
+              },
+              "end": {
+                "line": 49,
+                "column": 62
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "callback",
+            "range": [
+              1838,
+              1846
+            ],
+            "loc": {
+              "start": {
+                "line": 49,
+                "column": 64
+              },
+              "end": {
+                "line": 49,
+                "column": 72
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "IfStatement",
+              "test": {
+                "type": "BinaryExpression",
+                "operator": "===",
+                "left": {
+                  "type": "MemberExpression",
+                  "computed": false,
+                  "object": {
+                    "type": "Identifier",
+                    "name": "arguments",
+                    "range": [
+                      1858,
+                      1867
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 50,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 50,
+                        "column": 17
+                      }
+                    }
+                  },
+                  "property": {
+                    "type": "Identifier",
+                    "name": "length",
+                    "range": [
+                      1868,
+                      1874
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 50,
+                        "column": 18
+                      },
+                      "end": {
+                        "line": 50,
+                        "column": 24
+                      }
+                    }
+                  },
+                  "range": [
+                    1858,
+                    1874
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 50,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 50,
+                      "column": 24
+                    }
+                  }
+                },
+                "right": {
+                  "type": "Literal",
+                  "value": 3,
+                  "raw": "3",
+                  "range": [
+                    1879,
+                    1880
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 50,
+                      "column": 29
+                    },
+                    "end": {
+                      "line": 50,
+                      "column": 30
+                    }
+                  }
+                },
+                "range": [
+                  1858,
+                  1880
+                ],
+                "loc": {
+                  "start": {
+                    "line": 50,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 50,
+                    "column": 30
+                  }
+                }
+              },
+              "consequent": {
+                "type": "BlockStatement",
+                "body": [
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "AssignmentExpression",
+                      "operator": "=",
+                      "left": {
+                        "type": "Identifier",
+                        "name": "callback",
+                        "range": [
+                          1892,
+                          1900
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 51,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 51,
+                            "column": 16
+                          }
+                        }
+                      },
+                      "right": {
+                        "type": "Identifier",
+                        "name": "iteratee",
+                        "range": [
+                          1903,
+                          1911
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 51,
+                            "column": 19
+                          },
+                          "end": {
+                            "line": 51,
+                            "column": 27
+                          }
+                        }
+                      },
+                      "range": [
+                        1892,
+                        1911
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 51,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 51,
+                          "column": 27
+                        }
+                      }
+                    },
+                    "range": [
+                      1892,
+                      1912
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 51,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 51,
+                        "column": 28
+                      }
+                    }
+                  },
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "AssignmentExpression",
+                      "operator": "=",
+                      "left": {
+                        "type": "Identifier",
+                        "name": "iteratee",
+                        "range": [
+                          1921,
+                          1929
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 52,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 52,
+                            "column": 16
+                          }
+                        }
+                      },
+                      "right": {
+                        "type": "Identifier",
+                        "name": "accumulator",
+                        "range": [
+                          1932,
+                          1943
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 52,
+                            "column": 19
+                          },
+                          "end": {
+                            "line": 52,
+                            "column": 30
+                          }
+                        }
+                      },
+                      "range": [
+                        1921,
+                        1943
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 52,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 52,
+                          "column": 30
+                        }
+                      }
+                    },
+                    "range": [
+                      1921,
+                      1944
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 52,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 52,
+                        "column": 31
+                      }
+                    }
+                  },
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "AssignmentExpression",
+                      "operator": "=",
+                      "left": {
+                        "type": "Identifier",
+                        "name": "accumulator",
+                        "range": [
+                          1953,
+                          1964
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 53,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 53,
+                            "column": 19
+                          }
+                        }
+                      },
+                      "right": {
+                        "type": "ConditionalExpression",
+                        "test": {
+                          "type": "CallExpression",
+                          "callee": {
+                            "type": "Identifier",
+                            "name": "isArray",
+                            "range": [
+                              1967,
+                              1974
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 53,
+                                "column": 22
+                              },
+                              "end": {
+                                "line": 53,
+                                "column": 29
+                              }
+                            }
+                          },
+                          "arguments": [
+                            {
+                              "type": "Identifier",
+                              "name": "coll",
+                              "range": [
+                                1975,
+                                1979
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 53,
+                                  "column": 30
+                                },
+                                "end": {
+                                  "line": 53,
+                                  "column": 34
+                                }
+                              }
+                            }
+                          ],
+                          "range": [
+                            1967,
+                            1980
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 53,
+                              "column": 22
+                            },
+                            "end": {
+                              "line": 53,
+                              "column": 35
+                            }
+                          }
+                        },
+                        "consequent": {
+                          "type": "ArrayExpression",
+                          "elements": [],
+                          "range": [
+                            1983,
+                            1985
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 53,
+                              "column": 38
+                            },
+                            "end": {
+                              "line": 53,
+                              "column": 40
+                            }
+                          }
+                        },
+                        "alternate": {
+                          "type": "ObjectExpression",
+                          "properties": [],
+                          "range": [
+                            1988,
+                            1990
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 53,
+                              "column": 43
+                            },
+                            "end": {
+                              "line": 53,
+                              "column": 45
+                            }
+                          }
+                        },
+                        "range": [
+                          1967,
+                          1990
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 53,
+                            "column": 22
+                          },
+                          "end": {
+                            "line": 53,
+                            "column": 45
+                          }
+                        }
+                      },
+                      "range": [
+                        1953,
+                        1990
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 53,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 53,
+                          "column": 45
+                        }
+                      }
+                    },
+                    "range": [
+                      1953,
+                      1991
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 53,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 53,
+                        "column": 46
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1882,
+                  1997
+                ],
+                "loc": {
+                  "start": {
+                    "line": 50,
+                    "column": 32
+                  },
+                  "end": {
+                    "line": 54,
+                    "column": 5
+                  }
+                }
+              },
+              "alternate": null,
+              "range": [
+                1854,
+                1997
+              ],
+              "loc": {
+                "start": {
+                  "line": 50,
+                  "column": 4
+                },
+                "end": {
+                  "line": 54,
+                  "column": 5
+                }
+              }
+            },
+            {
+              "type": "ExpressionStatement",
+              "expression": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "Identifier",
+                  "name": "eachOf",
+                  "range": [
+                    2003,
+                    2009
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 56,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 56,
+                      "column": 10
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "Identifier",
+                    "name": "coll",
+                    "range": [
+                      2010,
+                      2014
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 56,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 56,
+                        "column": 15
+                      }
+                    }
+                  },
+                  {
+                    "type": "FunctionExpression",
+                    "id": null,
+                    "params": [
+                      {
+                        "type": "Identifier",
+                        "name": "v",
+                        "range": [
+                          2025,
+                          2026
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 56,
+                            "column": 26
+                          },
+                          "end": {
+                            "line": 56,
+                            "column": 27
+                          }
+                        }
+                      },
+                      {
+                        "type": "Identifier",
+                        "name": "k",
+                        "range": [
+                          2028,
+                          2029
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 56,
+                            "column": 29
+                          },
+                          "end": {
+                            "line": 56,
+                            "column": 30
+                          }
+                        }
+                      },
+                      {
+                        "type": "Identifier",
+                        "name": "cb",
+                        "range": [
+                          2031,
+                          2033
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 56,
+                            "column": 32
+                          },
+                          "end": {
+                            "line": 56,
+                            "column": 34
+                          }
+                        }
+                      }
+                    ],
+                    "body": {
+                      "type": "BlockStatement",
+                      "body": [
+                        {
+                          "type": "ExpressionStatement",
+                          "expression": {
+                            "type": "CallExpression",
+                            "callee": {
+                              "type": "Identifier",
+                              "name": "iteratee",
+                              "range": [
+                                2045,
+                                2053
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 57,
+                                  "column": 8
+                                },
+                                "end": {
+                                  "line": 57,
+                                  "column": 16
+                                }
+                              }
+                            },
+                            "arguments": [
+                              {
+                                "type": "Identifier",
+                                "name": "accumulator",
+                                "range": [
+                                  2054,
+                                  2065
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 57,
+                                    "column": 17
+                                  },
+                                  "end": {
+                                    "line": 57,
+                                    "column": 28
+                                  }
+                                }
+                              },
+                              {
+                                "type": "Identifier",
+                                "name": "v",
+                                "range": [
+                                  2067,
+                                  2068
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 57,
+                                    "column": 30
+                                  },
+                                  "end": {
+                                    "line": 57,
+                                    "column": 31
+                                  }
+                                }
+                              },
+                              {
+                                "type": "Identifier",
+                                "name": "k",
+                                "range": [
+                                  2070,
+                                  2071
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 57,
+                                    "column": 33
+                                  },
+                                  "end": {
+                                    "line": 57,
+                                    "column": 34
+                                  }
+                                }
+                              },
+                              {
+                                "type": "Identifier",
+                                "name": "cb",
+                                "range": [
+                                  2073,
+                                  2075
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 57,
+                                    "column": 36
+                                  },
+                                  "end": {
+                                    "line": 57,
+                                    "column": 38
+                                  }
+                                }
+                              }
+                            ],
+                            "range": [
+                              2045,
+                              2076
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 57,
+                                "column": 8
+                              },
+                              "end": {
+                                "line": 57,
+                                "column": 39
+                              }
+                            }
+                          },
+                          "range": [
+                            2045,
+                            2077
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 57,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 57,
+                              "column": 40
+                            }
+                          }
+                        }
+                      ],
+                      "range": [
+                        2035,
+                        2083
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 56,
+                          "column": 36
+                        },
+                        "end": {
+                          "line": 58,
+                          "column": 5
+                        }
+                      }
+                    },
+                    "generator": false,
+                    "expression": false,
+                    "range": [
+                      2016,
+                      2083
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 56,
+                        "column": 17
+                      },
+                      "end": {
+                        "line": 58,
+                        "column": 5
+                      }
+                    }
+                  },
+                  {
+                    "type": "FunctionExpression",
+                    "id": null,
+                    "params": [
+                      {
+                        "type": "Identifier",
+                        "name": "err",
+                        "range": [
+                          2094,
+                          2097
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 58,
+                            "column": 16
+                          },
+                          "end": {
+                            "line": 58,
+                            "column": 19
+                          }
+                        }
+                      }
+                    ],
+                    "body": {
+                      "type": "BlockStatement",
+                      "body": [
+                        {
+                          "type": "ExpressionStatement",
+                          "expression": {
+                            "type": "CallExpression",
+                            "callee": {
+                              "type": "Identifier",
+                              "name": "callback",
+                              "range": [
+                                2109,
+                                2117
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 59,
+                                  "column": 8
+                                },
+                                "end": {
+                                  "line": 59,
+                                  "column": 16
+                                }
+                              }
+                            },
+                            "arguments": [
+                              {
+                                "type": "Identifier",
+                                "name": "err",
+                                "range": [
+                                  2118,
+                                  2121
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 59,
+                                    "column": 17
+                                  },
+                                  "end": {
+                                    "line": 59,
+                                    "column": 20
+                                  }
+                                }
+                              },
+                              {
+                                "type": "Identifier",
+                                "name": "accumulator",
+                                "range": [
+                                  2123,
+                                  2134
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 59,
+                                    "column": 22
+                                  },
+                                  "end": {
+                                    "line": 59,
+                                    "column": 33
+                                  }
+                                }
+                              }
+                            ],
+                            "range": [
+                              2109,
+                              2135
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 59,
+                                "column": 8
+                              },
+                              "end": {
+                                "line": 59,
+                                "column": 34
+                              }
+                            }
+                          },
+                          "range": [
+                            2109,
+                            2136
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 59,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 59,
+                              "column": 35
+                            }
+                          }
+                        }
+                      ],
+                      "range": [
+                        2099,
+                        2142
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 58,
+                          "column": 21
+                        },
+                        "end": {
+                          "line": 60,
+                          "column": 5
+                        }
+                      }
+                    },
+                    "generator": false,
+                    "expression": false,
+                    "range": [
+                      2085,
+                      2142
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 58,
+                        "column": 7
+                      },
+                      "end": {
+                        "line": 60,
+                        "column": 5
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  2003,
+                  2143
+                ],
+                "loc": {
+                  "start": {
+                    "line": 56,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 60,
+                    "column": 6
+                  }
+                }
+              },
+              "range": [
+                2003,
+                2144
+              ],
+              "loc": {
+                "start": {
+                  "line": 56,
+                  "column": 4
+                },
+                "end": {
+                  "line": 60,
+                  "column": 7
+                }
+              }
+            }
+          ],
+          "range": [
+            1848,
+            2146
+          ],
+          "loc": {
+            "start": {
+              "line": 49,
+              "column": 74
+            },
+            "end": {
+              "line": 61,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          1789,
+          2146
+        ],
+        "loc": {
+          "start": {
+            "line": 49,
+            "column": 15
+          },
+          "end": {
+            "line": 61,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * A relative of `reduce`.  Takes an Object or Array, and iterates over each\n * element in series, each step potentially mutating an `accumulator` value.\n * The type of the accumulator defaults to the type of collection passed in.\n *\n * @name transform\n * @static\n * @memberOf async\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {*} [accumulator] - The initial state of the transform.  If omitted,\n * it will default to an empty Object or Array, depending on the type of `coll`\n * @param {Function} iteratee - A function applied to each item in the\n * collection that potentially modifies the accumulator. The `iteratee` is\n * passed a `callback(err)` which accepts an optional error as its first\n * argument. If an error is passed to the callback, the transform is stopped\n * and the main `callback` is immediately called with the error.\n * Invoked with (accumulator, item, key, callback).\n * @param {Function} [callback] - A callback which is called after all the\n * `iteratee` functions have finished. Result is the transformed accumulator.\n * Invoked with (err, result).\n * @example\n *\n * async.transform([1,2,3], function(acc, item, index, callback) {\n *     // pointless async:\n *     process.nextTick(function() {\n *         acc.push(item * 2)\n *         callback(null)\n *     });\n * }, function(err, result) {\n *     // result is now equal to [2, 4, 6]\n * });\n *\n * @example\n *\n * async.transform({a: 1, b: 2, c: 3}, function (obj, val, key, callback) {\n *     setImmediate(function () {\n *         obj[key] = val * 2;\n *         callback();\n *     })\n * }, function (err, result) {\n *     // result is equal to {a: 2, b: 4, c: 6}\n * })\n ",
+            "range": [
+              71,
+              1773
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 0
+              },
+              "end": {
+                "line": 48,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        1774,
+        2146
+      ],
+      "loc": {
+        "start": {
+          "line": 49,
+          "column": 0
+        },
+        "end": {
+          "line": 61,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * A relative of `reduce`.  Takes an Object or Array, and iterates over each\n * element in series, each step potentially mutating an `accumulator` value.\n * The type of the accumulator defaults to the type of collection passed in.\n *\n * @name transform\n * @static\n * @memberOf async\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {*} [accumulator] - The initial state of the transform.  If omitted,\n * it will default to an empty Object or Array, depending on the type of `coll`\n * @param {Function} iteratee - A function applied to each item in the\n * collection that potentially modifies the accumulator. The `iteratee` is\n * passed a `callback(err)` which accepts an optional error as its first\n * argument. If an error is passed to the callback, the transform is stopped\n * and the main `callback` is immediately called with the error.\n * Invoked with (accumulator, item, key, callback).\n * @param {Function} [callback] - A callback which is called after all the\n * `iteratee` functions have finished. Result is the transformed accumulator.\n * Invoked with (err, result).\n * @example\n *\n * async.transform([1,2,3], function(acc, item, index, callback) {\n *     // pointless async:\n *     process.nextTick(function() {\n *         acc.push(item * 2)\n *         callback(null)\n *     });\n * }, function(err, result) {\n *     // result is now equal to [2, 4, 6]\n * });\n *\n * @example\n *\n * async.transform({a: 1, b: 2, c: 3}, function (obj, val, key, callback) {\n *     setImmediate(function () {\n *         obj[key] = val * 2;\n *         callback();\n *     })\n * }, function (err, result) {\n *     // result is equal to {a: 2, b: 4, c: 6}\n * })\n ",
+          "range": [
+            71,
+            1773
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 48,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    2146
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 61,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * A relative of `reduce`.  Takes an Object or Array, and iterates over each\n * element in series, each step potentially mutating an `accumulator` value.\n * The type of the accumulator defaults to the type of collection passed in.\n *\n * @name transform\n * @static\n * @memberOf async\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {*} [accumulator] - The initial state of the transform.  If omitted,\n * it will default to an empty Object or Array, depending on the type of `coll`\n * @param {Function} iteratee - A function applied to each item in the\n * collection that potentially modifies the accumulator. The `iteratee` is\n * passed a `callback(err)` which accepts an optional error as its first\n * argument. If an error is passed to the callback, the transform is stopped\n * and the main `callback` is immediately called with the error.\n * Invoked with (accumulator, item, key, callback).\n * @param {Function} [callback] - A callback which is called after all the\n * `iteratee` functions have finished. Result is the transformed accumulator.\n * Invoked with (err, result).\n * @example\n *\n * async.transform([1,2,3], function(acc, item, index, callback) {\n *     // pointless async:\n *     process.nextTick(function() {\n *         acc.push(item * 2)\n *         callback(null)\n *     });\n * }, function(err, result) {\n *     // result is now equal to [2, 4, 6]\n * });\n *\n * @example\n *\n * async.transform({a: 1, b: 2, c: 3}, function (obj, val, key, callback) {\n *     setImmediate(function () {\n *         obj[key] = val * 2;\n *         callback();\n *     })\n * }, function (err, result) {\n *     // result is equal to {a: 2, b: 4, c: 6}\n * })\n ",
+      "range": [
+        71,
+        1773
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 48,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

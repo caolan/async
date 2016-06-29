@@ -1,0 +1,319 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "reject",
+            "range": [
+              7,
+              13
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 13
+              }
+            }
+          },
+          "range": [
+            7,
+            13
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 13
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/reject",
+        "raw": "'./internal/reject'",
+        "range": [
+          19,
+          38
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 19
+          },
+          "end": {
+            "line": 1,
+            "column": 38
+          }
+        }
+      },
+      "range": [
+        0,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "doParallelLimit",
+            "range": [
+              47,
+              62
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 22
+              }
+            }
+          },
+          "range": [
+            47,
+            62
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 22
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./internal/doParallelLimit",
+        "raw": "'./internal/doParallelLimit'",
+        "range": [
+          68,
+          96
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 28
+          },
+          "end": {
+            "line": 2,
+            "column": 56
+          }
+        }
+      },
+      "range": [
+        40,
+        97
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 57
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * The same as `reject` but runs a maximum of `limit` async operations at a\n * time.\n *\n * @name rejectLimit\n * @static\n * @memberOf async\n * @see async.reject\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {number} limit - The maximum number of async operations at a time.\n * @param {Function} iteratee - A truth test to apply to each item in `coll`.\n * The `iteratee` is passed a `callback(err, truthValue)`, which must be called\n * with a boolean argument once it has completed. Invoked with (item, callback).\n * @param {Function} [callback] - A callback which is called after all the\n * `iteratee` functions have finished. Invoked with (err, results).\n ",
+          "range": [
+            99,
+            811
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 20,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "Identifier",
+          "name": "doParallelLimit",
+          "range": [
+            827,
+            842
+          ],
+          "loc": {
+            "start": {
+              "line": 21,
+              "column": 15
+            },
+            "end": {
+              "line": 21,
+              "column": 30
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Identifier",
+            "name": "reject",
+            "range": [
+              843,
+              849
+            ],
+            "loc": {
+              "start": {
+                "line": 21,
+                "column": 31
+              },
+              "end": {
+                "line": 21,
+                "column": 37
+              }
+            }
+          }
+        ],
+        "range": [
+          827,
+          850
+        ],
+        "loc": {
+          "start": {
+            "line": 21,
+            "column": 15
+          },
+          "end": {
+            "line": 21,
+            "column": 38
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * The same as `reject` but runs a maximum of `limit` async operations at a\n * time.\n *\n * @name rejectLimit\n * @static\n * @memberOf async\n * @see async.reject\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {number} limit - The maximum number of async operations at a time.\n * @param {Function} iteratee - A truth test to apply to each item in `coll`.\n * The `iteratee` is passed a `callback(err, truthValue)`, which must be called\n * with a boolean argument once it has completed. Invoked with (item, callback).\n * @param {Function} [callback] - A callback which is called after all the\n * `iteratee` functions have finished. Invoked with (err, results).\n ",
+            "range": [
+              99,
+              811
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 20,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        812,
+        851
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 0
+        },
+        "end": {
+          "line": 21,
+          "column": 39
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * The same as `reject` but runs a maximum of `limit` async operations at a\n * time.\n *\n * @name rejectLimit\n * @static\n * @memberOf async\n * @see async.reject\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {number} limit - The maximum number of async operations at a time.\n * @param {Function} iteratee - A truth test to apply to each item in `coll`.\n * The `iteratee` is passed a `callback(err, truthValue)`, which must be called\n * with a boolean argument once it has completed. Invoked with (item, callback).\n * @param {Function} [callback] - A callback which is called after all the\n * `iteratee` functions have finished. Invoked with (err, results).\n ",
+          "range": [
+            99,
+            811
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 20,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    851
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 21,
+      "column": 39
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * The same as `reject` but runs a maximum of `limit` async operations at a\n * time.\n *\n * @name rejectLimit\n * @static\n * @memberOf async\n * @see async.reject\n * @category Collection\n * @param {Array|Object} coll - A collection to iterate over.\n * @param {number} limit - The maximum number of async operations at a time.\n * @param {Function} iteratee - A truth test to apply to each item in `coll`.\n * The `iteratee` is passed a `callback(err, truthValue)`, which must be called\n * with a boolean argument once it has completed. Invoked with (item, callback).\n * @param {Function} [callback] - A callback which is called after all the\n * `iteratee` functions have finished. Invoked with (err, results).\n ",
+      "range": [
+        99,
+        811
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 20,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

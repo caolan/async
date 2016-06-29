@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">lib/autoInject.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/caolan/async.git" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-asyncify">asyncify</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-auto">auto</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-autoInject">autoInject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cargo">cargo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-compose">compose</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doDuring">doDuring</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doUntil">doUntil</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-doWhilst">doWhilst</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-during">during</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-eachLimit">eachLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-eachOfLimit">eachOfLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-ensureAsync">ensureAsync</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-forever">forever</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-iterator">iterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-mapValuesLimit">mapValuesLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-memoize">memoize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parallelLimit">parallelLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-priorityQueue">priorityQueue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-queue">queue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-race">race</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reduce">reduce</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reduceRight">reduceRight</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reflect">reflect</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reflectAll">reflectAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-retry">retry</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-retryable">retryable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-series">series</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sortBy">sortBy</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-timeout">timeout</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-timeLimit">timeLimit</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-transform">transform</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-unmemoize">unmemoize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-until">until</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-waterfall">waterfall</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-whilst">whilst</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-CargoObject">CargoObject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-QueueObject">QueueObject</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">lib/autoInject.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import auto from &apos;./auto&apos;;
+import forOwn from &apos;lodash/forOwn&apos;;
+import arrayMap from &apos;lodash/_arrayMap&apos;;
+import clone from &apos;lodash/_copyArray&apos;;
+import isArray from &apos;lodash/isArray&apos;;
+import trim from &apos;lodash/trim&apos;;
+
+var argsRegex = /^(function[^\(]*)?\(?\s*([^\)=]*)/m;
+
+function parseParams(func) {
+    return trim(func.toString().match(argsRegex)[2]).split(/\s*\,\s*/);
+}
+
+/**
+ * A dependency-injected version of the {@link async.auto} function. Dependent
+ * tasks are specified as parameters to the function, after the usual callback
+ * parameter, with the parameter names matching the names of the tasks it
+ * depends on. This can provide even more readable task graphs which can be
+ * easier to maintain.
+ *
+ * If a final callback is specified, the task results are similarly injected,
+ * specified as named parameters after the initial error parameter.
+ *
+ * The autoInject function is purely syntactic sugar and its semantics are
+ * otherwise equivalent to {@link async.auto}.
+ *
+ * @name autoInject
+ * @static
+ * @memberOf async
+ * @see async.auto
+ * @category Control Flow
+ * @param {Object} tasks - An object, each of whose properties is a function of
+ * the form &apos;func([dependencies...], callback). The object&apos;s key of a property
+ * serves as the name of the task defined by that property, i.e. can be used
+ * when specifying requirements for other tasks.
+ * * The `callback` parameter is a `callback(err, result)` which must be called
+ *   when finished, passing an `error` (which can be `null`) and the result of
+ *   the function&apos;s execution. The remaining parameters name other tasks on
+ *   which the task is dependent, and the results from those tasks are the
+ *   arguments of those parameters.
+ * @param {Function} [callback] - An optional callback which is called when all
+ * the tasks have been completed. It receives the `err` argument if any `tasks`
+ * pass an error to their callback. The remaining parameters are task names
+ * whose results you are interested in. This callback will only be called when
+ * all tasks have finished or an error has occurred, and so do not specify
+ * dependencies in the same way as `tasks` do. If an error occurs, no further
+ * `tasks` will be performed, and `results` will only be valid for those tasks
+ * which managed to complete. Invoked with (err, [results...]).
+ * @example
+ *
+ * //  The example from `auto` can be rewritten as follows:
+ * async.autoInject({
+ *     get_data: function(callback) {
+ *         // async code to get some data
+ *         callback(null, &apos;data&apos;, &apos;converted to array&apos;);
+ *     },
+ *     make_folder: function(callback) {
+ *         // async code to create a directory to store a file in
+ *         // this is run at the same time as getting the data
+ *         callback(null, &apos;folder&apos;);
+ *     },
+ *     write_file: function(get_data, make_folder, callback) {
+ *         // once there is some data and the directory exists,
+ *         // write the data to a file in the directory
+ *         callback(null, &apos;filename&apos;);
+ *     },
+ *     email_link: function(write_file, callback) {
+ *         // once the file is written let&apos;s email a link to it...
+ *         // write_file contains the filename returned by write_file.
+ *         callback(null, {&apos;file&apos;:write_file, &apos;email&apos;:&apos;user@example.com&apos;});
+ *     }
+ * }, function(err, email_link) {
+ *     console.log(&apos;err = &apos;, err);
+ *     console.log(&apos;email_link = &apos;, email_link);
+ * });
+ *
+ * // If you are using a JS minifier that mangles parameter names, `autoInject`
+ * // will not work with plain functions, since the parameter names will be
+ * // collapsed to a single letter identifier.  To work around this, you can
+ * // explicitly specify the names of the parameters your task function needs
+ * // in an array, similar to Angular.js dependency injection.  The final
+ * // results callback can be provided as an array in the same way.
+ *
+ * // This still has an advantage over plain `auto`, since the results a task
+ * // depends on are still spread into arguments.
+ * async.autoInject({
+ *     //...
+ *     write_file: [&apos;get_data&apos;, &apos;make_folder&apos;, function(get_data, make_folder, callback) {
+ *         callback(null, &apos;filename&apos;);
+ *     }],
+ *     email_link: [&apos;write_file&apos;, function(write_file, callback) {
+ *         callback(null, {&apos;file&apos;:write_file, &apos;email&apos;:&apos;user@example.com&apos;});
+ *     }]
+ *     //...
+ * }, [&apos;email_link&apos;, function(err, email_link) {
+ *     console.log(&apos;err = &apos;, err);
+ *     console.log(&apos;email_link = &apos;, email_link);
+ * }]);
+ */
+export default function autoInject(tasks, callback) {
+    var newTasks = {};
+
+    forOwn(tasks, function (taskFn, key) {
+        var params;
+
+        if (isArray(taskFn)) {
+            params = clone(taskFn);
+            taskFn = params.pop();
+
+            newTasks[key] = params.concat(params.length &gt; 0 ? newTask : taskFn);
+        } else if (taskFn.length === 0) {
+            throw new Error(&quot;autoInject task functions require explicit parameters.&quot;);
+        } else if (taskFn.length === 1) {
+            // no dependencies, use the function as-is
+            newTasks[key] = taskFn;
+        } else {
+            params = parseParams(taskFn);
+            params.pop();
+
+            newTasks[key] = params.concat(newTask);
+        }
+
+        function newTask(results, taskCb) {
+            var newArgs = arrayMap(params, function (name) {
+                return results[name];
+            });
+            newArgs.push(taskCb);
+            taskFn.apply(null, newArgs);
+        }
+    });
+
+    auto(newTasks, callback);
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

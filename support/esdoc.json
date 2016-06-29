@@ -1,0 +1,6 @@
+{
+  "source": "./lib",
+  "destination": "./docs",
+  "excludes": ["internal"],
+  "scripts": ["./dist/async.js"]
+}
