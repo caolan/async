@@ -14,7 +14,7 @@ $(function initSearchBar() {
         datumTokenizer: matchSubstrs,
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         prefetch: {
-            url: './methodNames.json',
+            url: './data/methodNames.json',
             cache: false
         }
     });
@@ -23,7 +23,7 @@ $(function initSearchBar() {
         datumTokenizer: matchSubstrs,
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         prefetch: {
-            url: './sourceFiles.json',
+            url: './data/sourceFiles.json',
             cache: false
         }
     });
@@ -85,11 +85,11 @@ $(function initSearchBar() {
         } else {
             host = location.protocol + '//' + location.host;
         }
-        
+
         var _path = location.pathname.split("/");
-        
+
         var currentPage = _path[_path.length - 1];
-        host += _path.slice(1, -1).join("/") + "/";
+        host += "/" + _path.slice(1, -1).join("/") + "/";
 
         // handle issues
         if (typeof suggestion !== 'string') {
