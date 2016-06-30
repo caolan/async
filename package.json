@@ -34,7 +34,6 @@
     "cheerio": "^0.20.0",
     "coveralls": "^2.11.2",
     "es6-promise": "^2.3.0",
-    "esdoc": "^0.4.7",
     "eslint": "^2.11.1",
     "fs-extra": "^0.26.7",
     "gh-pages-deploy": "^0.4.2",
@@ -63,7 +62,6 @@
   "scripts": {
     "coverage": "nyc npm test && nyc report",
     "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
-    "doc": "esdoc -c ./support/esdoc.json",
     "jsdoc": "jsdoc -c ./support/jsdoc/jsdoc.json && node support/jsdoc/jsdoc-fix-html.js",
     "lint": "eslint lib/ mocha_test/ perf/memory.js perf/suites.js perf/benchmark.js support/ karma.conf.js",
     "mocha-browser-test": "karma start",
