@@ -9,7 +9,7 @@
   "plugins": ["plugins/markdown", "./jsdoc-import-path-plugin"],
   "opts": {
     "readme": "README.md",
-    "template": "node_modules/minami",
+    "template": "support/jsdoc/theme",
     "encoding": "utf8",
     "destination": "./docs",
     "recurse": true
