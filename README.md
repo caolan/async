@@ -650,7 +650,7 @@ __Example__
 ```js
 async.some(['file1','file2','file3'], function(filePath, callback) {
   fs.access(filePath, function(err) {
-    callback(null, !err)
+    callback(!err)
   });
 }, function(err, result){
     // if result is true then at least one of the files exists
