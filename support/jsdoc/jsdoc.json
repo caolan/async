@@ -8,7 +8,7 @@
   },
   "plugins": ["plugins/markdown", "./jsdoc-import-path-plugin"],
   "opts": {
-    "readme": "README.md",
+    "readme": "intro.md",
     "template": "support/jsdoc/theme",
     "encoding": "utf8",
     "destination": "./docs",
