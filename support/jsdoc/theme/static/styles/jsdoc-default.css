@@ -125,15 +125,39 @@ section, h1 {
   padding: 0 30px;
 }
 
+.nav.navbar-right .navbar-form {
+    padding: 0;
+    margin: 0;
+}
+
+.twitter-typeahead input {
+    border-radius: 0;
+    height: 50px;
+}
 
 .tt-menu {
     background-color: white;
-    padding: 10px;
     width: 100%;
-    border-radius: 4px;
-    border: 1px solid #D3D3D3;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     z-index: 11;
     overflow-y: auto;
+}
+
+.tt-suggestion, .tt-menu h3  {
+    font-size: 14px;
+    padding: 0.6em;
+    margin: 0;
+    cursor: pointer;
+}
+
+.tt-menu h3 {
+    cursor: default;
+    font-weight: bold;
+    color: #888;
+}
+
+.tt-suggestion:hover {
+    background-color: rgba(128, 128, 128, 0.2);
 }
 
 .tt-cursor {
@@ -264,15 +288,18 @@ nav > h2 > a {
 }
 
 .navbar .ion-social-github {
-    font-size: 1.2em;
+    font-size: 1.5em;
+    float: left;
 }
 
 footer {
-  color: hsl(0, 0%, 28%);
-  display: block;
-  padding: 15px;
-  font-style: italic;
-  font-size: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+    color: hsl(0, 0%, 56%);
+    display: block;
+    padding: 30px 30px 0;
+    font-size: 12px;
+    line-height: 1.4;
 }
 
 #main section, #main h1 {
@@ -288,6 +315,10 @@ article img {
 pre {
     background: #fff;
     padding: 0px;
+}
+
+code {
+    color: hsl(0, 0%, 35%);
 }
 
 .ancestors {
@@ -383,7 +414,6 @@ pre {
   font-size: 100%;
   line-height: 18px;
   display: block;
-  margin: 0 30px;
   background-color: #fff;
   color: #4D4E53;
 }
@@ -393,7 +423,8 @@ pre {
 }
 
 .prettyprint .linenums code {
-  padding: 0 15px
+  padding: 0 1em;
+  min-height: 18px;
 }
 
 .prettyprint .linenums li:first-of-type code {
