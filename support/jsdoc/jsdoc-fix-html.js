@@ -11,7 +11,7 @@ var pageTitle = 'Methods:';
 var docFilename = 'docs.html';
 var mainModuleFile = 'module-async.html';
 var mainSectionId = '#main';
-var sectionTitleClass = '.page-title'
+var sectionTitleClass = '.page-title';
 
 var HTMLFileBegin = '<!DOCTYPE html>\n<html lang="en">\n<head>\n';
 var HTMLFileHeadBodyJoin = '</head>\n<body>';

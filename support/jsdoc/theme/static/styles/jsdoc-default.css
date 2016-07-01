@@ -67,9 +67,9 @@ h3 {
 }
 
 h4 {
-  font-size: 18px;
+  font-size: 20px;
   margin: 1em 0 .2em;
-  padding-top: 4em;
+  padding-top: 6em;
   color: #4d4e53;
 }
 
@@ -462,6 +462,26 @@ code {
    user-select: text;
 }
 
+table.params {
+    margin-top: 1em;
+    box-shadow: none;
+    border: none;
+}
+
+table.params td, table.params th {
+    border: none;
+    padding: 0 15px 8px 0;
+}
+
+table.params td.type {
+    white-space: nowrap;
+}
+
+.params .optional {
+    font-size: 80%;
+    color: hsl(0, 0%, 56%);
+}
+
 .params, .props {
   border-spacing: 0;
   border: 1px solid #ddd;
@@ -493,6 +513,7 @@ code {
 .params thead tr, .props thead tr {
    background-color: #fff;
    font-weight: bold;
+   color: hsl(0, 0%, 56%);
 }
 
 .params .params thead tr, .props .props thead tr {
