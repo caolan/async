@@ -96,7 +96,7 @@ function applyPreCheerioFixes(data) {
     var rIncorrectCFText = />ControlFlow</g;
     var fixedCFText = '>Control Flow<';
 
-    var rIncorrectModuleText = />module:(\w+)\.(\w+)</g
+    var rIncorrectModuleText = />module:(\w+)\.(\w+)</g;
 
     // the heading needs additional padding at the top so it doesn't get cutoff
     return data
@@ -112,10 +112,6 @@ function applyPreCheerioFixes(data) {
         });
 }
 
-function addStaticHeader($file, $headerContent) {
-    var $body = $file.find('body');
-    $body.prepend($headerContent);
-}
 
 function fixToc($page, moduleFiles) {
     // remove `async` listing from toc
@@ -153,29 +149,19 @@ function fixFooter($page) {
 function fixModuleLinks(files, callback) {
     var moduleFiles = extractModuleFiles(files);
 
-    async.map(['navbar.html'], function(filename, fileCallback) {
-        fs.readFile(path.join(__dirname, filename), 'utf8', function(err, data) {
+
+    async.each(files, function(file, fileCallback) {
+        var filePath = path.join(docsDir, file);
+        fs.readFile(filePath, 'utf8', function(err, fileData) {
             if (err) return fileCallback(err);
-            return fileCallback(null, data);
+            var $file = $(applyPreCheerioFixes(fileData));
+
+            fixToc($file, moduleFiles);
+            fixFooter($file);
+            $file.find('[href="'+mainModuleFile+'"]').attr('href', docFilename);
+            generateHTMLFile(filePath, $file, fileCallback);
         });
-    }, function(err, results) {
-        if (err) return callback(err);
-
-        var $headerContent = $(results[0]);
-        async.each(files, function(file, fileCallback) {
-            var filePath = path.join(docsDir, file);
-            fs.readFile(filePath, 'utf8', function(err, fileData) {
-                if (err) return fileCallback(err);
-                var $file = $(applyPreCheerioFixes(fileData));
-
-                addStaticHeader($file, $headerContent);
-                fixToc($file, moduleFiles);
-                fixFooter($file);
-                $file.find('[href="'+mainModuleFile+'"]').attr('href', docFilename);
-                generateHTMLFile(filePath, $file, fileCallback);
-            });
-        }, callback);
-    });
+    }, callback);
 }
 
 fs.copySync(path.join(__dirname, '../../dist/async.js'), path.join(docsDir, 'scripts/async.js'), { clobber: true });
