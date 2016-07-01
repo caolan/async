@@ -90,8 +90,6 @@ function combineFakeModules(files, callback) {
 
 function applyPreCheerioFixes(data) {
 
-    var customScript = '<script src="scripts/jsdoc-custom.js"></script>\n';
-    var closingBodyTag = '</body>';
 
     var rIncorrectCFText = />ControlFlow</g;
     var fixedCFText = '>Control Flow<';
@@ -100,8 +98,6 @@ function applyPreCheerioFixes(data) {
 
     // the heading needs additional padding at the top so it doesn't get cutoff
     return data
-        // inject the async library onto each page
-        .replace(closingBodyTag, customScript+closingBodyTag)
         // for JSDoc to work, the module needs to be labelled 'ControlFlow', while
         // on the page it should appear as 'Control Flow'
         .replace(rIncorrectCFText, fixedCFText)
