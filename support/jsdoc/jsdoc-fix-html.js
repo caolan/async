@@ -88,8 +88,7 @@ function combineFakeModules(files, callback) {
     });
 }
 
-function applyPreCheerioFixes(data, headLinks) {
-    var closingHeadTag = '</head>'
+function applyPreCheerioFixes(data) {
 
     var customScript = '<script src="scripts/jsdoc-custom.js"></script>\n';
     var closingBodyTag = '</body>';
@@ -100,7 +99,7 @@ function applyPreCheerioFixes(data, headLinks) {
     var rIncorrectModuleText = />module:(\w+)\.(\w+)</g
 
     // the heading needs additional padding at the top so it doesn't get cutoff
-    return data.replace(closingHeadTag, headLinks+closingHeadTag)
+    return data
         // inject the async library onto each page
         .replace(closingBodyTag, customScript+closingBodyTag)
         // for JSDoc to work, the module needs to be labelled 'ControlFlow', while
@@ -111,12 +110,12 @@ function applyPreCheerioFixes(data, headLinks) {
         .replace(rIncorrectModuleText, function(match, moduleName, methodName) {
             return '>'+methodName+'<';
         });
-};
+}
 
 function addStaticHeader($file, $headerContent) {
     var $body = $file.find('body');
     $body.prepend($headerContent);
-};
+}
 
 function fixToc($page, moduleFiles) {
     // remove `async` listing from toc
@@ -149,12 +148,12 @@ function fixFooter($page) {
     var $footer = $page.find('footer');
     $footer.append(additionalFooterText);
     $page.find('#main').append($footer);
-};
+}
 
 function fixModuleLinks(files, callback) {
     var moduleFiles = extractModuleFiles(files);
 
-    async.map(['head-data.html', 'navbar.html'], function(filename, fileCallback) {
+    async.map(['navbar.html'], function(filename, fileCallback) {
         fs.readFile(path.join(__dirname, filename), 'utf8', function(err, data) {
             if (err) return fileCallback(err);
             return fileCallback(null, data);
@@ -162,12 +161,12 @@ function fixModuleLinks(files, callback) {
     }, function(err, results) {
         if (err) return callback(err);
 
-        var $headerContent = $(results[1]);
+        var $headerContent = $(results[0]);
         async.each(files, function(file, fileCallback) {
             var filePath = path.join(docsDir, file);
             fs.readFile(filePath, 'utf8', function(err, fileData) {
                 if (err) return fileCallback(err);
-                var $file = $(applyPreCheerioFixes(fileData, results[0]));
+                var $file = $(applyPreCheerioFixes(fileData));
 
                 addStaticHeader($file, $headerContent);
                 fixToc($file, moduleFiles);

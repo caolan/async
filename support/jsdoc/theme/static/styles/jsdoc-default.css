@@ -51,6 +51,7 @@ h1 {
 }
 
 h1.page-title {
+  padding-top: 12px;
   font-size: 48px;
   margin: 1em 30px;
 }
@@ -207,6 +208,18 @@ nav > h2 > a {
    display: block;
    margin: 10px 0 -10px;
    color: hsl(202, 71%, 50%) !important;
+}
+
+.navbar-fixed-top {
+    background-color: #101010;
+}
+
+.navbar-fixed-top .navbar-right {
+    padding-right: 10px;
+}
+
+.navbar .ion-social-github {
+    font-size: 1.2em;
 }
 
 footer {
