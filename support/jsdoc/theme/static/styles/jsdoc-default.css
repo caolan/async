@@ -113,9 +113,6 @@ tt, code, kbd, samp {
   float: none;
   min-width: 360px;
   overflow-y: auto;
-  /*padding-left: 250px;*/
-  /*width: 100%;*/
-  /*height: calc(100% - 50px);*/
 }
 
 header {
