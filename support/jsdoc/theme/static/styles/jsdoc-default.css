@@ -39,7 +39,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #000;
+  color: #565656;
   font-weight: 400;
   margin: 0;
   padding-top: 1em;
@@ -113,6 +113,22 @@ tt, code, kbd, samp {
   float: none;
   min-width: 360px;
   overflow-y: auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+#main h1 {
+    margin-top: 100px !important;
+    padding-top: 0px;
+    border-left: 2px solid #3391FE;
+}
+
+#main h4 {
+    margin-top: 120px !important;
+    padding-top: 0px;
+    padding-left: 16px;
+    margin-left: -16px;
+    border-left: 2px solid #3391FE;
 }
 
 header {
@@ -210,7 +226,7 @@ nav {
   float: left;
   display: block;
   width: 250px;
-  background: #fff;
+  background: #FAFAFA;
   overflow: auto;
   position: fixed;
   height: 100%;
@@ -218,6 +234,7 @@ nav {
   padding-left: 12px;
   overflow-y: auto;
   height: calc(100% - 50px);
+  box-shadow: 1px 0 rgba(0, 0, 0, 0.1);
 }
 
 nav h3 {
@@ -732,6 +749,11 @@ dl.param-type {
 
   #main h1.page-title {
     margin: 1em 0;
+  }
+
+  #main h4 {
+    margin-left: -8px;
+    padding-left: 8px;
   }
 
   #main section {

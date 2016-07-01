@@ -99,7 +99,7 @@ $(function initSearchBar() {
             location.href = host + 'docs.html#.' + suggestion;
         } else {
             var $el = document.getElementById('.' + suggestion);
-            $('#main').animate({ scrollTop: $el.offsetTop }, 500);
+            $('#main').animate({ scrollTop: $el.offsetTop + -60 }, 500);
         }
     });
 });
