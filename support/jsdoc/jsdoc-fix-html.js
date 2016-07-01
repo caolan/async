@@ -162,7 +162,6 @@ function fixModuleLinks(files, callback) {
 
 fs.copySync(path.join(__dirname, '../../dist/async.js'), path.join(docsDir, 'scripts/async.js'), { clobber: true });
 fs.copySync(path.join(__dirname, './jsdoc-custom.js'), path.join(docsDir, 'scripts/jsdoc-custom.js'), { clobber: true });
-fs.copySync(path.join(__dirname, './jsdoc-custom.css'), path.join(docsDir, 'styles/jsdoc-custom.css'), { clobber: true });
 fs.copySync(path.join(__dirname, '..', '..', 'logo', 'favicon.ico'), path.join(docsDir, 'favicon.ico'), { clobber: true });
 fs.copySync(path.join(__dirname, '..', '..', 'logo', 'async-logo.svg'), path.join(docsDir, 'img', 'async-logo.svg'), { clobber: true });
 

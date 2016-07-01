@@ -13,7 +13,7 @@ body {
   color: #4d4e53;
   background-color: white;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0;
 
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
   font-size: 16px;
@@ -69,6 +69,7 @@ h3 {
 h4 {
   font-size: 18px;
   margin: 1em 0 .2em;
+  padding-top: 4em;
   color: #4d4e53;
 }
 
@@ -104,19 +105,50 @@ tt, code, kbd, samp {
 }
 
 #main {
-  float: right;
+  position: fixed;
+  top: 50px;
+  float: none;
   min-width: 360px;
-  width: calc(100% - 250px);
+  overflow-y: auto;
+  padding-left: 250px;
+  width: 100%;
+  height: calc(100% - 50px);
 }
 
 header {
   display: block
 }
 
-section {
+section, h1 {
   display: block;
   background-color: #fff;
   padding: 0 30px;
+}
+
+
+.tt-menu {
+    background-color: white;
+    padding: 10px;
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid #D3D3D3;
+    z-index: 11;
+    overflow-y: auto;
+}
+
+.tt-cursor {
+    background-color: #D3D3D3;
+}
+
+.search-bar-header-first {
+    margin: 5px 0px;
+    border-bottom: 1px solid #D3D3D3;
+}
+
+.search-bar-header {
+    margin: 5px 0px;
+    border-top: 1px solid #D3D3D3;
+    border-bottom: 1px solid #D3D3D3;
 }
 
 .variation {
@@ -138,6 +170,10 @@ nav {
   overflow: auto;
   position: fixed;
   height: 100%;
+  top: 50px;
+  padding-left: 12px;
+  overflow-y: auto;
+  height: calc(100% - 50px);
 }
 
 nav h3 {
@@ -210,6 +246,15 @@ nav > h2 > a {
    color: hsl(202, 71%, 50%) !important;
 }
 
+
+.navbar-brand {
+    padding: 5px;
+}
+
+.navbar-brand img {
+    height: 40px;
+}
+
 .navbar-fixed-top {
     background-color: #101010;
 }
@@ -224,11 +269,25 @@ nav > h2 > a {
 
 footer {
   color: hsl(0, 0%, 28%);
-  margin-left: 250px;
   display: block;
   padding: 15px;
   font-style: italic;
   font-size: 90%;
+}
+
+#main section, #main h1 {
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+article img {
+    max-width: 100%;
+}
+
+/* fix bootstrap's styling */
+pre {
+    background: #fff;
+    padding: 0px;
 }
 
 .ancestors {
