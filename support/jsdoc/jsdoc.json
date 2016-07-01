@@ -1,0 +1,20 @@
+{
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc"]
+  },
+  "source": {
+    "include": [ "./lib" ]
+  },
+  "plugins": ["plugins/markdown", "./jsdoc-import-path-plugin"],
+  "opts": {
+    "readme": "intro.md",
+    "template": "support/jsdoc/theme",
+    "encoding": "utf8",
+    "destination": "./docs",
+    "recurse": true
+  },
+  "templates": {
+    "cleverLinks": false
+  }
+}

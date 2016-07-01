@@ -17,7 +17,7 @@ DIST = dist
 SRC = lib/index.js
 SCRIPTS = ./support
 JS_SRC = $(shell find lib/ -type f -name '*.js')
-LINT_FILES = lib/ mocha_test/ $(shell find perf/ -maxdepth 2 -type f) support/ karma.conf.js
+LINT_FILES = lib/ mocha_test/ $(shell find perf/ -maxdepth 2 -type f) $(shell find support/ -maxdepth 2 -type f -name "*.js") karma.conf.js
 
 UMD_BUNDLE = $(BUILDDIR)/dist/async.js
 UMD_BUNDLE_MIN = $(BUILDDIR)/dist/async.min.js
@@ -117,3 +117,11 @@ release-major release-minor release-patch release-prerelease: all
 	$(MAKE) build-es-config
 	cd build/ && npm publish
 	cd build-es/ && npm publish
+	$(MAKE) doc
+
+.PHONY: doc
+doc:
+	git diff-files --quiet # fail if unstanged changes
+	git diff-index --quiet HEAD # fail if uncommited changes
+	npm run-script jsdoc
+	gh-pages-deploy
