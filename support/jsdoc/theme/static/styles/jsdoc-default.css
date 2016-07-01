@@ -344,7 +344,8 @@ code {
 }
 
 .type-signature {
-  color: #aaa
+  color: #aaa;
+  display: none;
 }
 
 .name, .signature {
