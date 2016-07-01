@@ -42,6 +42,7 @@ h1, h2, h3, h4, h5, h6 {
   color: #000;
   font-weight: 400;
   margin: 0;
+  padding-top: 1em;
 }
 
 h1 {
@@ -51,13 +52,12 @@ h1 {
 }
 
 h1.page-title {
-  padding-top: 12px;
   font-size: 48px;
   margin: 1em 30px;
 }
 
 h2 {
-  font-size: 24px;
+  font-size: 30px;
   margin: 1.5em 0 .3em;
 }
 
@@ -122,7 +122,7 @@ header {
 section, h1 {
   display: block;
   background-color: #fff;
-  padding: 0 30px;
+  padding: 2em 30px 0;
 }
 
 .nav.navbar-right .navbar-form {
