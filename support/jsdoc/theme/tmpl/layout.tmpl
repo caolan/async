@@ -65,10 +65,6 @@
 
 <label for="nav-trigger" class="overlay"></label>
 
-<nav>
-    <?js= this.nav ?>
-</nav>
-
 <div id="main">
     <?js if (title != 'Home') { ?>
     <h1 class="page-title"><?js= title ?></h1>
@@ -76,6 +72,10 @@
 
     <?js= content ?>
 </div>
+
+<nav>
+    <?js= this.nav ?>
+</nav>
 
 <br class="clear">
 
