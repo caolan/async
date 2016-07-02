@@ -496,7 +496,7 @@ describe('queue', function(){
         }, 5);
 
         setTimeout(function () {
-            expect(q.tasks.length).to.equal(1);
+            expect(q._tasks.length).to.equal(1);
             expect(q.running()).to.equal(2);
             q.resume();
         }, 15);
