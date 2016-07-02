@@ -39,7 +39,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #000;
+  color: #565656;
   font-weight: 400;
   margin: 0;
   padding-top: 1em;
@@ -107,12 +107,28 @@ tt, code, kbd, samp {
 #main {
   position: fixed;
   top: 50px;
+  left: 250px;
+  right: 0;
+  bottom: 0;
   float: none;
   min-width: 360px;
   overflow-y: auto;
-  padding-left: 250px;
-  width: 100%;
-  height: calc(100% - 50px);
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+#main h1 {
+    margin-top: 100px !important;
+    padding-top: 0px;
+    border-left: 2px solid #3391FE;
+}
+
+#main h4 {
+    margin-top: 120px !important;
+    padding-top: 0px;
+    padding-left: 16px;
+    margin-left: -16px;
+    border-left: 2px solid #3391FE;
 }
 
 header {
@@ -127,12 +143,32 @@ section, h1 {
 
 .nav.navbar-right .navbar-form {
     padding: 0;
-    margin: 0;
+    margin: 6px 0px;
+}
+
+.navbar-collapse.collapse {
+  display: block!important;
+}
+
+.navbar-nav>li, .navbar-nav {
+  float: left !important;
+}
+
+.navbar-nav.navbar-right:last-child {
+  margin-right: -15px !important;
+}
+
+.navbar-right {
+  float: right!important;
 }
 
 .twitter-typeahead input {
-    border-radius: 0;
-    height: 50px;
+    border-radius: 8px;
+    height: 38px;
+}
+
+.twitter-typeahead input.tt-hint {
+  color: #AAA;
 }
 
 .tt-menu {
@@ -190,7 +226,7 @@ nav {
   float: left;
   display: block;
   width: 250px;
-  background: #fff;
+  background: #FAFAFA;
   overflow: auto;
   position: fixed;
   height: 100%;
@@ -198,6 +234,7 @@ nav {
   padding-left: 12px;
   overflow-y: auto;
   height: calc(100% - 50px);
+  box-shadow: 1px 0 rgba(0, 0, 0, 0.1);
 }
 
 nav h3 {
@@ -272,24 +309,32 @@ nav > h2 > a {
 
 
 .navbar-brand {
-    padding: 5px;
+    padding: 8px;
 }
 
 .navbar-brand img {
-    height: 40px;
+    height: 32px;
 }
 
 .navbar-fixed-top {
-    background-color: #101010;
+    z-index: 1;
+    background-color: #F0F0F0;
+    padding: 0px 10px;
+    border-left: 6px solid #3391FE;
 }
 
 .navbar-fixed-top .navbar-right {
-    padding-right: 10px;
+    padding-right: 16px;
 }
 
 .navbar .ion-social-github {
     font-size: 1.5em;
     float: left;
+    color: #3391FE;
+}
+
+.navbar .ion-social-github:hover {
+    color: #3D7FC1;
 }
 
 footer {
@@ -559,6 +604,7 @@ dl.param-type {
   cursor: pointer;
   user-select: none;
   opacity: .8;
+  color: #3391FE;
 }
 .navicon-button .navicon:before, .navicon-button .navicon:after {
   transition: 0.25s;
@@ -580,28 +626,28 @@ dl.param-type {
 /* navicon */
 .navicon {
   position: relative;
-  width: 2.5em;
-  height: .3125rem;
-  background: #000;
+  width: 32px;
+  height: 4px;
+  background: #3391FE;
   transition: 0.3s;
-  border-radius: 2.5rem;
+  border-radius: 2px;
 }
 .navicon:before, .navicon:after {
   display: block;
   content: "";
-  height: .3125rem;
-  width: 2.5rem;
-  background: #000;
+  height: 4px;
+  width: 32px;
+  background: #3391FE;
   position: absolute;
   z-index: -1;
   transition: 0.3s 0.25s;
-  border-radius: 1rem;
+  border-radius: 2px;
 }
 .navicon:before {
-  top: .625rem;
+  top: 10px;
 }
 .navicon:after {
-  top: -.625rem;
+  top: -10px;
 }
 
 /* open */
@@ -691,18 +737,23 @@ dl.param-type {
   .navicon-button {
     display: inline-block;
     position: fixed;
-    top: 1.5em;
     right: 0;
     z-index: 2;
   }
 
   #main {
-    width: 100%;
+    padding: 16px;
+    left: 0px;
     min-width: 360px;
   }
 
   #main h1.page-title {
     margin: 1em 0;
+  }
+
+  #main h4 {
+    margin-left: -8px;
+    padding-left: 8px;
   }
 
   #main section {
