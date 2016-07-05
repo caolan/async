@@ -2441,9 +2441,9 @@
    *     // result now equals 15
    * });
    */
-  function compose() /* functions... */{
-    return seq.apply(null, reverse.call(arguments));
-  }
+  var compose = rest(function (args) {
+    return seq.apply(null, reverse.call(args));
+  });
 
   function concat$1(eachfn, arr, fn, callback) {
       var result = [];
