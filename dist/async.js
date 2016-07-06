@@ -2404,8 +2404,6 @@
       });
   });
 
-  var reverse = Array.prototype.reverse;
-
   /**
    * Creates a function which is a composition of the passed asynchronous
    * functions. Each function consumes the return value of the function that
@@ -2442,7 +2440,7 @@
    * });
    */
   var compose = rest(function (args) {
-    return seq.apply(null, reverse.call(args));
+    return seq.apply(null, args.reverse());
   });
 
   function concat$1(eachfn, arr, fn, callback) {
