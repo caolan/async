@@ -1,4 +1,4 @@
-var async = require('../lib');
+var async = require('./support/async');
 var assert = require('assert');
 
 describe('race', function () {
