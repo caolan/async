@@ -7,7 +7,8 @@ describe('until', function(){
         var call_order = [];
         var count = 0;
         async.until(
-            function () {
+            function (c) {
+                expect(c).to.equal(undefined);
                 call_order.push(['test', count]);
                 return (count == 5);
             },
@@ -42,7 +43,8 @@ describe('until', function(){
                 count++;
                 cb(null, count);
             },
-            function () {
+            function (c) {
+                expect(c).to.equal(count);
                 call_order.push(['test', count]);
                 return (count == 5);
             },
