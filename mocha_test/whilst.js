@@ -8,7 +8,8 @@ describe('whilst', function(){
 
         var count = 0;
         async.whilst(
-            function () {
+            function (c) {
+                expect(c).to.equal(undefined);
                 call_order.push(['test', count]);
                 return (count < 5);
             },
@@ -57,7 +58,8 @@ describe('whilst', function(){
                 count++;
                 cb(null, count);
             },
-            function () {
+            function (c) {
+                expect(c).to.equal(count);
                 call_order.push(['test', count]);
                 return (count < 5);
             },

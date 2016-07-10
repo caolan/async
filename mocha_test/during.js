@@ -16,7 +16,7 @@ describe('during', function() {
             function (cb) {
                 call_order.push(['iteratee', count]);
                 count++;
-                cb();
+                cb(null, count);
             },
             function (err) {
                 assert(err === null, err + " passed instead of 'null'");
@@ -42,9 +42,10 @@ describe('during', function() {
             function (cb) {
                 call_order.push(['iteratee', count]);
                 count++;
-                cb();
+                cb(null, count);
             },
-            function (cb) {
+            function (c, cb) {
+                expect(c).to.equal(count);
                 call_order.push(['test', count]);
                 cb(null, count < 5);
             },
