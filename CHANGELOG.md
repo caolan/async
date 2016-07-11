@@ -1,6 +1,10 @@
 # v2.0.0
 
-Lots of changes here! The biggest feature is modularization. You can now `require("async/series")` to only require the `series` function. Every Async library function is available this way. You still can `require("async")` to require the entire library, like you could do before.
+Lots of changes here!
+
+First and foremost, we have a slick new [site for docs](https://caolan.github.io/async/). Special thanks to [**@hargasinski**](https://github.com/hargasinski) for his work converting our old docs to `jsdoc` format and implementing the new website. Also huge ups to [**@ivanseidel**](https://github.com/ivanseidel) for designing our new logo. It was a long process for both of these tasks, but I think these changes turned out extraordinary well.
+
+The biggest feature is modularization. You can now `require("async/series")` to only require the `series` function. Every Async library function is available this way. You still can `require("async")` to require the entire library, like you could do before.
 
 We also provide Async as a collection of ES2015 modules. You can now `import {each} from 'async-es'` or `import waterfall from 'async-es/waterfall'`. If you are using only a few Async functions, and are using a ES bundler such as Rollup, this can significantly lower your build size.
 
@@ -20,8 +24,6 @@ There were several cases where Async accepted some functions that did not strict
 Another theme is performance. We have eliminated internal deferrals in all cases where they make sense. For example, in `waterfall` and `auto`, there was a `setImmediate` between each task -- these deferrals have been removed. A `setImmediate` call can add up to 1ms of delay. This might not seem like a lot, but it can add up if you are using many Async functions in the course of processing a HTTP request, for example. Nearly all asynchronous functions that do I/O already have some sort of deferral built in, so the extra deferral is unnecessary. The trade-off of this change is removing our built-in stack-overflow defense. Many synchronous callback calls in series can quickly overflow the JS call stack. If you do have a function that is sometimes synchronous (calling its callback on the same tick), and are running into stack overflows, wrap it with `async.ensureAsync()`.
 
 Another big performance win has been re-implementing `queue`, `cargo`, and `priorityQueue` with [doubly linked lists](https://en.wikipedia.org/wiki/Doubly_linked_list) instead of arrays. This has lead to queues being an order of [magnitude faster on large sets of tasks](https://github.com/caolan/async/pull/1205).
-
-We also have a slick new [site for docs](https://caolan.github.io/async/). Special thanks to [**hargasinski**](https://github.com/hargasinski) for his work converting our old docs to `jsdoc` format and implementing the new website. Also huge ups to [**ivanseidel**](https://github.com/ivanseidel) for designing our new logo. It was a long process for both of these tasks, but I think these changes turned out extraordinary well.
 
 ## New Features
 
@@ -68,6 +70,8 @@ We also have a slick new [site for docs](https://caolan.github.io/async/). Speci
 - Added `someSeries` and `everySeries` for symmetry, as well as a complete set of `any`/`anyLimit`/`anySeries` and `all`/`/allLmit`/`allSeries` aliases.
 - Added `find` as an alias for `detect. (as well as `findLimit` and `findSeries`).
 - Various doc fixes (#1005, #1008, #1010, #1015, #1021, #1037, #1102)
+
+Thank you [**@aearly**](github.com/aearly) and [**@megawac**](github.com/megawac) for taking the lead on version 2 of async.
 
 ------------------------------------------
 
