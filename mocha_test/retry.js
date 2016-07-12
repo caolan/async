@@ -120,4 +120,20 @@ describe("retry", function () {
             done();
         }, 50);
     });
+
+    it('retry does not precompute the intervals (#1226)',function(done) {
+        var callTimes = [];
+        function intervalFunc() {
+            callTimes.push(new Date().getTime());
+            return 100;
+        };
+        function fn(callback) {
+            callback({}); // respond with indexed values
+        }
+        async.retry({ times: 4, interval: intervalFunc}, fn, function(){
+            expect(callTimes[1] - callTimes[0]).to.be.above(99);
+            expect(callTimes[2] - callTimes[1]).to.be.above(99);
+            done();
+        });
+    });
 });
