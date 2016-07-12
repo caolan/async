@@ -106,7 +106,7 @@ describe("waterfall", function () {
         }).to.throw(/already called/);
     });
 
-    it('call in another context', function(done) {
+    it('call in another context @nycinvalid', function(done) {
         if (process.browser) {
             // node only test
             done();
