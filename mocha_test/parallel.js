@@ -192,7 +192,7 @@ describe('parallel', function() {
         });
     });
 
-    it('parallel call in another context', function(done) {
+    it('parallel call in another context @nycinvalid', function(done) {
         if (isBrowser()) {
             // node only test
             done();

@@ -137,7 +137,7 @@ describe('series', function() {
         });
     });
 
-    it('call in another context', function(done) {
+    it('call in another context @nycinvalid', function(done) {
         if (isBrowser()) {
             // node only test
             done();
