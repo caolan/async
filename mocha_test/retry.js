@@ -132,8 +132,8 @@ describe("retry", function () {
             callback({}); // respond with indexed values
         }
         async.retry({ times: 4, interval: intervalFunc}, fn, function(){
-            expect(callTimes[1] - callTimes[0]).to.be.above(99);
-            expect(callTimes[2] - callTimes[1]).to.be.above(99);
+            expect(callTimes[1] - callTimes[0]).to.be.above(90);
+            expect(callTimes[2] - callTimes[1]).to.be.above(90);
             done();
         });
     });
