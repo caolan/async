@@ -1838,12 +1838,8 @@
    *   arguments of those parameters.
    * @param {Function} [callback] - An optional callback which is called when all
    * the tasks have been completed. It receives the `err` argument if any `tasks`
-   * pass an error to their callback. The remaining parameters are task names
-   * whose results you are interested in. This callback will only be called when
-   * all tasks have finished or an error has occurred, and so do not specify
-   * dependencies in the same way as `tasks` do. If an error occurs, no further
-   * `tasks` will be performed, and `results` will only be valid for those tasks
-   * which managed to complete. Invoked with (err, [results...]).
+   * pass an error to their callback, and a `results` object with any completed
+   * task results, similar to `auto`.
    * @example
    *
    * //  The example from `auto` can be rewritten as follows:
@@ -1867,17 +1863,16 @@
    *         // write_file contains the filename returned by write_file.
    *         callback(null, {'file':write_file, 'email':'user@example.com'});
    *     }
-   * }, function(err, email_link) {
+   * }, function(err, results) {
    *     console.log('err = ', err);
-   *     console.log('email_link = ', email_link);
+   *     console.log('email_link = ', results.email_link);
    * });
    *
    * // If you are using a JS minifier that mangles parameter names, `autoInject`
    * // will not work with plain functions, since the parameter names will be
    * // collapsed to a single letter identifier.  To work around this, you can
    * // explicitly specify the names of the parameters your task function needs
-   * // in an array, similar to Angular.js dependency injection.  The final
-   * // results callback can be provided as an array in the same way.
+   * // in an array, similar to Angular.js dependency injection.
    *
    * // This still has an advantage over plain `auto`, since the results a task
    * // depends on are still spread into arguments.
@@ -1890,10 +1885,10 @@
    *         callback(null, {'file':write_file, 'email':'user@example.com'});
    *     }]
    *     //...
-   * }, ['email_link', function(err, email_link) {
+   * }, function(err, results) {
    *     console.log('err = ', err);
-   *     console.log('email_link = ', email_link);
-   * }]);
+   *     console.log('email_link = ', results.email_link);
+   * });
    */
   function autoInject(tasks, callback) {
       var newTasks = {};
@@ -2053,16 +2048,14 @@
       }
 
       function _next(tasks) {
-          return function () {
+          return rest(function (args) {
               workers -= 1;
 
-              var removed = false;
-              var args = arguments;
               arrayEach(tasks, function (task) {
                   arrayEach(workersList, function (worker, index) {
-                      if (worker === task && !removed) {
+                      if (worker === task) {
                           workersList.splice(index, 1);
-                          removed = true;
+                          return false;
                       }
                   });
 
@@ -2077,11 +2070,11 @@
                   q.unsaturated();
               }
 
-              if (q._tasks.length + workers === 0) {
+              if (q.idle()) {
                   q.drain();
               }
               q.process();
-          };
+          });
       }
 
       var workers = 0;

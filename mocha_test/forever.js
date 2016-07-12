@@ -1,4 +1,4 @@
-var async = require('../lib');
+var async = require('./support/async');
 var expect = require('chai').expect;
 var isBrowser = require('./support/is_browser');
 

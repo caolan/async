@@ -79,6 +79,7 @@ $(BUILD_ES)/%.js: lib/%.js
 
 test-build:
 	mocha support/build.test.js
+	export ASYNC_TEST=build && npm run mocha-node-test
 
 build-config: $(BUILDDIR)/package.json $(BUILDDIR)/bower.json $(BUILDDIR)/README.md $(BUILDDIR)/LICENSE $(BUILDDIR)/CHANGELOG.md
 
