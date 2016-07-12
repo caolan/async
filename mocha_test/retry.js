@@ -147,4 +147,14 @@ describe("retry", function () {
             done();
         }));
     });
+
+    // note this is a synchronous test ensuring retry is synchrnous in the fastest (most straightforward) case
+    it('retry calls fn immediately and will call callback if successful', function() {
+        function fn(callback) {
+            callback(null, {a: 1});
+        }
+        async.retry(5, fn, function(err, result) {
+            expect(result).to.be.eql({a: 1});
+        });
+    })
 });
