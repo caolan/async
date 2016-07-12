@@ -71,5 +71,8 @@
   "license": "MIT",
   "gh-pages-deploy": {
     "staticpath": "docs"
+  },
+  "nyc": {
+    "exclude": ["mocha_test"]
   }
 }
