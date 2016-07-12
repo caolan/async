@@ -1,7 +1,6 @@
 var async = require('../lib');
 var expect = require('chai').expect;
 var assert = require('assert');
-var isBrowser = require('./support/is_browser');
 var getFunctionsObject = require('./support/get_function_object');
 
 describe('parallel', function() {
@@ -192,12 +191,7 @@ describe('parallel', function() {
         });
     });
 
-    it('parallel call in another context @nycinvalid', function(done) {
-        if (isBrowser()) {
-            // node only test
-            done();
-            return;
-        }
+    it('parallel call in another context @nycinvalid @nodeonly', function(done) {
         var vm = require('vm');
         var sandbox = {
             async: async,

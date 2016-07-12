@@ -13,12 +13,7 @@ describe("nextTick", function () {
         }, 50);
     });
 
-    it('nextTick in the browser', function(done){
-        if (!process.browser) {
-            // skip this test in node
-            return done();
-        }
-
+    it('nextTick in the browser @nodeonly', function(done){
         var call_order = [];
         async.nextTick(function(){call_order.push('two');});
 

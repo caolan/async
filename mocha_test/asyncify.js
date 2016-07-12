@@ -1,7 +1,6 @@
 var async = require('../lib');
 var assert = require('assert');
 var expect = require('chai').expect;
-var isBrowser = require('./support/is_browser');
 
 describe('asyncify', function(){
 
@@ -61,12 +60,7 @@ describe('asyncify', function(){
         }
     });
 
-    describe('promisified', function() {
-        if (isBrowser()) {
-            // node only tests
-            return;
-        }
-
+    describe('promisified @nodeonly', function() {
         var names = [
             'native-promise-only',
             'bluebird',

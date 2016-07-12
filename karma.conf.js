@@ -12,6 +12,13 @@ module.exports = function(config) {
         browserify: {
             debug: true,
             transform: ['babelify']
+        },
+
+        client: {
+            mocha: {
+                grep: '@nodeonly',
+                invert: true
+            }
         }
     });
 };
