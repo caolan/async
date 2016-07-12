@@ -1,6 +1,7 @@
 var async = require('../lib');
 var expect = require('chai').expect;
 var assert = require('assert');
+var _ = require('lodash');
 
 describe("retry", function () {
 
@@ -121,7 +122,7 @@ describe("retry", function () {
         }, 50);
     });
 
-    it('retry does not precompute the intervals (#1226)',function(done) {
+    it('retry does not precompute the intervals (#1226)', function(done) {
         var callTimes = [];
         function intervalFunc() {
             callTimes.push(new Date().getTime());
@@ -135,5 +136,15 @@ describe("retry", function () {
             expect(callTimes[2] - callTimes[1]).to.be.above(99);
             done();
         });
+    });
+
+    it('retry passes all resolve arguments to callback', function(done) {
+        function fn(callback) {
+            callback(null, 1, 2, 3); // respond with indexed values
+        }
+        async.retry(5, fn, _.rest(function(args) {
+            expect(args).to.be.eql([null, 1, 2, 3]);
+            done();
+        }));
     });
 });
