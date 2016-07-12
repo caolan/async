@@ -1,6 +1,7 @@
 var async = require('../lib');
 var expect = require('chai').expect;
 var assert = require('assert');
+var _ = require('lodash');
 
 describe("retry", function () {
 
@@ -121,7 +122,7 @@ describe("retry", function () {
         }, 50);
     });
 
-    it('retry does not precompute the intervals (#1226)',function(done) {
+    it('retry does not precompute the intervals (#1226)', function(done) {
         var callTimes = [];
         function intervalFunc() {
             callTimes.push(new Date().getTime());
@@ -136,4 +137,24 @@ describe("retry", function () {
             done();
         });
     });
+
+    it('retry passes all resolve arguments to callback', function(done) {
+        function fn(callback) {
+            callback(null, 1, 2, 3); // respond with indexed values
+        }
+        async.retry(5, fn, _.rest(function(args) {
+            expect(args).to.be.eql([null, 1, 2, 3]);
+            done();
+        }));
+    });
+
+    // note this is a synchronous test ensuring retry is synchrnous in the fastest (most straightforward) case
+    it('retry calls fn immediately and will call callback if successful', function() {
+        function fn(callback) {
+            callback(null, {a: 1});
+        }
+        async.retry(5, fn, function(err, result) {
+            expect(result).to.be.eql({a: 1});
+        });
+    })
 });
