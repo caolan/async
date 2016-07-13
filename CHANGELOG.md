@@ -70,7 +70,7 @@ Another big performance win has been re-implementing `queue`, `cargo`, and `prio
 
 - Added `someSeries` and `everySeries` for symmetry, as well as a complete set of `any`/`anyLimit`/`anySeries` and `all`/`/allLmit`/`allSeries` aliases.
 - Added `find` as an alias for `detect. (as well as `findLimit` and `findSeries`).
-- Various doc fixes (#1005, #1008, #1010, #1015, #1021, #1037, #1102)
+- Various doc fixes (#1005, #1008, #1010, #1015, #1021, #1037, #1039, #1051, #1102, #1107, #1121, #1123, #1129, #1135, #1138, #1141, #1153, #1216, #1217, #1232, #1233, #1236, #1238)
 
 Thank you [**@aearly**](github.com/aearly) and [**@megawac**](github.com/megawac) for taking the lead on version 2 of async.
 
