@@ -915,7 +915,7 @@
    * @method
    * @see [async.map]{@link module:Collections.map}
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {number} limit - The maximum number of async operations at a time.
    * @param {Function} iteratee - A function to apply to each item in `coll`.
    * The iteratee is passed a `callback(err, transformed)` which must be called
@@ -955,7 +955,7 @@
    * @memberOf module:Collections
    * @method
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {Function} iteratee - A function to apply to each item in `coll`.
    * The iteratee is passed a `callback(err, transformed)` which must be called
    * once it has completed with an error (which can be `null`) and a
@@ -982,7 +982,7 @@
    * @memberOf module:ControlFlow
    * @method
    * @category Control Flow
-   * @param {Array|Object} fns - A collection of asynchronous functions to all
+   * @param {Array|Iterable|Object} fns - A collection of asynchronous functions to all
    * call with the same arguments
    * @param {...*} [args] - any number of separate arguments to pass to the
    * function.
@@ -1013,7 +1013,7 @@
    * @method
    * @see [async.map]{@link module:Collections.map}
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {Function} iteratee - A function to apply to each item in `coll`.
    * The iteratee is passed a `callback(err, transformed)` which must be called
    * once it has completed with an error (which can be `null`) and a
@@ -1033,7 +1033,7 @@
    * @method
    * @see [async.applyEach]{@link module:ControlFlow.applyEach}
    * @category Control Flow
-   * @param {Array|Object} fns - A collection of asynchronous functions to all
+   * @param {Array|Iterable|Object} fns - A collection of asynchronous functions to all
    * call with the same arguments
    * @param {...*} [args] - any number of separate arguments to pass to the
    * function.
@@ -1838,12 +1838,8 @@
    *   arguments of those parameters.
    * @param {Function} [callback] - An optional callback which is called when all
    * the tasks have been completed. It receives the `err` argument if any `tasks`
-   * pass an error to their callback. The remaining parameters are task names
-   * whose results you are interested in. This callback will only be called when
-   * all tasks have finished or an error has occurred, and so do not specify
-   * dependencies in the same way as `tasks` do. If an error occurs, no further
-   * `tasks` will be performed, and `results` will only be valid for those tasks
-   * which managed to complete. Invoked with (err, [results...]).
+   * pass an error to their callback, and a `results` object with any completed
+   * task results, similar to `auto`.
    * @example
    *
    * //  The example from `auto` can be rewritten as follows:
@@ -1867,17 +1863,16 @@
    *         // write_file contains the filename returned by write_file.
    *         callback(null, {'file':write_file, 'email':'user@example.com'});
    *     }
-   * }, function(err, email_link) {
+   * }, function(err, results) {
    *     console.log('err = ', err);
-   *     console.log('email_link = ', email_link);
+   *     console.log('email_link = ', results.email_link);
    * });
    *
    * // If you are using a JS minifier that mangles parameter names, `autoInject`
    * // will not work with plain functions, since the parameter names will be
    * // collapsed to a single letter identifier.  To work around this, you can
    * // explicitly specify the names of the parameters your task function needs
-   * // in an array, similar to Angular.js dependency injection.  The final
-   * // results callback can be provided as an array in the same way.
+   * // in an array, similar to Angular.js dependency injection.
    *
    * // This still has an advantage over plain `auto`, since the results a task
    * // depends on are still spread into arguments.
@@ -1890,10 +1885,10 @@
    *         callback(null, {'file':write_file, 'email':'user@example.com'});
    *     }]
    *     //...
-   * }, ['email_link', function(err, email_link) {
+   * }, function(err, results) {
    *     console.log('err = ', err);
-   *     console.log('email_link = ', email_link);
-   * }]);
+   *     console.log('email_link = ', results.email_link);
+   * });
    */
   function autoInject(tasks, callback) {
       var newTasks = {};
@@ -2053,16 +2048,14 @@
       }
 
       function _next(tasks) {
-          return function () {
+          return rest(function (args) {
               workers -= 1;
 
-              var removed = false;
-              var args = arguments;
               arrayEach(tasks, function (task) {
                   arrayEach(workersList, function (worker, index) {
-                      if (worker === task && !removed) {
+                      if (worker === task) {
                           workersList.splice(index, 1);
-                          removed = true;
+                          return false;
                       }
                   });
 
@@ -2077,11 +2070,11 @@
                   q.unsaturated();
               }
 
-              if (q._tasks.length + workers === 0) {
+              if (q.idle()) {
                   q.drain();
               }
               q.process();
-          };
+          });
       }
 
       var workers = 0;
@@ -2258,7 +2251,7 @@
    * @see [async.eachOf]{@link module:Collections.eachOf}
    * @alias forEachOfLimit
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {number} limit - The maximum number of async operations at a time.
    * @param {Function} iteratee - A function to apply to each
    * item in `coll`. The `key` is the item's key, or index in the case of an
@@ -2283,7 +2276,7 @@
    * @see [async.eachOf]{@link module:Collections.eachOf}
    * @alias forEachOfSeries
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {Function} iteratee - A function to apply to each item in `coll`. The
    * `key` is the item's key, or index in the case of an array. The iteratee is
    * passed a `callback(err)` which must be called once it has completed. If no
@@ -2312,7 +2305,7 @@
    * @alias inject
    * @alias foldl
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {*} memo - The initial state of the reduction.
    * @param {Function} iteratee - A function applied to each item in the
    * array to produce the next step in the reduction. The `iteratee` is passed a
@@ -2335,6 +2328,7 @@
    * });
    */
   function reduce(coll, memo, iteratee, callback) {
+      callback = once(callback || noop);
       eachOfSeries(coll, function (x, i, callback) {
           iteratee(memo, x, function (err, v) {
               memo = v;
@@ -2466,7 +2460,7 @@
    * @alias forEachOf
    * @category Collection
    * @see [async.each]{@link module:Collections.each}
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {Function} iteratee - A function to apply to each
    * item in `coll`. The `key` is the item's key, or index in the case of an
    * array. The iteratee is passed a `callback(err)` which must be called once it
@@ -2516,7 +2510,7 @@
    * @memberOf module:Collections
    * @method
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {Function} iteratee - A function to apply to each item in `coll`.
    * The iteratee is passed a `callback(err, results)` which must be called once
    * it has completed with an error (which can be `null`) and an array of results.
@@ -2548,7 +2542,7 @@
    * @method
    * @see [async.concat]{@link module:Collections.concat}
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {Function} iteratee - A function to apply to each item in `coll`.
    * The iteratee is passed a `callback(err, results)` which must be called once
    * it has completed with an error (which can be `null`) and an array of results.
@@ -2687,7 +2681,7 @@
    * @method
    * @alias find
    * @category Collections
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {Function} iteratee - A truth test to apply to each item in `coll`.
    * The iteratee is passed a `callback(err, truthValue)` which must be called
    * with a boolean argument once it has completed. Invoked with (item, callback).
@@ -2719,7 +2713,7 @@
    * @see [async.detect]{@link module:Collections.detect}
    * @alias findLimit
    * @category Collections
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {number} limit - The maximum number of async operations at a time.
    * @param {Function} iteratee - A truth test to apply to each item in `coll`.
    * The iteratee is passed a `callback(err, truthValue)` which must be called
@@ -2742,7 +2736,7 @@
    * @see [async.detect]{@link module:Collections.detect}
    * @alias findSeries
    * @category Collections
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {Function} iteratee - A truth test to apply to each item in `coll`.
    * The iteratee is passed a `callback(err, truthValue)` which must be called
    * with a boolean argument once it has completed. Invoked with (item, callback).
@@ -2803,65 +2797,6 @@
   var dir = consoleFunc('dir');
 
   /**
-   * Like [`whilst`]{@link module:ControlFlow.whilst}, except the `test` is an asynchronous function that
-   * is passed a callback in the form of `function (err, truth)`. If error is
-   * passed to `test` or `fn`, the main callback is immediately called with the
-   * value of the error.
-   *
-   * @name during
-   * @static
-   * @memberOf module:ControlFlow
-   * @method
-   * @see [async.whilst]{@link module:ControlFlow.whilst}
-   * @category Control Flow
-   * @param {Function} test - asynchronous truth test to perform before each
-   * execution of `fn`. Invoked with (callback).
-   * @param {Function} fn - A function which is called each time `test` passes.
-   * The function is passed a `callback(err)`, which must be called once it has
-   * completed with an optional `err` argument. Invoked with (callback).
-   * @param {Function} [callback] - A callback which is called after the test
-   * function has failed and repeated execution of `fn` has stopped. `callback`
-   * will be passed an error and any arguments passed to the final `fn`'s
-   * callback. Invoked with (err, [results]);
-   * @example
-   *
-   * var count = 0;
-   *
-   * async.during(
-   *     function (callback) {
-   *         return callback(null, count < 5);
-   *     },
-   *     function (callback) {
-   *         count++;
-   *         setTimeout(callback, 1000);
-   *     },
-   *     function (err) {
-   *         // 5 seconds have passed
-   *     }
-   * );
-   */
-  function during(test, fn, callback) {
-      callback = callback || noop;
-
-      var next = rest(function (err, args) {
-          if (err) {
-              callback(err);
-          } else {
-              args.push(check);
-              test.apply(this, args);
-          }
-      });
-
-      var check = function (err, truth) {
-          if (err) return callback(err);
-          if (!truth) return callback(null);
-          fn(next);
-      };
-
-      test(check);
-  }
-
-  /**
    * The post-check version of [`during`]{@link module:ControlFlow.during}. To reflect the difference in
    * the order of operations, the arguments `test` and `fn` are switched.
    *
@@ -2876,70 +2811,33 @@
    * The function is passed a `callback(err)`, which must be called once it has
    * completed with an optional `err` argument. Invoked with (callback).
    * @param {Function} test - asynchronous truth test to perform before each
-   * execution of `fn`. Invoked with (callback).
+   * execution of `fn`. Invoked with (...args, callback), where `...args` are the
+   * non-error args from the previous callback of `fn`.
    * @param {Function} [callback] - A callback which is called after the test
    * function has failed and repeated execution of `fn` has stopped. `callback`
-   * will be passed an error and any arguments passed to the final `fn`'s
-   * callback. Invoked with (err, [results]);
+   * will be passed an error if one occured, otherwise `null`.
    */
   function doDuring(fn, test, callback) {
-      var calls = 0;
+      callback = onlyOnce(callback || noop);
 
-      during(function (next) {
-          if (calls++ < 1) return next(null, true);
-          test.apply(this, arguments);
-      }, fn, callback);
-  }
-
-  /**
-   * Repeatedly call `fn`, while `test` returns `true`. Calls `callback` when
-   * stopped, or an error occurs.
-   *
-   * @name whilst
-   * @static
-   * @memberOf module:ControlFlow
-   * @method
-   * @category Control Flow
-   * @param {Function} test - synchronous truth test to perform before each
-   * execution of `fn`. Invoked with ().
-   * @param {Function} iteratee - A function which is called each time `test` passes.
-   * The function is passed a `callback(err)`, which must be called once it has
-   * completed with an optional `err` argument. Invoked with (callback).
-   * @param {Function} [callback] - A callback which is called after the test
-   * function has failed and repeated execution of `fn` has stopped. `callback`
-   * will be passed an error and any arguments passed to the final `fn`'s
-   * callback. Invoked with (err, [results]);
-   * @returns undefined
-   * @example
-   *
-   * var count = 0;
-   * async.whilst(
-   *     function() { return count < 5; },
-   *     function(callback) {
-   *         count++;
-   *         setTimeout(function() {
-   *             callback(null, count);
-   *         }, 1000);
-   *     },
-   *     function (err, n) {
-   *         // 5 seconds have passed, n = 5
-   *     }
-   * );
-   */
-  function whilst(test, iteratee, callback) {
-      callback = callback || noop;
-      if (!test()) return callback(null);
       var next = rest(function (err, args) {
           if (err) return callback(err);
-          if (test.apply(this, args)) return iteratee(next);
-          callback.apply(null, [null].concat(args));
+          args.push(check);
+          test.apply(this, args);
       });
-      iteratee(next);
+
+      function check(err, truth) {
+          if (err) return callback(err);
+          if (!truth) return callback(null);
+          fn(next);
+      }
+
+      check(null, true);
   }
 
   /**
    * The post-check version of [`whilst`]{@link module:ControlFlow.whilst}. To reflect the difference in
-   * the order of operations, the arguments `test` and `fn` are switched.
+   * the order of operations, the arguments `test` and `iteratee` are switched.
    *
    * `doWhilst` is to `whilst` as `do while` is to `while` in plain JavaScript.
    *
@@ -2949,22 +2847,25 @@
    * @method
    * @see [async.whilst]{@link module:ControlFlow.whilst}
    * @category Control Flow
-   * @param {Function} fn - A function which is called each time `test` passes.
-   * The function is passed a `callback(err)`, which must be called once it has
-   * completed with an optional `err` argument. Invoked with (callback).
+   * @param {Function} iteratee - A function which is called each time `test`
+   * passes. The function is passed a `callback(err)`, which must be called once
+   * it has completed with an optional `err` argument. Invoked with (callback).
    * @param {Function} test - synchronous truth test to perform after each
-   * execution of `fn`. Invoked with Invoked with the non-error callback results
-   * of `fn`.
+   * execution of `iteratee`. Invoked with Invoked with the non-error callback
+   * results of `iteratee`.
    * @param {Function} [callback] - A callback which is called after the test
-   * function has failed and repeated execution of `fn` has stopped. `callback`
-   * will be passed an error and any arguments passed to the final `fn`'s
-   * callback. Invoked with (err, [results]);
+   * function has failed and repeated execution of `iteratee` has stopped.
+   * `callback` will be passed an error and any arguments passed to the final
+   * `iteratee`'s callback. Invoked with (err, [results]);
    */
-  function doWhilst(fn, test, callback) {
-      var calls = 0;
-      whilst(function () {
-          return ++calls <= 1 || test.apply(this, arguments);
-      }, fn, callback);
+  function doWhilst(iteratee, test, callback) {
+      callback = onlyOnce(callback || noop);
+      var next = rest(function (err, args) {
+          if (err) return callback(err);
+          if (test.apply(this, args)) return iteratee(next);
+          callback.apply(null, [null].concat(args));
+      });
+      iteratee(next);
   }
 
   /**
@@ -2993,6 +2894,60 @@
       }, callback);
   }
 
+  /**
+   * Like [`whilst`]{@link module:ControlFlow.whilst}, except the `test` is an asynchronous function that
+   * is passed a callback in the form of `function (err, truth)`. If error is
+   * passed to `test` or `fn`, the main callback is immediately called with the
+   * value of the error.
+   *
+   * @name during
+   * @static
+   * @memberOf module:ControlFlow
+   * @method
+   * @see [async.whilst]{@link module:ControlFlow.whilst}
+   * @category Control Flow
+   * @param {Function} test - asynchronous truth test to perform before each
+   * execution of `fn`. Invoked with (callback).
+   * @param {Function} fn - A function which is called each time `test` passes.
+   * The function is passed a `callback(err)`, which must be called once it has
+   * completed with an optional `err` argument. Invoked with (callback).
+   * @param {Function} [callback] - A callback which is called after the test
+   * function has failed and repeated execution of `fn` has stopped. `callback`
+   * will be passed an error, if one occured, otherwise `null`.
+   * @example
+   *
+   * var count = 0;
+   *
+   * async.during(
+   *     function (callback) {
+   *         return callback(null, count < 5);
+   *     },
+   *     function (callback) {
+   *         count++;
+   *         setTimeout(callback, 1000);
+   *     },
+   *     function (err) {
+   *         // 5 seconds have passed
+   *     }
+   * );
+   */
+  function during(test, fn, callback) {
+      callback = onlyOnce(callback || noop);
+
+      function next(err) {
+          if (err) return callback(err);
+          test(check);
+      }
+
+      function check(err, truth) {
+          if (err) return callback(err);
+          if (!truth) return callback(null);
+          fn(next);
+      }
+
+      test(check);
+  }
+
   function _withoutIndex(iteratee) {
       return function (value, index, callback) {
           return iteratee(value, callback);
@@ -3009,7 +2964,7 @@
    * @see [async.each]{@link module:Collections.each}
    * @alias forEachLimit
    * @category Collection
-   * @param {Array|Object} coll - A colleciton to iterate over.
+   * @param {Array|Iterable|Object} coll - A colleciton to iterate over.
    * @param {number} limit - The maximum number of async operations at a time.
    * @param {Function} iteratee - A function to apply to each item in `coll`. The
    * iteratee is passed a `callback(err)` which must be called once it has
@@ -3040,7 +2995,7 @@
    * @method
    * @alias forEach
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {Function} iteratee - A function to apply to each item
    * in `coll`. The iteratee is passed a `callback(err)` which must be called once
    * it has completed. If no error has occurred, the `callback` should be run
@@ -3095,7 +3050,7 @@
    * @see [async.each]{@link module:Collections.each}
    * @alias forEachSeries
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {Function} iteratee - A function to apply to each
    * item in `coll`. The iteratee is passed a `callback(err)` which must be called
    * once it has completed. If no error has occurred, the `callback` should be run
@@ -3173,7 +3128,7 @@
    * @see [async.every]{@link module:Collections.every}
    * @alias allLimit
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {number} limit - The maximum number of async operations at a time.
    * @param {Function} iteratee - A truth test to apply to each item in the
    * collection in parallel. The iteratee is passed a `callback(err, truthValue)`
@@ -3195,7 +3150,7 @@
    * @method
    * @alias all
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {Function} iteratee - A truth test to apply to each item in the
    * collection in parallel. The iteratee is passed a `callback(err, truthValue)`
    * which must be called with a  boolean argument once it has completed. Invoked
@@ -3225,7 +3180,7 @@
    * @see [async.every]{@link module:Collections.every}
    * @alias allSeries
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {Function} iteratee - A truth test to apply to each item in the
    * collection in parallel. The iteratee is passed a `callback(err, truthValue)`
    * which must be called with a  boolean argument once it has completed. Invoked
@@ -3237,6 +3192,7 @@
   var everySeries = doLimit(everyLimit, 1);
 
   function _filter(eachfn, arr, iteratee, callback) {
+      callback = once(callback || noop);
       var results = [];
       eachfn(arr, function (x, index, callback) {
           iteratee(x, function (err, v) {
@@ -3271,7 +3227,7 @@
    * @see [async.filter]{@link module:Collections.filter}
    * @alias selectLimit
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {number} limit - The maximum number of async operations at a time.
    * @param {Function} iteratee - A truth test to apply to each item in `coll`.
    * The `iteratee` is passed a `callback(err, truthValue)`, which must be called
@@ -3292,7 +3248,7 @@
    * @method
    * @alias select
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {Function} iteratee - A truth test to apply to each item in `coll`.
    * The `iteratee` is passed a `callback(err, truthValue)`, which must be called
    * with a boolean argument once it has completed. Invoked with (item, callback).
@@ -3320,7 +3276,7 @@
    * @see [async.filter]{@link module:Collections.filter}
    * @alias selectSeries
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {Function} iteratee - A truth test to apply to each item in `coll`.
    * The `iteratee` is passed a `callback(err, truthValue)`, which must be called
    * with a boolean argument once it has completed. Invoked with (item, callback).
@@ -3367,55 +3323,6 @@
           task(next);
       }
       next();
-  }
-
-  /**
-   * Creates an iterator function which calls the next function in the `tasks`
-   * array, returning a continuation to call the next one after that. It's also
-   * possible to “peek” at the next iterator with `iterator.next()`.
-   *
-   * This function is used internally by the `async` module, but can be useful
-   * when you want to manually control the flow of functions in series.
-   *
-   * @name iterator
-   * @static
-   * @memberOf module:ControlFlow
-   * @method
-   * @category Control Flow
-   * @param {Array} tasks - An array of functions to run.
-   * @returns The next function to run in the series.
-   * @example
-   *
-   * var iterator = async.iterator([
-   *     function() { sys.p('one'); },
-   *     function() { sys.p('two'); },
-   *     function() { sys.p('three'); }
-   * ]);
-   *
-   * node> var iterator2 = iterator();
-   * 'one'
-   * node> var iterator3 = iterator2();
-   * 'two'
-   * node> iterator3();
-   * 'three'
-   * node> var nextfn = iterator2.next();
-   * node> nextfn();
-   * 'three'
-   */
-  function iterator$1 (tasks) {
-      function makeCallback(index) {
-          function fn() {
-              if (tasks.length) {
-                  tasks[index].apply(null, arguments);
-              }
-              return fn.next();
-          }
-          fn.next = function () {
-              return index < tasks.length - 1 ? makeCallback(index + 1) : null;
-          };
-          return fn;
-      }
-      return makeCallback(0);
   }
 
   /**
@@ -3468,6 +3375,7 @@
    * transformed values from the `obj`. Invoked with (err, result).
    */
   function mapValuesLimit(obj, limit, iteratee, callback) {
+      callback = once(callback || noop);
       var newObj = {};
       eachOfLimit(obj, limit, function (val, key, next) {
           iteratee(val, key, function (err, result) {
@@ -3512,7 +3420,9 @@
    *     f1: 'file1',
    *     f2: 'file2',
    *     f3: 'file3'
-   * }, fs.stat, function(err, result) {
+   * }, function (file, key, callback) {
+   *   fs.stat(file, callback);
+   * }, function(err, result) {
    *     // results is now a map of stats for each file, e.g.
    *     // {
    *     //     f1: [stats for file1],
@@ -3721,7 +3631,7 @@
    * @memberOf module:ControlFlow
    * @method
    * @category Control Flow
-   * @param {Array|Object} tasks - A collection containing functions to run.
+   * @param {Array|Iterable|Object} tasks - A collection containing functions to run.
    * Each function is passed a `callback(err, result)` which it must call on
    * completion with an error `err` (which can be `null`) and an optional `result`
    * value.
@@ -3808,7 +3718,7 @@
    * @property {Function} pause - a function that pauses the processing of tasks
    * until `resume()` is called. Invoke with `queue.pause()`.
    * @property {Function} resume - a function that resumes the processing of
-   * queued tasks when the queue is paused. Invoke with `queue.length()`.
+   * queued tasks when the queue is paused. Invoke with `queue.resume()`.
    * @property {Function} kill - a function that removes the `drain` callback and
    * empties remaining tasks from the queue forcing it to go idle. Invoke with `queue.kill()`.
    */
@@ -3917,6 +3827,7 @@
               });
           }
 
+          priority = priority || 0;
           var nextNode = q._tasks.head;
           while (nextNode && priority >= nextNode.priority) {
               nextNode = nextNode.next;
@@ -3993,7 +3904,7 @@
   var slice = Array.prototype.slice;
 
   /**
-   * Same as [`reduce`]{@link module:Collections.reduce}, only operates on `coll` in reverse order.
+   * Same as [`reduce`]{@link module:Collections.reduce}, only operates on `array` in reverse order.
    *
    * @name reduceRight
    * @static
@@ -4002,7 +3913,7 @@
    * @see [async.reduce]{@link module:Collections.reduce}
    * @alias foldr
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array} array - A collection to iterate over.
    * @param {*} memo - The initial state of the reduction.
    * @param {Function} iteratee - A function applied to each item in the
    * array to produce the next step in the reduction. The `iteratee` is passed a
@@ -4014,8 +3925,8 @@
    * `iteratee` functions have finished. Result is the reduced value. Invoked with
    * (err, result).
    */
-  function reduceRight(coll, memo, iteratee, callback) {
-    var reversed = slice.call(coll).reverse();
+  function reduceRight(array, memo, iteratee, callback) {
+    var reversed = slice.call(array).reverse();
     reduce(reversed, memo, iteratee, callback);
   }
 
@@ -4104,7 +4015,7 @@
    * @method
    * @see [async.reject]{@link module:Collections.reject}
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {number} limit - The maximum number of async operations at a time.
    * @param {Function} iteratee - A truth test to apply to each item in `coll`.
    * The `iteratee` is passed a `callback(err, truthValue)`, which must be called
@@ -4123,7 +4034,7 @@
    * @method
    * @see [async.filter]{@link module:Collections.filter}
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {Function} iteratee - A truth test to apply to each item in `coll`.
    * The `iteratee` is passed a `callback(err, truthValue)`, which must be called
    * with a boolean argument once it has completed. Invoked with (item, callback).
@@ -4230,7 +4141,7 @@
    * @method
    * @see [async.reject]{@link module:Collections.reject}
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {Function} iteratee - A truth test to apply to each item in `coll`.
    * The `iteratee` is passed a `callback(err, truthValue)`, which must be called
    * with a boolean argument once it has completed. Invoked with (item, callback).
@@ -4238,74 +4149,6 @@
    * `iteratee` functions have finished. Invoked with (err, results).
    */
   var rejectSeries = doLimit(rejectLimit, 1);
-
-  /**
-   * Run the functions in the `tasks` collection in series, each one running once
-   * the previous function has completed. If any functions in the series pass an
-   * error to its callback, no more functions are run, and `callback` is
-   * immediately called with the value of the error. Otherwise, `callback`
-   * receives an array of results when `tasks` have completed.
-   *
-   * It is also possible to use an object instead of an array. Each property will
-   * be run as a function, and the results will be passed to the final `callback`
-   * as an object instead of an array. This can be a more readable way of handling
-   *  results from {@link async.series}.
-   *
-   * **Note** that while many implementations preserve the order of object
-   * properties, the [ECMAScript Language Specification](http://www.ecma-international.org/ecma-262/5.1/#sec-8.6)
-   * explicitly states that
-   *
-   * > The mechanics and order of enumerating the properties is not specified.
-   *
-   * So if you rely on the order in which your series of functions are executed,
-   * and want this to work on all platforms, consider using an array.
-   *
-   * @name series
-   * @static
-   * @memberOf module:ControlFlow
-   * @method
-   * @category Control Flow
-   * @param {Array|Object} tasks - A collection containing functions to run, each
-   * function is passed a `callback(err, result)` it must call on completion with
-   * an error `err` (which can be `null`) and an optional `result` value.
-   * @param {Function} [callback] - An optional callback to run once all the
-   * functions have completed. This function gets a results array (or object)
-   * containing all the result arguments passed to the `task` callbacks. Invoked
-   * with (err, result).
-   * @example
-   * async.series([
-   *     function(callback) {
-   *         // do some stuff ...
-   *         callback(null, 'one');
-   *     },
-   *     function(callback) {
-   *         // do some more stuff ...
-   *         callback(null, 'two');
-   *     }
-   * ],
-   * // optional callback
-   * function(err, results) {
-   *     // results is now equal to ['one', 'two']
-   * });
-   *
-   * async.series({
-   *     one: function(callback) {
-   *         setTimeout(function() {
-   *             callback(null, 1);
-   *         }, 200);
-   *     },
-   *     two: function(callback){
-   *         setTimeout(function() {
-   *             callback(null, 2);
-   *         }, 100);
-   *     }
-   * }, function(err, results) {
-   *     // results is now equal to: {one: 1, two: 2}
-   * });
-   */
-  function series(tasks, callback) {
-    _parallel(eachOfSeries, tasks, callback);
-  }
 
   /**
    * Creates a function that returns `value`.
@@ -4435,39 +4278,18 @@
           throw new Error("Invalid arguments for async.retry");
       }
 
-      var attempts = [];
-      for (var i = 1; i < options.times + 1; i++) {
-          var isFinalAttempt = i == options.times;
-          attempts.push(retryAttempt(isFinalAttempt));
-          var interval = options.intervalFunc(i);
-          if (!isFinalAttempt && interval > 0) {
-              attempts.push(retryInterval(interval));
-          }
+      var attempt = 1;
+      function retryAttempt() {
+          task(function (err) {
+              if (err && attempt++ < options.times) {
+                  setTimeout(retryAttempt, options.intervalFunc(attempt));
+              } else {
+                  callback.apply(null, arguments);
+              }
+          });
       }
 
-      series(attempts, function (done, data) {
-          data = data[data.length - 1];
-          callback(data.err, data.result);
-      });
-
-      function retryAttempt(isFinalAttempt) {
-          return function (seriesCallback) {
-              task(function (err, result) {
-                  seriesCallback(!err || isFinalAttempt, {
-                      err: err,
-                      result: result
-                  });
-              });
-          };
-      }
-
-      function retryInterval(interval) {
-          return function (seriesCallback) {
-              setTimeout(function () {
-                  seriesCallback(null);
-              }, interval);
-          };
-      }
+      retryAttempt();
   }
 
   /**
@@ -4509,6 +4331,74 @@
   }
 
   /**
+   * Run the functions in the `tasks` collection in series, each one running once
+   * the previous function has completed. If any functions in the series pass an
+   * error to its callback, no more functions are run, and `callback` is
+   * immediately called with the value of the error. Otherwise, `callback`
+   * receives an array of results when `tasks` have completed.
+   *
+   * It is also possible to use an object instead of an array. Each property will
+   * be run as a function, and the results will be passed to the final `callback`
+   * as an object instead of an array. This can be a more readable way of handling
+   *  results from {@link async.series}.
+   *
+   * **Note** that while many implementations preserve the order of object
+   * properties, the [ECMAScript Language Specification](http://www.ecma-international.org/ecma-262/5.1/#sec-8.6)
+   * explicitly states that
+   *
+   * > The mechanics and order of enumerating the properties is not specified.
+   *
+   * So if you rely on the order in which your series of functions are executed,
+   * and want this to work on all platforms, consider using an array.
+   *
+   * @name series
+   * @static
+   * @memberOf module:ControlFlow
+   * @method
+   * @category Control Flow
+   * @param {Array|Iterable|Object} tasks - A collection containing functions to run, each
+   * function is passed a `callback(err, result)` it must call on completion with
+   * an error `err` (which can be `null`) and an optional `result` value.
+   * @param {Function} [callback] - An optional callback to run once all the
+   * functions have completed. This function gets a results array (or object)
+   * containing all the result arguments passed to the `task` callbacks. Invoked
+   * with (err, result).
+   * @example
+   * async.series([
+   *     function(callback) {
+   *         // do some stuff ...
+   *         callback(null, 'one');
+   *     },
+   *     function(callback) {
+   *         // do some more stuff ...
+   *         callback(null, 'two');
+   *     }
+   * ],
+   * // optional callback
+   * function(err, results) {
+   *     // results is now equal to ['one', 'two']
+   * });
+   *
+   * async.series({
+   *     one: function(callback) {
+   *         setTimeout(function() {
+   *             callback(null, 1);
+   *         }, 200);
+   *     },
+   *     two: function(callback){
+   *         setTimeout(function() {
+   *             callback(null, 2);
+   *         }, 100);
+   *     }
+   * }, function(err, results) {
+   *     // results is now equal to: {one: 1, two: 2}
+   * });
+   */
+  function series(tasks, callback) {
+    _parallel(eachOfSeries, tasks, callback);
+  }
+
+  /**
    * The same as [`some`]{@link module:Collections.some} but runs a maximum of `limit` async operations at a time.
    *
    * @name someLimit
@@ -4518,7 +4408,7 @@
    * @see [async.some]{@link module:Collections.some}
    * @alias anyLimit
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {number} limit - The maximum number of async operations at a time.
    * @param {Function} iteratee - A truth test to apply to each item in the array
    * in parallel. The iteratee is passed a `callback(err, truthValue)` which must
@@ -4542,7 +4432,7 @@
    * @method
    * @alias any
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {Function} iteratee - A truth test to apply to each item in the array
    * in parallel. The iteratee is passed a `callback(err, truthValue)` which must
    * be called with a boolean argument once it has completed. Invoked with
@@ -4573,7 +4463,7 @@
    * @see [async.some]{@link module:Collections.some}
    * @alias anySeries
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {Function} iteratee - A truth test to apply to each item in the array
    * in parallel. The iteratee is passed a `callback(err, truthValue)` which must
    * be called with a boolean argument once it has completed. Invoked with
@@ -4594,12 +4484,12 @@
    * @memberOf module:Collections
    * @method
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {Function} iteratee - A function to apply to each item in `coll`.
    * The iteratee is passed a `callback(err, sortValue)` which must be called once
    * it has completed with an error (which can be `null`) and a value to use as
    * the sort criteria. Invoked with (item, callback).
-   * @param {Function} [callback] - A callback which is called after all the
+   * @param {Function} callback - A callback which is called after all the
    * `iteratee` functions have finished, or an error occurs. Results is the items
    * from the original `coll` sorted by the values returned by the `iteratee`
    * calls. Invoked with (err, results).
@@ -4808,7 +4698,7 @@
    * @memberOf module:Collections
    * @method
    * @category Collection
-   * @param {Array|Object} coll - A collection to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {*} [accumulator] - The initial state of the transform.  If omitted,
    * it will default to an empty Object or Array, depending on the type of `coll`
    * @param {Function} iteratee - A function applied to each item in the
@@ -4849,6 +4739,7 @@
           iteratee = accumulator;
           accumulator = isArray(coll) ? [] : {};
       }
+      callback = once(callback || noop);
 
       eachOf(coll, function (v, k, cb) {
           iteratee(accumulator, v, k, cb);
@@ -4874,6 +4765,52 @@
       return function () {
           return (fn.unmemoized || fn).apply(null, arguments);
       };
+  }
+
+  /**
+   * Repeatedly call `fn`, while `test` returns `true`. Calls `callback` when
+   * stopped, or an error occurs.
+   *
+   * @name whilst
+   * @static
+   * @memberOf module:ControlFlow
+   * @method
+   * @category Control Flow
+   * @param {Function} test - synchronous truth test to perform before each
+   * execution of `fn`. Invoked with ().
+   * @param {Function} iteratee - A function which is called each time `test` passes.
+   * The function is passed a `callback(err)`, which must be called once it has
+   * completed with an optional `err` argument. Invoked with (callback).
+   * @param {Function} [callback] - A callback which is called after the test
+   * function has failed and repeated execution of `fn` has stopped. `callback`
+   * will be passed an error and any arguments passed to the final `fn`'s
+   * callback. Invoked with (err, [results]);
+   * @returns undefined
+   * @example
+   *
+   * var count = 0;
+   * async.whilst(
+   *     function() { return count < 5; },
+   *     function(callback) {
+   *         count++;
+   *         setTimeout(function() {
+   *             callback(null, count);
+   *         }, 1000);
+   *     },
+   *     function (err, n) {
+   *         // 5 seconds have passed, n = 5
+   *     }
+   * );
+   */
+  function whilst(test, iteratee, callback) {
+      callback = onlyOnce(callback || noop);
+      if (!test()) return callback(null);
+      var next = rest(function (err, args) {
+          if (err) return callback(err);
+          if (test()) return iteratee(next);
+          callback.apply(null, [null].concat(args));
+      });
+      iteratee(next);
   }
 
   /**
@@ -5023,7 +4960,6 @@
     filterLimit: filterLimit,
     filterSeries: filterSeries,
     forever: forever,
-    iterator: iterator$1,
     log: log,
     map: map,
     mapLimit: mapLimit,
@@ -5116,7 +5052,6 @@
   exports.filterLimit = filterLimit;
   exports.filterSeries = filterSeries;
   exports.forever = forever;
-  exports.iterator = iterator$1;
   exports.log = log;
   exports.map = map;
   exports.mapLimit = mapLimit;
