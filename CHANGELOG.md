@@ -58,6 +58,7 @@ Another big performance win has been re-implementing `queue`, `cargo`, and `prio
 - The test function for `whilst`, `until`, and `during` used to be passed non-error args from the iteratee function's callback, but this led to weirdness where the first call of the test function would be passed no args. We have made it so the test function is never passed extra arguments, and only the `doWhilst`, `doUntil`, and `doDuring` functions pass iteratee callback arguments to the test function (#1217, #1224)
 - The `q.tasks` array has been renamed `q._tasks` and is now implemented as a doubly linked list (DLL). Any code that used to interact with this array will need to be updated to either use the provided helpers or support DLLs (#1205).
 - The timing of the `q.saturated()` callback in a `queue` has been modified to better reflect when tasks pushed to the queue will start queueing. (#724, #1078)
+- Removed `iterator` method in favour of [ES2015 iterator protocol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators ) which natively supports arrays (#1237)
 - Dropped support for Component, Jam, SPM, and Volo (#1175, ##176)
 
 ## Bug Fixes
