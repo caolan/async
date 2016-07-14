@@ -1,7 +1,6 @@
 var async = require('../lib');
 var assert = require('assert');
 var expect = require('chai').expect;
-var isBrowser = require('./support/is_browser');
 
 describe('asyncify', function(){
 
@@ -62,88 +61,78 @@ describe('asyncify', function(){
     });
 
     describe('promisified', function() {
-        if (isBrowser()) {
-            // node only tests
-            return;
-        }
-
-        var names = [
-            'native-promise-only',
-            'bluebird',
-            'es6-promise',
-            'rsvp'
-        ];
-
-        // Both Bluebird and native promises emit these events. We handle it because Bluebird
-        // will report these rejections to stderr if we don't, which is a great feature for
-        // normal cases, but not here, since we expect unhandled rejections:
-        function ignoreRejections() {}
-
-        before(function () {
-            process.on('unhandledRejection', ignoreRejections);
-        });
-
-        after(function () {
-            process.removeListener('unhandledRejection', ignoreRejections);
-        });
-
-        names.forEach(function(name) {
-            describe(name, function() {
-
-                var Promise = require(name);
-                if (typeof Promise.Promise === 'function') {
-                    Promise = Promise.Promise;
-                }
-
-                it('resolve', function(done) {
-                    var promisified = function(argument) {
-                        return new Promise(function (resolve) {
-                            setTimeout(function () {
-                                resolve(argument + " resolved");
-                            }, 15);
-                        });
-                    };
-                    async.asyncify(promisified)("argument", function (err, value) {
-                        if (err) {
-                            return done(new Error("should not get an error here"));
-                        }
-                        expect(value).to.equal("argument resolved");
-                        done();
-                    });
-                });
-
-                it('reject', function(done) {
-                    var promisified = function(argument) {
-                        return new Promise(function (resolve, reject) {
-                            reject(argument + " rejected");
-                        });
-                    };
-                    async.asyncify(promisified)("argument", function (err) {
-                        assert(err);
-                        expect(err.message).to.equal("argument rejected");
-                        done();
-                    });
-                });
-
-                it('callback error', function(done) {
-                    var promisified = function(argument) {
-                        return new Promise(function (resolve) {
+        function promisifiedTests(Promise) {
+            it('resolve', function(done) {
+                var promisified = function(argument) {
+                    return new Promise(function (resolve) {
+                        setTimeout(function () {
                             resolve(argument + " resolved");
-                        });
-                    };
-                    var call_count = 0;
-                    async.asyncify(promisified)("argument", function () {
-                        call_count++;
-                        if (call_count === 1) {
-                            throw new Error("error in callback");
-                        }
+                        }, 15);
                     });
-                    setTimeout(function () {
-                        expect(call_count).to.equal(1);
-                        done();
-                    }, 15);
+                };
+                async.asyncify(promisified)("argument", function (err, value) {
+                    if (err) {
+                        return done(new Error("should not get an error here"));
+                    }
+                    expect(value).to.equal("argument resolved");
+                    done();
                 });
             });
+
+            it('reject', function(done) {
+                var promisified = function(argument) {
+                    return new Promise(function (resolve, reject) {
+                        reject(argument + " rejected");
+                    });
+                };
+                async.asyncify(promisified)("argument", function (err) {
+                    assert(err);
+                    expect(err.message).to.equal("argument rejected");
+                    done();
+                });
+            });
+
+            it('callback error', function(done) {
+                var promisified = function(argument) {
+                    return new Promise(function (resolve) {
+                        resolve(argument + " resolved");
+                    });
+                };
+                var call_count = 0;
+                async.asyncify(promisified)("argument", function () {
+                    call_count++;
+                    if (call_count === 1) {
+                        throw new Error("error in callback");
+                    }
+                });
+                setTimeout(function () {
+                    expect(call_count).to.equal(1);
+                    done();
+                }, 15);
+            });
+        }
+
+        describe('native-promise-only', function() {
+            var Promise = require('native-promise-only');
+            promisifiedTests.call(this, Promise);
+        });
+
+        describe('bluebird', function() {
+            var Promise = require('bluebird');
+            // Bluebird reports unhandled rejections to stderr. We handle it because we expect
+            // unhandled rejections:
+            Promise.onPossiblyUnhandledRejection(function ignoreRejections() {});
+            promisifiedTests.call(this, Promise);
+        });
+
+        describe('es6-promise', function() {
+            var Promise = require('es6-promise').Promise;
+            promisifiedTests.call(this, Promise);
+        });
+
+        describe('rsvp', function() {
+            var Promise = require('rsvp').Promise;
+            promisifiedTests.call(this, Promise);
         });
     });
 });

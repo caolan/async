@@ -1,6 +1,5 @@
 var async = require('../lib');
 var expect = require('chai').expect;
-var isBrowser = require('./support/is_browser');
 
 describe('forever', function(){
     context('function is asynchronous', function(){
@@ -24,8 +23,7 @@ describe('forever', function(){
     });
 
     context('function is synchronous', function(){
-        it('does not cause a stack overflow', function(done){
-            if (isBrowser()) return done(); // this will take forever in a browser
+        it('does not cause a stack overflow @nodeonly', function(done){ // this will take forever in a browser
             var counter = 0;
             function addOne(callback) {
                 counter++;

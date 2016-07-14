@@ -106,13 +106,7 @@ describe("waterfall", function () {
         }).to.throw(/already called/);
     });
 
-    it('call in another context @nycinvalid', function(done) {
-        if (process.browser) {
-            // node only test
-            done();
-            return;
-        }
-
+    it('call in another context @nycinvalid @nodeonly', function(done) {
         var vm = require('vm');
         var sandbox = {
             async: async,
