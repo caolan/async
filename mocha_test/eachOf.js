@@ -1,6 +1,7 @@
 var async = require('../lib');
 var expect = require('chai').expect;
 var assert = require('assert');
+var _ = require('lodash');
 
 describe("eachOf", function() {
 
@@ -257,6 +258,18 @@ describe("eachOf", function() {
         }, function(err){
             if (err) throw err;
             assert(true, 'should call callback');
+        });
+        setTimeout(done, 25);
+    });
+
+    it('forEachOfLimit no limit', function(done) {
+        var count = 0;
+        async.forEachOfLimit(_.range(100), Infinity, function(x, i, callback){
+            count++;
+            callback();
+        }, function(err){
+            if (err) throw err;
+            expect(count).to.equal(100);
         });
         setTimeout(done, 25);
     });
