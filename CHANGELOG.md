@@ -1,3 +1,7 @@
+# v2.0.1
+
+- Significantly optimized all iteration based collection methods such as `each`, `map`, `filter`, etc (#1245, #1246, #1247).
+
 # v2.0.0
 
 Lots of changes here!
