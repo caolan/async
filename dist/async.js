@@ -15,8 +15,7 @@
      * @returns {*} Returns the result of `func`.
      */
     function apply(func, thisArg, args) {
-      var length = args.length;
-      switch (length) {
+      switch (args.length) {
         case 0: return func.call(thisArg);
         case 1: return func.call(thisArg, args[0]);
         case 2: return func.call(thisArg, args[0], args[1]);
@@ -24,6 +23,87 @@
       }
       return func.apply(thisArg, args);
     }
+
+    /* Built-in method references for those with the same name as other `lodash` methods. */
+    var nativeMax = Math.max;
+
+    /**
+     * The base implementation of `_.rest` which doesn't validate or coerce arguments.
+     *
+     * @private
+     * @param {Function} func The function to apply a rest parameter to.
+     * @param {number} [start=func.length-1] The start position of the rest parameter.
+     * @returns {Function} Returns the new function.
+     */
+    function baseRest(func, start) {
+      start = nativeMax(start === undefined ? (func.length - 1) : start, 0);
+      return function() {
+        var args = arguments,
+            index = -1,
+            length = nativeMax(args.length - start, 0),
+            array = Array(length);
+
+        while (++index < length) {
+          array[index] = args[start + index];
+        }
+        index = -1;
+        var otherArgs = Array(start + 1);
+        while (++index < start) {
+          otherArgs[index] = args[index];
+        }
+        otherArgs[start] = array;
+        return apply(func, this, otherArgs);
+      };
+    }
+
+    function initialParams (fn) {
+        return baseRest(function (args /*..., callback*/) {
+            var callback = args.pop();
+            fn.call(this, args, callback);
+        });
+    }
+
+    function applyEach$1(eachfn) {
+        return baseRest(function (fns, args) {
+            var go = initialParams(function (args, callback) {
+                var that = this;
+                return eachfn(fns, function (fn, cb) {
+                    fn.apply(that, args.concat([cb]));
+                }, callback);
+            });
+            if (args.length) {
+                return go.apply(this, args);
+            } else {
+                return go;
+            }
+        });
+    }
+
+    /**
+     * The base implementation of `_.property` without support for deep paths.
+     *
+     * @private
+     * @param {string} key The key of the property to get.
+     * @returns {Function} Returns the new accessor function.
+     */
+    function baseProperty(key) {
+      return function(object) {
+        return object == null ? undefined : object[key];
+      };
+    }
+
+    /**
+     * Gets the "length" property value of `object`.
+     *
+     * **Note:** This function is used to avoid a
+     * [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792) that affects
+     * Safari on at least iOS 8.1-8.3 ARM64.
+     *
+     * @private
+     * @param {Object} object The object to query.
+     * @returns {*} Returns the "length" value.
+     */
+    var getLength = baseProperty('length');
 
     /**
      * Checks if `value` is the
@@ -75,8 +155,7 @@
      * @since 0.1.0
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is correctly classified,
-     *  else `false`.
+     * @returns {boolean} Returns `true` if `value` is a function, else `false`.
      * @example
      *
      * _.isFunction(_);
@@ -92,311 +171,6 @@
       var tag = isObject(value) ? objectToString.call(value) : '';
       return tag == funcTag || tag == genTag;
     }
-
-    /**
-     * Checks if `value` is object-like. A value is object-like if it's not `null`
-     * and has a `typeof` result of "object".
-     *
-     * @static
-     * @memberOf _
-     * @since 4.0.0
-     * @category Lang
-     * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-     * @example
-     *
-     * _.isObjectLike({});
-     * // => true
-     *
-     * _.isObjectLike([1, 2, 3]);
-     * // => true
-     *
-     * _.isObjectLike(_.noop);
-     * // => false
-     *
-     * _.isObjectLike(null);
-     * // => false
-     */
-    function isObjectLike(value) {
-      return !!value && typeof value == 'object';
-    }
-
-    /** `Object#toString` result references. */
-    var symbolTag = '[object Symbol]';
-
-    /** Used for built-in method references. */
-    var objectProto$1 = Object.prototype;
-
-    /**
-     * Used to resolve the
-     * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
-     * of values.
-     */
-    var objectToString$1 = objectProto$1.toString;
-
-    /**
-     * Checks if `value` is classified as a `Symbol` primitive or object.
-     *
-     * @static
-     * @memberOf _
-     * @since 4.0.0
-     * @category Lang
-     * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is correctly classified,
-     *  else `false`.
-     * @example
-     *
-     * _.isSymbol(Symbol.iterator);
-     * // => true
-     *
-     * _.isSymbol('abc');
-     * // => false
-     */
-    function isSymbol(value) {
-      return typeof value == 'symbol' ||
-        (isObjectLike(value) && objectToString$1.call(value) == symbolTag);
-    }
-
-    /** Used as references for various `Number` constants. */
-    var NAN = 0 / 0;
-
-    /** Used to match leading and trailing whitespace. */
-    var reTrim = /^\s+|\s+$/g;
-
-    /** Used to detect bad signed hexadecimal string values. */
-    var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
-
-    /** Used to detect binary string values. */
-    var reIsBinary = /^0b[01]+$/i;
-
-    /** Used to detect octal string values. */
-    var reIsOctal = /^0o[0-7]+$/i;
-
-    /** Built-in method references without a dependency on `root`. */
-    var freeParseInt = parseInt;
-
-    /**
-     * Converts `value` to a number.
-     *
-     * @static
-     * @memberOf _
-     * @since 4.0.0
-     * @category Lang
-     * @param {*} value The value to process.
-     * @returns {number} Returns the number.
-     * @example
-     *
-     * _.toNumber(3.2);
-     * // => 3.2
-     *
-     * _.toNumber(Number.MIN_VALUE);
-     * // => 5e-324
-     *
-     * _.toNumber(Infinity);
-     * // => Infinity
-     *
-     * _.toNumber('3.2');
-     * // => 3.2
-     */
-    function toNumber(value) {
-      if (typeof value == 'number') {
-        return value;
-      }
-      if (isSymbol(value)) {
-        return NAN;
-      }
-      if (isObject(value)) {
-        var other = isFunction(value.valueOf) ? value.valueOf() : value;
-        value = isObject(other) ? (other + '') : other;
-      }
-      if (typeof value != 'string') {
-        return value === 0 ? value : +value;
-      }
-      value = value.replace(reTrim, '');
-      var isBinary = reIsBinary.test(value);
-      return (isBinary || reIsOctal.test(value))
-        ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
-        : (reIsBadHex.test(value) ? NAN : +value);
-    }
-
-    var INFINITY = 1 / 0;
-    var MAX_INTEGER = 1.7976931348623157e+308;
-    /**
-     * Converts `value` to a finite number.
-     *
-     * @static
-     * @memberOf _
-     * @since 4.12.0
-     * @category Lang
-     * @param {*} value The value to convert.
-     * @returns {number} Returns the converted number.
-     * @example
-     *
-     * _.toFinite(3.2);
-     * // => 3.2
-     *
-     * _.toFinite(Number.MIN_VALUE);
-     * // => 5e-324
-     *
-     * _.toFinite(Infinity);
-     * // => 1.7976931348623157e+308
-     *
-     * _.toFinite('3.2');
-     * // => 3.2
-     */
-    function toFinite(value) {
-      if (!value) {
-        return value === 0 ? value : 0;
-      }
-      value = toNumber(value);
-      if (value === INFINITY || value === -INFINITY) {
-        var sign = (value < 0 ? -1 : 1);
-        return sign * MAX_INTEGER;
-      }
-      return value === value ? value : 0;
-    }
-
-    /**
-     * Converts `value` to an integer.
-     *
-     * **Note:** This method is loosely based on
-     * [`ToInteger`](http://www.ecma-international.org/ecma-262/6.0/#sec-tointeger).
-     *
-     * @static
-     * @memberOf _
-     * @since 4.0.0
-     * @category Lang
-     * @param {*} value The value to convert.
-     * @returns {number} Returns the converted integer.
-     * @example
-     *
-     * _.toInteger(3.2);
-     * // => 3
-     *
-     * _.toInteger(Number.MIN_VALUE);
-     * // => 0
-     *
-     * _.toInteger(Infinity);
-     * // => 1.7976931348623157e+308
-     *
-     * _.toInteger('3.2');
-     * // => 3
-     */
-    function toInteger(value) {
-      var result = toFinite(value),
-          remainder = result % 1;
-
-      return result === result ? (remainder ? result - remainder : result) : 0;
-    }
-
-    /** Used as the `TypeError` message for "Functions" methods. */
-    var FUNC_ERROR_TEXT = 'Expected a function';
-
-    /* Built-in method references for those with the same name as other `lodash` methods. */
-    var nativeMax = Math.max;
-
-    /**
-     * Creates a function that invokes `func` with the `this` binding of the
-     * created function and arguments from `start` and beyond provided as
-     * an array.
-     *
-     * **Note:** This method is based on the
-     * [rest parameter](https://mdn.io/rest_parameters).
-     *
-     * @static
-     * @memberOf _
-     * @since 4.0.0
-     * @category Function
-     * @param {Function} func The function to apply a rest parameter to.
-     * @param {number} [start=func.length-1] The start position of the rest parameter.
-     * @returns {Function} Returns the new function.
-     * @example
-     *
-     * var say = _.rest(function(what, names) {
-     *   return what + ' ' + _.initial(names).join(', ') +
-     *     (_.size(names) > 1 ? ', & ' : '') + _.last(names);
-     * });
-     *
-     * say('hello', 'fred', 'barney', 'pebbles');
-     * // => 'hello fred, barney, & pebbles'
-     */
-    function rest(func, start) {
-      if (typeof func != 'function') {
-        throw new TypeError(FUNC_ERROR_TEXT);
-      }
-      start = nativeMax(start === undefined ? (func.length - 1) : toInteger(start), 0);
-      return function() {
-        var args = arguments,
-            index = -1,
-            length = nativeMax(args.length - start, 0),
-            array = Array(length);
-
-        while (++index < length) {
-          array[index] = args[start + index];
-        }
-        switch (start) {
-          case 0: return func.call(this, array);
-          case 1: return func.call(this, args[0], array);
-          case 2: return func.call(this, args[0], args[1], array);
-        }
-        var otherArgs = Array(start + 1);
-        index = -1;
-        while (++index < start) {
-          otherArgs[index] = args[index];
-        }
-        otherArgs[start] = array;
-        return apply(func, this, otherArgs);
-      };
-    }
-
-    function initialParams (fn) {
-        return rest(function (args /*..., callback*/) {
-            var callback = args.pop();
-            fn.call(this, args, callback);
-        });
-    }
-
-    function applyEach$1(eachfn) {
-        return rest(function (fns, args) {
-            var go = initialParams(function (args, callback) {
-                var that = this;
-                return eachfn(fns, function (fn, cb) {
-                    fn.apply(that, args.concat([cb]));
-                }, callback);
-            });
-            if (args.length) {
-                return go.apply(this, args);
-            } else {
-                return go;
-            }
-        });
-    }
-
-    /**
-     * The base implementation of `_.property` without support for deep paths.
-     *
-     * @private
-     * @param {string} key The key of the property to get.
-     * @returns {Function} Returns the new accessor function.
-     */
-    function baseProperty(key) {
-      return function(object) {
-        return object == null ? undefined : object[key];
-      };
-    }
-
-    /**
-     * Gets the "length" property value of `object`.
-     *
-     * **Note:** This function is used to avoid a
-     * [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792) that affects
-     * Safari on at least iOS 8.1-8.3 ARM64.
-     *
-     * @private
-     * @param {Object} object The object to query.
-     * @returns {*} Returns the "length" value.
-     */
-    var getLength = baseProperty('length');
 
     /** Used as references for various `Number` constants. */
     var MAX_SAFE_INTEGER = 9007199254740991;
@@ -463,7 +237,7 @@
     }
 
     /**
-     * A method that returns `undefined`.
+     * This method returns `undefined`.
      *
      * @static
      * @memberOf _
@@ -493,6 +267,20 @@
         return iteratorSymbol && coll[iteratorSymbol] && coll[iteratorSymbol]();
     }
 
+    /**
+     * Creates a function that invokes `func` with its first argument transformed.
+     *
+     * @private
+     * @param {Function} func The function to wrap.
+     * @param {Function} transform The argument transform.
+     * @returns {Function} Returns the new function.
+     */
+    function overArg(func, transform) {
+      return function(arg) {
+        return func(transform(arg));
+      };
+    }
+
     /* Built-in method references for those with the same name as other `lodash` methods. */
     var nativeGetPrototype = Object.getPrototypeOf;
 
@@ -503,15 +291,13 @@
      * @param {*} value The value to query.
      * @returns {null|Object} Returns the `[[Prototype]]`.
      */
-    function getPrototype(value) {
-      return nativeGetPrototype(Object(value));
-    }
+    var getPrototype = overArg(nativeGetPrototype, Object);
 
     /** Used for built-in method references. */
-    var objectProto$2 = Object.prototype;
+    var objectProto$1 = Object.prototype;
 
     /** Used to check objects for own properties. */
-    var hasOwnProperty = objectProto$2.hasOwnProperty;
+    var hasOwnProperty = objectProto$1.hasOwnProperty;
 
     /**
      * The base implementation of `_.has` without support for deep paths.
@@ -541,9 +327,7 @@
      * @param {Object} object The object to query.
      * @returns {Array} Returns the array of property names.
      */
-    function baseKeys(object) {
-      return nativeKeys(Object(object));
-    }
+    var baseKeys = overArg(nativeKeys, Object);
 
     /**
      * The base implementation of `_.times` without support for iteratee shorthands
@@ -562,6 +346,34 @@
         result[index] = iteratee(index);
       }
       return result;
+    }
+
+    /**
+     * Checks if `value` is object-like. A value is object-like if it's not `null`
+     * and has a `typeof` result of "object".
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+     * @example
+     *
+     * _.isObjectLike({});
+     * // => true
+     *
+     * _.isObjectLike([1, 2, 3]);
+     * // => true
+     *
+     * _.isObjectLike(_.noop);
+     * // => false
+     *
+     * _.isObjectLike(null);
+     * // => false
+     */
+    function isObjectLike(value) {
+      return !!value && typeof value == 'object';
     }
 
     /**
@@ -597,20 +409,20 @@
     var argsTag = '[object Arguments]';
 
     /** Used for built-in method references. */
-    var objectProto$3 = Object.prototype;
+    var objectProto$2 = Object.prototype;
 
     /** Used to check objects for own properties. */
-    var hasOwnProperty$1 = objectProto$3.hasOwnProperty;
+    var hasOwnProperty$1 = objectProto$2.hasOwnProperty;
 
     /**
      * Used to resolve the
      * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
      * of values.
      */
-    var objectToString$2 = objectProto$3.toString;
+    var objectToString$1 = objectProto$2.toString;
 
     /** Built-in value references. */
-    var propertyIsEnumerable = objectProto$3.propertyIsEnumerable;
+    var propertyIsEnumerable = objectProto$2.propertyIsEnumerable;
 
     /**
      * Checks if `value` is likely an `arguments` object.
@@ -620,7 +432,7 @@
      * @since 0.1.0
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is correctly classified,
+     * @returns {boolean} Returns `true` if `value` is an `arguments` object,
      *  else `false`.
      * @example
      *
@@ -633,7 +445,7 @@
     function isArguments(value) {
       // Safari 8.1 incorrectly makes `arguments.callee` enumerable in strict mode.
       return isArrayLikeObject(value) && hasOwnProperty$1.call(value, 'callee') &&
-        (!propertyIsEnumerable.call(value, 'callee') || objectToString$2.call(value) == argsTag);
+        (!propertyIsEnumerable.call(value, 'callee') || objectToString$1.call(value) == argsTag);
     }
 
     /**
@@ -642,11 +454,9 @@
      * @static
      * @memberOf _
      * @since 0.1.0
-     * @type {Function}
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is correctly classified,
-     *  else `false`.
+     * @returns {boolean} Returns `true` if `value` is an array, else `false`.
      * @example
      *
      * _.isArray([1, 2, 3]);
@@ -667,14 +477,14 @@
     var stringTag = '[object String]';
 
     /** Used for built-in method references. */
-    var objectProto$4 = Object.prototype;
+    var objectProto$3 = Object.prototype;
 
     /**
      * Used to resolve the
      * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
      * of values.
      */
-    var objectToString$3 = objectProto$4.toString;
+    var objectToString$2 = objectProto$3.toString;
 
     /**
      * Checks if `value` is classified as a `String` primitive or object.
@@ -684,8 +494,7 @@
      * @memberOf _
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is correctly classified,
-     *  else `false`.
+     * @returns {boolean} Returns `true` if `value` is a string, else `false`.
      * @example
      *
      * _.isString('abc');
@@ -696,7 +505,7 @@
      */
     function isString(value) {
       return typeof value == 'string' ||
-        (!isArray(value) && isObjectLike(value) && objectToString$3.call(value) == stringTag);
+        (!isArray(value) && isObjectLike(value) && objectToString$2.call(value) == stringTag);
     }
 
     /**
@@ -738,7 +547,7 @@
     }
 
     /** Used for built-in method references. */
-    var objectProto$5 = Object.prototype;
+    var objectProto$4 = Object.prototype;
 
     /**
      * Checks if `value` is likely a prototype object.
@@ -749,7 +558,7 @@
      */
     function isPrototype(value) {
       var Ctor = value && value.constructor,
-          proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto$5;
+          proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto$4;
 
       return value === proto;
     }
@@ -921,8 +730,175 @@
         };
     }
 
+    /** `Object#toString` result references. */
+    var symbolTag = '[object Symbol]';
+
+    /** Used for built-in method references. */
+    var objectProto$5 = Object.prototype;
+
+    /**
+     * Used to resolve the
+     * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+     * of values.
+     */
+    var objectToString$3 = objectProto$5.toString;
+
+    /**
+     * Checks if `value` is classified as a `Symbol` primitive or object.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
+     * @example
+     *
+     * _.isSymbol(Symbol.iterator);
+     * // => true
+     *
+     * _.isSymbol('abc');
+     * // => false
+     */
+    function isSymbol(value) {
+      return typeof value == 'symbol' ||
+        (isObjectLike(value) && objectToString$3.call(value) == symbolTag);
+    }
+
+    /** Used as references for various `Number` constants. */
+    var NAN = 0 / 0;
+
+    /** Used to match leading and trailing whitespace. */
+    var reTrim = /^\s+|\s+$/g;
+
+    /** Used to detect bad signed hexadecimal string values. */
+    var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+
+    /** Used to detect binary string values. */
+    var reIsBinary = /^0b[01]+$/i;
+
+    /** Used to detect octal string values. */
+    var reIsOctal = /^0o[0-7]+$/i;
+
+    /** Built-in method references without a dependency on `root`. */
+    var freeParseInt = parseInt;
+
+    /**
+     * Converts `value` to a number.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to process.
+     * @returns {number} Returns the number.
+     * @example
+     *
+     * _.toNumber(3.2);
+     * // => 3.2
+     *
+     * _.toNumber(Number.MIN_VALUE);
+     * // => 5e-324
+     *
+     * _.toNumber(Infinity);
+     * // => Infinity
+     *
+     * _.toNumber('3.2');
+     * // => 3.2
+     */
+    function toNumber(value) {
+      if (typeof value == 'number') {
+        return value;
+      }
+      if (isSymbol(value)) {
+        return NAN;
+      }
+      if (isObject(value)) {
+        var other = isFunction(value.valueOf) ? value.valueOf() : value;
+        value = isObject(other) ? (other + '') : other;
+      }
+      if (typeof value != 'string') {
+        return value === 0 ? value : +value;
+      }
+      value = value.replace(reTrim, '');
+      var isBinary = reIsBinary.test(value);
+      return (isBinary || reIsOctal.test(value))
+        ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
+        : (reIsBadHex.test(value) ? NAN : +value);
+    }
+
+    var INFINITY = 1 / 0;
+    var MAX_INTEGER = 1.7976931348623157e+308;
+    /**
+     * Converts `value` to a finite number.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.12.0
+     * @category Lang
+     * @param {*} value The value to convert.
+     * @returns {number} Returns the converted number.
+     * @example
+     *
+     * _.toFinite(3.2);
+     * // => 3.2
+     *
+     * _.toFinite(Number.MIN_VALUE);
+     * // => 5e-324
+     *
+     * _.toFinite(Infinity);
+     * // => 1.7976931348623157e+308
+     *
+     * _.toFinite('3.2');
+     * // => 3.2
+     */
+    function toFinite(value) {
+      if (!value) {
+        return value === 0 ? value : 0;
+      }
+      value = toNumber(value);
+      if (value === INFINITY || value === -INFINITY) {
+        var sign = (value < 0 ? -1 : 1);
+        return sign * MAX_INTEGER;
+      }
+      return value === value ? value : 0;
+    }
+
+    /**
+     * Converts `value` to an integer.
+     *
+     * **Note:** This method is loosely based on
+     * [`ToInteger`](http://www.ecma-international.org/ecma-262/6.0/#sec-tointeger).
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to convert.
+     * @returns {number} Returns the converted integer.
+     * @example
+     *
+     * _.toInteger(3.2);
+     * // => 3
+     *
+     * _.toInteger(Number.MIN_VALUE);
+     * // => 0
+     *
+     * _.toInteger(Infinity);
+     * // => 1.7976931348623157e+308
+     *
+     * _.toInteger('3.2');
+     * // => 3
+     */
+    function toInteger(value) {
+      var result = toFinite(value),
+          remainder = result % 1;
+
+      return result === result ? (remainder ? result - remainder : result) : 0;
+    }
+
     /** Used as the `TypeError` message for "Functions" methods. */
-    var FUNC_ERROR_TEXT$1 = 'Expected a function';
+    var FUNC_ERROR_TEXT = 'Expected a function';
 
     /**
      * Creates a function that invokes `func`, with the `this` binding and arguments
@@ -939,12 +915,12 @@
      * @example
      *
      * jQuery(element).on('click', _.before(5, addContactToList));
-     * // => allows adding up to 4 contacts to the list
+     * // => Allows adding up to 4 contacts to the list.
      */
     function before(n, func) {
       var result;
       if (typeof func != 'function') {
-        throw new TypeError(FUNC_ERROR_TEXT$1);
+        throw new TypeError(FUNC_ERROR_TEXT);
       }
       n = toInteger(n);
       return function() {
@@ -974,7 +950,7 @@
      * var initialize = _.once(createApplication);
      * initialize();
      * initialize();
-     * // `initialize` invokes `createApplication` once
+     * // => `createApplication` is invoked once
      */
     function once$1(func) {
       return before(2, func);
@@ -1258,8 +1234,8 @@
      * two
      * three
      */
-    var apply$1 = rest(function (fn, args) {
-        return rest(function (callArgs) {
+    var apply$1 = baseRest(function (fn, args) {
+        return baseRest(function (callArgs) {
             return fn.apply(null, args.concat(callArgs));
         });
     });
@@ -1411,25 +1387,37 @@
     }
 
     /**
-     * Gets the index at which the first occurrence of `NaN` is found in `array`.
+     * The base implementation of `_.findIndex` and `_.findLastIndex` without
+     * support for iteratee shorthands.
      *
      * @private
      * @param {Array} array The array to search.
+     * @param {Function} predicate The function invoked per iteration.
      * @param {number} fromIndex The index to search from.
      * @param {boolean} [fromRight] Specify iterating from right to left.
-     * @returns {number} Returns the index of the matched `NaN`, else `-1`.
+     * @returns {number} Returns the index of the matched value, else `-1`.
      */
-    function indexOfNaN(array, fromIndex, fromRight) {
+    function baseFindIndex(array, predicate, fromIndex, fromRight) {
       var length = array.length,
           index = fromIndex + (fromRight ? 1 : -1);
 
       while ((fromRight ? index-- : ++index < length)) {
-        var other = array[index];
-        if (other !== other) {
+        if (predicate(array[index], index, array)) {
           return index;
         }
       }
       return -1;
+    }
+
+    /**
+     * The base implementation of `_.isNaN` without support for number objects.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is `NaN`, else `false`.
+     */
+    function baseIsNaN(value) {
+      return value !== value;
     }
 
     /**
@@ -1443,7 +1431,7 @@
      */
     function baseIndexOf(array, value, fromIndex) {
       if (value !== value) {
-        return indexOfNaN(array, fromIndex);
+        return baseFindIndex(array, baseIsNaN, fromIndex);
       }
       var index = fromIndex - 1,
           length = array.length;
@@ -1633,7 +1621,7 @@
         function runTask(key, task) {
             if (hasError) return;
 
-            var taskCallback = onlyOnce(rest(function (err, args) {
+            var taskCallback = onlyOnce(baseRest(function (err, args) {
                 runningTasks--;
                 if (args.length <= 1) {
                     args = args[0];
@@ -1734,28 +1722,14 @@
       return array;
     }
 
-    /**
-     * Checks if `value` is a global object.
-     *
-     * @private
-     * @param {*} value The value to check.
-     * @returns {null|Object} Returns `value` if it's a global object, else `null`.
-     */
-    function checkGlobal(value) {
-      return (value && value.Object === Object) ? value : null;
-    }
-
     /** Detect free variable `global` from Node.js. */
-    var freeGlobal = checkGlobal(typeof global == 'object' && global);
+    var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
 
     /** Detect free variable `self`. */
-    var freeSelf = checkGlobal(typeof self == 'object' && self);
-
-    /** Detect `this` as the global object. */
-    var thisGlobal = checkGlobal(typeof this == 'object' && this);
+    var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
 
     /** Used as a reference to the global object. */
-    var root = freeGlobal || freeSelf || thisGlobal || Function('return this')();
+    var root = freeGlobal || freeSelf || Function('return this')();
 
     /** Built-in value references. */
     var Symbol$1 = root.Symbol;
@@ -2104,7 +2078,7 @@
     }
 
     function wrap(defer) {
-        return rest(function (fn, args) {
+        return baseRest(function (fn, args) {
             defer(function () {
                 fn.apply(null, args);
             });
@@ -2217,7 +2191,7 @@
         }
 
         function _next(tasks) {
-            return rest(function (args) {
+            return baseRest(function (args) {
                 workers -= 1;
 
                 arrayEach(tasks, function (task) {
@@ -2520,8 +2494,8 @@
      *     });
      * });
      */
-    var seq = rest(function seq(functions) {
-        return rest(function (args) {
+    var seq = baseRest(function seq(functions) {
+        return baseRest(function (args) {
             var that = this;
 
             var cb = args[args.length - 1];
@@ -2532,7 +2506,7 @@
             }
 
             reduce(functions, args, function (newargs, fn, cb) {
-                fn.apply(that, newargs.concat([rest(function (err, nextargs) {
+                fn.apply(that, newargs.concat([baseRest(function (err, nextargs) {
                     cb(err, nextargs);
                 })]));
             }, function (err, results) {
@@ -2576,7 +2550,7 @@
      *     // result now equals 15
      * });
      */
-    var compose = rest(function (args) {
+    var compose = baseRest(function (args) {
       return seq.apply(null, args.reverse());
     });
 
@@ -2690,7 +2664,7 @@
      *     //...
      * }, callback);
      */
-    var constant = rest(function (values) {
+    var constant = baseRest(function (values) {
         var args = [null].concat(values);
         return initialParams(function (ignoredArgs, callback) {
             return callback.apply(this, args);
@@ -2698,7 +2672,7 @@
     });
 
     /**
-     * This method returns the first argument given to it.
+     * This method returns the first argument it receives.
      *
      * @static
      * @since 0.1.0
@@ -2708,7 +2682,7 @@
      * @returns {*} Returns `value`.
      * @example
      *
-     * var object = { 'user': 'fred' };
+     * var object = { 'a': 1 };
      *
      * console.log(_.identity(object) === object);
      * // => true
@@ -2843,8 +2817,8 @@
     var detectSeries = _createTester(eachOfSeries, identity, _findGetResult);
 
     function consoleFunc(name) {
-        return rest(function (fn, args) {
-            fn.apply(null, args.concat([rest(function (err, args) {
+        return baseRest(function (fn, args) {
+            fn.apply(null, args.concat([baseRest(function (err, args) {
                 if (typeof console === 'object') {
                     if (err) {
                         if (console.error) {
@@ -2914,7 +2888,7 @@
     function doDuring(fn, test, callback) {
         callback = onlyOnce(callback || noop);
 
-        var next = rest(function (err, args) {
+        var next = baseRest(function (err, args) {
             if (err) return callback(err);
             args.push(check);
             test.apply(this, args);
@@ -2954,7 +2928,7 @@
      */
     function doWhilst(iteratee, test, callback) {
         callback = onlyOnce(callback || noop);
-        var next = rest(function (err, args) {
+        var next = baseRest(function (err, args) {
             if (err) return callback(err);
             if (test.apply(this, args)) return iteratee(next);
             callback.apply(null, [null].concat(args));
@@ -3605,7 +3579,7 @@
                 queues[key].push(callback);
             } else {
                 queues[key] = [callback];
-                fn.apply(null, args.concat([rest(function (args) {
+                fn.apply(null, args.concat([baseRest(function (args) {
                     memo[key] = args;
                     var q = queues[key];
                     delete queues[key];
@@ -3668,7 +3642,7 @@
         var results = isArrayLike(tasks) ? [] : {};
 
         eachfn(tasks, function (task, key, callback) {
-            task(rest(function (err, args) {
+            task(baseRest(function (err, args) {
                 if (args.length <= 1) {
                     args = args[0];
                 }
@@ -4069,7 +4043,7 @@
      */
     function reflect(fn) {
         return initialParams(function reflectOn(args, reflectCallback) {
-            args.push(rest(function callback(err, cbArgs) {
+            args.push(baseRest(function callback(err, cbArgs) {
                 if (err) {
                     reflectCallback(null, {
                         error: err
@@ -4695,7 +4669,7 @@
     var nativeMax$1 = Math.max;
     /**
      * The base implementation of `_.range` and `_.rangeRight` which doesn't
-     * coerce arguments to numbers.
+     * coerce arguments.
      *
      * @private
      * @param {number} start The start of the range.
@@ -4903,7 +4877,7 @@
     function whilst(test, iteratee, callback) {
         callback = onlyOnce(callback || noop);
         if (!test()) return callback(null);
-        var next = rest(function (err, args) {
+        var next = baseRest(function (err, args) {
             if (err) return callback(err);
             if (test()) return iteratee(next);
             callback.apply(null, [null].concat(args));
@@ -5008,7 +4982,7 @@
                 return callback.apply(null, [null].concat(args));
             }
 
-            var taskCallback = onlyOnce(rest(function (err, args) {
+            var taskCallback = onlyOnce(baseRest(function (err, args) {
                 if (err) {
                     return callback.apply(null, [err].concat(args));
                 }
