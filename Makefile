@@ -34,7 +34,8 @@ clean:
 	rm -rf $(BUILDDIR)
 	rm -rf $(BUILD_ES)
 	rm -rf $(DIST)
-	rm -rf tmp/
+	rm -rf tmp/ docs/ .nyc_output/ coverage/
+	rm -rf perf/versions/
 
 lint:
 	eslint $(LINT_FILES)
