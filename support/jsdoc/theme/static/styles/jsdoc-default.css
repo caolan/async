@@ -403,10 +403,19 @@ code {
   line-height: 30px;
 }
 
+.alias-details {
+    margin-top: -10px;
+    border-left: none;
+}
+
 .details dt {
    width: 120px;
    float: left;
    padding-left: 10px;
+}
+
+.alias-details dt {
+    padding-left: 0px;
 }
 
 .details dd {

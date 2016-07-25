@@ -21,6 +21,13 @@ var self = this;
 </div>
 <?js } ?>
 
+<?js if (data.alias) {?>
+    <dl class="details alias-details">
+        <dt class="tag-alias">Alias:</dt>
+        <dd class="tag-alias"><ul class="dummy"><li><?js= data.alias ?></li></ul></dd>
+    </dl>
+<?js } ?>
+
 <?js if (data.augments && data.alias && data.alias.indexOf('module:') === 0) { ?>
     <h5>Extends:</h5>
     <?js= self.partial('augments.tmpl', data) ?>
@@ -103,5 +110,3 @@ var self = this;
         <?js= self.partial('exceptions.tmpl', r) ?>
     <?js });
 } } ?>
-
-
