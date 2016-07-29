@@ -1,5 +1,6 @@
 var _ = require("lodash");
 var tasks;
+var count;
 
 module.exports = [{
     name: "each",
@@ -91,6 +92,42 @@ module.exports = [{
     fn: function(async, done) {
         async.mapLimit(tasks, 4, function(num, cb) {
             async.setImmediate(cb);
+        }, done);
+    }
+}, {
+    name: "filter",
+    args: [
+        [10],
+        [300],
+        [10000]
+    ],
+    setup: function(c) {
+        count = c;
+        tasks = _.range(count);
+    },
+    fn: function(async, done) {
+        async.filter(tasks, function(num, cb) {
+            async.setImmediate(function() {
+                cb(null, num > (count / 2));
+            });
+        }, done);
+    }
+}, {
+    name: "filterLimit",
+    args: [
+        [10],
+        [300],
+        [10000]
+    ],
+    setup: function(c) {
+        count = c;
+        tasks = _.range(count);
+    },
+    fn: function(async, done) {
+        async.filterLimit(tasks, 10, function(num, cb) {
+            async.setImmediate(function() {
+                cb(null, num > (count / 2));
+            });
         }, done);
     }
 }, {
