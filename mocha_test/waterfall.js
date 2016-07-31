@@ -43,7 +43,7 @@ describe("waterfall", function () {
     });
 
     it('non-array', function(done){
-        async.waterfall(1, function(err){
+        async.waterfall({}, function(err){
             expect(err.message).to.equal('First argument to waterfall must be an array of functions');
             done();
         });
@@ -186,5 +186,35 @@ describe("waterfall", function () {
         });
 
         sameStack = false;
+    });
+
+    it('call done should exit immediately', function (done) {
+        var i = 0;
+        async.waterfall([
+            function (cb) { cb(null, ++i); },
+            function (arg, cb) { cb(null, ++i); },
+            function (arg, cb, dn) { dn(null, ++i); },
+            function (arg, cb) { cb(++arg); },
+            function (arg, cb) { cb(++arg); }
+        ], function(err, results) {
+            expect(results).to.equal(3);
+            done();
+        });
+    });
+
+    it('call done should exit immediately with tasksKey', function (done) {
+        var i = 0;
+        async.waterfall([
+            function (cb) { cb(null, ++i); },
+            function (arg, cb) { cb(null, ++i); },
+            function (arg, cb, dn) { dn(null, ++i); },
+            function (arg, cb) { cb(++i); }
+        ], function(err, results) {
+            expect(results['w']).to.equal(1);
+            expect(results['d']).to.equal(undefined);
+            expect(results['o']).to.equal(3);
+            done();
+        },
+        ['w', 'o', 'o', 'd']);
     });
 });
