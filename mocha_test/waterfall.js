@@ -43,7 +43,7 @@ describe("waterfall", function () {
     });
 
     it('non-array', function(done){
-        async.waterfall({}, function(err){
+        async.waterfall(1, function(err){
             expect(err.message).to.equal('First argument to waterfall must be an array of functions');
             done();
         });
@@ -73,6 +73,53 @@ describe("waterfall", function () {
                 done();
             }
         ]);
+    });
+
+    it('taskKeys without callback', function (done) {
+        var obj = {};
+        async.waterfall([
+            function(callback) {
+                callback(null, 'a');
+            },
+            function(results, callback) {
+                expect(results['w']).to.equal('a');
+                callback(null, obj);
+            },
+            function(results, callback) {
+                expect(results['o']).to.equal(obj);
+                callback();
+            },function(results, callback) {
+                expect(results['o']).to.equal(null);
+                callback(null, 1);
+                done();
+            }
+        ], ['w', 'o', 'o', 'd']);
+    });
+
+    it('taskKeys with callback', function (done) {
+        var obj = {};
+        async.waterfall([
+            function(callback) {
+                callback(null, 'a', 'a');
+            },
+            function(results, callback) {
+                expect(results['w']).to.eql(['a', 'a']);
+                callback(null, obj);
+            },
+            function(results, callback) {
+                expect(results['o']).to.equal(obj);
+                callback();
+            }, function (results, callback) {
+                expect(results['o']).to.equal(null);
+                callback(null, 1);
+            }
+        ], function (err, results) {
+            expect(results['w']).to.eql(['a', 'a']);
+            expect(results['o']).to.equal(null);
+            expect(results["d"]).to.equal(1);
+            done()
+        },
+        ['w', 'o', 'o', 'd']);
     });
 
     it('error', function(done){
