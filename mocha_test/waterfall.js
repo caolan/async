@@ -75,6 +75,70 @@ describe("waterfall", function () {
         ]);
     });
 
+    it('array of objects', function (done) {
+        var obj = {};
+        async.waterfall([
+            {
+                'w': function (callback) {
+                    callback(null, 'a');
+                }
+            },
+            {
+                'o': function (results, callback) {
+                    expect(results['w']).to.equal('a');
+                    callback(null, obj);
+                }
+            },
+            {
+                'o': function (results, callback) {
+                    expect(results['o']).to.equal(obj);
+                    callback();
+                }
+            },
+            {
+                'd': function (results, callback) {
+                    expect(results['o']).to.equal(null);
+                    callback(null, 1);
+                    done();
+                }
+            }    
+        ]);
+    });
+
+    it('array of objects with callback', function (done) {
+        var obj = {};
+        async.waterfall([
+            {
+                'w': function (callback) {
+                    callback(null, 'a', 'a');
+                }
+            },
+            {
+                'o': function (results, callback) {
+                    expect(results['w']).to.eql(['a', 'a']);
+                    callback(null, obj);
+                }
+            },
+            {
+                'o': function (results, callback) {
+                    expect(results['o']).to.equal(obj);
+                    callback();
+                }
+            },
+            {
+                'd': function (results, callback) {
+                    expect(results['o']).to.equal(null);
+                    callback(null, 1);
+                }
+            }    
+        ], function (err, results) {
+            expect(results['w']).to.eql(['a', 'a']);
+            expect(results['o']).to.equal(null);
+            expect(results["d"]).to.equal(1);
+            done()
+        });
+    });
+
     it('error', function(done){
         async.waterfall([
             function(callback){
