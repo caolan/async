@@ -21,6 +21,30 @@ describe('retryable', function () {
         }, 15);
     });
 
+    it('basics with filter function', function (done) {
+        var calls = 0;
+        var special = 'special';
+        var opts = {
+            filter: function(err) {
+                return err == special;
+            }
+        };
+        var retryableTask = async.retryable(opts, function (arg, cb) {
+            calls++;
+            expect(arg).to.equal(42);
+            cb(calls === 3 ? 'fail' : special);
+        });
+
+        retryableTask(42, function (err) {
+            expect(err).to.equal('fail');
+            expect(calls).to.equal(3);
+            done();
+        });
+
+        setTimeout(function () {
+        }, 15);
+    });
+
     it('should work as an embedded task', function(done) {
         var retryResult = 'RETRY';
         var fooResults;
