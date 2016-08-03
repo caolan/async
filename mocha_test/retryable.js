@@ -21,11 +21,11 @@ describe('retryable', function () {
         }, 15);
     });
 
-    it('basics with filter function', function (done) {
+    it('basics with error test function', function (done) {
         var calls = 0;
         var special = 'special';
         var opts = {
-            filter: function(err) {
+            continueOperation: function(err) {
                 return err == special;
             }
         };

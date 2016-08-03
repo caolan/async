@@ -158,7 +158,7 @@ describe("retry", function () {
         });
     });
 
-    it('retry when all attempts fail and error filter returns true',function(done) {
+    it('retry when all attempts fail and error continue test returns true',function(done) {
         var times = 3;
         var callCount = 0;
         var error = 'ERROR';
@@ -168,12 +168,12 @@ describe("retry", function () {
             callCount++;
             callback(error + callCount, erroredResult + callCount);
         }
-        function filter(err) {
+        function errorTest(err) {
             return err && err !== special;
         }
         var options = {
             times: times,
-            filter: filter
+            continueOperation: errorTest
         };
         async.retry(options, fn, function(err, result){
             assert.equal(callCount, 3, "did not retry the correct number of times");
@@ -183,7 +183,7 @@ describe("retry", function () {
         });
     });
 
-    it('retry when some attempts fail and error filter returns false at some invokation',function(done) {
+    it('retry when some attempts fail and error test returns false at some invokation',function(done) {
         var callCount = 0;
         var error = 'ERROR';
         var special = 'SPECIAL_ERROR';
@@ -193,11 +193,11 @@ describe("retry", function () {
             var err = callCount === 2 ? special : error + callCount;
             callback(err, erroredResult + callCount);
         }
-        function filter(err) {
+        function errorTest(err) {
             return err && err === error + callCount; // just a different pattern
         }
         var options = {
-            filter: filter
+            continueOperation: errorTest
         };
         async.retry(options, fn, function(err, result){
             assert.equal(callCount, 2, "did not retry the correct number of times");
@@ -207,7 +207,7 @@ describe("retry", function () {
         });
     });
 
-    it('retry with interval when some attempts fail and error filter returns false at some invokation',function(done) {
+    it('retry with interval when some attempts fail and error test returns false at some invokation',function(done) {
         var interval = 50;
         var callCount = 0;
         var error = 'ERROR';
@@ -219,11 +219,11 @@ describe("retry", function () {
             var err = callCount === specialCount ? special : error + callCount;
             callback(err, erroredResult + callCount);
         }
-        function filter(err) {
+        function errorTest(err) {
             return err && err !== special;
         }
         var start = new Date().getTime();
-        async.retry({ interval: interval, filter: filter }, fn, function(err, result){
+        async.retry({ interval: interval, continueOperation: errorTest }, fn, function(err, result){
             var now = new Date().getTime();
             var duration = now - start;
             assert(duration >= (interval * (specialCount - 1)),  'did not include interval');
@@ -234,26 +234,26 @@ describe("retry", function () {
         });
     });
 
-    it('retry when first attempt succeeds and error filter should not be called',function(done) {
+    it('retry when first attempt succeeds and error test should not be called',function(done) {
         var callCount = 0;
         var error = 'ERROR';
         var erroredResult = 'RESULT';
-        var filterCalled = false;
+        var continueTestCalled = false;
         function fn(callback) {
             callCount++;
             callback(null, erroredResult + callCount);
         }
-        function filter(err) {
-            filterCalled = true;
+        function errorTest(err) {
+            continueTestCalled = true;
             return err && err === error;
         }
         var options = {
-            filter: filter
+            continueOperation: errorTest
         };
         async.retry(options, fn, _.rest(function(args) {
             assert.equal(callCount, 1, "did not retry the correct number of times");
             expect(args).to.be.eql([null, erroredResult + callCount]);
-            assert.equal(filterCalled, false, "filter function was called");
+            assert.equal(continueTestCalled, false, "error test function was called");
             done();
         }));
     });
