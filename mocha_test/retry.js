@@ -173,7 +173,7 @@ describe("retry", function () {
         }
         var options = {
             times: times,
-            continueOperation: errorTest
+            errorFilter: errorTest
         };
         async.retry(options, fn, function(err, result){
             assert.equal(callCount, 3, "did not retry the correct number of times");
@@ -197,7 +197,7 @@ describe("retry", function () {
             return err && err === error + callCount; // just a different pattern
         }
         var options = {
-            continueOperation: errorTest
+            errorFilter: errorTest
         };
         async.retry(options, fn, function(err, result){
             assert.equal(callCount, 2, "did not retry the correct number of times");
@@ -223,7 +223,7 @@ describe("retry", function () {
             return err && err !== special;
         }
         var start = new Date().getTime();
-        async.retry({ interval: interval, continueOperation: errorTest }, fn, function(err, result){
+        async.retry({ interval: interval, errorFilter: errorTest }, fn, function(err, result){
             var now = new Date().getTime();
             var duration = now - start;
             assert(duration >= (interval * (specialCount - 1)),  'did not include interval');
@@ -248,7 +248,7 @@ describe("retry", function () {
             return err && err === error;
         }
         var options = {
-            continueOperation: errorTest
+            errorFilter: errorTest
         };
         async.retry(options, fn, _.rest(function(args) {
             assert.equal(callCount, 1, "did not retry the correct number of times");

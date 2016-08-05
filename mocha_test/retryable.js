@@ -25,7 +25,7 @@ describe('retryable', function () {
         var calls = 0;
         var special = 'special';
         var opts = {
-            continueOperation: function(err) {
+            errorFilter: function(err) {
                 return err == special;
             }
         };
