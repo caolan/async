@@ -16,9 +16,6 @@ describe('retryable', function () {
             expect(calls).to.equal(3);
             done();
         });
-
-        setTimeout(function () {
-        }, 15);
     });
 
     it('basics with error test function', function (done) {
@@ -40,9 +37,6 @@ describe('retryable', function () {
             expect(calls).to.equal(3);
             done();
         });
-
-        setTimeout(function () {
-        }, 15);
     });
 
     it('should work as an embedded task', function(done) {
