@@ -156,5 +156,105 @@ describe("retry", function () {
         async.retry(5, fn, function(err, result) {
             expect(result).to.be.eql({a: 1});
         });
-    })
+    });
+
+    it('retry when all attempts fail and error continue test returns true',function(done) {
+        var times = 3;
+        var callCount = 0;
+        var error = 'ERROR';
+        var special = 'SPECIAL_ERROR';
+        var erroredResult = 'RESULT';
+        function fn(callback) {
+            callCount++;
+            callback(error + callCount, erroredResult + callCount);
+        }
+        function errorTest(err) {
+            return err && err !== special;
+        }
+        var options = {
+            times: times,
+            errorFilter: errorTest
+        };
+        async.retry(options, fn, function(err, result){
+            assert.equal(callCount, 3, "did not retry the correct number of times");
+            assert.equal(err, error + times, "Incorrect error was returned");
+            assert.equal(result, erroredResult + times, "Incorrect result was returned");
+            done();
+        });
+    });
+
+    it('retry when some attempts fail and error test returns false at some invokation',function(done) {
+        var callCount = 0;
+        var error = 'ERROR';
+        var special = 'SPECIAL_ERROR';
+        var erroredResult = 'RESULT';
+        function fn(callback) {
+            callCount++;
+            var err = callCount === 2 ? special : error + callCount;
+            callback(err, erroredResult + callCount);
+        }
+        function errorTest(err) {
+            return err && err === error + callCount; // just a different pattern
+        }
+        var options = {
+            errorFilter: errorTest
+        };
+        async.retry(options, fn, function(err, result){
+            assert.equal(callCount, 2, "did not retry the correct number of times");
+            assert.equal(err, special, "Incorrect error was returned");
+            assert.equal(result, erroredResult + 2, "Incorrect result was returned");
+            done();
+        });
+    });
+
+    it('retry with interval when some attempts fail and error test returns false at some invokation',function(done) {
+        var interval = 50;
+        var callCount = 0;
+        var error = 'ERROR';
+        var erroredResult = 'RESULT';
+        var special = 'SPECIAL_ERROR';
+        var specialCount = 3;
+        function fn(callback) {
+            callCount++;
+            var err = callCount === specialCount ? special : error + callCount;
+            callback(err, erroredResult + callCount);
+        }
+        function errorTest(err) {
+            return err && err !== special;
+        }
+        var start = new Date().getTime();
+        async.retry({ interval: interval, errorFilter: errorTest }, fn, function(err, result){
+            var now = new Date().getTime();
+            var duration = now - start;
+            assert(duration >= (interval * (specialCount - 1)),  'did not include interval');
+            assert.equal(callCount, specialCount, "did not retry the correct number of times");
+            assert.equal(err, special, "Incorrect error was returned");
+            assert.equal(result, erroredResult + specialCount, "Incorrect result was returned");
+            done();
+        });
+    });
+
+    it('retry when first attempt succeeds and error test should not be called',function(done) {
+        var callCount = 0;
+        var error = 'ERROR';
+        var erroredResult = 'RESULT';
+        var continueTestCalled = false;
+        function fn(callback) {
+            callCount++;
+            callback(null, erroredResult + callCount);
+        }
+        function errorTest(err) {
+            continueTestCalled = true;
+            return err && err === error;
+        }
+        var options = {
+            errorFilter: errorTest
+        };
+        async.retry(options, fn, _.rest(function(args) {
+            assert.equal(callCount, 1, "did not retry the correct number of times");
+            expect(args).to.be.eql([null, erroredResult + callCount]);
+            assert.equal(continueTestCalled, false, "error test function was called");
+            done();
+        }));
+    });
 });
