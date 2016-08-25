@@ -45,7 +45,7 @@ async.parallel([
     function(callback){ ... }
 ], function(err, results) {
     // optional callback
-};
+});
 
 async.series([
     function(callback){ ... },
