@@ -350,4 +350,36 @@ describe('parallel', function() {
             done();
         }, maxTime);
     });
+
+    it('tasks in object format', function (done) {
+        var obj = {};
+        async.parallel([
+            {
+                'w': function (callback) {
+                    callback(null, 1);
+                }
+            },
+            {
+                'o': function (callback) {
+                    callback(null, 2);
+                },
+            },
+            {
+                'o': function (callback) {
+                    callback(null, 3);
+                }
+            },
+            {
+                'd': function (callback) {
+                    callback(null, obj);
+                }
+            }
+        ],
+        function (err, results) {
+            expect(results['w']).to.eql(1);
+            expect(results['o']).to.eql(3);
+            expect(results['d']).to.eql(obj);
+            done();
+        });
+    });
 });
