@@ -10,7 +10,7 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function(count) {
+    setup: function setup(count) {
         tasks = _.range(count);
     },
     fn: function(async, done) {
@@ -25,7 +25,7 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function(count) {
+    setup: function setup(count) {
         tasks = _.range(count);
     },
     fn: function(async, done) {
@@ -40,7 +40,7 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function(count) {
+    setup: function setup(count) {
         tasks = _.range(count);
     },
     fn: function(async, done) {
@@ -56,7 +56,7 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function(count) {
+    setup: function setup(count) {
         tasks = _.range(count);
     },
     fn: function(async, done) {
@@ -71,7 +71,7 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function(count) {
+    setup: function setup(count) {
         tasks = _.range(count);
     },
     fn: function(async, done) {
@@ -86,7 +86,7 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function(count) {
+    setup: function setup(count) {
         tasks = _.range(count);
     },
     fn: function(async, done) {
@@ -101,7 +101,7 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function(c) {
+    setup: function setup(c) {
         count = c;
         tasks = _.range(count);
     },
@@ -119,7 +119,7 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function(c) {
+    setup: function setup(c) {
         count = c;
         tasks = _.range(count);
     },
@@ -138,7 +138,7 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function(count) {
+    setup: function setup(count) {
         tasks = _.range(count);
     },
     fn: function(async, done) {
@@ -153,7 +153,7 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function(count) {
+    setup: function setup(count) {
         tasks = _.range(count);
     },
     fn: function(async, done) {
@@ -168,7 +168,7 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function(count) {
+    setup: function setup(count) {
         tasks = _.range(count);
     },
     fn: function(async, done) {
@@ -183,7 +183,7 @@ module.exports = [{
         [100],
         [1000]
     ],
-    setup: function(count) {
+    setup: function setup(count) {
         tasks = _.range(count).map(function() {
             return function(cb) {
                 setImmediate(cb);
@@ -200,7 +200,7 @@ module.exports = [{
         [100],
         [1000]
     ],
-    setup: function(count) {
+    setup: function setup(count) {
         tasks = _.range(count).map(function() {
             return function(cb) {
                 setImmediate(cb);
@@ -217,7 +217,7 @@ module.exports = [{
         [100],
         [1000]
     ],
-    setup: function(count) {
+    setup: function setup(count) {
         tasks = [
             function(cb) {
                 return cb(null, 1);
@@ -241,7 +241,7 @@ module.exports = [{
         [100000],
         [200000]
     ],
-    setup: function(count) {
+    setup: function setup(count) {
         tasks = count;
     },
     fn: function(async, done) {
@@ -266,7 +266,7 @@ module.exports = [{
     args: [
         [500]
     ],
-    setup: function(count) {
+    setup: function setup(count) {
         tasks = _.range(count);
     },
     fn: function(async, done) {
@@ -282,7 +282,7 @@ module.exports = [{
     args: [
         [500]
     ],
-    setup: function(count) {
+    setup: function setup(count) {
         tasks = _.range(count);
     },
     fn: function(async, done) {
@@ -298,7 +298,7 @@ module.exports = [{
     args: [
         [500]
     ],
-    setup: function(count) {
+    setup: function setup(count) {
         tasks = _.range(count);
     },
     fn: function(async, done) {
@@ -314,7 +314,7 @@ module.exports = [{
     args: [
         [500]
     ],
-    setup: function(count) {
+    setup: function setup(count) {
         tasks = _.range(count);
     },
     fn: function(async, done) {
