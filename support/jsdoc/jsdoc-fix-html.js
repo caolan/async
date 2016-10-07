@@ -111,11 +111,32 @@ function applyPreCheerioFixes(data) {
 
 function fixToc($page, moduleFiles) {
     // remove `async` listing from toc
-    $page.find('li').find('a[href="'+mainModuleFile+'"]').parent().remove();
+    $page.find('a[href="'+mainModuleFile+'"]').parent().remove();
 
     // change toc title
-    $page.find('nav').children('h3').text(pageTitle);
-    $page.find('nav').children('h2').remove();
+    var $nav = $page.find('nav');
+    $nav.attr('id', 'toc');
+    $nav.children('h3').text(pageTitle);
+    $nav.children('h2').remove();
+
+    // move everything into one big ul (for Bootstrap scroll-spy)
+    var $ul = $nav.children('ul');
+    $ul.addClass('nav').addClass('methods');
+    $ul.find('.methods').each(function() {
+        var $methodsList = $(this);
+        var $methods = $methodsList.find('[data-type="method"]');
+        var $parentLi = $methodsList.parent();
+
+        $methodsList.remove();
+        $methods.remove();
+        $parentLi.after($methods);
+        $parentLi.addClass('toc-header');
+
+    });
+
+    $page.find('[data-type="method"]').each(function() {
+        $(this).addClass("toc-method");
+    });
 
     // make everything point to the same 'docs.html' page
     _.each(moduleFiles, function(filename) {
