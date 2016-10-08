@@ -11,6 +11,7 @@ var pageTitle = 'Methods:';
 var docFilename = 'docs.html';
 var mainModuleFile = 'module-async.html';
 var mainSectionId = '#main';
+var mainScrollableSection = '#main-container';
 var sectionTitleClass = '.page-title';
 
 var HTMLFileBegin = '<!DOCTYPE html>\n<html lang="en">\n<head>\n';
@@ -74,7 +75,7 @@ function combineFakeModules(files, callback) {
                 var $modulePage = $(moduleData);
                 var moduleName = $modulePage.find(sectionTitleClass).text();
                 $modulePage.find(sectionTitleClass).attr('id', moduleName.toLowerCase());
-                $mainPage.find(mainSectionId).append($modulePage.find(mainSectionId).html());
+                $mainPage.find(mainScrollableSection).append($modulePage.find(mainScrollableSection).html());
                 return fileCallback();
             });
         }, function(err) {
@@ -109,16 +110,7 @@ function applyPreCheerioFixes(data) {
 }
 
 
-function fixToc($page, moduleFiles) {
-    // remove `async` listing from toc
-    $page.find('a[href="'+mainModuleFile+'"]').parent().remove();
-
-    // change toc title
-    var $nav = $page.find('nav');
-    $nav.attr('id', 'toc');
-    $nav.children('h3').text(pageTitle);
-    $nav.children('h2').remove();
-
+function scrollSpyFix($page, $nav) {
     // move everything into one big ul (for Bootstrap scroll-spy)
     var $ul = $nav.children('ul');
     $ul.addClass('nav').addClass('methods');
@@ -138,6 +130,26 @@ function fixToc($page, moduleFiles) {
         $(this).addClass("toc-method");
     });
 
+    $page.find('[id^="."]').each(function() {
+        var $ele = $(this);
+        var id = $(this).attr('id');
+        $ele.attr('id', id.replace('.', ''));
+    });
+}
+
+function fixToc(file, $page, moduleFiles) {
+    // remove `async` listing from toc
+    $page.find('a[href="'+mainModuleFile+'"]').parent().remove();
+
+    // change toc title
+    var $nav = $page.find('nav');
+    $nav.attr('id', 'toc');
+    $nav.children('h3').text(pageTitle);
+    $nav.children('h2').remove();
+
+    scrollSpyFix($page, $nav);
+
+    var prependFilename = (file === docFilename) ? '' : docFilename;
     // make everything point to the same 'docs.html' page
     _.each(moduleFiles, function(filename) {
         $page.find('[href^="'+filename+'"]').each(function() {
@@ -147,10 +159,10 @@ function fixToc($page, moduleFiles) {
             // category titles should sections title, while everything else
             // points to the correct listing
             if (href === filename) {
-                var moduleName = $ele.text().toLowerCase().replace(/\s/g, '');
-                $ele.attr('href', docFilename+'#'+moduleName);
+                var moduleName = $ele.text().toLowerCase().replace(/\s/g, '').replace('.', '');
+                $ele.attr('href', prependFilename+'#'+moduleName);
             } else {
-                $ele.attr('href', href.replace(filename, docFilename));
+                $ele.attr('href', href.replace(filename, prependFilename).replace('#.', '#'));
             }
         });
     });
@@ -160,7 +172,7 @@ function fixFooter($page) {
     // add a note to the footer that the documentation has been modified
     var $footer = $page.find('footer');
     $footer.append(additionalFooterText);
-    $page.find('#main').append($footer);
+    $page.find(mainScrollableSection).append($footer);
 }
 
 function fixModuleLinks(files, callback) {
@@ -173,7 +185,7 @@ function fixModuleLinks(files, callback) {
             if (err) return fileCallback(err);
             var $file = $(applyPreCheerioFixes(fileData));
 
-            fixToc($file, moduleFiles);
+            fixToc(file, $file, moduleFiles);
             fixFooter($file);
             $file.find('[href="'+mainModuleFile+'"]').attr('href', docFilename);
             generateHTMLFile(filePath, $file, fileCallback);

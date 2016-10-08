@@ -66,11 +66,13 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <div id="main">
-    <?js if (title != 'Home') { ?>
-    <h1 class="page-title"><?js= title ?></h1>
-    <?js } ?>
+    <div id="main-container" data-spy="scroll" data-target="#toc" data-offset="50">
+        <?js if (title != 'Home') { ?>
+        <h1 class="page-title"><?js= title ?></h1>
+        <?js } ?>
 
-    <?js= content ?>
+        <?js= content ?>
+    </div>
 </div>
 
 <nav>
