@@ -102,4 +102,16 @@ $(function initSearchBar() {
             $('#main').animate({ scrollTop: $el.offsetTop - 60 }, 500);
         }
     });
+
+    function fixOldHash() {
+        var hash = window.location.hash;
+        if (hash) {
+            var hashMatches = hash.match(/^#\.(\w+)$/);
+            if (hashMatches) {
+                window.location.hash = '#'+hashMatches[1];
+            }
+        }
+    }
+
+    fixOldHash();
 });
