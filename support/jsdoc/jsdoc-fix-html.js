@@ -22,6 +22,12 @@ var additionalFooterText = ' Documentation has been modified from the original. 
     ' For more information, please see the <a href="https://github.com/caolan/async">async</a> repository.';
 
 function generateHTMLFile(filename, $page, callback) {
+    var methodName = filename.match(/\/(\w+)\.js\.html$/);
+    if (methodName) {
+        var $thisMethodDocLink = $page.find('#toc').find('a[href="'+docFilename+'#'+methodName[1]+'"]');
+        $thisMethodDocLink.parent().addClass('active');
+    }
+
     // generate an HTML file from a cheerio object
     var HTMLdata = HTMLFileBegin + $page.find('head').html()
         + HTMLFileHeadBodyJoin + $page.find('body').html()
