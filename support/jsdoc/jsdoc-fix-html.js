@@ -132,9 +132,7 @@ function scrollSpyFix($page, $nav) {
 
     });
 
-    $page.find('[data-type="method"]').each(function() {
-        $(this).addClass("toc-method");
-    });
+    $page.find('[data-type="method"]').addClass("toc-method");
 
     $page.find('[id^="."]').each(function() {
         var $ele = $(this);
