@@ -96,10 +96,22 @@ $(function initSearchBar() {
             location.href = host + suggestion;
         // handle searching from one of the source files or the home page
         } else if (currentPage !== 'docs.html') {
-            location.href = host + 'docs.html#.' + suggestion;
+            location.href = host + 'docs.html#' + suggestion;
         } else {
-            var $el = document.getElementById('.' + suggestion);
-            $('#main').animate({ scrollTop: $el.offsetTop - 60 }, 500);
+            var $el = document.getElementById(suggestion);
+            $('#main-container').animate({ scrollTop: $el.offsetTop - 60 }, 500);
         }
     });
+
+    function fixOldHash() {
+        var hash = window.location.hash;
+        if (hash) {
+            var hashMatches = hash.match(/^#\.(\w+)$/);
+            if (hashMatches) {
+                window.location.hash = '#'+hashMatches[1];
+            }
+        }
+    }
+
+    fixOldHash();
 });
