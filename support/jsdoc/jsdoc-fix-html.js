@@ -10,7 +10,6 @@ var pageTitle = 'Methods:';
 
 var docFilename = 'docs.html';
 var mainModuleFile = 'module-async.html';
-var mainSectionId = '#main';
 var mainScrollableSection = '#main-container';
 var sectionTitleClass = '.page-title';
 
