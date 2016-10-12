@@ -80,34 +80,8 @@
   }
 
   /**
-   * The base implementation of `_.property` without support for deep paths.
-   *
-   * @private
-   * @param {string} key The key of the property to get.
-   * @returns {Function} Returns the new accessor function.
-   */
-  function baseProperty(key) {
-    return function(object) {
-      return object == null ? undefined : object[key];
-    };
-  }
-
-  /**
-   * Gets the "length" property value of `object`.
-   *
-   * **Note:** This function is used to avoid a
-   * [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792) that affects
-   * Safari on at least iOS 8.1-8.3 ARM64.
-   *
-   * @private
-   * @param {Object} object The object to query.
-   * @returns {*} Returns the "length" value.
-   */
-  var getLength = baseProperty('length');
-
-  /**
    * Checks if `value` is the
-   * [language type](http://www.ecma-international.org/ecma-262/6.0/#sec-ecmascript-language-types)
+   * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
    * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
    *
    * @static
@@ -142,7 +116,7 @@
 
   /**
    * Used to resolve the
-   * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+   * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
    * of values.
    */
   var objectToString = objectProto.toString;
@@ -178,16 +152,15 @@
   /**
    * Checks if `value` is a valid array-like length.
    *
-   * **Note:** This function is loosely based on
-   * [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+   * **Note:** This method is loosely based on
+   * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
    *
    * @static
    * @memberOf _
    * @since 4.0.0
    * @category Lang
    * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is a valid length,
-   *  else `false`.
+   * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
    * @example
    *
    * _.isLength(3);
@@ -233,7 +206,7 @@
    * // => false
    */
   function isArrayLike(value) {
-    return value != null && isLength(getLength(value)) && !isFunction(value);
+    return value != null && isLength(value.length) && !isFunction(value);
   }
 
   /**
@@ -266,68 +239,6 @@
   function getIterator (coll) {
       return iteratorSymbol && coll[iteratorSymbol] && coll[iteratorSymbol]();
   }
-
-  /**
-   * Creates a function that invokes `func` with its first argument transformed.
-   *
-   * @private
-   * @param {Function} func The function to wrap.
-   * @param {Function} transform The argument transform.
-   * @returns {Function} Returns the new function.
-   */
-  function overArg(func, transform) {
-    return function(arg) {
-      return func(transform(arg));
-    };
-  }
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-  var nativeGetPrototype = Object.getPrototypeOf;
-
-  /**
-   * Gets the `[[Prototype]]` of `value`.
-   *
-   * @private
-   * @param {*} value The value to query.
-   * @returns {null|Object} Returns the `[[Prototype]]`.
-   */
-  var getPrototype = overArg(nativeGetPrototype, Object);
-
-  /** Used for built-in method references. */
-  var objectProto$1 = Object.prototype;
-
-  /** Used to check objects for own properties. */
-  var hasOwnProperty = objectProto$1.hasOwnProperty;
-
-  /**
-   * The base implementation of `_.has` without support for deep paths.
-   *
-   * @private
-   * @param {Object} [object] The object to query.
-   * @param {Array|string} key The key to check.
-   * @returns {boolean} Returns `true` if `key` exists, else `false`.
-   */
-  function baseHas(object, key) {
-    // Avoid a bug in IE 10-11 where objects with a [[Prototype]] of `null`,
-    // that are composed entirely of index properties, return `false` for
-    // `hasOwnProperty` checks of them.
-    return object != null &&
-      (hasOwnProperty.call(object, key) ||
-        (typeof object == 'object' && key in object && getPrototype(object) === null));
-  }
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-  var nativeKeys = Object.keys;
-
-  /**
-   * The base implementation of `_.keys` which doesn't skip the constructor
-   * property of prototypes or treat sparse arrays as dense.
-   *
-   * @private
-   * @param {Object} object The object to query.
-   * @returns {Array} Returns the array of property names.
-   */
-  var baseKeys = overArg(nativeKeys, Object);
 
   /**
    * The base implementation of `_.times` without support for iteratee shorthands
@@ -416,7 +327,7 @@
 
   /**
    * Used to resolve the
-   * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+   * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
    * of values.
    */
   var objectToString$1 = objectProto$2.toString;
@@ -473,6 +384,27 @@
    */
   var isArray = Array.isArray;
 
+  /** Used as references for various `Number` constants. */
+  var MAX_SAFE_INTEGER$1 = 9007199254740991;
+
+  /** Used to detect unsigned integer values. */
+  var reIsUint = /^(?:0|[1-9]\d*)$/;
+
+  /**
+   * Checks if `value` is a valid array-like index.
+   *
+   * @private
+   * @param {*} value The value to check.
+   * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+   * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+   */
+  function isIndex(value, length) {
+    length = length == null ? MAX_SAFE_INTEGER$1 : length;
+    return !!length &&
+      (typeof value == 'number' || reIsUint.test(value)) &&
+      (value > -1 && value % 1 == 0 && value < length);
+  }
+
   /** `Object#toString` result references. */
   var stringTag = '[object String]';
 
@@ -481,7 +413,7 @@
 
   /**
    * Used to resolve the
-   * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+   * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
    * of values.
    */
   var objectToString$2 = objectProto$3.toString;
@@ -508,46 +440,39 @@
       (!isArray(value) && isObjectLike(value) && objectToString$2.call(value) == stringTag);
   }
 
+  /** Used for built-in method references. */
+  var objectProto$1 = Object.prototype;
+
+  /** Used to check objects for own properties. */
+  var hasOwnProperty = objectProto$1.hasOwnProperty;
+
   /**
-   * Creates an array of index keys for `object` values of arrays,
-   * `arguments` objects, and strings, otherwise `null` is returned.
+   * Creates an array of the enumerable property names of the array-like `value`.
    *
    * @private
-   * @param {Object} object The object to query.
-   * @returns {Array|null} Returns index keys, else `null`.
+   * @param {*} value The value to query.
+   * @param {boolean} inherited Specify returning inherited property names.
+   * @returns {Array} Returns the array of property names.
    */
-  function indexKeys(object) {
-    var length = object ? object.length : undefined;
-    if (isLength(length) &&
-        (isArray(object) || isString(object) || isArguments(object))) {
-      return baseTimes(length, String);
+  function arrayLikeKeys(value, inherited) {
+    var result = (isArray(value) || isString(value) || isArguments(value))
+      ? baseTimes(value.length, String)
+      : [];
+
+    var length = result.length,
+        skipIndexes = !!length;
+
+    for (var key in value) {
+      if ((inherited || hasOwnProperty.call(value, key)) &&
+          !(skipIndexes && (key == 'length' || isIndex(key, length)))) {
+        result.push(key);
+      }
     }
-    return null;
-  }
-
-  /** Used as references for various `Number` constants. */
-  var MAX_SAFE_INTEGER$1 = 9007199254740991;
-
-  /** Used to detect unsigned integer values. */
-  var reIsUint = /^(?:0|[1-9]\d*)$/;
-
-  /**
-   * Checks if `value` is a valid array-like index.
-   *
-   * @private
-   * @param {*} value The value to check.
-   * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
-   * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
-   */
-  function isIndex(value, length) {
-    length = length == null ? MAX_SAFE_INTEGER$1 : length;
-    return !!length &&
-      (typeof value == 'number' || reIsUint.test(value)) &&
-      (value > -1 && value % 1 == 0 && value < length);
+    return result;
   }
 
   /** Used for built-in method references. */
-  var objectProto$4 = Object.prototype;
+  var objectProto$5 = Object.prototype;
 
   /**
    * Checks if `value` is likely a prototype object.
@@ -558,16 +483,59 @@
    */
   function isPrototype(value) {
     var Ctor = value && value.constructor,
-        proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto$4;
+        proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto$5;
 
     return value === proto;
+  }
+
+  /**
+   * Creates a unary function that invokes `func` with its argument transformed.
+   *
+   * @private
+   * @param {Function} func The function to wrap.
+   * @param {Function} transform The argument transform.
+   * @returns {Function} Returns the new function.
+   */
+  function overArg(func, transform) {
+    return function(arg) {
+      return func(transform(arg));
+    };
+  }
+
+  /* Built-in method references for those with the same name as other `lodash` methods. */
+  var nativeKeys = overArg(Object.keys, Object);
+
+  /** Used for built-in method references. */
+  var objectProto$4 = Object.prototype;
+
+  /** Used to check objects for own properties. */
+  var hasOwnProperty$2 = objectProto$4.hasOwnProperty;
+
+  /**
+   * The base implementation of `_.keys` which doesn't treat sparse arrays as dense.
+   *
+   * @private
+   * @param {Object} object The object to query.
+   * @returns {Array} Returns the array of property names.
+   */
+  function baseKeys(object) {
+    if (!isPrototype(object)) {
+      return nativeKeys(object);
+    }
+    var result = [];
+    for (var key in Object(object)) {
+      if (hasOwnProperty$2.call(object, key) && key != 'constructor') {
+        result.push(key);
+      }
+    }
+    return result;
   }
 
   /**
    * Creates an array of the own enumerable property names of `object`.
    *
    * **Note:** Non-object values are coerced to objects. See the
-   * [ES spec](http://ecma-international.org/ecma-262/6.0/#sec-object.keys)
+   * [ES spec](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
    * for more details.
    *
    * @static
@@ -592,23 +560,7 @@
    * // => ['0', '1']
    */
   function keys(object) {
-    var isProto = isPrototype(object);
-    if (!(isProto || isArrayLike(object))) {
-      return baseKeys(object);
-    }
-    var indexes = indexKeys(object),
-        skipIndexes = !!indexes,
-        result = indexes || [],
-        length = result.length;
-
-    for (var key in object) {
-      if (baseHas(object, key) &&
-          !(skipIndexes && (key == 'length' || isIndex(key, length))) &&
-          !(isProto && key == 'constructor')) {
-        result.push(key);
-      }
-    }
-    return result;
+    return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
   }
 
   function createArrayIterator(coll) {
@@ -1512,14 +1464,14 @@
   var symbolTag = '[object Symbol]';
 
   /** Used for built-in method references. */
-  var objectProto$5 = Object.prototype;
+  var objectProto$6 = Object.prototype;
 
   /**
    * Used to resolve the
-   * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+   * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
    * of values.
    */
-  var objectToString$3 = objectProto$5.toString;
+  var objectToString$3 = objectProto$6.toString;
 
   /**
    * Checks if `value` is classified as a `Symbol` primitive or object.
@@ -1984,9 +1936,10 @@
                   q.drain();
               });
           }
-          arrayEach(data, function (task) {
+
+          for (var i = 0, l = data.length; i < l; i++) {
               var item = {
-                  data: task,
+                  data: data[i],
                   callback: callback || noop
               };
 
@@ -1995,7 +1948,7 @@
               } else {
                   q._tasks.push(item);
               }
-          });
+          }
           setImmediate$1(q.process);
       }
 
@@ -2003,20 +1956,19 @@
           return baseRest(function (args) {
               workers -= 1;
 
-              arrayEach(tasks, function (task) {
-                  arrayEach(workersList, function (worker, index) {
-                      if (worker === task) {
-                          workersList.splice(index, 1);
-                          return false;
-                      }
-                  });
+              for (var i = 0, l = tasks.length; i < l; i++) {
+                  var task = tasks[i];
+                  var index = baseIndexOf(workersList, task, 0);
+                  if (index >= 0) {
+                      workersList.splice(index);
+                  }
 
                   task.callback.apply(task, args);
 
                   if (args[0] != null) {
                       q.error(args[0], task.data);
                   }
-              });
+              }
 
               if (workers <= q.concurrency - q.buffer) {
                   q.unsaturated();
@@ -2025,11 +1977,14 @@
               if (q.idle()) {
                   q.drain();
               }
-              q.process();
+              if (!sync) {
+                  q.process();
+              }
           });
       }
 
       var workers = 0;
+      var sync = 0;
       var workersList = [];
       var q = {
           _tasks: new DLL(),
@@ -2076,7 +2031,14 @@
                   }
 
                   var cb = onlyOnce(_next(tasks));
+
+                  // prevent stack growth when calling callback synchronously:
+                  // unroll the recursion into a loop here. (The callback will
+                  // have reduced the workers count synchronously, causing us to
+                  // loop again)
+                  sync = 1;
                   worker(data, cb);
+                  sync = 0;
               }
           },
           length: function () {
@@ -2728,8 +2690,8 @@
    * passes. The function is passed a `callback(err)`, which must be called once
    * it has completed with an optional `err` argument. Invoked with (callback).
    * @param {Function} test - synchronous truth test to perform after each
-   * execution of `iteratee`. Invoked with Invoked with the non-error callback
-   * results of `iteratee`.
+   * execution of `iteratee`. Invoked with the non-error callback results of 
+   * `iteratee`.
    * @param {Function} [callback] - A callback which is called after the test
    * function has failed and repeated execution of `iteratee` has stopped.
    * `callback` will be passed an error and any arguments passed to the final
@@ -3069,6 +3031,19 @@
    * depending on the values of the async tests. Invoked with (err, result).
    */
   var everySeries = doLimit(everyLimit, 1);
+
+  /**
+   * The base implementation of `_.property` without support for deep paths.
+   *
+   * @private
+   * @param {string} key The key of the property to get.
+   * @returns {Function} Returns the new accessor function.
+   */
+  function baseProperty(key) {
+    return function(object) {
+      return object == null ? undefined : object[key];
+    };
+  }
 
   function _filter(eachfn, arr, iteratee, callback) {
       callback = once(callback || noop);
@@ -3714,9 +3689,9 @@
               nextNode = nextNode.next;
           }
 
-          arrayEach(data, function (task) {
+          for (var i = 0, l = data.length; i < l; i++) {
               var item = {
-                  data: task,
+                  data: data[i],
                   priority: priority,
                   callback: callback
               };
@@ -3726,7 +3701,7 @@
               } else {
                   q._tasks.push(item);
               }
-          });
+          }
           setImmediate$1(q.process);
       };
 
@@ -3777,9 +3752,9 @@
       callback = once(callback || noop);
       if (!isArray(tasks)) return callback(new TypeError('First argument to race must be an array of functions'));
       if (!tasks.length) return callback();
-      arrayEach(tasks, function (task) {
-          task(callback);
-      });
+      for (var i = 0, l = tasks.length; i < l; i++) {
+          tasks[i](callback);
+      }
   }
 
   var slice = Array.prototype.slice;
@@ -4074,6 +4049,11 @@
    * * `interval` - The time to wait between retries, in milliseconds.  The
    *   default is `0`. The interval may also be specified as a function of the
    *   retry count (see example).
+   * * `errorFilter` - An optional synchronous function that is invoked on
+   *   erroneous result. If it returns `true` the retry attempts will continue;
+   *   if the function returns `false` the retry flow is aborted with the current
+   *   attempt's error and result being returned to the final callback.
+   *   Invoked with (err).
    * * If `opts` is a number, the number specifies the number of times to retry,
    *   with the default interval of `0`.
    * @param {Function} task - A function which receives two arguments: (1) a
@@ -4117,6 +4097,16 @@
    *     // do something with the result
    * });
    *
+   * // try calling apiMethod only when error condition satisfies, all other
+   * // errors will abort the retry control flow and return to final callback
+   * async.retry({
+   *   errorFilter: function(err) {
+   *     return err.message === 'Temporary error'; // only retry on a specific error
+   *   }
+   * }, apiMethod, function(err, result) {
+   *     // do something with the result
+   * });
+   *
    * // It can also be embedded within other control flow functions to retry
    * // individual methods that are not as reliable, like this:
    * async.auto({
@@ -4125,6 +4115,7 @@
    * }, function(err, results) {
    *     // do something with the results
    * });
+   *
    */
   function retry(opts, task, callback) {
       var DEFAULT_TIMES = 5;
@@ -4140,6 +4131,8 @@
               acc.times = +t.times || DEFAULT_TIMES;
 
               acc.intervalFunc = typeof t.interval === 'function' ? t.interval : constant$1(+t.interval || DEFAULT_INTERVAL);
+
+              acc.errorFilter = t.errorFilter;
           } else if (typeof t === 'number' || typeof t === 'string') {
               acc.times = +t || DEFAULT_TIMES;
           } else {
@@ -4162,7 +4155,7 @@
       var attempt = 1;
       function retryAttempt() {
           task(function (err) {
-              if (err && attempt++ < options.times) {
+              if (err && attempt++ < options.times && (typeof options.errorFilter != 'function' || options.errorFilter(err))) {
                   setTimeout(retryAttempt, options.intervalFunc(attempt));
               } else {
                   callback.apply(null, arguments);
@@ -4436,12 +4429,31 @@
    * @param {*} [info] - Any variable you want attached (`string`, `object`, etc)
    * to timeout Error for more information..
    * @returns {Function} Returns a wrapped function that can be used with any of
-   * the control flow functions.
+   * the control flow functions. Invoke this function with the same
+   * parameters as you would `asyncFunc`.
    * @example
    *
-   * async.timeout(function(callback) {
-   *     doAsyncTask(callback);
-   * }, 1000);
+   * function myFunction(foo, callback) {
+   *     doAsyncTask(foo, function(err, data) {
+   *         // handle errors
+   *         if (err) return callback(err);
+   *
+   *         // do some stuff ...
+   *
+   *         // return processed data
+   *         return callback(null, data);
+   *     });
+   * }
+   *
+   * var wrapped = async.timeout(myFunction, 1000);
+   *
+   * // call `wrapped` as you would `myFunction`
+   * wrapped({ bar: 'bar' }, function(err, data) {
+   *     // if `myFunction` takes < 1000 ms to execute, `err`
+   *     // and `data` will have their expected values
+   *
+   *     // else `err` will be an Error with the code 'ETIMEDOUT'
+   * });
    */
   function timeout(asyncFn, milliseconds, info) {
       var originalCallback, timer;
