@@ -1,3 +1,11 @@
+# v2.1.0
+
+- `retry` and `retryable` now support an optional `errorFilter` function that determines if the `task` should retry on the error (#1256, #1261)
+- Optimized array iteration in `race`, `cargo`, `queue`, and `priorityQueue` (#1253)
+- Added alias documentation to doc site (#1251, #1254)
+- Added [BootStrap scrollspy](http://getbootstrap.com/javascript/#scrollspy) to docs to highlight in the sidebar the current method being viewed  (#1289, #1300)
+- Various minor doc fixes (#1263, #1264, #1271, #1278, #1280, #1282, #1302)
+
 # v2.0.1
 
 - Significantly optimized all iteration based collection methods such as `each`, `map`, `filter`, etc (#1245, #1246, #1247).
