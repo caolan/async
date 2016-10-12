@@ -866,23 +866,25 @@
   /**
    * Applies the provided arguments to each function in the array, calling
    * `callback` after all functions have completed. If you only provide the first
-   * argument, then it will return a function which lets you pass in the
-   * arguments as if it were a single function call.
+   * argument, `fns`, then it will return a function which lets you pass in the
+   * arguments as if it were a single function call. If more arguments are
+   * provided, `callback` is required while `args` is still optional.
    *
    * @name applyEach
    * @static
    * @memberOf module:ControlFlow
    * @method
    * @category Control Flow
-   * @param {Array|Iterable|Object} fns - A collection of asynchronous functions to all
-   * call with the same arguments
+   * @param {Array|Iterable|Object} fns - A collection of asynchronous functions
+   * to all call with the same arguments
    * @param {...*} [args] - any number of separate arguments to pass to the
    * function.
    * @param {Function} [callback] - the final argument should be the callback,
    * called when all functions have completed processing.
-   * @returns {Function} - If only the first argument is provided, it will return
-   * a function which lets you pass in the arguments as if it were a single
-   * function call.
+   * @returns {Function} - If only the first argument, `fns`, is provided, it will
+   * return a function which lets you pass in the arguments as if it were a single
+   * function call. The signature is `(..args, callback)`. If invoked with any
+   * arguments, `callback` is required.
    * @example
    *
    * async.applyEach([enableSearch, updateSchema], 'bucket', callback);
@@ -1984,9 +1986,10 @@
                   q.drain();
               });
           }
-          arrayEach(data, function (task) {
+
+          for (var i = 0, l = data.length; i < l; i++) {
               var item = {
-                  data: task,
+                  data: data[i],
                   callback: callback || noop
               };
 
@@ -1995,7 +1998,7 @@
               } else {
                   q._tasks.push(item);
               }
-          });
+          }
           setImmediate$1(q.process);
       }
 
@@ -2003,20 +2006,19 @@
           return baseRest(function (args) {
               workers -= 1;
 
-              arrayEach(tasks, function (task) {
-                  arrayEach(workersList, function (worker, index) {
-                      if (worker === task) {
-                          workersList.splice(index, 1);
-                          return false;
-                      }
-                  });
+              for (var i = 0, l = tasks.length; i < l; i++) {
+                  var task = tasks[i];
+                  var index = baseIndexOf(workersList, task, 0);
+                  if (index >= 0) {
+                      workersList.splice(index);
+                  }
 
                   task.callback.apply(task, args);
 
                   if (args[0] != null) {
                       q.error(args[0], task.data);
                   }
-              });
+              }
 
               if (workers <= q.concurrency - q.buffer) {
                   q.unsaturated();
@@ -2728,8 +2730,8 @@
    * passes. The function is passed a `callback(err)`, which must be called once
    * it has completed with an optional `err` argument. Invoked with (callback).
    * @param {Function} test - synchronous truth test to perform after each
-   * execution of `iteratee`. Invoked with Invoked with the non-error callback
-   * results of `iteratee`.
+   * execution of `iteratee`. Invoked with the non-error callback results of 
+   * `iteratee`.
    * @param {Function} [callback] - A callback which is called after the test
    * function has failed and repeated execution of `iteratee` has stopped.
    * `callback` will be passed an error and any arguments passed to the final
@@ -2904,7 +2906,7 @@
    * @see [async.each]{@link module:Collections.each}
    * @alias forEachLimit
    * @category Collection
-   * @param {Array|Iterable|Object} coll - A colleciton to iterate over.
+   * @param {Array|Iterable|Object} coll - A collection to iterate over.
    * @param {number} limit - The maximum number of async operations at a time.
    * @param {Function} iteratee - A function to apply to each item in `coll`. The
    * iteratee is passed a `callback(err)` which must be called once it has
@@ -3714,9 +3716,9 @@
               nextNode = nextNode.next;
           }
 
-          arrayEach(data, function (task) {
+          for (var i = 0, l = data.length; i < l; i++) {
               var item = {
-                  data: task,
+                  data: data[i],
                   priority: priority,
                   callback: callback
               };
@@ -3726,7 +3728,7 @@
               } else {
                   q._tasks.push(item);
               }
-          });
+          }
           setImmediate$1(q.process);
       };
 
@@ -3738,7 +3740,7 @@
 
   /**
    * Runs the `tasks` array of functions in parallel, without waiting until the
-   * previous function has completed. Once any the `tasks` completed or pass an
+   * previous function has completed. Once any of the `tasks` complete or pass an
    * error to its callback, the main `callback` is immediately called. It's
    * equivalent to `Promise.race()`.
    *
@@ -3777,9 +3779,9 @@
       callback = once(callback || noop);
       if (!isArray(tasks)) return callback(new TypeError('First argument to race must be an array of functions'));
       if (!tasks.length) return callback();
-      arrayEach(tasks, function (task) {
-          task(callback);
-      });
+      for (var i = 0, l = tasks.length; i < l; i++) {
+          tasks[i](callback);
+      }
   }
 
   var slice = Array.prototype.slice;
@@ -4074,6 +4076,11 @@
    * * `interval` - The time to wait between retries, in milliseconds.  The
    *   default is `0`. The interval may also be specified as a function of the
    *   retry count (see example).
+   * * `errorFilter` - An optional synchronous function that is invoked on
+   *   erroneous result. If it returns `true` the retry attempts will continue;
+   *   if the function returns `false` the retry flow is aborted with the current
+   *   attempt's error and result being returned to the final callback.
+   *   Invoked with (err).
    * * If `opts` is a number, the number specifies the number of times to retry,
    *   with the default interval of `0`.
    * @param {Function} task - A function which receives two arguments: (1) a
@@ -4117,6 +4124,16 @@
    *     // do something with the result
    * });
    *
+   * // try calling apiMethod only when error condition satisfies, all other
+   * // errors will abort the retry control flow and return to final callback
+   * async.retry({
+   *   errorFilter: function(err) {
+   *     return err.message === 'Temporary error'; // only retry on a specific error
+   *   }
+   * }, apiMethod, function(err, result) {
+   *     // do something with the result
+   * });
+   *
    * // It can also be embedded within other control flow functions to retry
    * // individual methods that are not as reliable, like this:
    * async.auto({
@@ -4125,6 +4142,7 @@
    * }, function(err, results) {
    *     // do something with the results
    * });
+   *
    */
   function retry(opts, task, callback) {
       var DEFAULT_TIMES = 5;
@@ -4140,6 +4158,8 @@
               acc.times = +t.times || DEFAULT_TIMES;
 
               acc.intervalFunc = typeof t.interval === 'function' ? t.interval : constant$1(+t.interval || DEFAULT_INTERVAL);
+
+              acc.errorFilter = t.errorFilter;
           } else if (typeof t === 'number' || typeof t === 'string') {
               acc.times = +t || DEFAULT_TIMES;
           } else {
@@ -4162,7 +4182,7 @@
       var attempt = 1;
       function retryAttempt() {
           task(function (err) {
-              if (err && attempt++ < options.times) {
+              if (err && attempt++ < options.times && (typeof options.errorFilter != 'function' || options.errorFilter(err))) {
                   setTimeout(retryAttempt, options.intervalFunc(attempt));
               } else {
                   callback.apply(null, arguments);
@@ -4436,12 +4456,31 @@
    * @param {*} [info] - Any variable you want attached (`string`, `object`, etc)
    * to timeout Error for more information..
    * @returns {Function} Returns a wrapped function that can be used with any of
-   * the control flow functions.
+   * the control flow functions. Invoke this function with the same
+   * parameters as you would `asyncFunc`.
    * @example
    *
-   * async.timeout(function(callback) {
-   *     doAsyncTask(callback);
-   * }, 1000);
+   * function myFunction(foo, callback) {
+   *     doAsyncTask(foo, function(err, data) {
+   *         // handle errors
+   *         if (err) return callback(err);
+   *
+   *         // do some stuff ...
+   *
+   *         // return processed data
+   *         return callback(null, data);
+   *     });
+   * }
+   *
+   * var wrapped = async.timeout(myFunction, 1000);
+   *
+   * // call `wrapped` as you would `myFunction`
+   * wrapped({ bar: 'bar' }, function(err, data) {
+   *     // if `myFunction` takes < 1000 ms to execute, `err`
+   *     // and `data` will have their expected values
+   *
+   *     // else `err` will be an Error with the code 'ETIMEDOUT'
+   * });
    */
   function timeout(asyncFn, milliseconds, info) {
       var originalCallback, timer;
@@ -4649,7 +4688,7 @@
   }
 
   /**
-   * Repeatedly call `fn`, while `test` returns `true`. Calls `callback` when
+   * Repeatedly call `iteratee`, while `test` returns `true`. Calls `callback` when
    * stopped, or an error occurs.
    *
    * @name whilst
@@ -4658,13 +4697,13 @@
    * @method
    * @category Control Flow
    * @param {Function} test - synchronous truth test to perform before each
-   * execution of `fn`. Invoked with ().
+   * execution of `iteratee`. Invoked with ().
    * @param {Function} iteratee - A function which is called each time `test` passes.
    * The function is passed a `callback(err)`, which must be called once it has
    * completed with an optional `err` argument. Invoked with (callback).
    * @param {Function} [callback] - A callback which is called after the test
-   * function has failed and repeated execution of `fn` has stopped. `callback`
-   * will be passed an error and any arguments passed to the final `fn`'s
+   * function has failed and repeated execution of `iteratee` has stopped. `callback`
+   * will be passed an error and any arguments passed to the final `iteratee`'s
    * callback. Invoked with (err, [results]);
    * @returns undefined
    * @example
