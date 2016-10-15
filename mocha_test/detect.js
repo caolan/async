@@ -1,5 +1,6 @@
 var async = require('../lib');
 var expect = require('chai').expect;
+var _ = require('lodash');
 
 describe("detect", function () {
 
@@ -134,6 +135,31 @@ describe("detect", function () {
         });
     });
 
+    it('detectSeries doesn\'t cause stack overflow (#1293)', function(done) {
+        var arr = _.range(10000);
+        let calls = 0;
+        async.detectSeries(arr, function(data, cb) {
+            calls += 1;
+            async.setImmediate(_.partial(cb, null, true));
+        }, function(err) {
+            expect(err).to.equal(null);
+            expect(calls).to.equal(1);
+            done();
+        });
+    });
+
+    it('detectLimit doesn\'t cause stack overflow (#1293)', function(done) {
+        var arr = _.range(10000);
+        let calls = 0;
+        async.detectLimit(arr, 100, function(data, cb) {
+            calls += 1;
+            async.setImmediate(_.partial(cb, null, true));
+        }, function(err) {
+            expect(err).to.equal(null);
+            expect(calls).to.equal(100);
+            done();
+        });
+    });
 
     it('find alias', function(){
         expect(async.find).to.equal(async.detect);
