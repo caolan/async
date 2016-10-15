@@ -1,5 +1,6 @@
 var async = require('../lib');
 var expect = require('chai').expect;
+var _ = require('lodash');
 
 describe("every", function () {
 
@@ -79,6 +80,32 @@ describe("every", function () {
         }, function(err, result){
             expect(err).to.equal('error');
             expect(result).to.not.exist;
+            done();
+        });
+    });
+
+    it('everySeries doesn\'t cause stack overflow (#1293)', function(done) {
+        var arr = _.range(10000);
+        let calls = 0;
+        async.everySeries(arr, function(data, cb) {
+            calls += 1;
+            async.setImmediate(_.partial(cb, null, false));
+        }, function(err) {
+            expect(err).to.equal(null);
+            expect(calls).to.equal(1);
+            done();
+        });
+    });
+
+    it('everyLimit doesn\'t cause stack overflow (#1293)', function(done) {
+        var arr = _.range(10000);
+        let calls = 0;
+        async.everyLimit(arr, 100, function(data, cb) {
+            calls += 1;
+            async.setImmediate(_.partial(cb, null, false));
+        }, function(err) {
+            expect(err).to.equal(null);
+            expect(calls).to.equal(100);
             done();
         });
     });
