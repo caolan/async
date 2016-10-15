@@ -35,7 +35,7 @@
     "cheerio": "^0.22.0",
     "coveralls": "^2.11.2",
     "es6-promise": "^2.3.0",
-    "eslint": "^3.8.0",
+    "eslint": "^2.13.1",
     "fs-extra": "^0.26.7",
     "gh-pages-deploy": "^0.4.2",
     "jsdoc": "^3.4.0",

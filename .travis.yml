@@ -4,6 +4,8 @@ node_js:
   - "0.12"
   - "4"
   - "6"
+addons:
+  firefox: "49.0"
 sudo: false
 after_success: npm run coveralls
 
@@ -12,3 +14,10 @@ after_success: npm run coveralls
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
+
+script:
+  # ensure buildable
+  - make
+  - npm test
+  # test in firefox
+  - npm run mocha-browser-test
