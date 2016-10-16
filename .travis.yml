@@ -3,12 +3,27 @@ node_js:
   - "0.10"
   - "0.12"
   - "4"
-  - "6"
+matrix:
+  include:
+    - node_js: "6.0"
+      env: BROWSER=true
 sudo: false
-after_success: npm run coveralls
+after_success:
+  - npm run coveralls
 
 # Needed to run Karma with Firefox on Travis
 # http://karma-runner.github.io/0.13/plus/travis.html
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
+
+script:
+  - npm test
+  - "[ $BROWSER == false ] || npm run testingbot"
+
+env:
+  global:
+    - NPM_CONFIG_PROGRESS="false"
+    - secure: "MWY50FUxGTJmtUGGgTmclky7urU6gcQqhzPfF0Y19XycFuS1Vpxws3qp1Nb8IA6L1uS0L+n6uREobpUwTwW+cMEl6FRgs9BwdAQPxwKinGvkwoAOCoTFPFR4YYnTLu4JxmX+MpM374nCe7dKa0oE3//EkM5tCtoJUuKRhxHT2Zo="
+    - secure: "dF43nVj0KI7Y/ZDKeNjFCYTAF7nDyGhuiqbg/mN9ORXTBTucanOUZ2MyuHpJvHXMmit8isIxBZvnIcsDcyO0w61+FFcLChNOlK567gO4y8NDV7oRd/eHq7nNQgHFeZUcPHrkJN8A24NIRlNXqxvgIElt4cKP3Rdi63Ee5AL1+vI="
+  matrix: BROWSER=false
