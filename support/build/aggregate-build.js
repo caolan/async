@@ -1,10 +1,10 @@
 import compileModules from './compile-modules';
-import rollup from 'rollup';
+import {rollup} from 'rollup';
 import rimraf from 'rimraf/rimraf';
 
 export default function buildBundle(options) {
     function bundle() {
-        rollup.rollup({
+        rollup({
             entry: options.outpath + '/index.js'
         }).then(function ( bundle ) {
             bundle.write({
