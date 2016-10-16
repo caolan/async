@@ -1,5 +1,6 @@
 var async = require('../lib');
 var expect = require('chai').expect;
+var _ = require('lodash');
 
 describe("some", function () {
 
@@ -83,7 +84,6 @@ describe("some", function () {
         });
     });
 
-
     it('someLimit short-circuit', function(done){
         var calls = 0;
         async.someLimit([3,1,2], 1, function(x, callback){
@@ -93,6 +93,33 @@ describe("some", function () {
             expect(err).to.equal(null);
             expect(result).to.equal(true);
             expect(calls).to.equal(2);
+            done();
+        });
+    });
+
+
+    it('someSeries doesn\'t cause stack overflow (#1293)', function(done) {
+        var arr = _.range(10000);
+        let calls = 0;
+        async.someSeries(arr, function(data, cb) {
+            calls += 1;
+            async.setImmediate(_.partial(cb, null, true));
+        }, function(err) {
+            expect(err).to.equal(null);
+            expect(calls).to.equal(1);
+            done();
+        });
+    });
+
+    it('someLimit doesn\'t cause stack overflow (#1293)', function(done) {
+        var arr = _.range(10000);
+        let calls = 0;
+        async.someLimit(arr, 100, function(data, cb) {
+            calls += 1;
+            async.setImmediate(_.partial(cb, null, true));
+        }, function(err) {
+            expect(err).to.equal(null);
+            expect(calls).to.equal(100);
             done();
         });
     });
