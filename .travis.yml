@@ -1,12 +1,19 @@
+sudo: false
 language: node_js
 node_js:
   - "0.10"
   - "0.12"
   - "4"
-  - "6"
-addons:
-  firefox: "49.0"
-sudo: false
+
+matrix:
+  include:
+    - node_js: "6"
+      addons:
+        firefox: "49.0"
+      env: BROWSER=true MAKE_TEST=true
+env:
+  matrix: BROWSER=false MAKE_TEST=false
+
 after_success: npm run coveralls
 
 # Needed to run Karma with Firefox on Travis
@@ -16,8 +23,8 @@ before_script:
   - sh -e /etc/init.d/xvfb start
 
 script:
-  # ensure buildable
-  - make
   - npm test
+  # ensure buildable
+  - "[ $MAKE_TEST == false ] || make"
   # test in firefox
-  - npm run mocha-browser-test
+  - "[ $BROWSER == false ] || npm run mocha-browser-test"

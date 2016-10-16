@@ -46,7 +46,7 @@
     "karma-mocha-reporter": "^2.2.0",
     "mocha": "^3.1.2",
     "native-promise-only": "^0.8.0-a",
-    "nyc": "^8.3.0",
+    "nyc": "^7.0.0",
     "recursive-readdir": "^1.3.0",
     "rimraf": "^2.5.0",
     "rollup": "^0.36.3",
