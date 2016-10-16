@@ -1,3 +1,6 @@
+# v2.1.2
+- Fixed a stackoverflow bug with `detect`, `some`, `every` on large inputs (#1293).
+
 # v2.1.0
 
 - `retry` and `retryable` now support an optional `errorFilter` function that determines if the `task` should retry on the error (#1256, #1261)
