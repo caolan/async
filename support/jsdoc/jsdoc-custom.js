@@ -117,15 +117,15 @@ $(function initSearchBar() {
             source += '\n'+codeTxt;
         }
 
-        var notebook = RunKit.createNotebook({
+        RunKit.createNotebook({
             // the parent element for the new notebook
             element: $container.get(0),
 
             // specify the source of the notebook
             source: source,
 
-            onLoad: function(created) {
-                created.evaluate();
+            onLoad: function(notebook) {
+                notebook.evaluate();
             }
         });
     });
