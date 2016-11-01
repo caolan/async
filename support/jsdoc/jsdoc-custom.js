@@ -103,6 +103,33 @@ $(function initSearchBar() {
         }
     });
 
+    $('.runkit-run-btn').click(function() {
+        var $btn = $(this);
+        var $container = $btn.closest('.runnable-code');
+        $container.children().hide();
+
+        var source = "var async = require('async');\n";
+        var codeTxt = $container.children('pre').text();
+
+        if (/fs\./.test(codeTxt)) {
+            source += "var fs = require('fs');\n\n" + codeTxt;
+        } else {
+            source += '\n'+codeTxt;
+        }
+
+        var notebook = RunKit.createNotebook({
+            // the parent element for the new notebook
+            element: $container.get(0),
+
+            // specify the source of the notebook
+            source: source,
+
+            onLoad: function(created) {
+                created.evaluate();
+            }
+        });
+    });
+
     function fixOldHash() {
         var hash = window.location.hash;
         if (hash) {

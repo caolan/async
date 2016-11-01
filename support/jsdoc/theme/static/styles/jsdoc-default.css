@@ -138,6 +138,22 @@ tt, code, kbd, samp {
     border-left: 2px solid #3391FE;
 }
 
+.runnable-code {
+    position: relative;
+}
+
+.runkit-run-btn {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    background-color: #3391FE;
+    color: white;
+}
+
+.runkit-run-btn > span {
+    color: white;
+}
+
 header {
   display: block
 }
