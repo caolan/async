@@ -53,6 +53,37 @@ describe("filter", function () {
         });
     });
 
+    if (typeof Symbol === 'function' && Symbol.iterator) {
+        function makeIterator(array){
+            var nextIndex;
+            let iterator = {
+                next: function(){
+                    return nextIndex < array.length ?
+                       {value: array[nextIndex++], done: false} :
+                       {done: true};
+                }
+            };
+            iterator[Symbol.iterator] = function() {
+                nextIndex = 0; // reset iterator
+                return iterator;
+            };
+            return iterator;
+        }
+
+        it('filter iterator', function(done){
+            var a = makeIterator([500, 20, 100]);
+            async.filter(a, function(x, callback) {
+                setTimeout(function() {
+                    callback(null, x > 20);
+                }, x);
+            }, function(err, results){
+                expect(err).to.equal(null);
+                expect(results).to.eql([500, 100]);
+                done();
+            });
+        });
+    }
+
     it('filter error', function(done){
         async.filter([3,1,2], function(x, callback){
             callback('error');
