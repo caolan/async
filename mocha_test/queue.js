@@ -4,6 +4,8 @@ var assert = require('assert');
 
 
 describe('queue', function(){
+    // several tests of these tests are flakey with timing issues
+    this.retries(3);
 
     it('basics', function(done) {
 
@@ -218,6 +220,8 @@ describe('queue', function(){
     });
 
     it('push without callback', function(done) {
+        this.retries(3); // test can be flakey
+
         var call_order = [],
             delays = [40,20,60,20];
 
@@ -349,6 +353,8 @@ describe('queue', function(){
     });
 
     it('pause', function(done) {
+        this.retries(3); // sometimes can be flakey to timing issues
+
         var call_order = [],
             task_timeout = 80,
             pause_timeout = task_timeout * 2.5,
