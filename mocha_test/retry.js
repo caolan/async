@@ -55,6 +55,8 @@ describe("retry", function () {
     });
 
     it('retry with interval when all attempts fail',function(done) {
+        this.retries(3); // this test is flakey due to timing issues
+
         var times = 3;
         var interval = 50;
         var callCount = 0;
@@ -208,6 +210,8 @@ describe("retry", function () {
     });
 
     it('retry with interval when some attempts fail and error test returns false at some invokation',function(done) {
+        this.retries(3); // flakey test
+
         var interval = 50;
         var callCount = 0;
         var error = 'ERROR';
