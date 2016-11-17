@@ -152,17 +152,21 @@ function createSuite(suiteConfig) {
             return;
         }
 
+        var options = _.extend({
+            versionName: versionName,
+            setup: function() {
+                suiteConfig.setup.apply(null, args);
+            },
+            onError: function (err) {
+                console.log(err.stack);
+            }
+        }, benchOptions);
+
         suite.add(name, function (deferred) {
             suiteConfig.fn(version, function () {
                 deferred.resolve();
             });
-        }, _.extend({
-            versionName: versionName,
-            setup: _.partial.apply(null, [suiteConfig.setup].concat(args)),
-            onError: function (err) {
-                console.log(err.stack);
-            }
-        }, benchOptions));
+        }, options);
     }
 
     addBench(versions[0], versionNames[0]);
