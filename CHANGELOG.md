@@ -1,3 +1,7 @@
+# v2.1.3
+- Make bundle size smaller
+- Create optimized hotpath for `filter` in array case.
+
 # v2.1.2
 - Fixed a stackoverflow bug with `detect`, `some`, `every` on large inputs (#1293).
 
