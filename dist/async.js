@@ -5,26 +5,6 @@
 }(this, (function (exports) { 'use strict';
 
 /**
- * This method returns the first argument it receives.
- *
- * @static
- * @since 0.1.0
- * @memberOf _
- * @category Util
- * @param {*} value Any value.
- * @returns {*} Returns `value`.
- * @example
- *
- * var object = { 'a': 1 };
- *
- * console.log(_.identity(object) === object);
- * // => true
- */
-function identity(value) {
-  return value;
-}
-
-/**
  * A faster alternative to `Function#apply`, this function invokes `func`
  * with the `this` binding of `thisArg` and the arguments of `args`.
  *
@@ -56,7 +36,7 @@ var nativeMax = Math.max;
  * @param {Function} transform The rest array transform.
  * @returns {Function} Returns the new function.
  */
-function overRest(func, start, transform) {
+function overRest$1(func, start, transform) {
   start = nativeMax(start === undefined ? (func.length - 1) : start, 0);
   return function() {
     var args = arguments,
@@ -78,28 +58,152 @@ function overRest(func, start, transform) {
 }
 
 /**
- * Creates a function that returns `value`.
+ * This method returns the first argument it receives.
  *
  * @static
+ * @since 0.1.0
  * @memberOf _
- * @since 2.4.0
  * @category Util
- * @param {*} value The value to return from the new function.
- * @returns {Function} Returns the new constant function.
+ * @param {*} value Any value.
+ * @returns {*} Returns `value`.
  * @example
  *
- * var objects = _.times(2, _.constant({ 'a': 1 }));
+ * var object = { 'a': 1 };
  *
- * console.log(objects);
- * // => [{ 'a': 1 }, { 'a': 1 }]
- *
- * console.log(objects[0] === objects[1]);
+ * console.log(_.identity(object) === object);
  * // => true
  */
-function constant(value) {
-  return function() {
-    return value;
-  };
+function identity(value) {
+  return value;
+}
+
+// Lodash rest function without function.toString()
+// remappings
+function rest(func, start) {
+    return overRest$1(func, start, identity);
+}
+
+var initialParams = function (fn) {
+    return rest(function (args /*..., callback*/) {
+        var callback = args.pop();
+        fn.call(this, args, callback);
+    });
+};
+
+function applyEach$1(eachfn) {
+    return rest(function (fns, args) {
+        var go = initialParams(function (args, callback) {
+            var that = this;
+            return eachfn(fns, function (fn, cb) {
+                fn.apply(that, args.concat([cb]));
+            }, callback);
+        });
+        if (args.length) {
+            return go.apply(this, args);
+        } else {
+            return go;
+        }
+    });
+}
+
+/** Detect free variable `global` from Node.js. */
+var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+
+/** Detect free variable `self`. */
+var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+
+/** Used as a reference to the global object. */
+var root = freeGlobal || freeSelf || Function('return this')();
+
+/** Built-in value references. */
+var Symbol$1 = root.Symbol;
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var nativeObjectToString = objectProto.toString;
+
+/** Built-in value references. */
+var symToStringTag$1 = Symbol$1 ? Symbol$1.toStringTag : undefined;
+
+/**
+ * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @returns {string} Returns the raw `toStringTag`.
+ */
+function getRawTag(value) {
+  var isOwn = hasOwnProperty.call(value, symToStringTag$1),
+      tag = value[symToStringTag$1];
+
+  try {
+    value[symToStringTag$1] = undefined;
+    var unmasked = true;
+  } catch (e) {}
+
+  var result = nativeObjectToString.call(value);
+  if (unmasked) {
+    if (isOwn) {
+      value[symToStringTag$1] = tag;
+    } else {
+      delete value[symToStringTag$1];
+    }
+  }
+  return result;
+}
+
+/** Used for built-in method references. */
+var objectProto$1 = Object.prototype;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var nativeObjectToString$1 = objectProto$1.toString;
+
+/**
+ * Converts `value` to a string using `Object.prototype.toString`.
+ *
+ * @private
+ * @param {*} value The value to convert.
+ * @returns {string} Returns the converted string.
+ */
+function objectToString(value) {
+  return nativeObjectToString$1.call(value);
+}
+
+/** `Object#toString` result references. */
+var nullTag = '[object Null]';
+var undefinedTag = '[object Undefined]';
+
+/** Built-in value references. */
+var symToStringTag = Symbol$1 ? Symbol$1.toStringTag : undefined;
+
+/**
+ * The base implementation of `getTag` without fallbacks for buggy environments.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @returns {string} Returns the `toStringTag`.
+ */
+function baseGetTag(value) {
+  if (value == null) {
+    return value === undefined ? undefinedTag : nullTag;
+  }
+  value = Object(value);
+  return (symToStringTag && symToStringTag in value)
+    ? getRawTag(value)
+    : objectToString(value);
 }
 
 /**
@@ -133,19 +237,10 @@ function isObject(value) {
 }
 
 /** `Object#toString` result references. */
+var asyncTag = '[object AsyncFunction]';
 var funcTag = '[object Function]';
 var genTag = '[object GeneratorFunction]';
 var proxyTag = '[object Proxy]';
-
-/** Used for built-in method references. */
-var objectProto$1 = Object.prototype;
-
-/**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-var objectToString = objectProto$1.toString;
 
 /**
  * Checks if `value` is classified as a `Function` object.
@@ -165,236 +260,13 @@ var objectToString = objectProto$1.toString;
  * // => false
  */
 function isFunction(value) {
-  // The use of `Object#toString` avoids issues with the `typeof` operator
-  // in Safari 9 which returns 'object' for typed array and other constructors.
-  var tag = isObject(value) ? objectToString.call(value) : '';
-  return tag == funcTag || tag == genTag || tag == proxyTag;
-}
-
-/** Detect free variable `global` from Node.js. */
-var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
-
-/** Detect free variable `self`. */
-var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
-
-/** Used as a reference to the global object. */
-var root = freeGlobal || freeSelf || Function('return this')();
-
-/** Used to detect overreaching core-js shims. */
-var coreJsData = root['__core-js_shared__'];
-
-/** Used to detect methods masquerading as native. */
-var maskSrcKey = (function() {
-  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
-  return uid ? ('Symbol(src)_1.' + uid) : '';
-}());
-
-/**
- * Checks if `func` has its source masked.
- *
- * @private
- * @param {Function} func The function to check.
- * @returns {boolean} Returns `true` if `func` is masked, else `false`.
- */
-function isMasked(func) {
-  return !!maskSrcKey && (maskSrcKey in func);
-}
-
-/** Used for built-in method references. */
-var funcProto$1 = Function.prototype;
-
-/** Used to resolve the decompiled source of functions. */
-var funcToString$1 = funcProto$1.toString;
-
-/**
- * Converts `func` to its source code.
- *
- * @private
- * @param {Function} func The function to process.
- * @returns {string} Returns the source code.
- */
-function toSource(func) {
-  if (func != null) {
-    try {
-      return funcToString$1.call(func);
-    } catch (e) {}
-    try {
-      return (func + '');
-    } catch (e) {}
-  }
-  return '';
-}
-
-/**
- * Used to match `RegExp`
- * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
- */
-var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
-
-/** Used to detect host constructors (Safari). */
-var reIsHostCtor = /^\[object .+?Constructor\]$/;
-
-/** Used for built-in method references. */
-var funcProto = Function.prototype;
-var objectProto = Object.prototype;
-
-/** Used to resolve the decompiled source of functions. */
-var funcToString = funcProto.toString;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty = objectProto.hasOwnProperty;
-
-/** Used to detect if a method is native. */
-var reIsNative = RegExp('^' +
-  funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&')
-  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
-);
-
-/**
- * The base implementation of `_.isNative` without bad shim checks.
- *
- * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a native function,
- *  else `false`.
- */
-function baseIsNative(value) {
-  if (!isObject(value) || isMasked(value)) {
+  if (!isObject(value)) {
     return false;
   }
-  var pattern = isFunction(value) ? reIsNative : reIsHostCtor;
-  return pattern.test(toSource(value));
-}
-
-/**
- * Gets the value at `key` of `object`.
- *
- * @private
- * @param {Object} [object] The object to query.
- * @param {string} key The key of the property to get.
- * @returns {*} Returns the property value.
- */
-function getValue(object, key) {
-  return object == null ? undefined : object[key];
-}
-
-/**
- * Gets the native function at `key` of `object`.
- *
- * @private
- * @param {Object} object The object to query.
- * @param {string} key The key of the method to get.
- * @returns {*} Returns the function if it's native, else `undefined`.
- */
-function getNative(object, key) {
-  var value = getValue(object, key);
-  return baseIsNative(value) ? value : undefined;
-}
-
-var defineProperty = (function() {
-  try {
-    var func = getNative(Object, 'defineProperty');
-    func({}, '', {});
-    return func;
-  } catch (e) {}
-}());
-
-/**
- * The base implementation of `setToString` without support for hot loop shorting.
- *
- * @private
- * @param {Function} func The function to modify.
- * @param {Function} string The `toString` result.
- * @returns {Function} Returns `func`.
- */
-var baseSetToString = !defineProperty ? identity : function(func, string) {
-  return defineProperty(func, 'toString', {
-    'configurable': true,
-    'enumerable': false,
-    'value': constant(string),
-    'writable': true
-  });
-};
-
-/** Used to detect hot functions by number of calls within a span of milliseconds. */
-var HOT_COUNT = 500;
-var HOT_SPAN = 16;
-
-/* Built-in method references for those with the same name as other `lodash` methods. */
-var nativeNow = Date.now;
-
-/**
- * Creates a function that'll short out and invoke `identity` instead
- * of `func` when it's called `HOT_COUNT` or more times in `HOT_SPAN`
- * milliseconds.
- *
- * @private
- * @param {Function} func The function to restrict.
- * @returns {Function} Returns the new shortable function.
- */
-function shortOut(func) {
-  var count = 0,
-      lastCalled = 0;
-
-  return function() {
-    var stamp = nativeNow(),
-        remaining = HOT_SPAN - (stamp - lastCalled);
-
-    lastCalled = stamp;
-    if (remaining > 0) {
-      if (++count >= HOT_COUNT) {
-        return arguments[0];
-      }
-    } else {
-      count = 0;
-    }
-    return func.apply(undefined, arguments);
-  };
-}
-
-/**
- * Sets the `toString` method of `func` to return `string`.
- *
- * @private
- * @param {Function} func The function to modify.
- * @param {Function} string The `toString` result.
- * @returns {Function} Returns `func`.
- */
-var setToString = shortOut(baseSetToString);
-
-/**
- * The base implementation of `_.rest` which doesn't validate or coerce arguments.
- *
- * @private
- * @param {Function} func The function to apply a rest parameter to.
- * @param {number} [start=func.length-1] The start position of the rest parameter.
- * @returns {Function} Returns the new function.
- */
-function baseRest$1(func, start) {
-  return setToString(overRest(func, start, identity), func + '');
-}
-
-var initialParams = function (fn) {
-    return baseRest$1(function (args /*..., callback*/) {
-        var callback = args.pop();
-        fn.call(this, args, callback);
-    });
-};
-
-function applyEach$1(eachfn) {
-    return baseRest$1(function (fns, args) {
-        var go = initialParams(function (args, callback) {
-            var that = this;
-            return eachfn(fns, function (fn, cb) {
-                fn.apply(that, args.concat([cb]));
-            }, callback);
-        });
-        if (args.length) {
-            return go.apply(this, args);
-        } else {
-            return go;
-        }
-    });
+  // The use of `Object#toString` avoids issues with the `typeof` operator
+  // in Safari 9 which returns 'object' for typed arrays and other constructors.
+  var tag = baseGetTag(value);
+  return tag == funcTag || tag == genTag || tag == asyncTag || tag == proxyTag;
 }
 
 /** Used as references for various `Number` constants. */
@@ -541,16 +413,6 @@ function isObjectLike(value) {
 /** `Object#toString` result references. */
 var argsTag = '[object Arguments]';
 
-/** Used for built-in method references. */
-var objectProto$4 = Object.prototype;
-
-/**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-var objectToString$1 = objectProto$4.toString;
-
 /**
  * The base implementation of `_.isArguments`.
  *
@@ -559,7 +421,7 @@ var objectToString$1 = objectProto$4.toString;
  * @returns {boolean} Returns `true` if `value` is an `arguments` object,
  */
 function baseIsArguments(value) {
-  return isObjectLike(value) && objectToString$1.call(value) == argsTag;
+  return isObjectLike(value) && baseGetTag(value) == argsTag;
 }
 
 /** Used for built-in method references. */
@@ -734,16 +596,6 @@ typedArrayTags[objectTag] = typedArrayTags[regexpTag] =
 typedArrayTags[setTag] = typedArrayTags[stringTag] =
 typedArrayTags[weakMapTag] = false;
 
-/** Used for built-in method references. */
-var objectProto$5 = Object.prototype;
-
-/**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-var objectToString$2 = objectProto$5.toString;
-
 /**
  * The base implementation of `_.isTypedArray` without Node.js optimizations.
  *
@@ -753,7 +605,7 @@ var objectToString$2 = objectProto$5.toString;
  */
 function baseIsTypedArray(value) {
   return isObjectLike(value) &&
-    isLength(value.length) && !!typedArrayTags[objectToString$2.call(value)];
+    isLength(value.length) && !!typedArrayTags[baseGetTag(value)];
 }
 
 /**
@@ -852,7 +704,7 @@ function arrayLikeKeys(value, inherited) {
 }
 
 /** Used for built-in method references. */
-var objectProto$7 = Object.prototype;
+var objectProto$5 = Object.prototype;
 
 /**
  * Checks if `value` is likely a prototype object.
@@ -863,7 +715,7 @@ var objectProto$7 = Object.prototype;
  */
 function isPrototype(value) {
   var Ctor = value && value.constructor,
-      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto$7;
+      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto$5;
 
   return value === proto;
 }
@@ -886,10 +738,10 @@ function overArg(func, transform) {
 var nativeKeys = overArg(Object.keys, Object);
 
 /** Used for built-in method references. */
-var objectProto$6 = Object.prototype;
+var objectProto$4 = Object.prototype;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$3 = objectProto$6.hasOwnProperty;
+var hasOwnProperty$3 = objectProto$4.hasOwnProperty;
 
 /**
  * The base implementation of `_.keys` which doesn't treat sparse arrays as dense.
@@ -1146,7 +998,7 @@ function doParallel(fn) {
 }
 
 function _asyncMap(eachfn, arr, iteratee, callback) {
-    callback = once(callback || noop);
+    callback = callback || noop;
     arr = arr || [];
     var results = [];
     var counter = 0;
@@ -1347,8 +1199,8 @@ var applyEachSeries = applyEach$1(mapSeries);
  * two
  * three
  */
-var apply$2 = baseRest$1(function (fn, args) {
-    return baseRest$1(function (callArgs) {
+var apply$2 = rest(function (fn, args) {
+    return rest(function (callArgs) {
         return fn.apply(null, args.concat(callArgs));
     });
 });
@@ -1440,7 +1292,7 @@ function asyncify(func) {
  */
 function arrayEach(array, iteratee) {
   var index = -1,
-      length = array ? array.length : 0;
+      length = array == null ? 0 : array.length;
 
   while (++index < length) {
     if (iteratee(array[index], index, array) === false) {
@@ -1747,7 +1599,7 @@ var auto = function (tasks, concurrency, callback) {
     function runTask(key, task) {
         if (hasError) return;
 
-        var taskCallback = onlyOnce(baseRest$1(function (err, args) {
+        var taskCallback = onlyOnce(rest(function (err, args) {
             runningTasks--;
             if (args.length <= 1) {
                 args = args[0];
@@ -1820,7 +1672,7 @@ var auto = function (tasks, concurrency, callback) {
  */
 function arrayMap(array, iteratee) {
   var index = -1,
-      length = array ? array.length : 0,
+      length = array == null ? 0 : array.length,
       result = Array(length);
 
   while (++index < length) {
@@ -1829,40 +1681,8 @@ function arrayMap(array, iteratee) {
   return result;
 }
 
-/**
- * Copies the values of `source` to `array`.
- *
- * @private
- * @param {Array} source The array to copy values from.
- * @param {Array} [array=[]] The array to copy values to.
- * @returns {Array} Returns `array`.
- */
-function copyArray(source, array) {
-  var index = -1,
-      length = source.length;
-
-  array || (array = Array(length));
-  while (++index < length) {
-    array[index] = source[index];
-  }
-  return array;
-}
-
-/** Built-in value references. */
-var Symbol$1 = root.Symbol;
-
 /** `Object#toString` result references. */
 var symbolTag = '[object Symbol]';
-
-/** Used for built-in method references. */
-var objectProto$8 = Object.prototype;
-
-/**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-var objectToString$3 = objectProto$8.toString;
 
 /**
  * Checks if `value` is classified as a `Symbol` primitive or object.
@@ -1883,7 +1703,7 @@ var objectToString$3 = objectProto$8.toString;
  */
 function isSymbol(value) {
   return typeof value == 'symbol' ||
-    (isObjectLike(value) && objectToString$3.call(value) == symbolTag);
+    (isObjectLike(value) && baseGetTag(value) == symbolTag);
 }
 
 /** Used as references for various `Number` constants. */
@@ -2249,8 +2069,8 @@ function autoInject(tasks, callback) {
         var params;
 
         if (isArray(taskFn)) {
-            params = copyArray(taskFn);
-            taskFn = params.pop();
+            params = taskFn.slice(0, -1);
+            taskFn = taskFn[taskFn.length - 1];
 
             newTasks[key] = params.concat(params.length > 0 ? newTask : taskFn);
         } else if (taskFn.length === 1) {
@@ -2287,7 +2107,7 @@ function fallback(fn) {
 }
 
 function wrap(defer) {
-    return baseRest$1(function (fn, args) {
+    return rest(function (fn, args) {
         defer(function () {
             fn.apply(null, args);
         });
@@ -2401,7 +2221,7 @@ function queue(worker, concurrency, payload) {
     }
 
     function _next(tasks) {
-        return baseRest$1(function (args) {
+        return rest(function (args) {
             workers -= 1;
 
             for (var i = 0, l = tasks.length; i < l; i++) {
@@ -2703,8 +2523,8 @@ function reduce(coll, memo, iteratee, callback) {
  *     });
  * });
  */
-var seq$1 = baseRest$1(function seq(functions) {
-    return baseRest$1(function (args) {
+var seq$1 = rest(function seq(functions) {
+    return rest(function (args) {
         var that = this;
 
         var cb = args[args.length - 1];
@@ -2715,7 +2535,7 @@ var seq$1 = baseRest$1(function seq(functions) {
         }
 
         reduce(functions, args, function (newargs, fn, cb) {
-            fn.apply(that, newargs.concat([baseRest$1(function (err, nextargs) {
+            fn.apply(that, newargs.concat([rest(function (err, nextargs) {
                 cb(err, nextargs);
             })]));
         }, function (err, results) {
@@ -2759,7 +2579,7 @@ var seq$1 = baseRest$1(function seq(functions) {
  *     // result now equals 15
  * });
  */
-var compose = baseRest$1(function (args) {
+var compose = rest(function (args) {
   return seq$1.apply(null, args.reverse());
 });
 
@@ -2873,7 +2693,7 @@ var concatSeries = doSeries(concat$1);
  *     //...
  * }, callback);
  */
-var constant$2 = baseRest$1(function (values) {
+var constant = rest(function (values) {
     var args = [null].concat(values);
     return initialParams(function (ignoredArgs, callback) {
         return callback.apply(this, args);
@@ -3001,8 +2821,8 @@ var detectLimit = _createTester(eachOfLimit, identity, _findGetResult);
 var detectSeries = _createTester(eachOfSeries, identity, _findGetResult);
 
 function consoleFunc(name) {
-    return baseRest$1(function (fn, args) {
-        fn.apply(null, args.concat([baseRest$1(function (err, args) {
+    return rest(function (fn, args) {
+        fn.apply(null, args.concat([rest(function (err, args) {
             if (typeof console === 'object') {
                 if (err) {
                     if (console.error) {
@@ -3072,7 +2892,7 @@ var dir = consoleFunc('dir');
 function doDuring(fn, test, callback) {
     callback = onlyOnce(callback || noop);
 
-    var next = baseRest$1(function (err, args) {
+    var next = rest(function (err, args) {
         if (err) return callback(err);
         args.push(check);
         test.apply(this, args);
@@ -3112,7 +2932,7 @@ function doDuring(fn, test, callback) {
  */
 function doWhilst(iteratee, test, callback) {
     callback = onlyOnce(callback || noop);
-    var next = baseRest$1(function (err, args) {
+    var next = rest(function (err, args) {
         if (err) return callback(err);
         if (test.apply(this, args)) return iteratee(next);
         callback.apply(null, [null].concat(args));
@@ -3458,10 +3278,26 @@ function baseProperty(key) {
   };
 }
 
-function _filter(eachfn, arr, iteratee, callback) {
-    callback = once(callback || noop);
-    var results = [];
+function filterArray(eachfn, arr, iteratee, callback) {
+    var truthValues = new Array(arr.length);
     eachfn(arr, function (x, index, callback) {
+        iteratee(x, function (err, v) {
+            truthValues[index] = !!v;
+            callback(err);
+        });
+    }, function (err) {
+        if (err) return callback(err);
+        var results = [];
+        for (var i = 0; i < arr.length; i++) {
+            if (truthValues[i]) results.push(arr[i]);
+        }
+        callback(null, results);
+    });
+}
+
+function filterGeneric(eachfn, coll, iteratee, callback) {
+    var results = [];
+    eachfn(coll, function (x, index, callback) {
         iteratee(x, function (err, v) {
             if (err) {
                 callback(err);
@@ -3481,6 +3317,11 @@ function _filter(eachfn, arr, iteratee, callback) {
             }), baseProperty('value')));
         }
     });
+}
+
+function _filter(eachfn, coll, iteratee, callback) {
+    var filter = isArrayLike(coll) ? filterArray : filterGeneric;
+    filter(eachfn, coll, iteratee, callback || noop);
 }
 
 /**
@@ -3779,7 +3620,7 @@ function memoize(fn, hasher) {
             queues[key].push(callback);
         } else {
             queues[key] = [callback];
-            fn.apply(null, args.concat([baseRest$1(function (args) {
+            fn.apply(null, args.concat([rest(function (args) {
                 memo[key] = args;
                 var q = queues[key];
                 delete queues[key];
@@ -3842,7 +3683,7 @@ function _parallel(eachfn, tasks, callback) {
     var results = isArrayLike(tasks) ? [] : {};
 
     eachfn(tasks, function (task, key, callback) {
-        task(baseRest$1(function (err, args) {
+        task(rest(function (err, args) {
             if (args.length <= 1) {
                 args = args[0];
             }
@@ -4243,7 +4084,7 @@ function reduceRight(array, memo, iteratee, callback) {
  */
 function reflect(fn) {
     return initialParams(function reflectOn(args, reflectCallback) {
-        args.push(baseRest$1(function callback(err, cbArgs) {
+        args.push(rest(function callback(err, cbArgs) {
             if (err) {
                 reflectCallback(null, {
                     error: err
@@ -4268,11 +4109,7 @@ function reflect(fn) {
 function reject$1(eachfn, arr, iteratee, callback) {
     _filter(eachfn, arr, function (value, cb) {
         iteratee(value, function (err, v) {
-            if (err) {
-                cb(err);
-            } else {
-                cb(null, !v);
-            }
+            cb(err, !v);
         });
     }, callback);
 }
@@ -4423,6 +4260,31 @@ var rejectLimit = doParallelLimit(reject$1);
 var rejectSeries = doLimit(rejectLimit, 1);
 
 /**
+ * Creates a function that returns `value`.
+ *
+ * @static
+ * @memberOf _
+ * @since 2.4.0
+ * @category Util
+ * @param {*} value The value to return from the new function.
+ * @returns {Function} Returns the new constant function.
+ * @example
+ *
+ * var objects = _.times(2, _.constant({ 'a': 1 }));
+ *
+ * console.log(objects);
+ * // => [{ 'a': 1 }, { 'a': 1 }]
+ *
+ * console.log(objects[0] === objects[1]);
+ * // => true
+ */
+function constant$1(value) {
+  return function() {
+    return value;
+  };
+}
+
+/**
  * Attempts to get a successful response from `task` no more than `times` times
  * before returning an error. If the task is successful, the `callback` will be
  * passed the result of the successful task. If all attempts fail, the callback
@@ -4514,14 +4376,14 @@ function retry(opts, task, callback) {
 
     var options = {
         times: DEFAULT_TIMES,
-        intervalFunc: constant(DEFAULT_INTERVAL)
+        intervalFunc: constant$1(DEFAULT_INTERVAL)
     };
 
     function parseTimes(acc, t) {
         if (typeof t === 'object') {
             acc.times = +t.times || DEFAULT_TIMES;
 
-            acc.intervalFunc = typeof t.interval === 'function' ? t.interval : constant(+t.interval || DEFAULT_INTERVAL);
+            acc.intervalFunc = typeof t.interval === 'function' ? t.interval : constant$1(+t.interval || DEFAULT_INTERVAL);
 
             acc.errorFilter = t.errorFilter;
         } else if (typeof t === 'number' || typeof t === 'string') {
@@ -5090,7 +4952,7 @@ function unmemoize(fn) {
 function whilst(test, iteratee, callback) {
     callback = onlyOnce(callback || noop);
     if (!test()) return callback(null);
-    var next = baseRest$1(function (err, args) {
+    var next = rest(function (err, args) {
         if (err) return callback(err);
         if (test()) return iteratee(next);
         callback.apply(null, [null].concat(args));
@@ -5195,7 +5057,7 @@ var waterfall = function (tasks, callback) {
             return callback.apply(null, [null].concat(args));
         }
 
-        var taskCallback = onlyOnce(baseRest$1(function (err, args) {
+        var taskCallback = onlyOnce(rest(function (err, args) {
             if (err) {
                 return callback.apply(null, [err].concat(args));
             }
@@ -5245,7 +5107,7 @@ var index = {
   compose: compose,
   concat: concat,
   concatSeries: concatSeries,
-  constant: constant$2,
+  constant: constant,
   detect: detect,
   detectLimit: detectLimit,
   detectSeries: detectSeries,
@@ -5337,7 +5199,7 @@ exports.cargo = cargo;
 exports.compose = compose;
 exports.concat = concat;
 exports.concatSeries = concatSeries;
-exports.constant = constant$2;
+exports.constant = constant;
 exports.detect = detect;
 exports.detectLimit = detectLimit;
 exports.detectSeries = detectSeries;
