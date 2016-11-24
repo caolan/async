@@ -190,7 +190,7 @@ function fixModuleLinks(files, callback) {
             var $file = $(applyPreCheerioFixes(fileData));
 
             var $vDropdown = $file.find('#version-dropdown');
-            $vDropdown.find('.dropdown-toggle').text('v'+VERSION);
+            $vDropdown.find('.dropdown-toggle').contents().get(0).data = 'v'+VERSION+' ';
             $vDropdown.find('a[href="'+docFilename+'"]').text('v'+VERSION);
 
             fixToc(file, $file, moduleFiles);
