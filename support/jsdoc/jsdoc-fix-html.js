@@ -5,6 +5,7 @@ var path = require('path');
 var $ = require('cheerio');
 var _ = require('lodash');
 
+var VERSION = require('../../package.json').version;
 var docsDir = path.join(__dirname, '../../docs');
 var pageTitle = 'Methods:';
 
@@ -187,6 +188,10 @@ function fixModuleLinks(files, callback) {
         fs.readFile(filePath, 'utf8', function(err, fileData) {
             if (err) return fileCallback(err);
             var $file = $(applyPreCheerioFixes(fileData));
+
+            var $vDropdown = $file.find('#version-dropdown');
+            $vDropdown.find('.dropdown-toggle').text('v'+VERSION);
+            $vDropdown.find('a[href="'+docFilename+'"]').text('v'+VERSION);
 
             fixToc(file, $file, moduleFiles);
             fixFooter($file);
