@@ -28,7 +28,7 @@ callback as the last argument of your asynchronous function -- a callback which 
 ## Quick Examples
 
 ```js
-async.map(['file1','file2','file3'], fs.stat, function(err, results){
+async.map(['file1','file2','file3'], fs.stat, function(err, results) {
     // results is now an array of stats for each file
 });
 
@@ -36,20 +36,20 @@ async.filter(['file1','file2','file3'], function(filePath, callback) {
   fs.access(filePath, function(err) {
     callback(null, !err)
   });
-}, function(err, results){
+}, function(err, results) {
     // results now equals an array of the existing files
 });
 
 async.parallel([
-    function(callback){ ... },
-    function(callback){ ... }
+    function(callback) { ... },
+    function(callback) { ... }
 ], function(err, results) {
     // optional callback
 });
 
 async.series([
-    function(callback){ ... },
-    function(callback){ ... }
+    function(callback) { ... },
+    function(callback) { ... }
 ]);
 ```
 
@@ -82,7 +82,7 @@ Just change it to:
 ```js
 async.eachSeries(hugeArray, function iteratee(item, callback) {
     if (inCache(item)) {
-        async.setImmediate(function () {
+        async.setImmediate(function() {
             callback(null, cache[item]);
         });
     } else {
@@ -103,7 +103,7 @@ Make sure to always `return` when calling a callback early, otherwise you will c
 
 ```js
 async.waterfall([
-    function (callback) {
+    function(callback) {
         getSomething(options, function (err, result) {
             if (err) {
                 callback(new Error("failed getting something:" + err.message));
@@ -139,14 +139,14 @@ var AsyncSquaringLibrary = {
     }
 };
 
-async.map([1, 2, 3], AsyncSquaringLibrary.square, function(err, result){
+async.map([1, 2, 3], AsyncSquaringLibrary.square, function(err, result) {
     // result is [NaN, NaN, NaN]
     // This fails because the `this.squareExponent` expression in the square
     // function is not evaluated in the context of AsyncSquaringLibrary, and is
     // therefore undefined.
 });
 
-async.map([1, 2, 3], AsyncSquaringLibrary.square.bind(AsyncSquaringLibrary), function(err, result){
+async.map([1, 2, 3], AsyncSquaringLibrary.square.bind(AsyncSquaringLibrary), function(err, result) {
     // result is [1, 4, 9]
     // With the help of bind we can attach a context to the iteratee before
     // passing it to async. Now the square function will be executed in its
@@ -196,7 +196,7 @@ Usage:
 <script type="text/javascript" src="async.js"></script>
 <script type="text/javascript">
 
-    async.map(data, asyncProcess, function(err, results){
+    async.map(data, asyncProcess, function(err, results) {
         alert(results);
     });
 
@@ -215,4 +215,3 @@ $ npm install --save async-es
 import waterfall from 'async-es/waterfall';
 import async from 'async-es';
 ```
-
