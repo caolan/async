@@ -203,10 +203,8 @@ Usage:
 </script>
 ```
 
-The `async.js` UMD file can be found in the `dist` subfolder, along with minified
-version, `async.min.js`, and the source map, `async.min.map`. Async can also be
-included through a CDN, such as [jsdelivr](http://www.jsdelivr.com). The CDN links
-for the above files can be found at [http://www.jsdelivr.com/projects/async](http://www.jsdelivr.com/projects/async).
+The portable versions of async, including `async.js` and `async.min.js`, are
+included in the `/dist` folder. Async can also be found on the [jsDelivr CDN](http://www.jsdelivr.com/projects/async).
 
 ### ES Modules
 
