@@ -7,7 +7,10 @@
     ?>
         <p class="code-caption"><?js= example.caption ?></p>
     <?js } ?>
-    <pre class="prettyprint"><code><?js= self.htmlsafe(example.code) ?></code></pre>
+    <div class="runnable-code">
+        <pre class="prettyprint"><code><?js= self.htmlsafe(example.code) ?></code></pre>
+        <button type="button" class="runkit-run-btn btn btn-primary btn-md">Run</button>
+    </div>
 <?js
     });
 ?>

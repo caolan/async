@@ -103,6 +103,54 @@ $(function initSearchBar() {
         }
     });
 
+    $('.runkit-run-btn').click(function() {
+        var $btn = $(this);
+        var $container = $btn.closest('.runnable-code');
+        $container.children().hide();
+
+        var source = $container.children('pre').text();
+
+        RunKit.createNotebook({
+            // the parent element for the new notebook
+            element: $container.get(0),
+
+            preamble: getModulesForExamples(source),
+
+            // specify the source of the notebook
+            source: source,
+
+            onLoad: function(notebook) {
+                notebook.evaluate();
+            }
+        });
+    });
+
+    function getModulesForExamples(source) {
+        var mocks = "var async = require('async');\n";
+
+        var RETURN_VALUE = '__RETURN__';
+        var fsFunction = 'function(file, data, options, callback) {' +
+                'if (arguments.length < 3) { ' +
+                    'callback = data; ' +
+                '} else if (arguments.length < 4) {' +
+                    'callback = options;' +
+                '}' +
+                'return callback(null, ' + RETURN_VALUE + ');'+
+            '}';
+
+        if (/fs\./.test(source)) {
+            mocks += 'var fs = {' +
+                    'access: ' + fsFunction.replace(RETURN_VALUE, 'null') + ',' +
+                    'readdir: ' + fsFunction.replace(RETURN_VALUE, "[ 'example.txt' ]") + ',' +
+                    'readFile: ' + fsFunction.replace(RETURN_VALUE, "\'example\'") + ',' +
+                    'stat: ' + fsFunction.replace(RETURN_VALUE, "{ foo: 'bar' }") + ',' +
+                    'writeFile: ' + fsFunction.replace(RETURN_VALUE, 'null') +
+                '};';
+        }
+
+        return mocks;
+    }
+
     function fixOldHash() {
         var hash = window.location.hash;
         if (hash) {
