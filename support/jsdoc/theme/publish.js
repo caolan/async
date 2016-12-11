@@ -2,7 +2,8 @@
 'use strict';
 
 var doop = require('jsdoc/util/doop');
-var fs = require('jsdoc/fs');
+var fs = require('jsdoc/fs'); // jsdoc/fs offer non-standard functions (mkPath)
+var fsExtra = require('fs-extra');
 var helper = require('jsdoc/util/templateHelper');
 var logger = require('jsdoc/util/logger');
 var path = require('jsdoc/path');
@@ -226,10 +227,12 @@ function generate(type, title, docs, filename, resolveLinks) {
 
 function generateSourceFiles(sourceFiles, encoding) {
     encoding = encoding || 'utf8';
+    var sourceFilenames = [];
     Object.keys(sourceFiles).forEach(function(file) {
         var source;
         // links are keyed to the shortened path in each doclet's `meta.shortpath` property
         var sourceOutfile = helper.getUniqueFilename(sourceFiles[file].shortened);
+        sourceFilenames.push(sourceOutfile);
         helper.registerLink(sourceFiles[file].shortened, sourceOutfile);
 
         try {
@@ -241,9 +244,9 @@ function generateSourceFiles(sourceFiles, encoding) {
         catch(e) {
             logger.error('Error while generating source file %s: %s', file, e.message);
         }
-
         generate('Source', sourceFiles[file].shortened, [source], sourceOutfile, false);
     });
+    return sourceFilenames;
 }
 
 /**
@@ -382,6 +385,40 @@ function buildNav(members) {
     }
 
     return nav;
+}
+
+/**
+    Sorts an array of strings alphabetically
+    @param {Array<String>} strArr - Array of strings to sort
+    @return {Array<String>} The sorted array
+ */
+function sortStrs(strArr) {
+    return strArr.sort(function(s1, s2) {
+        var lowerCaseS1 = s1.toLowerCase();
+        var lowerCaseS2 = s2.toLowerCase();
+
+        if (lowerCaseS1 < lowerCaseS2) {
+            return -1;
+        } else if (lowerCaseS1 > lowerCaseS2) {
+            return 1;
+        } else {
+            return 0;
+        }
+    });
+}
+
+/**
+    Prints into <outdir>/data a `methodNames.json` and a `sourceFiles.json`
+    JSON file that contains methods and files that can be searched on the
+    generated doc site.
+    @param {Array<String>} methodNames - A list of method names
+    @param {Array<String>} sourceFilenames - A list of source filenames
+ */
+function writeSearchData(methodNames, sourceFilenames) {
+    var dataDir = path.join(outdir, 'data');
+    fsExtra.mkdirsSync(dataDir);
+    fsExtra.writeJsonSync(path.join(dataDir, 'methodNames.json'), sortStrs(methodNames), 'utf8');
+    fsExtra.writeJsonSync(path.join(dataDir, 'sourceFiles.json'), sortStrs(sourceFilenames), 'utf8');
 }
 
 /**
@@ -537,8 +574,21 @@ exports.publish = function(taffyData, opts, tutorials) {
     });
 
     // do this after the urls have all been generated
+    var methodNames = [];
     data().each(function(doclet) {
         doclet.ancestors = getAncestorLinks(doclet);
+        if (doclet.kind === 'function') {
+            var alias = doclet.alias;
+            var name  = doclet.name;
+            if (alias) {
+                if (Array.isArray(alias)) {
+                    alias = alias.join(', ');
+                }
+                methodNames.push(name + ` (${alias})`);
+            } else {
+                methodNames.push(name);
+            }
+        }
 
         if (doclet.kind === 'member') {
             addSignatureTypes(doclet);
@@ -556,8 +606,8 @@ exports.publish = function(taffyData, opts, tutorials) {
     members.tutorials = tutorials.children;
 
     // output pretty-printed source files by default
-    var outputSourceFiles = conf.default && conf.default.outputSourceFiles !== false 
-        ? true 
+    var outputSourceFiles = conf.default && conf.default.outputSourceFiles !== false
+        ? true
         : false;
 
     // add template helpers
@@ -573,12 +623,15 @@ exports.publish = function(taffyData, opts, tutorials) {
     attachModuleSymbols( find({ longname: {left: 'module:'} }), members.modules );
 
     // generate the pretty-printed source files first so other pages can link to them
+    var sourceFilenames = [];
     if (outputSourceFiles) {
-        generateSourceFiles(sourceFiles, opts.encoding);
+        sourceFilenames = generateSourceFiles(sourceFiles, opts.encoding);
     }
 
-    if (members.globals.length) { 
-        generate('', 'Global', [{kind: 'globalobj'}], globalUrl); 
+    writeSearchData(methodNames, sourceFilenames);
+
+    if (members.globals.length) {
+        generate('', 'Global', [{kind: 'globalobj'}], globalUrl);
     }
 
     // index page displays information from package.json and lists files
@@ -655,6 +708,6 @@ exports.publish = function(taffyData, opts, tutorials) {
             saveChildren(child);
         });
     }
-    
+
     saveChildren(tutorials);
 };

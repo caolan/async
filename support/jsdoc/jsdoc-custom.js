@@ -1,4 +1,8 @@
 /* eslint no-undef: "off" */
+if (typeof setImmediate !== 'function' && typeof async === 'object') {
+    setImmediate = async.setImmediate;
+}
+
 $(function initSearchBar() {
     function matchSubstrs(methodName) {
         var tokens = [];
@@ -94,12 +98,20 @@ $(function initSearchBar() {
         // handle source files
         } else if (suggestion.indexOf('.html') !== -1) {
             location.href = host + suggestion;
-        // handle searching from one of the source files or the home page
-        } else if (currentPage !== 'docs.html') {
-            location.href = host + 'docs.html#' + suggestion;
         } else {
-            var $el = document.getElementById(suggestion);
-            $('#main-container').animate({ scrollTop: $el.offsetTop - 60 }, 500);
+            var parenIndex = suggestion.indexOf('(');
+            if (parenIndex !== -1) {
+                suggestion = suggestion.substring(0, parenIndex-1);
+            }
+
+            // handle searching from one of the source files or the home page
+            if (currentPage !== 'docs.html') {
+                location.href = host + 'docs.html#' + suggestion;
+            } else {
+                var $el = document.getElementById(suggestion);
+                $('#main-container').animate({ scrollTop: $el.offsetTop - 60 }, 500);
+                location.hash = '#'+suggestion;
+            }
         }
     });
 

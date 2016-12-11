@@ -42,29 +42,6 @@ function extractModuleFiles(files) {
     });
 }
 
-function getSearchableInfo($page, callback) {
-    var $sourceLinks = $page.find('a[href$=".js.html"]');
-    var sourceFiles = $sourceLinks.map(function() {
-        return $(this).attr('href');
-    }).toArray().sort();
-
-    var $methodLinks = $page.find('nav').find('a');
-    var methods = $methodLinks.map(function() {
-        var methodName = $(this).text();
-        return (methodName === 'Home' ? null : methodName);
-    }).toArray().sort();
-
-    fs.mkdirsSync(path.join(docsDir, 'data'));
-    async.parallel([
-        function(fileCallback) {
-            fs.writeJson(path.join(docsDir, 'data/sourceFiles.json'), sourceFiles, fileCallback);
-        },
-        function(fileCallback) {
-            fs.writeJson(path.join(docsDir, 'data/methodNames.json'), methods, fileCallback);
-        }
-    ], callback);
-}
-
 function combineFakeModules(files, callback) {
     var moduleFiles = extractModuleFiles(files);
 
@@ -86,11 +63,7 @@ function combineFakeModules(files, callback) {
             });
         }, function(err) {
             if (err) return callback(err);
-
-            getSearchableInfo($mainPage, function(err) {
-                if (err) return callback(err);
-                generateHTMLFile(path.join(docsDir, docFilename), $mainPage, callback);
-            });
+            generateHTMLFile(path.join(docsDir, docFilename), $mainPage, callback);
         });
     });
 }
