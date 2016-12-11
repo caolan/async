@@ -115,6 +115,15 @@ $(function initSearchBar() {
         }
     });
 
+    $('.toc-method-alias').click(function() {
+        // highlighting should automatically be added by scrollspy
+        var $el = $(this);
+
+        var href = $el.find('a').eq(0).attr('href');
+        var $nonAlias = $('.is-selectable').find('a[href="'+href+'"]');
+        $('#toc').animate({ scrollTop: $nonAlias.parent().get(0).offsetTop - $el.offset().top + 50 }, 250);
+    });
+
     function fixOldHash() {
         var hash = window.location.hash;
         if (hash) {

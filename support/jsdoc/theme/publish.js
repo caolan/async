@@ -307,10 +307,29 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
                 itemsNav += '<li>' + linktoFn(item.longname, item.name.replace(/^module:/, ''));
                 if (methods.length) {
                     itemsNav += "<ul class='methods'>";
+                    var tocMethods = [];
+                    methods.forEach(function(method) {
+                        tocMethods.push({
+                            name: method.name,
+                            link: linkto(method.longname, method.name),
+                            isAlias: false
+                        });
+                        if (method.alias) {
+                            tocMethods.push({
+                                name: method.alias,
+                                link: linkto(method.longname, method.alias+ ` (${method.name})`),
+                                isAlias: true
+                            });
+                        }
+                    });
 
-                    methods.forEach(function (method) {
-                        itemsNav += "<li data-type='method'>";
-                        itemsNav += linkto(method.longname, method.name);
+                    sortStrs(tocMethods, 'name').forEach(function(method) {
+                        if (method.isAlias) {
+                            itemsNav += "<li data-type='method-alias' class='toc-method toc-method-alias'>";
+                        } else {
+                            itemsNav += "<li data-type='method' class='toc-method is-selectable'>";
+                        }
+                        itemsNav += method.link;
                         itemsNav += "</li>";
                     });
 
@@ -388,14 +407,24 @@ function buildNav(members) {
 }
 
 /**
-    Sorts an array of strings alphabetically
-    @param {Array<String>} strArr - Array of strings to sort
+    Sorts an array of strings or objects with a string property alphabetically
+    @param {Array<String>} strArr - Array to sort
+    @param {String} [objPropName] - The name of the string property on the
+        object to sort by
     @return {Array<String>} The sorted array
  */
-function sortStrs(strArr) {
-    return strArr.sort(function(s1, s2) {
-        var lowerCaseS1 = s1.toLowerCase();
-        var lowerCaseS2 = s2.toLowerCase();
+function sortStrs(arr, objPropName) {
+    return arr.sort(function(s1, s2) {
+        var lowerCaseS1,
+            lowerCaseS2;
+
+        if (objPropName) {
+            var lowerCaseS1 = s1[objPropName].toLowerCase();
+            var lowerCaseS2 = s2[objPropName].toLowerCase();
+        } else {
+            var lowerCaseS1 = s1.toLowerCase();
+            var lowerCaseS2 = s2.toLowerCase();
+        }
 
         if (lowerCaseS1 < lowerCaseS2) {
             return -1;

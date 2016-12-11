@@ -95,7 +95,7 @@ function scrollSpyFix($page, $nav) {
     $ul.addClass('nav').addClass('methods');
     $ul.find('.methods').each(function() {
         var $methodsList = $(this);
-        var $methods = $methodsList.find('[data-type="method"]');
+        var $methods = $methodsList.find('[data-type^="method"]');
         var $parentLi = $methodsList.parent();
 
         $methodsList.remove();
@@ -104,8 +104,6 @@ function scrollSpyFix($page, $nav) {
         $parentLi.addClass('toc-header');
 
     });
-
-    $page.find('[data-type="method"]').addClass("toc-method");
 
     $page.find('[id^="."]').each(function() {
         var $ele = $(this);
