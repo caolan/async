@@ -286,7 +286,7 @@ describe('auto', function () {
                     callback(null, 'task1');
                 }]
             });
-        }).to.throw();
+        }).to.throw(/dependency `noexist`/);
         done();
     });
 
