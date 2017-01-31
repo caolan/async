@@ -394,4 +394,43 @@ describe('auto', function () {
         isSync = false;
     });
 
+    // Issue 1358 on github: https://github.com/caolan/async/issues/1358
+    it('should report errors when a task name is an array method', function (done) {
+        async.auto({
+            'one': function (next) {
+                next('Something bad happened here');
+            },
+            'filter': function (next) {
+                _.delay(function () {
+                    next(null, 'All fine here though');
+                }, 25);
+            },
+            'finally': ['one', 'filter', function (a, next) {
+                _.defer(next);
+            }]
+        }, function (err) {
+            expect(err).to.equal('Something bad happened here');
+            _.delay(done, 30);
+        });
+    });
+
+    it('should report errors when a task name is an obj prototype method', function (done) {
+        async.auto({
+            'one': function (next) {
+                next('Something bad happened here');
+            },
+            'hasOwnProperty': function (next) {
+                _.delay(function () {
+                    next(null, 'All fine here though');
+                }, 25);
+            },
+            'finally': ['one', 'hasOwnProperty', function (a, next) {
+                _.defer(next);
+            }]
+        }, function (err) {
+            expect(err).to.equal('Something bad happened here');
+            _.delay(done, 30);
+        });
+    });
+
 });
