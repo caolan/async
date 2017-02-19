@@ -1,3 +1,10 @@
+#v2.1.5
+- Fix `auto` bug when function names collided with Array.prototype (#1358)
+- Improve some error messages (#1349)
+- Avoid stack overflow case in queue
+- Fixed an issue in `some`, `every` and `find` where processing would continue after the result was determined.
+- Cleanup implementations of `some`, `every` and `find` 
+
 # v2.1.3
 - Make bundle size smaller
 - Create optimized hotpath for `filter` in array case.
