@@ -98,46 +98,6 @@ describe('groupBy', function() {
             });
         });
 
-        it('with reflect', function(done) {
-            var obj = {a: 1, b: 3, c: 2};
-            var callOrder = [];
-            async.groupBy(obj, async.reflect(function(val, next) {
-                setTimeout(function() {
-                    callOrder.push(val);
-                    next(null, val+1);
-                }, val*25);
-            }), function(err, result) {
-                expect(err).to.eql(null);
-                expect(callOrder).to.eql([1, 2, 3]);
-                expect(result).to.eql({
-                    '[object Object]': [1, 2, 3]
-                });
-                done();
-            });
-        });
-
-        it('error with reflect' , function(done) {
-            var obj = {a: 1, b: 3, c: 2};
-            var callOrder = [];
-            async.groupBy(obj, async.reflect(function(val, next) {
-                setTimeout(function() {
-                    callOrder.push(val);
-                    if (val === 2) {
-                        return next('fail');
-                    }
-                    next(null, val+1);
-                }, val*25);
-            }), function(err, result) {
-                expect(err).to.eql(null);
-                expect(callOrder).to.eql([1, 2, 3]);
-                expect(result).to.eql({
-                    '[object Object]': [1, 2, 3]
-                });
-                done();
-            });
-        });
-
-
         it('main callback optional' , function(done) {
             var arr = [1, 2, 3];
             var runs = [];
@@ -189,6 +149,25 @@ describe('groupBy', function() {
                     b1: [ ['b', 'b'] ]
                 });
                 done();
+            });
+        });
+
+        it('handles sparse results', function(done) {
+            var arr = [1, 2, 3];
+            async.groupBy(arr, function(val, next) {
+                if (val === 1) {
+                    return next(null, val+1);
+                } else if (val === 2) {
+                    async.setImmediate(function() {
+                        return next(null, val+1);
+                    });
+                } else {
+                    return next('error');
+                }
+            }, function(err, result) {
+                expect(err).to.not.eql(null);
+                expect(result).to.eql({2: [1]});
+                async.setImmediate(done);
             });
         });
     });
