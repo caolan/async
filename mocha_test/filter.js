@@ -172,4 +172,17 @@ describe("reject", function () {
         });
     });
 
+    it('filter fails', function(done) {
+        async.filter({a: 1, b: 2, c: 3}, function (item, callback) {
+            if (item === 3) {
+                callback("error", false);
+            } else {
+                callback(null, true);
+            }
+        }, function (err, res) {
+            expect(err).to.equal("error");
+            expect(res).to.equal(undefined);
+            done();
+        })
+    });
 });
