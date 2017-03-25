@@ -28,6 +28,10 @@ module.exports = function () {
         })
     });
 
+    /*
+     * Collections
+     */
+
     it('should handle async functions in each', (done) => {
         async.each(input, asyncIdentity, done);
     });
@@ -251,5 +255,343 @@ module.exports = function () {
             expect(result).to.eql(inputObj);
             done(err);
         });
+    });
+
+    /*
+     * Control Flow
+     */
+
+    it('should handle async functions in applyEach', (done) => {
+        async.applyEach([asyncIdentity, asyncIdentity])(input, (err, result) => {
+            expect(result).to.eql([input, input]);
+            done(err);
+        });
+    });
+
+    it('should handle async functions in applyEachSeries', (done) => {
+        async.applyEachSeries([asyncIdentity, asyncIdentity])(input, (err, result) => {
+            expect(result).to.eql([input, input]);
+            done(err);
+        });
+    });
+
+    it('should handle async functions in auto', (done) => {
+        async.auto({
+            a: async function () {
+                return await Promise.resolve(1);
+            },
+            b: async function () {
+                return await Promise.resolve(2);
+            },
+            c: ['a', 'b', async function (results) {
+                return await Promise.resolve(results.a + results.b);
+            }]
+        }, (err, result) => {
+            expect(result).to.eql({a: 1, b: 2, c: 3});
+            done(err);
+        });
+    });
+
+    it('should handle async functions in autoInject', (done) => {
+        async.autoInject({
+            a: async function () {
+                return await Promise.resolve(1);
+            },
+            b: async function (a) {
+                return await Promise.resolve(a + 1);
+            },
+            c: async (a, b) => {
+                return await Promise.resolve(a + b);
+            },
+            d: async (c) => {
+                return await Promise.resolve(c + 1);
+            }
+        }, (err, result) => {
+            expect(result).to.eql({a: 1, b: 2, c: 3, d: 4});
+            done(err);
+        });
+    });
+
+    it('should handle async functions in cargo', (done) => {
+        var result = [];
+        var q = async.cargo(async function(val) {
+            result.push(await Promise.resolve(val));
+        }, 2)
+
+        q.drain = () => {
+            expect(result).to.eql([[1, 2], [3]]);
+            done();
+        };
+
+        q.push(1);
+        q.push(2);
+        q.push(3);
+    });
+
+    it('should handle async functions in queue', (done) => {
+        var result = [];
+        var q = async.queue(async function(val) {
+            result.push(await Promise.resolve(val));
+        }, 2)
+
+        q.drain = () => {
+            expect(result).to.eql([1, 2, 3]);
+            done();
+        };
+
+        q.push(1);
+        q.push(2);
+        q.push(3);
+    });
+
+    it('should handle async functions in priorityQueue', (done) => {
+        var result = [];
+        var q = async.priorityQueue(async function(val) {
+            result.push(await Promise.resolve(val));
+        }, 2)
+
+        q.drain = () => {
+            expect(result).to.eql([1, 2, 3]);
+            done();
+        };
+
+        q.push(1);
+        q.push(2);
+        q.push(3);
+    });
+
+    it('should handle async functions in compose', (done) => {
+        async.compose(
+            async (a) => a + 1,
+            async (a) => a + 1,
+            async (a) => a + 1
+        )(0, (err, result) => {
+            expect(result).to.equal(3);
+            done(err);
+        });
+    });
+
+    it('should handle async functions in seq', (done) => {
+        async.seq(
+            async (a) => a + 1,
+            async (a) => a + 1,
+            async (a) => a + 1
+        )(0, (err, result) => {
+            expect(result).to.equal(3);
+            done(err);
+        });
+    });
+
+    it('should handle async functions in during', (done) => {
+        var val = 0;
+        async.during(async () => {
+            return val < 3;
+        },
+        async () => {
+            val += 1;
+            return val;
+        }, done);
+    });
+
+    it('should handle async functions in doDuring', (done) => {
+        var val = 0;
+        async.doDuring(async () => {
+            val += 1;
+            return val;
+        },
+        async (res) => {
+            return res < 3;
+        }, done);
+    });
+
+    it('should handle async functions in whilst', (done) => {
+        var val = 0;
+        async.whilst(() => val < 3,
+        async () => {
+            val += 1;
+            return val;
+        }, done);
+    });
+
+    it('should handle async functions in doWhilst', (done) => {
+        var val = 0;
+        async.doWhilst(async () => {
+            val += 1;
+            return val;
+        }, (res) => res < 3, done);
+    });
+
+    it('should handle async functions in until', (done) => {
+        var val = 0;
+        async.until(() => val > 3,
+        async () => {
+            val += 1;
+            return val;
+        }, done);
+    });
+
+    it('should handle async functions in doUntil', (done) => {
+        var val = 0;
+        async.doUntil(async () => {
+            val += 1;
+            return val;
+        }, (res) => res > 3, done);
+    });
+
+    it('should handle async functions in forever', (done) => {
+        var counter = 0;
+        async.forever(async () => {
+            counter += 1;
+            if (counter > 10) throw new Error('too big');
+        },(err) => {
+            expect(err.message).to.equal('too big');
+            done();
+        })
+    });
+
+    it('should handle async functions in parallel', (done) => {
+        async.parallel([
+            async () => 1,
+            async () => 2,
+            async () => 3
+        ], (err, result) => {
+            expect(result).to.eql([1, 2, 3]);
+            done(err);
+        })
+    });
+
+    it('should handle async functions in parallel (object)', (done) => {
+        async.parallel({
+            a: async () => 1,
+            b: async () => 2,
+            c: async () => 3
+        }, (err, result) => {
+            expect(result).to.eql({a: 1, b: 2, c: 3});
+            done(err);
+        })
+    });
+
+    it('should handle async functions in parallelLimit', (done) => {
+        async.parallelLimit([
+            async () => 1,
+            async () => 2,
+            async () => 3
+        ], 2, (err, result) => {
+            expect(result).to.eql([1, 2, 3]);
+            done(err);
+        })
+    });
+
+    it('should handle async functions in parallelLimit (object)', (done) => {
+        async.parallelLimit({
+            a: async () => 1,
+            b: async () => 2,
+            c: async () => 3
+        }, 2, (err, result) => {
+            expect(result).to.eql({a: 1, b: 2, c: 3});
+            done(err);
+        })
+    });
+
+    it('should handle async functions in series', (done) => {
+        async.series([
+            async () => 1,
+            async () => 2,
+            async () => 3
+        ], (err, result) => {
+            expect(result).to.eql([1, 2, 3]);
+            done(err);
+        })
+    });
+
+    it('should handle async functions in series (object)', (done) => {
+        async.series({
+            a: async () => 1,
+            b: async () => 2,
+            c: async () => 3
+        }, (err, result) => {
+            expect(result).to.eql({a: 1, b: 2, c: 3});
+            done(err);
+        })
+    });
+
+    it('should handle async functions in race', (done) => {
+        async.race([
+            async () => 1,
+            async () => 2,
+            async () => 3
+        ], (err, result) => {
+            expect(result).to.eql(1);
+            done(err);
+        })
+    });
+
+    it('should handle async functions in retry', (done) => {
+        var count = 0;
+        async.retry(4, async () => {
+            count += 1;
+            if (count < 3) throw new Error('fail');
+            return count;
+        }, (err, result) => {
+            expect(result).to.eql(3);
+            done(err);
+        })
+    });
+
+    it('should handle async functions in retryable', (done) => {
+        var count = 0;
+        async.retryable(4, async () => {
+            count += 1;
+            if (count < 3) throw new Error('fail');
+            return count;
+        })((err, result) => {
+            expect(result).to.eql(3);
+            done(err);
+        })
+    });
+
+    it('should handle async functions in times', (done) => {
+        var count = 0;
+        async.times(4, async () => {
+            count += 1;
+            return count;
+        }, (err, result) => {
+            expect(result).to.eql([1, 2, 3, 4]);
+            done(err);
+        })
+    });
+
+    it('should handle async functions in timesLimit', (done) => {
+        var count = 0;
+        async.timesLimit(4, 2, async () => {
+            count += 1;
+            return count;
+        }, (err, result) => {
+            expect(result).to.eql([1, 2, 3, 4]);
+            done(err);
+        })
+    });
+
+    it('should handle async functions in timesSeries', (done) => {
+        var count = 0;
+        async.timesSeries(4, async () => {
+            count += 1;
+            return count;
+        }, (err, result) => {
+            expect(result).to.eql([1, 2, 3, 4]);
+            done(err);
+        })
+    });
+
+    it('should handle async functions in waterfall', (done) => {
+        async.waterfall([
+            async () => 1,
+            async (a) => a + 1,
+            async (a) => [a, a + 1],
+            async ([a, b]) => a + b,
+        ], (err, result) => {
+            expect(result).to.eql(5);
+            done(err);
+        })
     });
 }
