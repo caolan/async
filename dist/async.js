@@ -200,7 +200,8 @@ function baseGetTag(value) {
   if (value == null) {
     return value === undefined ? undefinedTag : nullTag;
   }
-  return (symToStringTag && symToStringTag in Object(value))
+  value = Object(value);
+  return (symToStringTag && symToStringTag in value)
     ? getRawTag(value)
     : objectToString(value);
 }
@@ -639,7 +640,7 @@ var freeProcess = moduleExports$1 && freeGlobal.process;
 /** Used to access faster Node.js helpers. */
 var nodeUtil = (function() {
   try {
-    return freeProcess && freeProcess.binding && freeProcess.binding('util');
+    return freeProcess && freeProcess.binding('util');
   } catch (e) {}
 }());
 
@@ -1028,7 +1029,7 @@ function _asyncMap(eachfn, arr, iteratee, callback) {
  *
  * If `map` is passed an Object, the results will be an Array.  The results
  * will roughly be in the order of the original Objects' keys (but this can
- * vary across JavaScript engines)
+ * vary across JavaScript engines).
  *
  * @name map
  * @static
@@ -1827,17 +1828,15 @@ function asciiToArray(string) {
 
 /** Used to compose unicode character classes. */
 var rsAstralRange = '\\ud800-\\udfff';
-var rsComboMarksRange = '\\u0300-\\u036f';
-var reComboHalfMarksRange = '\\ufe20-\\ufe2f';
-var rsComboSymbolsRange = '\\u20d0-\\u20ff';
-var rsComboRange = rsComboMarksRange + reComboHalfMarksRange + rsComboSymbolsRange;
+var rsComboMarksRange = '\\u0300-\\u036f\\ufe20-\\ufe23';
+var rsComboSymbolsRange = '\\u20d0-\\u20f0';
 var rsVarRange = '\\ufe0e\\ufe0f';
 
 /** Used to compose unicode capture groups. */
 var rsZWJ = '\\u200d';
 
 /** Used to detect strings with [zero-width joiners or code points from the astral planes](http://eev.ee/blog/2015/09/12/dark-corners-of-unicode/). */
-var reHasUnicode = RegExp('[' + rsZWJ + rsAstralRange  + rsComboRange + rsVarRange + ']');
+var reHasUnicode = RegExp('[' + rsZWJ + rsAstralRange  + rsComboMarksRange + rsComboSymbolsRange + rsVarRange + ']');
 
 /**
  * Checks if `string` contains Unicode symbols.
@@ -1852,15 +1851,13 @@ function hasUnicode(string) {
 
 /** Used to compose unicode character classes. */
 var rsAstralRange$1 = '\\ud800-\\udfff';
-var rsComboMarksRange$1 = '\\u0300-\\u036f';
-var reComboHalfMarksRange$1 = '\\ufe20-\\ufe2f';
-var rsComboSymbolsRange$1 = '\\u20d0-\\u20ff';
-var rsComboRange$1 = rsComboMarksRange$1 + reComboHalfMarksRange$1 + rsComboSymbolsRange$1;
+var rsComboMarksRange$1 = '\\u0300-\\u036f\\ufe20-\\ufe23';
+var rsComboSymbolsRange$1 = '\\u20d0-\\u20f0';
 var rsVarRange$1 = '\\ufe0e\\ufe0f';
 
 /** Used to compose unicode capture groups. */
 var rsAstral = '[' + rsAstralRange$1 + ']';
-var rsCombo = '[' + rsComboRange$1 + ']';
+var rsCombo = '[' + rsComboMarksRange$1 + rsComboSymbolsRange$1 + ']';
 var rsFitz = '\\ud83c[\\udffb-\\udfff]';
 var rsModifier = '(?:' + rsCombo + '|' + rsFitz + ')';
 var rsNonAstral = '[^' + rsAstralRange$1 + ']';
@@ -3434,6 +3431,114 @@ function forever(fn, errback) {
 }
 
 /**
+ * The same as [`groupBy`]{@link module:Collections.groupBy} but runs a maximum of `limit` async operations at a time.
+ *
+ * @name groupByLimit
+ * @static
+ * @memberOf module:Collections
+ * @method
+ * @see [async.groupBy]{@link module:Collections.groupBy}
+ * @category Collection
+ * @param {Array|Iterable|Object} coll - A collection to iterate over.
+ * @param {number} limit - The maximum number of async operations at a time.
+ * @param {Function} iteratee - A function to apply to each item in `coll`.
+ * The iteratee is passed a `callback(err, key)` which must be called once it
+ * has completed with an error (which can be `null`) and the `key` to group the
+ * value under. Invoked with (value, callback).
+ * @param {Function} [callback] - A callback which is called when all `iteratee`
+ * functions have finished, or an error occurs. Result is an `Object` whoses
+ * properties are arrays of values which returned the corresponding key.
+ */
+var groupByLimit = function (coll, limit, iteratee, callback) {
+    callback = callback || noop;
+
+    mapLimit(coll, limit, function (val, callback) {
+        iteratee(val, function (err, key) {
+            if (err) return callback(err);
+            return callback(null, { key: key, val: val });
+        });
+    }, function (err, mapResults) {
+        var result = {};
+        // from MDN, handle object having an `hasOwnProperty` prop
+        var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+        for (var i = 0; i < mapResults.length; i++) {
+            if (mapResults[i]) {
+                var key = mapResults[i].key;
+                var val = mapResults[i].val;
+
+                if (hasOwnProperty.call(result, key)) {
+                    result[key].push(val);
+                } else {
+                    result[key] = [val];
+                }
+            }
+        }
+
+        return callback(err, result);
+    });
+};
+
+/**
+ * Returns a new object, where each value corresponds to an array of items, from
+ * `coll`, that returned the corresponding key. That is, the keys of the object
+ * correspond to the values passed to the `iteratee` callback.
+ *
+ * Note: Since this function applies the `iteratee` to each item in parallel,
+ * there is no guarantee that the `iteratee` functions will complete in order.
+ * However, the values for each key in the `result` will be in the same order as
+ * the original `coll`. For Objects, the values will roughly be in the order of
+ * the original Objects' keys (but this can vary across JavaScript engines).
+ *
+ * @name groupBy
+ * @static
+ * @memberOf module:Collections
+ * @method
+ * @category Collection
+ * @param {Array|Iterable|Object} coll - A collection to iterate over.
+ * @param {Function} iteratee - A function to apply to each item in `coll`.
+ * The iteratee is passed a `callback(err, key)` which must be called once it
+ * has completed with an error (which can be `null`) and the `key` to group the
+ * value under. Invoked with (value, callback).
+ * @param {Function} [callback] - A callback which is called when all `iteratee`
+ * functions have finished, or an error occurs. Result is an `Object` whoses
+ * properties are arrays of values which returned the corresponding key.
+ * @example
+ *
+ * async.groupBy(['userId1', 'userId2', 'userId3'], function(userId, callback) {
+ *     db.findById(userId, function(err, user) {
+ *         if (err) return callback(err);
+ *         return callback(null, user.age);
+ *     });
+ * }, function(err, result) {
+ *     // result is object containing the userIds grouped by age
+ *     // e.g. { 30: ['userId1', 'userId3'], 42: ['userId2']};
+ * });
+ */
+var groupBy = doLimit(groupByLimit, Infinity);
+
+/**
+ * The same as [`groupBy`]{@link module:Collections.groupBy} but runs only a single async operation at a time.
+ *
+ * @name groupBySeries
+ * @static
+ * @memberOf module:Collections
+ * @method
+ * @see [async.groupBy]{@link module:Collections.groupBy}
+ * @category Collection
+ * @param {Array|Iterable|Object} coll - A collection to iterate over.
+ * @param {number} limit - The maximum number of async operations at a time.
+ * @param {Function} iteratee - A function to apply to each item in `coll`.
+ * The iteratee is passed a `callback(err, key)` which must be called once it
+ * has completed with an error (which can be `null`) and the `key` to group the
+ * value under. Invoked with (value, callback).
+ * @param {Function} [callback] - A callback which is called when all `iteratee`
+ * functions have finished, or an error occurs. Result is an `Object` whoses
+ * properties are arrays of values which returned the corresponding key.
+ */
+var groupBySeries = doLimit(groupByLimit, 1);
+
+/**
  * Logs the result of an `async` function to the `console`. Only works in
  * Node.js or in browsers that support `console.log` and `console.error` (such
  * as FF and Chrome). If multiple arguments are returned from the async
@@ -3707,6 +3812,8 @@ function _parallel(eachfn, tasks, callback) {
  * any I/O, they will actually be executed in series.  Any synchronous setup
  * sections for each task will happen one after the other.  JavaScript remains
  * single-threaded.
+ * **Hint:** Use [`reflect`]{@link module:Utils.reflect} to continue the
+ * execution of other tasks when a task fails.
  *
  * It is also possible to use an object instead of an array. Each property will
  * be run as a function and the results will be passed to the final `callback`
@@ -4881,7 +4988,7 @@ var timesSeries = doLimit(timeLimit, 1);
  * })
  */
 function transform(coll, accumulator, iteratee, callback) {
-    if (arguments.length === 3) {
+    if (arguments.length <= 3) {
         callback = iteratee;
         iteratee = accumulator;
         accumulator = isArray(coll) ? [] : {};
@@ -5130,6 +5237,9 @@ var index = {
   filterLimit: filterLimit,
   filterSeries: filterSeries,
   forever: forever,
+  groupBy: groupBy,
+  groupByLimit: groupByLimit,
+  groupBySeries: groupBySeries,
   log: log,
   map: map,
   mapLimit: mapLimit,
@@ -5222,6 +5332,9 @@ exports.filter = filter;
 exports.filterLimit = filterLimit;
 exports.filterSeries = filterSeries;
 exports.forever = forever;
+exports.groupBy = groupBy;
+exports.groupByLimit = groupByLimit;
+exports.groupBySeries = groupBySeries;
 exports.log = log;
 exports.map = map;
 exports.mapLimit = mapLimit;
