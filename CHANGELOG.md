@@ -1,9 +1,14 @@
-#v2.1.5
+# v2.2.0
+- Added `groupBy`, and the `Series`/`Limit` equivalents, analogous to [`_.groupBy`](http://lodash.com/docs#groupBy) (#1364)
+- Fixed `transform` bug when `callback` was not passed (#1381)
+- Added note about `reflect` to `parallel` docs (#1385)
+
+# v2.1.5
 - Fix `auto` bug when function names collided with Array.prototype (#1358)
 - Improve some error messages (#1349)
 - Avoid stack overflow case in queue
 - Fixed an issue in `some`, `every` and `find` where processing would continue after the result was determined.
-- Cleanup implementations of `some`, `every` and `find` 
+- Cleanup implementations of `some`, `every` and `find`
 
 # v2.1.3
 - Make bundle size smaller
