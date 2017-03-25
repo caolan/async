@@ -312,6 +312,26 @@ module.exports = function () {
         });
     });
 
+    it('should handle async functions in autoInject (shorthand)', (done) => {
+        async.autoInject({
+            async a() {
+                return await Promise.resolve(1);
+            },
+            async b(a) {
+                return await Promise.resolve(a + 1);
+            },
+            async c(a, b) {
+                return await Promise.resolve(a + b);
+            },
+            async d(c) {
+                return await Promise.resolve(c + 1);
+            }
+        }, (err, result) => {
+            expect(result).to.eql({a: 1, b: 2, c: 3, d: 4});
+            done(err);
+        });
+    });
+
     it('should handle async functions in cargo', (done) => {
         var result = [];
         var q = async.cargo(async function(val) {
