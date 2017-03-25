@@ -594,4 +594,69 @@ module.exports = function () {
             done(err);
         })
     });
+
+    /**
+     * Utils
+     */
+
+    it('should handle async functions in dir', (done) => {
+        async.dir(async (val) => val, 'foo');
+        setTimeout(done);
+    });
+
+    it('should handle async functions in log', (done) => {
+        async.log(async (val) => val, 'foo');
+        setTimeout(done);
+    });
+
+    it('should handle async functions in ensureAsync', () => {
+        var fn = async.ensureAsync(asyncIdentity);
+        assert(fn === asyncIdentity);
+    });
+
+    it('should handle async functions in memoize', (done) => {
+        var fn = async.memoize(asyncIdentity);
+        fn(1, () => {
+            fn(1, done);
+        })
+    });
+
+    it('should handle async functions in reflect', (done) => {
+        var fn = async.reflect(asyncIdentity);
+        fn(1, (err, result) => {
+            expect(result).to.eql({value: 1});
+            done(err);
+        })
+    });
+
+    it('should handle async functions in reflect (error case)', (done) => {
+        var thrown;
+        var fn = async.reflect(async () => {
+            thrown = new Error('foo');
+            throw thrown;
+        });
+        fn(1, (err, result) => {
+            expect(result).to.eql({error: thrown});
+            done(err);
+        })
+    });
+
+    it('should handle async functions in timeout', (done) => {
+        var fn = async.timeout(asyncIdentity, 50);
+        fn(1, (err, result) => {
+            expect(result).to.eql(1);
+            done(err);
+        })
+    });
+
+    it('should handle async functions in timeout (error case)', (done) => {
+        var fn = async.timeout(async (val) => {
+            await new Promise((resolve) => setTimeout(resolve, 100));
+            return val;
+        }, 50);
+        fn(1, (err) => {
+            expect(err.message).to.match(/timed out/);
+            done();
+        })
+    });
 }
