@@ -75,6 +75,53 @@ describe("waterfall", function () {
         ]);
     });
 
+    it('taskKeys without callback', function (done) {
+        var obj = {};
+        async.waterfall([
+            function(callback) {
+                callback(null, 'a');
+            },
+            function(results, callback) {
+                expect(results['w']).to.equal('a');
+                callback(null, obj);
+            },
+            function(results, callback) {
+                expect(results['o']).to.equal(obj);
+                callback();
+            },function(results, callback) {
+                expect(results['o']).to.equal(null);
+                callback(null, 1);
+                done();
+            }
+        ], ['w', 'o', 'o', 'd']);
+    });
+
+    it('taskKeys with callback', function (done) {
+        var obj = {};
+        async.waterfall([
+            function(callback) {
+                callback(null, 'a', 'a');
+            },
+            function(results, callback) {
+                expect(results['w']).to.eql(['a', 'a']);
+                callback(null, obj);
+            },
+            function(results, callback) {
+                expect(results['o']).to.equal(obj);
+                callback();
+            }, function (results, callback) {
+                expect(results['o']).to.equal(null);
+                callback(null, 1);
+            }
+        ], function (err, results) {
+            expect(results['w']).to.eql(['a', 'a']);
+            expect(results['o']).to.equal(null);
+            expect(results["d"]).to.equal(1);
+            done()
+        },
+        ['w', 'o', 'o', 'd']);
+    });
+
     it('error', function(done){
         async.waterfall([
             function(callback){
@@ -139,5 +186,35 @@ describe("waterfall", function () {
         });
 
         sameStack = false;
+    });
+
+    it('call done should exit immediately', function (done) {
+        var i = 0;
+        async.waterfall([
+            function (cb) { cb(null, ++i); },
+            function (arg, cb) { cb(null, ++i); },
+            function (arg, cb, dn) { dn(null, ++i); },
+            function (arg, cb) { cb(++arg); },
+            function (arg, cb) { cb(++arg); }
+        ], function(err, results) {
+            expect(results).to.equal(3);
+            done();
+        });
+    });
+
+    it('call done should exit immediately with tasksKey', function (done) {
+        var i = 0;
+        async.waterfall([
+            function (cb) { cb(null, ++i); },
+            function (arg, cb) { cb(null, ++i); },
+            function (arg, cb, dn) { dn(null, ++i); },
+            function (arg, cb) { cb(++i); }
+        ], function(err, results) {
+            expect(results['w']).to.equal(1);
+            expect(results['d']).to.equal(undefined);
+            expect(results['o']).to.equal(3);
+            done();
+        },
+        ['w', 'o', 'o', 'd']);
     });
 });

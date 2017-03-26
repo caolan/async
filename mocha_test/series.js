@@ -191,4 +191,29 @@ describe('series', function() {
             }
         );
     });
+
+    it('series with task keys', function (done) {
+        var obj = {};
+        async.series([
+            function (callback) {
+                callback(null, 1);
+            },
+            function (callback) {
+                callback(null, 2);
+            },
+            function (callback) {
+                callback(null, 3);
+            },
+            function (callback) {
+                callback(null, obj);
+            }
+        ],
+        function (err, results) {
+            expect(results["w"]).to.eql(1);
+            expect(results["o"]).to.eql(3);
+            expect(results["d"]).to.eql(obj);
+            done();
+        },
+        ["w", "o", "o", "d"]);
+    });
 });
