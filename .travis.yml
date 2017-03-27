@@ -20,9 +20,9 @@ after_success: npm run coveralls
 
 # Needed to run Karma with Firefox on Travis
 # http://karma-runner.github.io/0.13/plus/travis.html
-#before_script:
-#  - export DISPLAY=:99.0
-#  - sh -e /etc/init.d/xvfb start
+before_script:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
 
 script:
   - npm test
