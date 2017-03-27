@@ -6,25 +6,23 @@ node_js:
   - "4"
   - "6"
   - "7"
-env:
-  matrix: BROWSER=false MAKE_TEST=false
 
 matrix:
   include:
     - node_js: "7"
       addons:
-        firefox:
-          - "45.0"
-          - "52.0"
+        firefox: "52.0"
       env: BROWSER=true MAKE_TEST=true
+env:
+  matrix: BROWSER=false MAKE_TEST=false
 
 after_success: npm run coveralls
 
 # Needed to run Karma with Firefox on Travis
 # http://karma-runner.github.io/0.13/plus/travis.html
 #before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+#  - export DISPLAY=:99.0
+#  - sh -e /etc/init.d/xvfb start
 
 script:
   - npm test
