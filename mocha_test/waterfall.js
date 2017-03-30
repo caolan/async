@@ -56,6 +56,15 @@ describe("waterfall", function () {
         ]);
     });
 
+    it('optional arguments', function (done) {
+        async.waterfall([
+            function (callback) { callback(null, 1, 2); },
+            // here a=1, b=2
+            // c, d is optional
+            function (a, b, c, d, callback) { callback(); done(); }
+        ]);
+    });
+
     it('async', function(done){
         var call_order = [];
         async.waterfall([
