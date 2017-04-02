@@ -4,12 +4,14 @@ node_js:
   - "0.10"
   - "0.12"
   - "4"
+  - "6"
+  - "7"
 
 matrix:
   include:
-    - node_js: "6"
+    - node_js: "7"
       addons:
-        firefox: "49.0"
+        firefox: "52.0"
       env: BROWSER=true MAKE_TEST=true
 env:
   matrix: BROWSER=false MAKE_TEST=false
