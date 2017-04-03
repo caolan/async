@@ -603,6 +603,35 @@ describe('queue', function(){
         q.push([]);
     });
 
+
+    // #1367
+    it('empty and not idle()', function(done) {
+        var calls = [];
+        var q = async.queue(function(task, cb) {
+            // nop
+            calls.push('process ' + task);
+            setImmediate(cb);
+        }, 1);
+
+        q.empty = function () {
+            calls.push('empty');
+            assert(q.idle() === false,
+                'tasks should be running when empty is called')
+            expect(q.running()).to.equal(1);
+        }
+
+        q.drain = function() {
+            calls.push('drain');
+            expect(calls).to.eql([
+                'empty',
+                'process 1',
+                'drain'
+            ]);
+            done();
+        };
+        q.push(1);
+    });
+
     it('saturated', function(done) {
         var saturatedCalled = false;
         var q = async.queue(function(task, cb) {
