@@ -610,7 +610,7 @@ describe('queue', function(){
         var q = async.queue(function(task, cb) {
             // nop
             calls.push('process ' + task);
-            setImmediate(cb);
+            async.setImmediate(cb);
         }, 1);
 
         q.empty = function () {
