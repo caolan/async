@@ -218,3 +218,10 @@ $ npm install --save async-es
 import waterfall from 'async-es/waterfall';
 import async from 'async-es';
 ```
+
+## Other Libraries
+
+* [`limiter`](https://www.npmjs.com/package/limiter) a package for rate-limiting based on requests per sec/hour.
+* [`neo-async`](https://www.npmjs.com/package/neo-async) an altername implementation of Async, focusing on speed.
+* [`co-async`](https://www.npmjs.com/package/co-async) a library inspired by Async for use with [`co`](https://www.npmjs.com/package/co) and generator functions.
+*  [`promise-async`](https://www.npmjs.com/package/promise-async) a version of Async where all the methods are Promisified.
