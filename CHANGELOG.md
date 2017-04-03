@@ -1,5 +1,5 @@
 # v2.3.0
-- Added support for ES2017 `async` functions.  Wherever you can pass a Node-style/CPS function that uses a callback, you can also pass an `async` function.  Previously, you had to wrap `async` functions with `asyncify`.  The caveat is that it will onyl work if `async` functions are supported nateively in your environment, transpilied implementations can't be detected.  (#1386, #1390)
+- Added support for ES2017 `async` functions.  Wherever you can pass a Node-style/CPS function that uses a callback, you can also pass an `async` function.  Previously, you had to wrap `async` functions with `asyncify`.  The caveat is that it will only work if `async` functions are supported natively in your environment, transpiled implementations can't be detected.  (#1386, #1390)
 - Small doc fix (#1392)
 
 # v2.2.0
