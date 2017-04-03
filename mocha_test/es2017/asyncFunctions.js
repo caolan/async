@@ -2,6 +2,7 @@ var async = require('../../lib');
 const expect = require('chai').expect;
 const assert = require('assert');
 
+const promiseProto = Object.getPrototypeOf(new Promise(()=>{}));
 
 module.exports = function () {
     async function asyncIdentity(val) {
@@ -32,8 +33,16 @@ module.exports = function () {
      * Collections
      */
 
-    it('should handle async functions in each', (done) => {
-        async.each(input, asyncIdentity, done);
+    it('should handle async functions in each', async () => {
+        var promise = async.each(input, asyncIdentity);
+        assert(typeof promise.then === 'function');
+        assert(Object.getPrototypeOf(promise) === promiseProto);
+        await promise;
+    });
+
+    it('should handle async functions in each (empty array)', async () => {
+        var promise = async.each([], asyncIdentity);
+        await promise;
     });
 
     it('should handle async functions in eachLimit', (done) => {
@@ -56,11 +65,9 @@ module.exports = function () {
         async.eachOfSeries(input, asyncIdentity, done);
     });
 
-    it('should handle async functions in map', (done) => {
-        async.map(input, asyncIdentity, (err, result) => {
-            expect(result).to.eql(input);
-            done(err);
-        });
+    it('should handle async functions in map', async () => {
+        var result = await async.map(input, asyncIdentity);
+        expect(result).to.eql(input);
     });
 
     it('should handle async functions in mapLimit', (done) => {
