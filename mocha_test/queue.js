@@ -761,5 +761,24 @@ describe('queue', function(){
             q.push('foo4', function () {calls.push('foo4 cb');});
         });
     });
+
+    it('remove', function(done) {
+        var result = [];
+        var q = async.queue(function(data, cb) {
+            result.push(data);
+            async.setImmediate(cb);
+        });
+
+        q.push([1, 2, 3, 4, 5]);
+
+        q.remove(function (node) {
+            return node.data === 3;
+        });
+
+        q.drain = function () {
+            expect(result).to.eql([1, 2, 4, 5]);
+            done();
+        }
+    });
 });
 
