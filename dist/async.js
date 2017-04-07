@@ -4,58 +4,23 @@
     (factory((global.async = global.async || {})));
 }(this, (function (exports) { 'use strict';
 
-/**
- * A faster alternative to `Function#apply`, this function invokes `func`
- * with the `this` binding of `thisArg` and the arguments of `args`.
- *
- * @private
- * @param {Function} func The function to invoke.
- * @param {*} thisArg The `this` binding of `func`.
- * @param {Array} args The arguments to invoke `func` with.
- * @returns {*} Returns the result of `func`.
- */
-function apply(func, thisArg, args) {
-  switch (args.length) {
-    case 0: return func.call(thisArg);
-    case 1: return func.call(thisArg, args[0]);
-    case 2: return func.call(thisArg, args[0], args[1]);
-    case 3: return func.call(thisArg, args[0], args[1], args[2]);
-  }
-  return func.apply(thisArg, args);
+function slice(arrayLike, start) {
+    start = start | 0;
+    var newLen = Math.max(arrayLike.length - start, 0);
+    var newArr = Array(newLen);
+    for (var idx = 0; idx < newLen; idx++) {
+        newArr[idx] = arrayLike[start + idx];
+    }
+    return newArr;
 }
 
-/* Built-in method references for those with the same name as other `lodash` methods. */
-var nativeMax = Math.max;
-
-/**
- * A specialized version of `baseRest` which transforms the rest array.
- *
- * @private
- * @param {Function} func The function to apply a rest parameter to.
- * @param {number} [start=func.length-1] The start position of the rest parameter.
- * @param {Function} transform The rest array transform.
- * @returns {Function} Returns the new function.
- */
-function overRest$1(func, start, transform) {
-  start = nativeMax(start === undefined ? (func.length - 1) : start, 0);
-  return function() {
-    var args = arguments,
-        index = -1,
-        length = nativeMax(args.length - start, 0),
-        array = Array(length);
-
-    while (++index < length) {
-      array[index] = args[start + index];
-    }
-    index = -1;
-    var otherArgs = Array(start + 1);
-    while (++index < start) {
-      otherArgs[index] = args[index];
-    }
-    otherArgs[start] = transform(array);
-    return apply(func, this, otherArgs);
-  };
-}
+var initialParams = function (fn) {
+    return function () /*...args, callback*/{
+        var args = slice(arguments);
+        var callback = args.pop();
+        fn.call(this, args, callback);
+    };
+};
 
 /**
  * This method returns the first argument it receives.
@@ -76,19 +41,6 @@ function overRest$1(func, start, transform) {
 function identity(value) {
   return value;
 }
-
-// Lodash rest function without function.toString()
-// remappings
-function rest(func, start) {
-    return overRest$1(func, start, identity);
-}
-
-var initialParams = function (fn) {
-    return rest(function (args /*..., callback*/) {
-        var callback = args.pop();
-        fn.call(this, args, callback);
-    });
-};
 
 /**
  * Checks if `value` is the
@@ -221,7 +173,8 @@ function wrapAsync(asyncFn) {
 var wrapAsync$1 = supportsAsync() ? wrapAsync : identity;
 
 function applyEach$1(eachfn) {
-    return rest(function (fns, args) {
+    return function (fns /*, ...args*/) {
+        var args = slice(arguments, 1);
         var go = initialParams(function (args, callback) {
             var that = this;
             return eachfn(fns, function (fn, cb) {
@@ -233,7 +186,7 @@ function applyEach$1(eachfn) {
         } else {
             return go;
         }
-    });
+    };
 }
 
 /** Detect free variable `global` from Node.js. */
@@ -1264,10 +1217,11 @@ var applyEachSeries = applyEach$1(mapSeries);
  * @memberOf module:Utils
  * @method
  * @category Util
- * @param {Function} function - The function you want to eventually apply all
+ * @param {Function} fn - The function you want to eventually apply all
  * arguments to. Invokes with (arguments...).
  * @param {...*} arguments... - Any number of arguments to automatically apply
  * when the continuation is called.
+ * @returns {Function} the partially-applied function
  * @example
  *
  * // using apply
@@ -1296,11 +1250,13 @@ var applyEachSeries = applyEach$1(mapSeries);
  * two
  * three
  */
-var apply$2 = rest(function (fn, args) {
-    return rest(function (callArgs) {
+var apply = function (fn /*, args*/) {
+    var args = slice(arguments, 1);
+    return function () /*callArgs*/{
+        var callArgs = slice(arguments);
         return fn.apply(null, args.concat(callArgs));
-    });
-});
+    };
+};
 
 /**
  * A specialized version of `_.forEach` for arrays without support for
@@ -1620,26 +1576,26 @@ var auto = function (tasks, concurrency, callback) {
     function runTask(key, task) {
         if (hasError) return;
 
-        var taskCallback = onlyOnce(rest(function (err, args) {
+        var taskCallback = onlyOnce(function (err, result) {
             runningTasks--;
-            if (args.length <= 1) {
-                args = args[0];
+            if (arguments.length > 2) {
+                result = slice(arguments, 1);
             }
             if (err) {
                 var safeResults = {};
                 baseForOwn(results, function (val, rkey) {
                     safeResults[rkey] = val;
                 });
-                safeResults[key] = args;
+                safeResults[key] = result;
                 hasError = true;
                 listeners = Object.create(null);
 
                 callback(err, safeResults);
             } else {
-                results[key] = args;
+                results[key] = result;
                 taskComplete(key);
             }
-        }));
+        });
 
         runningTasks++;
         var taskFn = wrapAsync$1(task[task.length - 1]);
@@ -2131,11 +2087,12 @@ function fallback(fn) {
 }
 
 function wrap(defer) {
-    return rest(function (fn, args) {
+    return function (fn /*, ...args*/) {
+        var args = slice(arguments, 1);
         defer(function () {
             fn.apply(null, args);
         });
-    });
+    };
 }
 
 var _defer;
@@ -2249,7 +2206,7 @@ function queue(worker, concurrency, payload) {
     }
 
     function _next(tasks) {
-        return rest(function (args) {
+        return function (err) {
             numRunning -= 1;
 
             for (var i = 0, l = tasks.length; i < l; i++) {
@@ -2259,10 +2216,10 @@ function queue(worker, concurrency, payload) {
                     workersList.splice(index);
                 }
 
-                task.callback.apply(task, args);
+                task.callback.apply(task, arguments);
 
-                if (args[0] != null) {
-                    q.error(args[0], task.data);
+                if (err != null) {
+                    q.error(err, task.data);
                 }
             }
 
@@ -2274,7 +2231,7 @@ function queue(worker, concurrency, payload) {
                 q.drain();
             }
             q.process();
-        });
+        };
     }
 
     var isProcessing = false;
@@ -2318,11 +2275,12 @@ function queue(worker, concurrency, payload) {
                     data.push(node.data);
                 }
 
+                numRunning += 1;
+                workersList.push(tasks[0]);
+
                 if (q._tasks.length === 0) {
                     q.empty();
                 }
-                numRunning += 1;
-                workersList.push(tasks[0]);
 
                 if (numRunning === q.concurrency) {
                     q.saturated();
@@ -2550,9 +2508,10 @@ function reduce(coll, memo, iteratee, callback) {
  *     });
  * });
  */
-var seq$1 = rest(function seq(functions) {
-    var _functions = arrayMap(functions, wrapAsync$1);
-    return rest(function (args) {
+function seq() /*...functions*/{
+    var _functions = arrayMap(arguments, wrapAsync$1);
+    return function () /*...args*/{
+        var args = slice(arguments);
         var that = this;
 
         var cb = args[args.length - 1];
@@ -2563,14 +2522,15 @@ var seq$1 = rest(function seq(functions) {
         }
 
         reduce(_functions, args, function (newargs, fn, cb) {
-            fn.apply(that, newargs.concat(rest(function (err, nextargs) {
+            fn.apply(that, newargs.concat(function (err /*, ...nextargs*/) {
+                var nextargs = slice(arguments, 1);
                 cb(err, nextargs);
-            })));
+            }));
         }, function (err, results) {
             cb.apply(that, [err].concat(results));
         });
-    });
-});
+    };
+}
 
 /**
  * Creates a function which is a composition of the passed asynchronous
@@ -2607,9 +2567,9 @@ var seq$1 = rest(function seq(functions) {
  *     // result now equals 15
  * });
  */
-var compose = rest(function (args) {
-  return seq$1.apply(null, args.reverse());
-});
+var compose = function () /*...args*/{
+  return seq.apply(null, slice(arguments).reverse());
+};
 
 function concat$1(eachfn, arr, fn, callback) {
     var result = [];
@@ -2718,12 +2678,14 @@ var concatSeries = doSeries(concat$1);
  *     //...
  * }, callback);
  */
-var constant = rest(function (values) {
+var constant = function () /*...values*/{
+    var values = slice(arguments);
     var args = [null].concat(values);
-    return initialParams(function (ignoredArgs, callback) {
+    return function () /*...ignoredArgs, callback*/{
+        var callback = arguments[arguments.length - 1];
         return callback.apply(this, args);
-    });
-});
+    };
+};
 
 function _createTester(check, getResult) {
     return function (eachfn, arr, iteratee, cb) {
@@ -2840,8 +2802,10 @@ var detectLimit = doParallelLimit(_createTester(identity, _findGetResult));
 var detectSeries = doLimit(detectLimit, 1);
 
 function consoleFunc(name) {
-    return rest(function (fn, args) {
-        wrapAsync$1(fn).apply(null, args.concat(rest(function (err, args) {
+    return function (fn /*, ...args*/) {
+        var args = slice(arguments, 1);
+        wrapAsync$1(fn).apply(null, args.concat(function (err /*, ...args*/) {
+            var args = slice(arguments, 1);
             if (typeof console === 'object') {
                 if (err) {
                     if (console.error) {
@@ -2853,8 +2817,8 @@ function consoleFunc(name) {
                     });
                 }
             }
-        })));
-    });
+        }));
+    };
 }
 
 /**
@@ -2913,11 +2877,12 @@ function doDuring(fn, test, callback) {
     var _fn = wrapAsync$1(fn);
     var _test = wrapAsync$1(test);
 
-    var next = rest(function (err, args) {
+    function next(err /*, ...args*/) {
         if (err) return callback(err);
+        var args = slice(arguments, 1);
         args.push(check);
         _test.apply(this, args);
-    });
+    }
 
     function check(err, truth) {
         if (err) return callback(err);
@@ -2953,11 +2918,12 @@ function doDuring(fn, test, callback) {
 function doWhilst(iteratee, test, callback) {
     callback = onlyOnce(callback || noop);
     var _iteratee = wrapAsync$1(iteratee);
-    var next = rest(function (err, args) {
+    var next = function (err /*, ...args*/) {
         if (err) return callback(err);
+        var args = slice(arguments, 1);
         if (test.apply(this, args)) return _iteratee(next);
         callback.apply(null, [null].concat(args));
-    });
+    };
     _iteratee(next);
 }
 
@@ -3750,14 +3716,15 @@ function memoize(fn, hasher) {
             queues[key].push(callback);
         } else {
             queues[key] = [callback];
-            _fn.apply(null, args.concat(rest(function (args) {
+            _fn.apply(null, args.concat(function () /*args*/{
+                var args = slice(arguments);
                 memo[key] = args;
                 var q = queues[key];
                 delete queues[key];
                 for (var i = 0, l = q.length; i < l; i++) {
                     q[i].apply(null, args);
                 }
-            })));
+            }));
         }
     });
     memoized.memo = memo;
@@ -3813,13 +3780,13 @@ function _parallel(eachfn, tasks, callback) {
     var results = isArrayLike(tasks) ? [] : {};
 
     eachfn(tasks, function (task, key, callback) {
-        wrapAsync$1(task)(rest(function (err, args) {
-            if (args.length <= 1) {
-                args = args[0];
+        wrapAsync$1(task)(function (err, result) {
+            if (arguments.length > 2) {
+                result = slice(arguments, 1);
             }
-            results[key] = args;
+            results[key] = result;
             callback(err);
-        }));
+        });
     }, function (err) {
         callback(err, results);
     });
@@ -4143,8 +4110,6 @@ function race(tasks, callback) {
     }
 }
 
-var slice = Array.prototype.slice;
-
 /**
  * Same as [`reduce`]{@link module:Collections.reduce}, only operates on `array` in reverse order.
  *
@@ -4168,7 +4133,7 @@ var slice = Array.prototype.slice;
  * (err, result).
  */
 function reduceRight(array, memo, iteratee, callback) {
-  var reversed = slice.call(array).reverse();
+  var reversed = slice(array).reverse();
   reduce(reversed, memo, iteratee, callback);
 }
 
@@ -4214,23 +4179,19 @@ function reduceRight(array, memo, iteratee, callback) {
 function reflect(fn) {
     var _fn = wrapAsync$1(fn);
     return initialParams(function reflectOn(args, reflectCallback) {
-        args.push(rest(function callback(err, cbArgs) {
+        args.push(function callback(err, cbArg) {
             if (err) {
                 reflectCallback(null, {
                     error: err
                 });
             } else {
-                var value = null;
-                if (cbArgs.length === 1) {
-                    value = cbArgs[0];
-                } else if (cbArgs.length > 1) {
-                    value = cbArgs;
-                }
+                var value = cbArg;
+                if (arguments.length > 2) value = slice(arguments, 1);
                 reflectCallback(null, {
                     value: value
                 });
             }
-        }));
+        });
 
         return _fn.apply(this, args);
     });
@@ -4882,7 +4843,7 @@ function timeout(asyncFn, milliseconds, info) {
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeCeil = Math.ceil;
-var nativeMax$1 = Math.max;
+var nativeMax = Math.max;
 
 /**
  * The base implementation of `_.range` and `_.rangeRight` which doesn't
@@ -4897,7 +4858,7 @@ var nativeMax$1 = Math.max;
  */
 function baseRange(start, end, step, fromRight) {
   var index = -1,
-      length = nativeMax$1(nativeCeil((end - start) / (step || 1)), 0),
+      length = nativeMax(nativeCeil((end - start) / (step || 1)), 0),
       result = Array(length);
 
   while (length--) {
@@ -5093,11 +5054,11 @@ function whilst(test, iteratee, callback) {
     callback = onlyOnce(callback || noop);
     var _iteratee = wrapAsync$1(iteratee);
     if (!test()) return callback(null);
-    var next = rest(function (err, args) {
+    var next = function (err /*, ...args*/) {
         if (err) return callback(err);
         if (test()) return _iteratee(next);
-        callback.apply(null, [null].concat(args));
-    });
+        callback.apply(null, [null].concat(slice(arguments, 1)));
+    };
     _iteratee(next);
 }
 
@@ -5191,26 +5152,25 @@ var waterfall = function (tasks, callback) {
     if (!isArray(tasks)) return callback(new Error('First argument to waterfall must be an array of functions'));
     if (!tasks.length) return callback();
     var taskIndex = 0;
+    var args = [];
 
-    function nextTask(args) {
-        if (taskIndex === tasks.length) {
-            return callback.apply(null, [null].concat(args));
-        }
-
-        var taskCallback = onlyOnce(rest(function (err, args) {
-            if (err) {
-                return callback.apply(null, [err].concat(args));
-            }
-            nextTask(args);
-        }));
-
+    function nextTask() {
+        var task = wrapAsync$1(tasks[taskIndex++]);
+        var taskCallback = onlyOnce(next);
         args.push(taskCallback);
 
-        var task = wrapAsync$1(tasks[taskIndex++]);
         task.apply(null, args);
     }
 
-    nextTask([]);
+    function next(err /*, ...args*/) {
+        if (err || taskIndex === tasks.length) {
+            return callback.apply(null, arguments);
+        }
+        args = slice(arguments, 1);
+        nextTask();
+    }
+
+    nextTask();
 };
 
 /**
@@ -5280,7 +5240,7 @@ var waterfall = function (tasks, callback) {
 var index = {
   applyEach: applyEach,
   applyEachSeries: applyEachSeries,
-  apply: apply$2,
+  apply: apply,
   asyncify: asyncify,
   auto: auto,
   autoInject: autoInject,
@@ -5337,7 +5297,7 @@ var index = {
   rejectSeries: rejectSeries,
   retry: retry,
   retryable: retryable,
-  seq: seq$1,
+  seq: seq,
   series: series,
   setImmediate: setImmediate$1,
   some: some,
@@ -5375,7 +5335,7 @@ var index = {
 exports['default'] = index;
 exports.applyEach = applyEach;
 exports.applyEachSeries = applyEachSeries;
-exports.apply = apply$2;
+exports.apply = apply;
 exports.asyncify = asyncify;
 exports.auto = auto;
 exports.autoInject = autoInject;
@@ -5432,7 +5392,7 @@ exports.rejectLimit = rejectLimit;
 exports.rejectSeries = rejectSeries;
 exports.retry = retry;
 exports.retryable = retryable;
-exports.seq = seq$1;
+exports.seq = seq;
 exports.series = series;
 exports.setImmediate = setImmediate$1;
 exports.some = some;

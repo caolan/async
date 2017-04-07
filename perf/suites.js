@@ -234,6 +234,28 @@ module.exports = [{
         async.waterfall(tasks, done);
     }
 }, {
+    name: "auto",
+    args: [
+        [5],
+        [10],
+        [100]
+    ],
+    setup: function setup(count) {
+        tasks = {
+            dep1: function (cb) { cb(null, 1); }
+        };
+        _.times(count, function(n) {
+            var task = ['dep' + (n+1), function(results, cb) {
+                setImmediate(cb, null, n);
+            }];
+            if (n > 2) task.unshift('dep' + n);
+            tasks['dep' + (n+2)] = task;
+        });
+    },
+    fn: function(async, done) {
+        async.auto(tasks, done);
+    }
+}, {
     name: "queue",
     args: [
         [1000],

@@ -213,8 +213,7 @@ function cloneVersion(tag, callback) {
     fs.open(versionDir + "/package.json", "r", function (err, handle) {
         if (!err) {
             // version has already been cloned
-            fs.close(handle);
-            return callback();
+            return fs.close(handle, callback);
         }
 
         var repoPath = path.join(__dirname, "..");
