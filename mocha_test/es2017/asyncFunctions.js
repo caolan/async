@@ -615,6 +615,18 @@ module.exports = function () {
         })
     });
 
+    it('should handle async functons in tryEach', (done) => {
+        async.tryEach([
+            async () => { throw new Error('fail1'); },
+            async () => { throw new Error('fail2'); },
+            async () => 5,
+            async () => { throw new Error('shoult not get here'); }
+        ], (err, result) => {
+            expect(result).to.eql(5);
+            done();
+        })
+    });
+
     /**
      * Utils
      */

@@ -2,7 +2,7 @@ var async = require('../lib');
 var expect = require('chai').expect;
 var assert = require('assert');
 
-describe('try', function () {
+describe('tryEach', function () {
     it('no callback', function () {
         async.tryEach([]);
     });
