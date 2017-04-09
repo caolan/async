@@ -1250,7 +1250,7 @@ var applyEachSeries = applyEach$1(mapSeries);
  * two
  * three
  */
-var apply = function (fn /*, args*/) {
+var apply = function (fn /*, ...args*/) {
     var args = slice(arguments, 1);
     return function () /*callArgs*/{
         var callArgs = slice(arguments);
@@ -2130,7 +2130,10 @@ DLL.prototype.removeLink = function (node) {
     return node;
 };
 
-DLL.prototype.empty = DLL;
+DLL.prototype.empty = function () {
+    while (this.head) this.shift();
+    return this;
+};
 
 DLL.prototype.insertAfter = function (node, newNode) {
     newNode.prev = node;
@@ -2162,6 +2165,28 @@ DLL.prototype.shift = function () {
 
 DLL.prototype.pop = function () {
     return this.tail && this.removeLink(this.tail);
+};
+
+DLL.prototype.toArray = function () {
+    var arr = Array(this.length);
+    var curr = this.head;
+    for (var idx = 0; idx < this.length; idx++) {
+        arr[idx] = curr.data;
+        curr = curr.next;
+    }
+    return arr;
+};
+
+DLL.prototype.remove = function (testFn) {
+    var curr = this.head;
+    while (!!curr) {
+        var next = curr.next;
+        if (testFn(curr)) {
+            this.removeLink(curr);
+        }
+        curr = next;
+    }
+    return this;
 };
 
 function queue(worker, concurrency, payload) {
@@ -2256,6 +2281,9 @@ function queue(worker, concurrency, payload) {
         },
         unshift: function (data, callback) {
             _insert(data, true, callback);
+        },
+        remove: function (testFn) {
+            q._tasks.remove(testFn);
         },
         process: function () {
             // Avoid trying to start too many processing operations. This can occur
@@ -2804,7 +2832,7 @@ var detectSeries = doLimit(detectLimit, 1);
 function consoleFunc(name) {
     return function (fn /*, ...args*/) {
         var args = slice(arguments, 1);
-        wrapAsync$1(fn).apply(null, args.concat(function (err /*, ...args*/) {
+        args.push(function (err /*, ...args*/) {
             var args = slice(arguments, 1);
             if (typeof console === 'object') {
                 if (err) {
@@ -2817,7 +2845,8 @@ function consoleFunc(name) {
                     });
                 }
             }
-        }));
+        });
+        wrapAsync$1(fn).apply(null, args);
     };
 }
 
@@ -3911,6 +3940,12 @@ function parallelLimit$1(tasks, limit, callback) {
  * task in the list. Invoke with `queue.push(task, [callback])`,
  * @property {Function} unshift - add a new task to the front of the `queue`.
  * Invoke with `queue.unshift(task, [callback])`.
+ * @property {Function} remove - remove items from the queue that match a test
+ * function.  The test function will be passed an object with a `data` property,
+ * and a `priority` property, if this is a
+ * [priorityQueue]{@link module:ControlFlow.priorityQueue} object.
+ * Invoked with `queue.remove(testFn)`, where `testFn` is of the form
+ * `function ({data, priority}) {}` and returns a Boolean.
  * @property {Function} saturated - a callback that is called when the number of
  * running workers hits the `concurrency` limit, and further tasks will be
  * queued.
@@ -4179,17 +4214,17 @@ function reduceRight(array, memo, iteratee, callback) {
 function reflect(fn) {
     var _fn = wrapAsync$1(fn);
     return initialParams(function reflectOn(args, reflectCallback) {
-        args.push(function callback(err, cbArg) {
-            if (err) {
-                reflectCallback(null, {
-                    error: err
-                });
+        args.push(function callback(error, cbArg) {
+            if (error) {
+                reflectCallback(null, { error: error });
             } else {
-                var value = cbArg;
-                if (arguments.length > 2) value = slice(arguments, 1);
-                reflectCallback(null, {
-                    value: value
-                });
+                var value;
+                if (arguments.length <= 2) {
+                    value = cbArg;
+                } else {
+                    value = slice(arguments, 1);
+                }
+                reflectCallback(null, { value: value });
             }
         });
 
@@ -4998,6 +5033,62 @@ function transform(coll, accumulator, iteratee, callback) {
 }
 
 /**
+ * It runs each task in series but stops whenever any of the functions were
+ * successful. If one of the tasks were successful, the `callback` will be
+ * passed the result of the successful task. If all tasks fail, the callback
+ * will be passed the error and result (if any) of the final attempt.
+ *
+ * @name tryEach
+ * @static
+ * @memberOf module:ControlFlow
+ * @method
+ * @category Control Flow
+ * @param {Array|Iterable|Object} tasks - A collection containing functions to
+ * run, each function is passed a `callback(err, result)` it must call on
+ * completion with an error `err` (which can be `null`) and an optional `result`
+ * value.
+ * @param {Function} [callback] - An optional callback which is called when one
+ * of the tasks has succeeded, or all have failed. It receives the `err` and
+ * `result` arguments of the last attempt at completing the `task`. Invoked with
+ * (err, results).
+ * @example
+ * async.try([
+ *     function getDataFromFirstWebsite(callback) {
+ *         // Try getting the data from the first website
+ *         callback(err, data);
+ *     },
+ *     function getDataFromSecondWebsite(callback) {
+ *         // First website failed,
+ *         // Try getting the data from the backup website
+ *         callback(err, data);
+ *     }
+ * ],
+ * // optional callback
+ * function(err, results) {
+ *     Now do something with the data.
+ * });
+ *
+ */
+function tryEach(tasks, callback) {
+    var error = null;
+    var result;
+    callback = callback || noop;
+    eachSeries(tasks, function (task, callback) {
+        wrapAsync$1(task)(function (err, res /*, ...args*/) {
+            if (arguments.length > 2) {
+                result = slice(arguments, 1);
+            } else {
+                result = res;
+            }
+            error = err;
+            callback(!err);
+        });
+    }, function () {
+        callback(error, result);
+    });
+}
+
+/**
  * Undoes a [memoize]{@link module:Utils.memoize}d function, reverting it to the original,
  * unmemoized form. Handy for testing.
  *
@@ -5057,7 +5148,8 @@ function whilst(test, iteratee, callback) {
     var next = function (err /*, ...args*/) {
         if (err) return callback(err);
         if (test()) return _iteratee(next);
-        callback.apply(null, [null].concat(slice(arguments, 1)));
+        var args = slice(arguments, 1);
+        callback.apply(null, [null].concat(args));
     };
     _iteratee(next);
 }
@@ -5152,13 +5244,10 @@ var waterfall = function (tasks, callback) {
     if (!isArray(tasks)) return callback(new Error('First argument to waterfall must be an array of functions'));
     if (!tasks.length) return callback();
     var taskIndex = 0;
-    var args = [];
 
-    function nextTask() {
+    function nextTask(args) {
         var task = wrapAsync$1(tasks[taskIndex++]);
-        var taskCallback = onlyOnce(next);
-        args.push(taskCallback);
-
+        args.push(onlyOnce(next));
         task.apply(null, args);
     }
 
@@ -5166,11 +5255,10 @@ var waterfall = function (tasks, callback) {
         if (err || taskIndex === tasks.length) {
             return callback.apply(null, arguments);
         }
-        args = slice(arguments, 1);
-        nextTask();
+        nextTask(slice(arguments, 1));
     }
 
-    nextTask();
+    nextTask([]);
 };
 
 /**
@@ -5309,6 +5397,7 @@ var index = {
   timesLimit: timeLimit,
   timesSeries: timesSeries,
   transform: transform,
+  tryEach: tryEach,
   unmemoize: unmemoize,
   until: until,
   waterfall: waterfall,
@@ -5404,6 +5493,7 @@ exports.times = times;
 exports.timesLimit = timeLimit;
 exports.timesSeries = timesSeries;
 exports.transform = transform;
+exports.tryEach = tryEach;
 exports.unmemoize = unmemoize;
 exports.until = until;
 exports.waterfall = waterfall;
