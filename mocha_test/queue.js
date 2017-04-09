@@ -10,7 +10,7 @@ describe('queue', function(){
     it('basics', function(done) {
 
         var call_order = [];
-        var delays = [40,20,60,20];
+        var delays = [40,10,60,10];
 
 
         // worker1: --1-4
@@ -66,7 +66,7 @@ describe('queue', function(){
 
     it('default concurrency', function(done) {
         var call_order = [],
-            delays = [40,20,60,20];
+            delays = [40,10,60,10];
 
         // order of completion: 1,2,3,4
 
@@ -222,16 +222,21 @@ describe('queue', function(){
     it('push without callback', function(done) {
         this.retries(3); // test can be flakey
 
-        var call_order = [],
-            delays = [40,20,60,20];
+        var call_order = [];
+        var delays = [40,10,60,10];
+        var concurrencyList = [];
+        var running = 0;
 
         // worker1: --1-4
         // worker2: -2---3
         // order of completion: 2,1,4,3
 
         var q = async.queue(function (task, callback) {
+            running++;
+            concurrencyList.push(running);
             setTimeout(function () {
                 call_order.push('process ' + task);
+                running--;
                 callback('error', 'arg');
             }, delays.shift());
         }, 2);
@@ -242,6 +247,8 @@ describe('queue', function(){
         q.push(4);
 
         q.drain = function () {
+            expect(running).to.eql(0);
+            expect(concurrencyList).to.eql([1, 2, 2, 2]);
             expect(call_order).to.eql([
                 'process 2',
                 'process 1',
@@ -293,7 +300,7 @@ describe('queue', function(){
 
     it('bulk task', function(done) {
         var call_order = [],
-            delays = [40,20,60,20];
+            delays = [40,10,60,10];
 
         // worker1: --1-4
         // worker2: -2---3
@@ -353,58 +360,58 @@ describe('queue', function(){
     });
 
     it('pause', function(done) {
-        this.retries(3); // sometimes can be flakey to timing issues
-
-        var call_order = [],
-            task_timeout = 80,
-            pause_timeout = task_timeout * 2.5,
-            resume_timeout = task_timeout * 4.5,
-            tasks = [ 1, 2, 3, 4, 5, 6 ],
-
-            elapsed = (function () {
-                var start = Date.now();
-                return function () {
-                    return Math.round((Date.now() - start) / task_timeout) * task_timeout;
-                };
-            })();
+        var call_order = [];
+        var running = 0;
+        var concurrencyList = [];
+        var pauseCalls = ['process 1', 'process 2', 'process 3'];
 
         var q = async.queue(function (task, callback) {
+            running++;
             call_order.push('process ' + task);
-            call_order.push('timeout ' + elapsed());
-            callback();
-        });
-
-        function pushTask () {
-            var task = tasks.shift();
-            if (!task) { return; }
+            concurrencyList.push(running);
             setTimeout(function () {
-                q.push(task);
-                pushTask();
-            }, task_timeout);
-        }
-        pushTask();
+                running--;
+                callback();
+            }, 10)
+        }, 2);
 
-        setTimeout(function () {
+        q.push(1);
+        q.push(2, after2);
+        q.push(3);
+
+        function after2() {
             q.pause();
-            expect(q.paused).to.equal(true);
-        }, pause_timeout);
+            expect(concurrencyList).to.eql([1, 2, 2]);
+            expect(call_order).to.eql(pauseCalls);
 
-        setTimeout(function () {
+            setTimeout(whilePaused, 5);
+            setTimeout(afterPause, 10);
+        }
+
+        function whilePaused() {
+            q.push(4);
+        }
+
+        function afterPause() {
+            expect(concurrencyList).to.eql([1, 2, 2]);
+            expect(call_order).to.eql(pauseCalls);
             q.resume();
-            expect(q.paused).to.equal(false);
-        }, resume_timeout);
-
-        setTimeout(function () {
+            q.push(5);
+            q.push(6);
+            q.drain = drain;
+        }
+        function drain () {
+            expect(concurrencyList).to.eql([1, 2, 2, 1, 2, 2]);
             expect(call_order).to.eql([
-                'process 1', 'timeout ' + task_timeout,
-                'process 2', 'timeout ' + task_timeout * 2,
-                'process 3', 'timeout ' + task_timeout * 5,
-                'process 4', 'timeout ' + task_timeout * 5,
-                'process 5', 'timeout ' + task_timeout * 5,
-                'process 6', 'timeout ' + task_timeout * 6
+                'process 1',
+                'process 2',
+                'process 3',
+                'process 4',
+                'process 5',
+                'process 6'
             ]);
             done();
-        }, (task_timeout * tasks.length) + pause_timeout + resume_timeout);
+        }
     });
 
     it('pause in worker with concurrency', function(done) {
@@ -436,57 +443,6 @@ describe('queue', function(){
         };
     });
 
-    it('pause with concurrency', function(done) {
-        var call_order = [],
-            task_timeout = 40,
-            pause_timeout = task_timeout / 2,
-            resume_timeout = task_timeout * 2.75,
-            tasks = [ 1, 2, 3, 4, 5, 6 ],
-
-            elapsed = (function () {
-                var start = Date.now();
-                return function () {
-                    return Math.round((Date.now() - start) / task_timeout) * task_timeout;
-                };
-            })();
-
-        var q = async.queue(function (task, callback) {
-            setTimeout(function () {
-                call_order.push('process ' + task);
-                call_order.push('timeout ' + elapsed());
-                callback();
-            }, task_timeout);
-        }, 2);
-
-        q.push(tasks);
-
-        setTimeout(function () {
-            q.pause();
-            expect(q.paused).to.equal(true);
-        }, pause_timeout);
-
-        setTimeout(function () {
-            q.resume();
-            expect(q.paused).to.equal(false);
-        }, resume_timeout);
-
-        setTimeout(function () {
-            expect(q.running()).to.equal(2);
-        }, resume_timeout + 10);
-
-        setTimeout(function () {
-            expect(call_order).to.eql([
-                'process 1', 'timeout ' + task_timeout,
-                'process 2', 'timeout ' + task_timeout,
-                'process 3', 'timeout ' + task_timeout * 4,
-                'process 4', 'timeout ' + task_timeout * 4,
-                'process 5', 'timeout ' + task_timeout * 5,
-                'process 6', 'timeout ' + task_timeout * 5
-            ]);
-            done();
-        }, (task_timeout * tasks.length) + pause_timeout + resume_timeout);
-    });
-
     it('start paused', function(done) {
         var q = async.queue(function (task, callback) {
             setTimeout(function () {
@@ -498,6 +454,7 @@ describe('queue', function(){
         q.push([1, 2, 3]);
 
         setTimeout(function () {
+            expect(q.running()).to.equal(0);
             q.resume();
         }, 5);
 
