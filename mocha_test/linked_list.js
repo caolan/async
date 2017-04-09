@@ -12,57 +12,57 @@ describe('DoublyLinkedList', function () {
         expect(list.toArray()).to.eql([0, 1, 2, 3, 4]);
     });
 
-    it('filter', function() {
+    it('remove', function() {
         var list = new DLL();
 
         for (var i = 0; i < 5; i++) {
             list.push({data: i});
         }
 
-        list.filter(function (node) {
-            return node.data !== 3;
+        list.remove(function (node) {
+            return node.data === 3;
         })
 
         expect(list.toArray()).to.eql([0, 1, 2, 4]);
     });
 
-    it('filter (head)', function() {
+    it('remove (head)', function() {
         var list = new DLL();
 
         for (var i = 0; i < 5; i++) {
             list.push({data: i});
         }
 
-        list.filter(function (node) {
-            return node.data !== 0;
+        list.remove(function (node) {
+            return node.data === 0;
         })
 
         expect(list.toArray()).to.eql([1, 2, 3, 4]);
     });
 
-    it('filter (tail)', function() {
+    it('remove (tail)', function() {
         var list = new DLL();
 
         for (var i = 0; i < 5; i++) {
             list.push({data: i});
         }
 
-        list.filter(function (node) {
-            return node.data !== 4;
+        list.remove(function (node) {
+            return node.data === 4;
         })
 
         expect(list.toArray()).to.eql([0, 1, 2, 3]);
     });
 
-    it('filter (all)', function() {
+    it('remove (all)', function() {
         var list = new DLL();
 
         for (var i = 0; i < 5; i++) {
             list.push({data: i});
         }
 
-        list.filter(function (node) {
-            return node.data > 5;
+        list.remove(function (node) {
+            return node.data < 5;
         })
 
         expect(list.toArray()).to.eql([]);
