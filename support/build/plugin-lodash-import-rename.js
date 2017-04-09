@@ -1,7 +1,7 @@
-import _ from 'lodash';
-import {dirname, sep} from 'path';
+const _ = require('lodash');
+const {dirname, sep} = require('path');
 
-export default function() {
+module.exports = function() {
     return {
         visitor: {
 

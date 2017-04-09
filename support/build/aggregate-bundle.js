@@ -1,4 +1,4 @@
-import aggregateBuild from './aggregate-build';
+const aggregateBuild = require('./aggregate-build');
 
 aggregateBuild({
     es6: true,
