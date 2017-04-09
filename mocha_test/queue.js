@@ -10,7 +10,7 @@ describe('queue', function(){
     it('basics', function(done) {
 
         var call_order = [];
-        var delays = [40,20,60,20];
+        var delays = [40,10,60,10];
 
 
         // worker1: --1-4
@@ -66,7 +66,7 @@ describe('queue', function(){
 
     it('default concurrency', function(done) {
         var call_order = [],
-            delays = [40,20,60,20];
+            delays = [40,10,60,10];
 
         // order of completion: 1,2,3,4
 
@@ -300,7 +300,7 @@ describe('queue', function(){
 
     it('bulk task', function(done) {
         var call_order = [],
-            delays = [40,20,60,20];
+            delays = [40,10,60,10];
 
         // worker1: --1-4
         // worker2: -2---3
@@ -443,57 +443,6 @@ describe('queue', function(){
         };
     });
 
-    it('pause with concurrency', function(done) {
-        var call_order = [],
-            task_timeout = 40,
-            pause_timeout = task_timeout / 2,
-            resume_timeout = task_timeout * 2.75,
-            tasks = [ 1, 2, 3, 4, 5, 6 ],
-
-            elapsed = (function () {
-                var start = Date.now();
-                return function () {
-                    return Math.round((Date.now() - start) / task_timeout) * task_timeout;
-                };
-            })();
-
-        var q = async.queue(function (task, callback) {
-            setTimeout(function () {
-                call_order.push('process ' + task);
-                call_order.push('timeout ' + elapsed());
-                callback();
-            }, task_timeout);
-        }, 2);
-
-        q.push(tasks);
-
-        setTimeout(function () {
-            q.pause();
-            expect(q.paused).to.equal(true);
-        }, pause_timeout);
-
-        setTimeout(function () {
-            q.resume();
-            expect(q.paused).to.equal(false);
-        }, resume_timeout);
-
-        setTimeout(function () {
-            expect(q.running()).to.equal(2);
-        }, resume_timeout + 10);
-
-        setTimeout(function () {
-            expect(call_order).to.eql([
-                'process 1', 'timeout ' + task_timeout,
-                'process 2', 'timeout ' + task_timeout,
-                'process 3', 'timeout ' + task_timeout * 4,
-                'process 4', 'timeout ' + task_timeout * 4,
-                'process 5', 'timeout ' + task_timeout * 5,
-                'process 6', 'timeout ' + task_timeout * 5
-            ]);
-            done();
-        }, (task_timeout * tasks.length) + pause_timeout + resume_timeout);
-    });
-
     it('start paused', function(done) {
         var q = async.queue(function (task, callback) {
             setTimeout(function () {
@@ -505,6 +454,7 @@ describe('queue', function(){
         q.push([1, 2, 3]);
 
         setTimeout(function () {
+            expect(q.running()).to.equal(0);
             q.resume();
         }, 5);
 
