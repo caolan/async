@@ -7,7 +7,6 @@ export PATH := ./node_modules/.bin/:$(PATH):./bin/
 
 PACKAGE = asyncjs
 REQUIRE_NAME = async
-BABEL_NODE = babel-node
 UGLIFY = uglifyjs
 XYZ = support/xyz.sh --repo git@github.com:caolan/async.git
 
@@ -44,14 +43,14 @@ lint:
 build-bundle: build-modules $(UMD_BUNDLE) $(CJS_BUNDLE)
 
 build-modules:
-	$(BABEL_NODE) $(SCRIPTS)/build/modules-cjs.js
+	node $(SCRIPTS)/build/modules-cjs.js
 
 $(UMD_BUNDLE): $(JS_SRC) package.json
 	mkdir -p "$(@D)"
-	$(BABEL_NODE) $(SCRIPTS)/build/aggregate-bundle.js
+	node $(SCRIPTS)/build/aggregate-bundle.js
 
 $(CJS_BUNDLE): $(JS_SRC) package.json
-	$(BABEL_NODE) $(SCRIPTS)/build/aggregate-cjs.js
+	node $(SCRIPTS)/build/aggregate-cjs.js
 
 # Create the minified UMD versions and copy them to dist/ for bower
 build-dist: $(DIST) $(UMD_BUNDLE) $(UMD_BUNDLE_MIN) $(DIST)/async.js $(DIST)/async.min.js

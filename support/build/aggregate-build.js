@@ -1,8 +1,8 @@
-import compileModules from './compile-modules';
-import {rollup} from 'rollup';
-import rimraf from 'rimraf/rimraf';
+const compileModules = require('./compile-modules');
+const {rollup} = require('rollup');
+const rimraf = require('rimraf/rimraf');
 
-export default function buildBundle(options) {
+module.exports = function buildBundle(options) {
     function bundle() {
         rollup({
             entry: options.outpath + '/index.js'
