@@ -8,14 +8,15 @@ const pluginLodashImportRename = require('./plugin-lodash-import-rename');
 const joinPath = require('path').join;
 const fs = require('fs-extra');
 
-module.exports = function(cb, options) {
+module.exports = function(options, cb) {
     options = _.defaults({}, options, {
-        path:'lib/',
-        outpath:'build',
+        path: 'lib/',
+        outpath: 'build',
         es6: false,
         lodashRename: false
     });
-    let plugins = [];
+    const plugins = [];
+    const { path, outpath } = options;
 
     if (options.lodashRename) {
         plugins.push(pluginLodashImportRename);
@@ -25,20 +26,21 @@ module.exports = function(cb, options) {
         plugins.push(pluginCJS);
     }
 
-    readdirR(options.path, [], function(err, files) {
-        fs.emptyDirSync(options.outpath);
-        fs.emptyDirSync(joinPath(options.outpath, 'internal'));
+    readdirR(path, [], (err, files) => {
+        fs.emptyDirSync(outpath);
+        fs.emptyDirSync(joinPath(outpath, 'internal'));
         async.each(files, (file, callback) => {
-            let filename = file.startsWith(options.path) ?
-                file.slice(options.path.length) :
-                file;
 
             transformFile(file, {
                 babelrc: false,
                 plugins: plugins
-            }, function(err, content) {
-                let outpath = joinPath(options.outpath, filename);
-                fs.writeFile(outpath, content.code, callback);
+            }, (err, content) => {
+                if (err) { return callback(err); }
+                const outfile = file.startsWith(path) ?
+                    file.slice(path.length) :
+                    file;
+                const finalPath = joinPath(outpath, outfile);
+                fs.writeFile(finalPath, content.code, callback);
             });
         }, cb);
     });

@@ -1,3 +1,5 @@
 const compileModules = require('./compile-modules');
 
-compileModules(function() {}, {es6: false});
+compileModules({
+    es6: false
+}, err => { if (err) throw err; });
