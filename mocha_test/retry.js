@@ -69,7 +69,7 @@ describe("retry", function () {
         var start = Date.now();
         async.retry({ times: times, interval: interval}, fn, function(err, result){
             var duration = Date.now() - start;
-            expect(duration).to.be.above(interval * (times - 1) - 1);
+            expect(duration).to.be.above(interval * (times - 1) - times);
             assert.equal(callCount, 3, "did not retry the correct number of times");
             assert.equal(err, error + times, "Incorrect error was returned");
             assert.equal(result, erroredResult + times, "Incorrect result was returned");
@@ -90,7 +90,7 @@ describe("retry", function () {
         var start = Date.now();
         async.retry({ times: times, interval: intervalFunc}, fn, function(err, result){
             var duration = Date.now() - start;
-            expect(duration).to.be.above(299);
+            expect(duration).to.be.above(300 - times);
             assert.equal(callCount, 3, "did not retry the correct number of times");
             assert.equal(err, error + times, "Incorrect error was returned");
             assert.equal(result, erroredResult + times, "Incorrect result was returned");
@@ -227,7 +227,7 @@ describe("retry", function () {
         var start = Date.now();
         async.retry({ interval: interval, errorFilter: errorTest }, fn, function(err, result){
             var duration = Date.now() - start;
-            expect(duration).to.be.above(interval * (specialCount - 1) - 1);
+            expect(duration).to.be.above(interval * (specialCount - 1) - specialCount);
             assert.equal(callCount, specialCount, "did not retry the correct number of times");
             assert.equal(err, special, "Incorrect error was returned");
             assert.equal(result, erroredResult + specialCount, "Incorrect result was returned");
