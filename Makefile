@@ -77,7 +77,7 @@ $(BUILD_ES)/%.js: lib/%.js
 	mkdir -p "$(@D)"
 	sed -E "s/(import.+)lodash/\1lodash-es/g" $< > $@
 
-test-build:
+test-build: $(UMD_BUNDLE) $(UMD_BUNDLE_MIN)
 	mocha support/build.test.js
 
 build-config: $(BUILDDIR)/package.json $(BUILDDIR)/bower.json $(BUILDDIR)/README.md $(BUILDDIR)/LICENSE $(BUILDDIR)/CHANGELOG.md
