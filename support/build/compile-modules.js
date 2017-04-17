@@ -9,8 +9,7 @@ module.exports = function(options, cb) {
     options = _.defaults({}, options, {
         path: 'lib/',
         outpath: 'build',
-        es6: false,
-        lodashRename: false
+        es6: false
     });
     const { path, outpath } = options;
 
@@ -26,7 +25,6 @@ module.exports = function(options, cb) {
             compileModule({
                 file,
                 output: finalPath,
-                lodashRename: options.lodashRename,
                 es6: options.es6
             }, callback)
 

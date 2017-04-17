@@ -45,7 +45,7 @@ build-bundle: build-modules $(UMD_BUNDLE) $(CJS_BUNDLE)
 build-modules:
 	node $(SCRIPTS)/build/modules-cjs.js
 
-$(UMD_BUNDLE): $(JS_SRC) package.json
+$(UMD_BUNDLE): $(ES_MODULES) package.json
 	mkdir -p "$(@D)"
 	node $(SCRIPTS)/build/aggregate-bundle.js
 
