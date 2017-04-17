@@ -1,22 +1,14 @@
 const fs = require('fs');
 const {transformFile} = require('babel-core');
-const _ = require('lodash');
 const pluginCJS = require('babel-plugin-transform-es2015-modules-commonjs');
 const pluginModuleExports = require('babel-plugin-add-module-exports');
 
-module.exports = function compileModule(opts, callback) {
-    const options = _.defaults({}, opts, {
-        es6: false,
-        lodashRename: false
-    });
-    const plugins = [];
-
-    if (!options.es6) {
-        plugins.push(pluginModuleExports);
-        plugins.push(pluginCJS);
-    }
-
+module.exports = function compileModule(options, callback) {
     const {file, output} = options;
+    const plugins = [
+        pluginModuleExports,
+        pluginCJS
+    ];
 
     transformFile(file, {
         babelrc: false,

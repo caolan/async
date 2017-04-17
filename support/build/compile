@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+
+const compileModule = require('./compile-module');
+const yargs = require('yargs');
+
+compileModule(yargs.argv, (err) => {
+    if (err) throw err;
+})

@@ -21,6 +21,7 @@ LINT_FILES = lib/ mocha_test/ $(shell find perf/ -maxdepth 2 -type f) $(shell fi
 UMD_BUNDLE = $(BUILDDIR)/dist/async.js
 UMD_BUNDLE_MIN = $(BUILDDIR)/dist/async.min.js
 ES_MODULES = $(patsubst lib/%.js, build-es/%.js,  $(JS_SRC))
+CJS_MODULES = $(patsubst lib/%.js, build/%.js,  $(JS_SRC))
 
 
 all: clean lint build test
@@ -41,8 +42,11 @@ lint:
 # Compile the ES6 modules to singular bundles, and individual bundles
 build-bundle: build-modules $(UMD_BUNDLE)
 
-build-modules:
-	node $(SCRIPTS)/build/modules-cjs.js
+build-modules: $(CJS_MODULES)
+
+$(BUILDDIR)/%.js: lib/%.js
+	mkdir -p "$(@D)"
+	node $(SCRIPTS)/build/compile --file $< --output $@
 
 $(UMD_BUNDLE): $(ES_MODULES) package.json
 	mkdir -p "$(@D)"
@@ -98,7 +102,7 @@ $(BUILD_ES)/%: %
 
 .PHONY: build-modules build-bundle build-dist build-es build-config build-es-config test-build
 
-build: clean build-bundle build-dist build-es build-config build-es-config test-build
+build: build-bundle build-dist build-es build-config build-es-config test-build
 
 .PHONY: test lint build all clean
 
