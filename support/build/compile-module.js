@@ -19,6 +19,7 @@ function compileModule(options, callback) {
 
     transformFile(file, {
         babelrc: false,
+        ast: false,
         plugins
     }, (err, content) => {
         if (err) return callback(err);

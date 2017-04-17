@@ -46,7 +46,7 @@ build-modules: $(CJS_MODULES)
 
 $(BUILDDIR)/%.js: lib/%.js
 	mkdir -p "$(@D)"
-	node $(SCRIPTS)/build/compile --file $< --output $@
+	node $(SCRIPTS)/build/compile-module.js --file $< --output $@
 
 $(UMD_BUNDLE): $(ES_MODULES) package.json
 	mkdir -p "$(@D)"
