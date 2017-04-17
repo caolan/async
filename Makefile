@@ -20,7 +20,6 @@ LINT_FILES = lib/ mocha_test/ $(shell find perf/ -maxdepth 2 -type f) $(shell fi
 
 UMD_BUNDLE = $(BUILDDIR)/dist/async.js
 UMD_BUNDLE_MIN = $(BUILDDIR)/dist/async.min.js
-CJS_BUNDLE = $(BUILDDIR)/index.js
 ES_MODULES = $(patsubst lib/%.js, build-es/%.js,  $(JS_SRC))
 
 
@@ -40,7 +39,7 @@ lint:
 	eslint $(LINT_FILES)
 
 # Compile the ES6 modules to singular bundles, and individual bundles
-build-bundle: build-modules $(UMD_BUNDLE) $(CJS_BUNDLE)
+build-bundle: build-modules $(UMD_BUNDLE)
 
 build-modules:
 	node $(SCRIPTS)/build/modules-cjs.js
@@ -48,9 +47,6 @@ build-modules:
 $(UMD_BUNDLE): $(ES_MODULES) package.json
 	mkdir -p "$(@D)"
 	node $(SCRIPTS)/build/aggregate-bundle.js
-
-$(CJS_BUNDLE): $(JS_SRC) package.json
-	node $(SCRIPTS)/build/aggregate-cjs.js
 
 # Create the minified UMD versions and copy them to dist/ for bower
 build-dist: $(DIST) $(UMD_BUNDLE) $(UMD_BUNDLE_MIN) $(DIST)/async.js $(DIST)/async.min.js
