@@ -92,7 +92,9 @@ describe('asyncify', function(){
                 });
             });
 
-            it('callback error', function(done) {
+            it('callback error @nodeonly', function(done) {
+                expectUncaughtException();
+
                 var promisified = function(argument) {
                     return new Promise(function (resolve) {
                         resolve(argument + " resolved");
@@ -105,10 +107,29 @@ describe('asyncify', function(){
                         throw new Error("error in callback");
                     }
                 });
+
                 setTimeout(function () {
                     expect(call_count).to.equal(1);
                     done();
                 }, 15);
+            });
+
+            it('dont catch errors in the callback @nodeonly', function(done) {
+                expectUncaughtException(checkErr);
+                var callbackError = new Error('thrown from callback');
+
+                function checkErr(err) {
+                    expect(err).to.equal(callbackError);
+                    done();
+                }
+
+                function callback() {
+                    throw callbackError;
+                }
+
+                async.asyncify(function () {
+                    return Promise.reject(new Error('rejection'));
+                })(callback);
             });
         }
 
@@ -134,5 +155,20 @@ describe('asyncify', function(){
             var Promise = require('rsvp').Promise;
             promisifiedTests.call(this, Promise);
         });
+
+        function expectUncaughtException(onError) {
+            // do a weird dance to catch the async thrown error before mocha
+            var listeners = process.listeners('uncaughtException');
+            process.removeAllListeners('uncaughtException');
+            process.once('uncaughtException', function onErr(err) {
+                listeners.forEach(function(listener) {
+                    process.on('uncaughtException', listener);
+                });
+                // can't throw errors in a uncaughtException handler, defer
+                if (onError) {
+                    setTimeout(onError, 0, err);
+                }
+            });
+        }
     });
 });
