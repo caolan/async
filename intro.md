@@ -14,12 +14,11 @@ it can also be used directly in the browser.
 
 Async is also installable via:
 
+- [yarn](https://yarnpkg.com/en/): `yarn add async`
 - [bower](http://bower.io/): `bower install async`
-- [component](https://github.com/componentjs/component): `component install caolan/async`
-- [jam](http://jamjs.org/): `jam install async`
 
 Async provides around 70 functions that include the usual 'functional'
-suspects (`map`, `reduce`, `filter`, `each`…) as well as some common patterns
+suspects (`map`, `reduce`, `filter`, `each`…) as cwell as some common patterns
 for asynchronous control flow (`parallel`, `series`, `waterfall`…). All these
 functions assume you follow the Node.js convention of providing a single
 callback as the last argument of your asynchronous function -- a callback which expects an Error as its first argument -- and calling the callback once.
