@@ -1,9 +1,15 @@
-import aggregateBuild from './aggregate-build';
+const {rollup} = require('rollup');
+const nodeResolve = require('rollup-plugin-node-resolve');
 
-aggregateBuild({
-    es6: true,
-    outpath:'build/build-modules-es6',
-    outfile: 'build/dist/async.js',
-    format: 'umd',
-    lodashRename: true
-});
+rollup({
+    entry: 'build-es/index.js',
+    plugins: [ nodeResolve() ]
+})
+.then(function ( bundle ) {
+    return bundle.write({
+        format: 'umd',
+        moduleName: 'async',
+        dest: 'build/dist/async.js'
+    });
+})
+.catch((err) => { throw err; });

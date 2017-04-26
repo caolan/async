@@ -7,7 +7,6 @@ export PATH := ./node_modules/.bin/:$(PATH):./bin/
 
 PACKAGE = asyncjs
 REQUIRE_NAME = async
-BABEL_NODE = babel-node
 UGLIFY = uglifyjs
 XYZ = support/xyz.sh --repo git@github.com:caolan/async.git
 
@@ -21,8 +20,8 @@ LINT_FILES = lib/ mocha_test/ $(shell find perf/ -maxdepth 2 -type f) $(shell fi
 
 UMD_BUNDLE = $(BUILDDIR)/dist/async.js
 UMD_BUNDLE_MIN = $(BUILDDIR)/dist/async.min.js
-CJS_BUNDLE = $(BUILDDIR)/index.js
 ES_MODULES = $(patsubst lib/%.js, build-es/%.js,  $(JS_SRC))
+CJS_MODULES = $(patsubst lib/%.js, build/%.js,  $(JS_SRC))
 
 
 all: clean lint build test
@@ -41,17 +40,17 @@ lint:
 	eslint $(LINT_FILES)
 
 # Compile the ES6 modules to singular bundles, and individual bundles
-build-bundle: build-modules $(UMD_BUNDLE) $(CJS_BUNDLE)
+build-bundle: build-modules $(UMD_BUNDLE)
 
-build-modules:
-	$(BABEL_NODE) $(SCRIPTS)/build/modules-cjs.js
+build-modules: $(CJS_MODULES)
 
-$(UMD_BUNDLE): $(JS_SRC) package.json
+$(BUILDDIR)/%.js: lib/%.js
 	mkdir -p "$(@D)"
-	$(BABEL_NODE) $(SCRIPTS)/build/aggregate-bundle.js
+	node $(SCRIPTS)/build/compile-module.js --file $< --output $@
 
-$(CJS_BUNDLE): $(JS_SRC) package.json
-	$(BABEL_NODE) $(SCRIPTS)/build/aggregate-cjs.js
+$(UMD_BUNDLE): $(ES_MODULES) package.json
+	mkdir -p "$(@D)"
+	node $(SCRIPTS)/build/aggregate-bundle.js
 
 # Create the minified UMD versions and copy them to dist/ for bower
 build-dist: $(DIST) $(UMD_BUNDLE) $(UMD_BUNDLE_MIN) $(DIST)/async.js $(DIST)/async.min.js
@@ -78,7 +77,7 @@ $(BUILD_ES)/%.js: lib/%.js
 	mkdir -p "$(@D)"
 	sed -E "s/(import.+)lodash/\1lodash-es/g" $< > $@
 
-test-build:
+test-build: $(UMD_BUNDLE) $(UMD_BUNDLE_MIN)
 	mocha support/build.test.js
 
 build-config: $(BUILDDIR)/package.json $(BUILDDIR)/bower.json $(BUILDDIR)/README.md $(BUILDDIR)/LICENSE $(BUILDDIR)/CHANGELOG.md
@@ -103,7 +102,7 @@ $(BUILD_ES)/%: %
 
 .PHONY: build-modules build-bundle build-dist build-es build-config build-es-config test-build
 
-build: clean build-bundle build-dist build-es build-config build-es-config test-build
+build: build-bundle build-dist build-es build-config build-es-config test-build
 
 .PHONY: test lint build all clean
 
