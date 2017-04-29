@@ -1,3 +1,12 @@
+# v2.4.0
+- Added `tryEach`, for running async functions in parallel, where you only expect one to succeed. (#1365, #687)
+- Improved performance, most notably in `parallel` and `waterfall` (#1395)
+- Added `queue.remove()`, for removing items in a `queue` (#1397, #1391)
+- Fixed using `eval`, preventing Async from running in pages with Content Security Policy (#1404, #1403)
+- Fixed errors thrown in an `asyncify`ed function's callback being caught by the underlying Promise (#1408)
+- Fixed timing of `queue.empty()` (#1367)
+- Various doc fixes (#1314, #1394, #1412)
+
 # v2.3.0
 - Added support for ES2017 `async` functions.  Wherever you can pass a Node-style/CPS function that uses a callback, you can also pass an `async` function.  Previously, you had to wrap `async` functions with `asyncify`.  The caveat is that it will only work if `async` functions are supported natively in your environment, transpiled implementations can't be detected.  ([#1386](https://github.com/caolan/async/issues/1386), [#1390](https://github.com/caolan/async/issues/1390))
 - Small doc fix ([#1392](https://github.com/caolan/async/issues/1392))
