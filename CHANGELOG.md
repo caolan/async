@@ -1,3 +1,6 @@
+# v2.4.1
+- Fixed a bug preventing functions wrapped  with `timeout()` from being re-used. (#1418, #1419)
+
 # v2.4.0
 - Added `tryEach`, for running async functions in parallel, where you only expect one to succeed. (#1365, #687)
 - Improved performance, most notably in `parallel` and `waterfall` (#1395)
