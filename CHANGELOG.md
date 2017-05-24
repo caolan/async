@@ -1,14 +1,14 @@
 # v2.4.1
-- Fixed a bug preventing functions wrapped  with `timeout()` from being re-used. (#1418, #1419)
+- Fixed a bug preventing functions wrapped  with `timeout()` from being re-used. ([#1418](https://github.com/caolan/async/issues/1418), [#1419](https://github.com/caolan/async/issues/1419))
 
 # v2.4.0
-- Added `tryEach`, for running async functions in parallel, where you only expect one to succeed. (#1365, #687)
-- Improved performance, most notably in `parallel` and `waterfall` (#1395)
-- Added `queue.remove()`, for removing items in a `queue` (#1397, #1391)
-- Fixed using `eval`, preventing Async from running in pages with Content Security Policy (#1404, #1403)
-- Fixed errors thrown in an `asyncify`ed function's callback being caught by the underlying Promise (#1408)
-- Fixed timing of `queue.empty()` (#1367)
-- Various doc fixes (#1314, #1394, #1412)
+- Added `tryEach`, for running async functions in parallel, where you only expect one to succeed. ([#1365](https://github.com/caolan/async/issues/1365), [#687](https://github.com/caolan/async/issues/687))
+- Improved performance, most notably in `parallel` and `waterfall` ([#1395](https://github.com/caolan/async/issues/1395))
+- Added `queue.remove()`, for removing items in a `queue` ([#1397](https://github.com/caolan/async/issues/1397), [#1391](https://github.com/caolan/async/issues/1391))
+- Fixed using `eval`, preventing Async from running in pages with Content Security Policy ([#1404](https://github.com/caolan/async/issues/1404), [#1403](https://github.com/caolan/async/issues/1403))
+- Fixed errors thrown in an `asyncify`ed function's callback being caught by the underlying Promise ([#1408](https://github.com/caolan/async/issues/1408))
+- Fixed timing of `queue.empty()` ([#1367](https://github.com/caolan/async/issues/1367))
+- Various doc fixes ([#1314](https://github.com/caolan/async/issues/1314), [#1394](https://github.com/caolan/async/issues/1394), [#1412](https://github.com/caolan/async/issues/1412))
 
 # v2.3.0
 - Added support for ES2017 `async` functions.  Wherever you can pass a Node-style/CPS function that uses a callback, you can also pass an `async` function.  Previously, you had to wrap `async` functions with `asyncify`.  The caveat is that it will only work if `async` functions are supported natively in your environment, transpiled implementations can't be detected.  ([#1386](https://github.com/caolan/async/issues/1386), [#1390](https://github.com/caolan/async/issues/1390))
