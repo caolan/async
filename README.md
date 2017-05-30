@@ -9,6 +9,6 @@
 
 Async is a utility module which provides straight-forward, powerful functions for working with asynchronous JavaScript. Although originally designed for use with [Node.js](https://nodejs.org/) and installable via `npm install --save async`, it can also be used directly in the browser.
 
-For Documentation, visit <http://caolan.github.io/async/>
+For Documentation, visit <https://caolan.github.io/async/>
 
 *For Async v1.5.x documentation, go [HERE](https://github.com/caolan/async/blob/v1.5.2/README.md)*
