@@ -172,11 +172,24 @@ section, h1 {
 #toc > .methods > .toc-method > a.active {
     padding: 0px 0px 0px 20px;
     border-left: 1px solid #D8DCDF;
-    color: #98999A;
 }
 
-#toc > .methods > .toc-method.active {
+#toc > .methods > .toc-method-alias > a {
+    font-size: 12px;
+    font-style: italic;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #C0C0C0;
+}
+
+#toc > .methods > .is-selectable.active {
     background-color: #E8E8E8;
+}
+
+#toc > .methods > .is-selectable > a,
+#toc > .methods > .is-selectable > a.active {
+    color: #98999A;
 }
 
 .nav.navbar-right .navbar-form {
