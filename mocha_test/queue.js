@@ -126,6 +126,76 @@ describe('queue', function(){
         done();
     });
 
+    it('rate limiting', function(done) {
+        // this is a long-running test
+        this.timeout(4000);
+        
+        var call_order = [],
+            delays = [40,10,60,10];
+
+        // order of completion: 1,2,3,4
+        // create queue that only complete 1 task a second
+        var q = async.queue(function (task, callback) {
+            setTimeout(function () {
+                call_order.push('process ' + task);
+                callback('error', 'arg');
+            }, delays.shift());
+        },1, 1);
+        var start = new Date().getTime();
+
+        q.push(1, function (err, arg) {
+            expect(err).to.equal('error');
+            expect(arg).to.equal('arg');
+            expect(q.length()).to.equal(3);
+            call_order.push('callback ' + 1);
+        });
+        q.push(2, function (err, arg) {
+            expect(err).to.equal('error');
+            expect(arg).to.equal('arg');
+            expect(q.length()).to.equal(2);
+            call_order.push('callback ' + 2);
+        });
+        q.push(3, function (err, arg) {
+            expect(err).to.equal('error');
+            expect(arg).to.equal('arg');
+            expect(q.length()).to.equal(1);
+            call_order.push('callback ' + 3);
+        });
+        q.push(4, function (err, arg) {
+            expect(err).to.equal('error');
+            expect(arg).to.equal('arg');
+            expect(q.length()).to.equal(0);
+            call_order.push('callback ' + 4);
+        });
+        expect(q.length()).to.equal(4);
+        expect(q.concurrency).to.equal(1);
+
+        q.drain = function () {
+            expect(call_order).to.eql([
+                'process 1', 'callback 1',
+                'process 2', 'callback 2',
+                'process 3', 'callback 3',
+                'process 4', 'callback 4'
+            ]);
+            expect(q.concurrency).to.equal(1);
+            expect(q.length()).to.equal(0);
+            q.kill();
+            // with 4 tasks, running at 1 per second
+            // this test should take over 3 seconds
+            expect((new Date().getTime() - start > 3)).to.equal(true);
+            done();
+        };
+    });
+
+    it('zero concurrency', function(done){
+        expect(function () {
+            async.queue(function (task, callback) {
+                callback(null, task);
+            }, 0);
+        }).to.throw();
+        done();
+    });
+
     it('error propagation', function(done){
         var results = [];
 
