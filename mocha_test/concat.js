@@ -54,4 +54,41 @@ describe('concat', function() {
             done();
         });
     });
+
+    it('concatLimit basics', function(done) {
+        var running = 0;
+        var concurrency = {
+            'foo': 2,
+            'bar': 2,
+            'baz': 1
+        };
+
+        async.concatLimit(['foo', 'bar', 'baz'], 2, function(val, next) {
+            running++;
+            async.setImmediate(function() {
+                expect(running).to.equal(concurrency[val]);
+                running--;
+                next(null, [val, val]);
+            });
+        }, function(err, result) {
+            expect(running).to.equal(0);
+            expect(err).to.eql(null);
+            expect(result).to.eql(['foo', 'foo', 'bar', 'bar', 'baz', 'baz']);
+            done();
+        });
+    });
+
+    it('concatLimit error', function(done) {
+        var arr = ['foo', 'bar', 'baz'];
+        async.concatLimit(arr, 2, function(val, next) {
+            if (val === 'bar') {
+                return next(new Error('fail'));
+            }
+            next(null, [val, val]);
+        }, function(err, result) {
+            expect(err).to.not.eql(null);
+            expect(result).to.eql(['foo', 'foo']);
+            done();
+        });
+    });
 });
