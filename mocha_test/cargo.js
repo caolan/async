@@ -236,7 +236,7 @@ describe('cargo', function () {
 
     it('expose payload', function (done) {
         var called_once = false;
-        var cargo= async.cargo(function(tasks, cb) {
+        var cargo = async.cargo(function(tasks, cb) {
             if (!called_once) {
                 expect(cargo.payload).to.equal(1);
                 assert(tasks.length === 1, 'should start with payload = 1');
@@ -261,4 +261,57 @@ describe('cargo', function () {
         }, 15);
     });
 
+    it('workersList', function(done) {
+        var called_once = false;
+
+        function getWorkersListData(cargo) {
+            return cargo.workersList().map(function(v) {
+                return v.data;
+            });
+        }
+
+        var cargo = async.cargo(function(tasks, cb) {
+            if (!called_once) {
+                expect(tasks).to.eql(['foo', 'bar']);
+            } else {
+                expect(tasks).to.eql(['baz']);
+            }
+            expect(getWorkersListData(cargo)).to.eql(tasks);
+            async.setImmediate(function() {
+                // ensure nothing has changed
+                expect(getWorkersListData(cargo)).to.eql(tasks);
+                called_once = true;
+                cb();
+            });
+        }, 2);
+
+        cargo.drain = function() {
+            expect(cargo.workersList()).to.eql([]);
+            expect(cargo.running()).to.equal(0);
+            done();
+        };
+
+        cargo.push('foo');
+        cargo.push('bar');
+        cargo.push('baz');
+    });
+
+    it('running', function(done) {
+        var cargo = async.cargo(function(tasks, cb) {
+            expect(cargo.running()).to.equal(1);
+            async.setImmediate(function() {
+                expect(cargo.running()).to.equal(1);
+                cb();
+            });
+        }, 2);
+
+        cargo.drain = function() {
+            expect(cargo.running()).to.equal(0);
+            done();
+        };
+
+        cargo.push('foo');
+        cargo.push('bar');
+        cargo.push('baz');
+    })
 });

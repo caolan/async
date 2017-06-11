@@ -656,7 +656,7 @@ describe('queue', function(){
         });
     });
 
-    context('q.unsaturated(): ',function() {
+    context('q.unsaturated(): ', function() {
         it('should have a default buffer property that equals 25% of the concurrenct rate', function(done){
             var calls = [];
             var q = async.queue(function(task, cb) {
@@ -719,6 +719,68 @@ describe('queue', function(){
         });
     });
 
+    context('workersList', function() {
+        it('should be the same length as running()', function(done) {
+            var q = async.queue(function(task, cb) {
+                async.setImmediate(function() {
+                    expect(q.workersList().length).to.equal(q.running());
+                    cb();
+                });
+            }, 2);
+
+            q.drain = function() {
+                expect(q.workersList().length).to.equal(0);
+                expect(q.running()).to.equal(0);
+                done();
+            };
+
+            q.push('foo');
+            q.push('bar');
+            q.push('baz');
+        });
+
+        it('should contain the items being processed', function(done) {
+            var itemsBeingProcessed = {
+                'foo': ['foo'],
+                'foo_cb': ['foo', 'bar'],
+                'bar': ['foo', 'bar'],
+                'bar_cb': ['bar', 'baz'],
+                'baz': ['bar', 'baz'],
+                'baz_cb': ['baz']
+            };
+
+            function getWorkersListData(q) {
+                return q.workersList().map(function(v) {
+                    return v.data;
+                });
+            }
+
+            var q = async.queue(function(task, cb) {
+                expect(
+                    getWorkersListData(q)
+                ).to.eql(itemsBeingProcessed[task]);
+                expect(q.workersList().length).to.equal(q.running());
+                async.setImmediate(function() {
+                    expect(
+                        getWorkersListData(q)
+                    ).to.eql(itemsBeingProcessed[task+'_cb']);
+                    expect(q.workersList().length).to.equal(q.running());
+                    cb();
+                });
+            }, 2);
+
+            q.drain = function() {
+                expect(q.workersList()).to.eql([]);
+                expect(q.workersList().length).to.equal(q.running());
+                done();
+            };
+
+            q.push('foo');
+            q.push('bar');
+            q.push('baz');
+        });
+    })
+
     it('remove', function(done) {
         var result = [];
         var q = async.queue(function(data, cb) {
@@ -738,4 +800,3 @@ describe('queue', function(){
         }
     });
 });
-
