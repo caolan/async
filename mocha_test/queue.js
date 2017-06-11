@@ -759,16 +759,19 @@ describe('queue', function(){
                 expect(
                     getWorkersListData(q)
                 ).to.eql(itemsBeingProcessed[task]);
+                expect(q.workersList().length).to.equal(q.running());
                 async.setImmediate(function() {
                     expect(
                         getWorkersListData(q)
                     ).to.eql(itemsBeingProcessed[task+'_cb']);
+                    expect(q.workersList().length).to.equal(q.running());
                     cb();
                 });
             }, 2);
 
             q.drain = function() {
                 expect(q.workersList()).to.eql([]);
+                expect(q.workersList().length).to.equal(q.running());
                 done();
             };
 
