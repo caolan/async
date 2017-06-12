@@ -17,7 +17,7 @@ describe('concat', function() {
             }, x*25);
         };
         async.concat([1,3,2], iteratee, function(err, results){
-            expect(results).to.eql([1,2,1,3,2,1]);
+            expect(results).to.eql([1,3,2,1,2,1]);
             expect(call_order).to.eql([1,2,3]);
             assert(err === null, err + " passed instead of 'null'");
             done();
@@ -32,6 +32,19 @@ describe('concat', function() {
             assert(err);
             done();
         });
+    });
+
+    it('concat preserves order', function(done) {
+        var arr = [30, 15];
+        async.concat(arr, function(x, cb) {
+            setTimeout(function() {
+                cb(null, x);
+            }, x);
+        }, function(err, result) {
+            expect(err).to.eql(null);
+            expect(result).to.eql(arr);
+            done();
+        })
     });
 
     it('concatSeries', function(done) {
