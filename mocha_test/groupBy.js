@@ -330,7 +330,7 @@ describe('groupBy', function() {
         });
 
         it('handles empty object', function(done) {
-            async.groupByLimit({}, 2, function(val, next) {
+            async.groupBySeries({}, function(val, next) {
                 assert(false, 'iteratee should not be called');
                 next();
             }, function(err, result) {

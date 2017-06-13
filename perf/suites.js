@@ -131,6 +131,24 @@ module.exports = [{
         }, done);
     }
 }, {
+    name: "concat",
+    // args lists are passed to the setup function
+    args: [
+        [10],
+        [300],
+        [10000]
+    ],
+    setup: function setup(count) {
+        tasks = _.range(count);
+    },
+    fn: function(async, done) {
+        async.concat(tasks, function(num, cb) {
+            async.setImmediate(function() {
+                cb(null, [num]);
+            });
+        }, done);
+    }
+}, {
     name: "eachOf",
     // args lists are passed to the setup function
     args: [
