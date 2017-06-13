@@ -333,7 +333,7 @@ describe('concat', function() {
     });
 
     context('concatSeries', function() {
-        it('basics', function() {
+        it('basics', function(done) {
             var callOrder = [];
             var running = 0;
             var iteratee = function (x, cb) {
@@ -353,7 +353,7 @@ describe('concat', function() {
             async.concatSeries([1,3,2], iteratee, function(err, results) {
                 expect(results).to.eql([1,3,2,1,2,1]);
                 expect(running).to.equal(0);
-                expect(call_order).to.eql([1,3,2]);
+                expect(callOrder).to.eql([1,3,2]);
                 assert(err === null, err + " passed instead of 'null'");
                 done();
             });
