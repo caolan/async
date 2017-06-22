@@ -307,9 +307,9 @@ describe('concat', function() {
         it('does not continue replenishing after error', function(done) {
             var started = 0;
             var arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-            var delay = 10;
             var limit = 3;
-            var maxTime = 10 * arr.length;
+            var step = 0;
+            var maxSteps = arr.length;
 
             async.concatLimit(arr, limit, function(val, next) {
                 started++;
@@ -317,18 +317,28 @@ describe('concat', function() {
                     return next(new Error('fail'));
                 }
 
-                setTimeout(function() {
+                async.setImmediate(function() {
                     next();
-                }, delay);
+                });
             }, function(err, result) {
                 expect(err).to.not.eql(null);
                 expect(result).to.be.an('array').that.is.empty;
             });
 
-            setTimeout(function() {
-                expect(started).to.equal(3);
-                done();
-            }, maxTime);
+            // wait `maxSteps` event loop cycles before calling done to ensure
+            // the iteratee is not called on more items in arr.
+            function waitCycle() {
+                step++;
+                if (step >= maxSteps) {
+                    expect(started).to.equal(3);
+                    done();
+                    return;
+                } else {
+                    async.setImmediate(waitCycle);
+                }
+            }
+
+            async.setImmediate(waitCycle);
         });
     });
 
