@@ -212,6 +212,14 @@ module.exports = function () {
         });
     });
 
+    it('should handle async functions in concatLimit', (done) => {
+        async.concatLimit(input, 2, asyncIdentity, (err, result) => {
+            expect(err).to.eql(null);
+            expect(result).to.eql(input);
+            done(err);
+        });
+    });
+
     it('should handle async functions in concatSeries', (done) => {
         async.concatSeries(input, asyncIdentity, (err, result) => {
             expect(result).to.eql(input);
