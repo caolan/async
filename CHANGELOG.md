@@ -1,3 +1,9 @@
+# v2.5.0
+- Added `concatLimit`, the `Limit` equivalent of [`concat`](https://caolan.github.io/async/docs.html#concat) ([#1426](https://github.com/caolan/async/issues/1426), [#1430](https://github.com/caolan/async/pull/1430))
+- `concat` improvements: it now preserves order, handles falsy values and the `iteratee` callback takes a variable number of arguments ([#1437](https://github.com/caolan/async/issues/1437), [#1436](https://github.com/caolan/async/pull/1436))
+- Fixed an issue in `queue`  where there was a size discrepancy between `workersList().length` and `running()` ([#1428](https://github.com/caolan/async/issues/1428), [#1429](https://github.com/caolan/async/pull/1429))
+- Various doc fixes ([#1422](https://github.com/caolan/async/issues/1422), [#1424](https://github.com/caolan/async/pull/1424))
+
 # v2.4.1
 - Fixed a bug preventing functions wrapped  with `timeout()` from being re-used. ([#1418](https://github.com/caolan/async/issues/1418), [#1419](https://github.com/caolan/async/issues/1419))
 
