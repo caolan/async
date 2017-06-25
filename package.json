@@ -1,7 +1,7 @@
 {
   "name": "async",
   "description": "Higher-order functions and common patterns for asynchronous code",
-  "version": "2.4.1",
+  "version": "2.5.0",
   "main": "dist/async.js",
   "author": "Caolan McMahon",
   "repository": {
