@@ -20,6 +20,7 @@ LINT_FILES = lib/ mocha_test/ $(shell find perf/ -maxdepth 2 -type f) $(shell fi
 
 UMD_BUNDLE = $(BUILDDIR)/dist/async.js
 UMD_BUNDLE_MIN = $(BUILDDIR)/dist/async.min.js
+UMD_BUNDLE_MAP = $(BUILDDIR)/dist/async.min.map
 ES_MODULES = $(patsubst lib/%.js, build-es/%.js,  $(JS_SRC))
 CJS_MODULES = $(patsubst lib/%.js, build/%.js,  $(JS_SRC))
 
@@ -53,7 +54,7 @@ $(UMD_BUNDLE): $(ES_MODULES) package.json
 	node $(SCRIPTS)/build/aggregate-bundle.js
 
 # Create the minified UMD versions and copy them to dist/ for bower
-build-dist: $(DIST) $(UMD_BUNDLE) $(UMD_BUNDLE_MIN) $(DIST)/async.js $(DIST)/async.min.js
+build-dist: $(DIST) $(UMD_BUNDLE) $(UMD_BUNDLE_MIN) $(DIST)/async.js $(DIST)/async.min.js $(DIST)/async.min.map
 
 $(DIST):
 	mkdir -p $@
@@ -61,14 +62,19 @@ $(DIST):
 $(UMD_BUNDLE_MIN): $(UMD_BUNDLE)
 	mkdir -p "$(@D)"
 	$(UGLIFY) $< --mangle --compress \
-		--source-map $(DIST)/async.min.map \
+		--source-map $(UMD_BUNDLE_MAP) \
 		--source-map-url async.min.map \
 		-o $@
+
+$(UMD_BUNDLE_MAP): $(UMD_BUNDLE_MIN)
 
 $(DIST)/async.js: $(UMD_BUNDLE)
 	cp $< $@
 
 $(DIST)/async.min.js: $(UMD_BUNDLE_MIN)
+	cp $< $@
+
+$(DIST)/async.min.map: $(UMD_BUNDLE_MAP)
 	cp $< $@
 
 build-es: $(ES_MODULES)
