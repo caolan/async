@@ -60,7 +60,7 @@ describe('priorityRace', function () {
         }
         for (var i = 0; i <= 5; i++) {
             tasks[i] = eachTest(i);
-            tasks[0].priority = true;
+            tasks[0].isPrioritized = true;
         }
         async.priorityRace(tasks, function (err, result) {
             assert.ok(err);
