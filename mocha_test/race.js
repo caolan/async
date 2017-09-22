@@ -54,7 +54,7 @@ describe('race', function () {
             done();
         });
     });
-    it('should callback in error the task arg is not an Array', function raceTest40() {
+    it('should callback in error when the task arg is not an Array', function raceTest40() {
         var errors = [];
         async.race(null, function (err) {
             errors.push(err);
@@ -67,4 +67,3 @@ describe('race', function () {
         assert.ok(errors[1] instanceof TypeError);
     });
 });
-
