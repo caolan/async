@@ -13,9 +13,10 @@ XYZ = support/xyz.sh --repo git@github.com:caolan/async.git
 BUILDDIR = build
 BUILD_ES = build-es
 DIST = dist
-SRC = lib/index.js
+JS_INDEX = lib/index.js
 SCRIPTS = ./support
-JS_SRC = $(shell find lib/ -type f -name '*.js')
+JS_SRC = $(shell find lib/ -type f -name '*.js') lib/index.js
+INDEX_SRC = $(shell find lib/ -type f -name '*.js' | grep -v 'index') $(SCRIPTS)/index-template.js $(SCRIPTS)/aliases.json ${SCRIPTS}/generate-index.js
 LINT_FILES = lib/ mocha_test/ $(shell find perf/ -maxdepth 2 -type f) $(shell find support/ -maxdepth 2 -type f -name "*.js") karma.conf.js
 
 UMD_BUNDLE = $(BUILDDIR)/dist/async.js
@@ -34,6 +35,7 @@ clean:
 	rm -rf $(BUILDDIR)
 	rm -rf $(BUILD_ES)
 	rm -rf $(DIST)
+	rm -rf $(JS_INDEX)
 	rm -rf tmp/ docs/ .nyc_output/ coverage/
 	rm -rf perf/versions/
 
@@ -44,6 +46,9 @@ lint:
 build-bundle: build-modules $(UMD_BUNDLE)
 
 build-modules: $(CJS_MODULES)
+
+$(JS_INDEX): $(INDEX_SRC)
+	node $(SCRIPTS)/generate-index.js > $@
 
 $(BUILDDIR)/%.js: lib/%.js
 	mkdir -p "$(@D)"
