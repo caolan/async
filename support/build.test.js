@@ -1,5 +1,5 @@
 // Smoke test for the CJS build
-var methods = ["each", "waterfall", "queue", "eachSeries"];
+var methods = ["each", "waterfall", "queue", "eachSeries", "forEachOf"];
 var expect = require('chai').expect;
 var rollup = require('rollup').rollup;
 var rollupPluginNodeResolve = require('rollup-plugin-node-resolve');
@@ -48,7 +48,8 @@ describe("async umd minified", function() {
     });
 });
 
-methods.forEach(function (methodName) {
+// TODO: don't slice when we can make individual files for aliases
+methods.slice(0, -1).forEach(function (methodName) {
     describe("async." + methodName, function () {
         var method;
         before(function () {
