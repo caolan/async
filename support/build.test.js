@@ -48,8 +48,7 @@ describe("async umd minified", function() {
     });
 });
 
-// TODO: don't slice when we can make individual files for aliases
-methods.slice(0, -1).forEach(function (methodName) {
+methods.forEach(function (methodName) {
     describe("async." + methodName, function () {
         var method;
         before(function () {

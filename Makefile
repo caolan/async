@@ -9,6 +9,7 @@ PACKAGE = asyncjs
 REQUIRE_NAME = async
 UGLIFY = uglifyjs
 XYZ = support/xyz.sh --repo git@github.com:caolan/async.git
+COPY_ES = sed -E "s/(import.+)lodash/\1lodash-es/g"
 
 BUILDDIR = build
 BUILD_ES = build-es
@@ -22,8 +23,10 @@ LINT_FILES = lib/ mocha_test/ $(shell find perf/ -maxdepth 2 -type f) $(shell fi
 UMD_BUNDLE = $(BUILDDIR)/dist/async.js
 UMD_BUNDLE_MIN = $(BUILDDIR)/dist/async.min.js
 UMD_BUNDLE_MAP = $(BUILDDIR)/dist/async.min.map
-ES_MODULES = $(patsubst lib/%.js, build-es/%.js,  $(JS_SRC))
-CJS_MODULES = $(patsubst lib/%.js, build/%.js,  $(JS_SRC))
+ALIAS_ES = $(shell node $(SCRIPTS)/list-aliases.js build-es/)
+ES_MODULES = $(patsubst lib/%.js, build-es/%.js,  $(JS_SRC)) $(ALIAS_ES)
+ALIAS_CJS = $(shell node $(SCRIPTS)/list-aliases.js build/)
+CJS_MODULES = $(patsubst lib/%.js, build/%.js,  $(JS_SRC)) $(ALIAS_CJS)
 
 
 all: clean lint build test
@@ -54,12 +57,20 @@ $(BUILDDIR)/%.js: lib/%.js
 	mkdir -p "$(@D)"
 	node $(SCRIPTS)/build/compile-module.js --file $< --output $@
 
+
+define COMPILE_ALIAS
+$A: $(shell node $(SCRIPTS)/get-alias.js $A)
+	mkdir -p "$$(@D)"
+	node $(SCRIPTS)/build/compile-module.js --file $$< --output $$@
+endef
+$(foreach A,$(ALIAS_CJS),$(eval $(COMPILE_ALIAS)))
+
 $(UMD_BUNDLE): $(ES_MODULES) package.json
 	mkdir -p "$(@D)"
 	node $(SCRIPTS)/build/aggregate-bundle.js
 
 # Create the minified UMD versions and copy them to dist/ for bower
-build-dist: $(DIST) $(UMD_BUNDLE) $(UMD_BUNDLE_MIN) $(DIST)/async.js $(DIST)/async.min.js $(DIST)/async.min.map
+build-dist: $(DIST) $(DIST)/async.js $(DIST)/async.min.js $(DIST)/async.min.map
 
 $(DIST):
 	mkdir -p $@
@@ -71,22 +82,27 @@ $(UMD_BUNDLE_MIN): $(UMD_BUNDLE)
 		--source-map-url async.min.map \
 		-o $@
 
-$(UMD_BUNDLE_MAP): $(UMD_BUNDLE_MIN)
-
 $(DIST)/async.js: $(UMD_BUNDLE)
 	cp $< $@
 
 $(DIST)/async.min.js: $(UMD_BUNDLE_MIN)
 	cp $< $@
 
-$(DIST)/async.min.map: $(UMD_BUNDLE_MAP)
-	cp $< $@
+$(DIST)/async.min.map: $(UMD_BUNDLE_MIN)
+	cp $(UMD_BUNDLE_MAP) $@
 
 build-es: $(ES_MODULES)
 
 $(BUILD_ES)/%.js: lib/%.js
 	mkdir -p "$(@D)"
-	sed -E "s/(import.+)lodash/\1lodash-es/g" $< > $@
+	$(COPY_ES) $< > $@
+
+define COPY_ES_ALIAS
+$A: $(shell node $(SCRIPTS)/get-alias.js $A)
+	mkdir -p "$$(@D)"
+	$(COPY_ES) $$< > $$@
+endef
+$(foreach A,$(ALIAS_ES),$(eval $(COPY_ES_ALIAS)))
 
 test-build: $(UMD_BUNDLE) $(UMD_BUNDLE_MIN)
 	mocha support/build.test.js
