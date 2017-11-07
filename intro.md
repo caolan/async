@@ -119,6 +119,25 @@ async.waterfall([
 
 It is always good practice to `return callback(err, result)`  whenever a callback call is not the last statement of a function.
 
+### Using ES2017 `async` functions
+
+Async accepts `async` functions wherever we accept a Node-style callback function.  However, we do not pass them a callback, and instead use the return value and handle any promise rejections or errors thrown.
+
+```js
+async.mapLimit(files, async file => { // <- no callback!
+    const text = await util.promisify(fs.readFile)(dir + file, 'utf8')
+    const body = JSON.parse(text) // <- a parse error herre will be caught automatically
+    if (!(await checkValidity(body))) {
+        throw new Error(`${file} has invalid contents`) // <- this error will also be caught
+    }
+    return body // <- return a value!
+}, (err, contents) => {
+    if (err) throw err
+    console.log(contents)
+})
+```
+
+We can only detect native `async` functions, not transpiled versions (e.g. with Babel).  Otherwise, you can wrap `async` functions in `async.asyncify()`.
 
 ### Binding a context to an iteratee
 
