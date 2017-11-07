@@ -141,8 +141,8 @@ We can only detect native `async` functions, not transpiled versions (e.g. with 
 
 ### Binding a context to an iteratee
 
-This section is really about `bind`, not about `async`. If you are wondering how to
-make `async` execute your iteratees in a given context, or are confused as to why
+This section is really about `bind`, not about Async. If you are wondering how to
+make Async execute your iteratees in a given context, or are confused as to why
 a method of another library isn't working as an iteratee, study this example:
 
 ```js
@@ -167,7 +167,7 @@ async.map([1, 2, 3], AsyncSquaringLibrary.square, function(err, result) {
 async.map([1, 2, 3], AsyncSquaringLibrary.square.bind(AsyncSquaringLibrary), function(err, result) {
     // result is [1, 4, 9]
     // With the help of bind we can attach a context to the iteratee before
-    // passing it to async. Now the square function will be executed in its
+    // passing it to Async. Now the square function will be executed in its
     // 'home' AsyncSquaringLibrary context and the value of `this.squareExponent`
     // will be as expected.
 });
@@ -221,12 +221,12 @@ Usage:
 </script>
 ```
 
-The portable versions of async, including `async.js` and `async.min.js`, are
+The portable versions of Async, including `async.js` and `async.min.js`, are
 included in the `/dist` folder. Async can also be found on the [jsDelivr CDN](http://www.jsdelivr.com/projects/async).
 
 ### ES Modules
 
-We also provide async as a collection of ES2015 modules, in an alternative `async-es` package on npm.
+We also provide Async as a collection of ES2015 modules, in an alternative `async-es` package on npm.
 
 ```bash
 $ npm install --save async-es
