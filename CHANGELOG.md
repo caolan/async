@@ -1,3 +1,9 @@
+# v2.6.0
+- Added missing aliases for many methods.  Previously, you could not (e.g.) `require('async/find')` or use `async.anyLimit`. (#1483)
+- Improved `queue` performance. (#1448, #1454)
+- Add missing sourcemap (#1452, #1453)
+- Various doc updates (#1448, #1471, #1483)
+
 # v2.5.0
 - Added `concatLimit`, the `Limit` equivalent of [`concat`](https://caolan.github.io/async/docs.html#concat) ([#1426](https://github.com/caolan/async/issues/1426), [#1430](https://github.com/caolan/async/pull/1430))
 - `concat` improvements: it now preserves order, handles falsy values and the `iteratee` callback takes a variable number of arguments ([#1437](https://github.com/caolan/async/issues/1437), [#1436](https://github.com/caolan/async/pull/1436))
