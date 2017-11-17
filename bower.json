@@ -1,7 +1,7 @@
 {
   "name": "async",
   "main": "dist/async.js",
-  "ignore": [
+   "ignore": [
     "bower_components",
     "lib",
     "mocha_test",
