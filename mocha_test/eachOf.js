@@ -274,6 +274,18 @@ describe("eachOf", function() {
         setTimeout(done, 25);
     });
 
+    it('forEachOfLimit 1024 * 1024 synchronous call', function(done) {
+        var count = 0;
+        async.forEachOfLimit(_.range(1024 * 1024), Infinity, function(x, i, callback){
+            count++;
+            callback();
+        }, function(err){
+            if (err) throw err;
+            expect(count).to.equal(1024 * 1024);
+        });
+        setTimeout(done, 25);
+    });
+
     it('forEachOfLimit error', function(done) {
         var obj = { a: 1, b: 2, c: 3, d: 4, e: 5 };
         var call_order = [];
