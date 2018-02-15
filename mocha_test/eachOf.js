@@ -43,6 +43,30 @@ describe("eachOf", function() {
         });
     });
 
+    it('forEachOf no call stack size exceed error', function(done) {
+        var obj = {};
+        var len = 3000;
+        var args = new Array(len * 2);
+        var expected = new Array(len * 2);
+
+        for (var i = 0; i < len; i++) {
+            obj["a" + i] = i;
+            expected[2 * i] = "a" + i;
+            expected[2 * i + 1] = i;
+        }
+
+        async.forEachOf(obj, function(value, key, callback) {
+            var index = parseInt(key.slice(1), 10);
+            args[2 * index] = key;
+            args[2 * index + 1] = value;
+            callback();
+        }, function(err) {
+            assert(err === null, err + " passed instead of 'null'");
+            expect(args).to.eql(expected);
+            done();
+        });
+    });
+
     it('forEachOf - instant resolver', function(done) {
         var args = [];
         async.forEachOf({ a: 1, b: 2 }, function(x, k, cb) {
@@ -135,6 +159,30 @@ describe("eachOf", function() {
         async.forEachOfSeries({ a: 1, b: 2 }, forEachOfIteratee.bind(this, args), function(err){
             assert(err === null, err + " passed instead of 'null'");
             expect(args).to.eql([ "a", 1, "b", 2 ]);
+            done();
+        });
+    });
+
+    it('forEachOfSeries no call stack size exceed error', function(done) {
+        var obj = {};
+        var len = 3000;
+        var args = new Array(len * 2);
+        var expected = new Array(len * 2);
+
+        for (var i = 0; i < len; i++) {
+            obj["a" + i] = i;
+            expected[2 * i] = "a" + i;
+            expected[2 * i + 1] = i;
+        }
+
+        async.forEachOfSeries(obj, function(value, key, callback) {
+            var index = parseInt(key.slice(1), 10);
+            args[2 * index] = key;
+            args[2 * index + 1] = value;
+            callback();
+        }, function(err) {
+            assert(err === null, err + " passed instead of 'null'");
+            expect(args).to.eql(expected);
             done();
         });
     });
@@ -274,7 +322,7 @@ describe("eachOf", function() {
         setTimeout(done, 25);
     });
 
-    it('forEachOfLimit 1024 * 1024 synchronous call', function(done) {
+    it('forEachOfLimit no call stack size exceed error', function(done) {
         var count = 0;
         async.forEachOfLimit(_.range(1024 * 1024), Infinity, function(x, i, callback){
             count++;
@@ -282,8 +330,8 @@ describe("eachOf", function() {
         }, function(err){
             if (err) throw err;
             expect(count).to.equal(1024 * 1024);
+            done();
         });
-        setTimeout(done, 25);
     });
 
     it('forEachOfLimit error', function(done) {
