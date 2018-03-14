@@ -19,7 +19,7 @@ For Documentation, visit <https://caolan.github.io/async/>
 
 ```javascript
 // for use with callbacks...
-import { forEachFor } from "async-es";
+import { forEachOf } from "async-es";
 
 const images = {cat: "/cat.png", dog: "/dog.png", duck: "/duck.png"};
 const sizes = {};
