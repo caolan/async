@@ -123,6 +123,10 @@ $(BUILD_ES)/package.json: package.json
 	mkdir -p "$(@D)"
 	support/sync-es-package.js > $@
 
+$(BUILD_ES)/README.md: README.es.md
+	mkdir -p "$(@D)"
+	cp $< $@
+
 $(BUILD_ES)/%: %
 	mkdir -p "$(@D)"
 	cp $< $@
