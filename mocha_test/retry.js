@@ -66,11 +66,10 @@ describe("retry", function () {
             callCount++;
             callback(error + callCount, erroredResult + callCount); // respond with indexed values
         }
-        var start = new Date().getTime();
+        var start = Date.now();
         async.retry({ times: times, interval: interval}, fn, function(err, result){
-            var now = new Date().getTime();
-            var duration = now - start;
-            assert(duration >= (interval * (times -1)),  'did not include interval');
+            var duration = Date.now() - start;
+            expect(duration).to.be.above(interval * (times - 1) - times);
             assert.equal(callCount, 3, "did not retry the correct number of times");
             assert.equal(err, error + times, "Incorrect error was returned");
             assert.equal(result, erroredResult + times, "Incorrect result was returned");
@@ -88,11 +87,10 @@ describe("retry", function () {
             callCount++;
             callback(error + callCount, erroredResult + callCount); // respond with indexed values
         }
-        var start = new Date().getTime();
+        var start = Date.now();
         async.retry({ times: times, interval: intervalFunc}, fn, function(err, result){
-            var now = new Date().getTime();
-            var duration = now - start;
-            assert(duration >= 300,  'did not include custom interval');
+            var duration = Date.now() - start;
+            expect(duration).to.be.above(300 - times);
             assert.equal(callCount, 3, "did not retry the correct number of times");
             assert.equal(err, error + times, "Incorrect error was returned");
             assert.equal(result, erroredResult + times, "Incorrect result was returned");
@@ -127,7 +125,7 @@ describe("retry", function () {
     it('retry does not precompute the intervals (#1226)', function(done) {
         var callTimes = [];
         function intervalFunc() {
-            callTimes.push(new Date().getTime());
+            callTimes.push(Date.now());
             return 100;
         };
         function fn(callback) {
@@ -226,11 +224,10 @@ describe("retry", function () {
         function errorTest(err) {
             return err && err !== special;
         }
-        var start = new Date().getTime();
+        var start = Date.now();
         async.retry({ interval: interval, errorFilter: errorTest }, fn, function(err, result){
-            var now = new Date().getTime();
-            var duration = now - start;
-            assert(duration >= (interval * (specialCount - 1)),  'did not include interval');
+            var duration = Date.now() - start;
+            expect(duration).to.be.above(interval * (specialCount - 1) - specialCount);
             assert.equal(callCount, specialCount, "did not retry the correct number of times");
             assert.equal(err, special, "Incorrect error was returned");
             assert.equal(result, erroredResult + specialCount, "Incorrect result was returned");

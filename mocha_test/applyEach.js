@@ -11,21 +11,21 @@ describe('applyEach', function () {
             setTimeout(function () {
                 call_order.push('one');
                 cb(null, 1);
-            }, 10);
+            }, 12);
         };
         var two = function (val, cb) {
             expect(val).to.equal(5);
             setTimeout(function () {
                 call_order.push('two');
                 cb(null, 2);
-            }, 5);
+            }, 2);
         };
         var three = function (val, cb) {
             expect(val).to.equal(5);
             setTimeout(function () {
                 call_order.push('three');
                 cb(null, 3);
-            }, 15);
+            }, 18);
         };
         async.applyEach([one, two, three], 5, function (err, results) {
             assert(err === null, err + " passed instead of 'null'");

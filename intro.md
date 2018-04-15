@@ -14,9 +14,8 @@ it can also be used directly in the browser.
 
 Async is also installable via:
 
+- [yarn](https://yarnpkg.com/en/): `yarn add async`
 - [bower](http://bower.io/): `bower install async`
-- [component](https://github.com/componentjs/component): `component install caolan/async`
-- [jam](http://jamjs.org/): `jam install async`
 
 Async provides around 70 functions that include the usual 'functional'
 suspects (`map`, `reduce`, `filter`, `each`…) as well as some common patterns
@@ -120,11 +119,30 @@ async.waterfall([
 
 It is always good practice to `return callback(err, result)`  whenever a callback call is not the last statement of a function.
 
+### Using ES2017 `async` functions
+
+Async accepts `async` functions wherever we accept a Node-style callback function.  However, we do not pass them a callback, and instead use the return value and handle any promise rejections or errors thrown.
+
+```js
+async.mapLimit(files, async file => { // <- no callback!
+    const text = await util.promisify(fs.readFile)(dir + file, 'utf8')
+    const body = JSON.parse(text) // <- a parse error herre will be caught automatically
+    if (!(await checkValidity(body))) {
+        throw new Error(`${file} has invalid contents`) // <- this error will also be caught
+    }
+    return body // <- return a value!
+}, (err, contents) => {
+    if (err) throw err
+    console.log(contents)
+})
+```
+
+We can only detect native `async` functions, not transpiled versions (e.g. with Babel).  Otherwise, you can wrap `async` functions in `async.asyncify()`.
 
 ### Binding a context to an iteratee
 
-This section is really about `bind`, not about `async`. If you are wondering how to
-make `async` execute your iteratees in a given context, or are confused as to why
+This section is really about `bind`, not about Async. If you are wondering how to
+make Async execute your iteratees in a given context, or are confused as to why
 a method of another library isn't working as an iteratee, study this example:
 
 ```js
@@ -149,7 +167,7 @@ async.map([1, 2, 3], AsyncSquaringLibrary.square, function(err, result) {
 async.map([1, 2, 3], AsyncSquaringLibrary.square.bind(AsyncSquaringLibrary), function(err, result) {
     // result is [1, 4, 9]
     // With the help of bind we can attach a context to the iteratee before
-    // passing it to async. Now the square function will be executed in its
+    // passing it to Async. Now the square function will be executed in its
     // 'home' AsyncSquaringLibrary context and the value of `this.squareExponent`
     // will be as expected.
 });
@@ -203,12 +221,12 @@ Usage:
 </script>
 ```
 
-The portable versions of async, including `async.js` and `async.min.js`, are
+The portable versions of Async, including `async.js` and `async.min.js`, are
 included in the `/dist` folder. Async can also be found on the [jsDelivr CDN](http://www.jsdelivr.com/projects/async).
 
 ### ES Modules
 
-We also provide async as a collection of ES2015 modules, in an alternative `async-es` package on npm.
+We also provide Async as a collection of ES2015 modules, in an alternative `async-es` package on npm.
 
 ```bash
 $ npm install --save async-es
@@ -218,3 +236,10 @@ $ npm install --save async-es
 import waterfall from 'async-es/waterfall';
 import async from 'async-es';
 ```
+
+## Other Libraries
+
+* [`limiter`](https://www.npmjs.com/package/limiter) a package for rate-limiting based on requests per sec/hour.
+* [`neo-async`](https://www.npmjs.com/package/neo-async) an altername implementation of Async, focusing on speed.
+* [`co-async`](https://www.npmjs.com/package/co-async) a library inspired by Async for use with [`co`](https://www.npmjs.com/package/co) and generator functions.
+*  [`promise-async`](https://www.npmjs.com/package/promise-async) a version of Async where all the methods are Promisified.

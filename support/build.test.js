@@ -1,5 +1,5 @@
 // Smoke test for the CJS build
-var methods = ["each", "waterfall", "queue", "eachSeries"];
+var methods = ["each", "waterfall", "queue", "eachSeries", "forEachOf"];
 var expect = require('chai').expect;
 var rollup = require('rollup').rollup;
 var rollupPluginNodeResolve = require('rollup-plugin-node-resolve');

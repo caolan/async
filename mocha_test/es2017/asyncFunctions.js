@@ -219,6 +219,14 @@ module.exports = function () {
         });
     });
 
+    it('should handle async functions in concatLimit', (done) => {
+        async.concatLimit(input, 2, asyncIdentity, (err, result) => {
+            expect(err).to.eql(null);
+            expect(result).to.eql(input);
+            done(err);
+        });
+    });
+
     it('should handle async functions in concatSeries', (done) => {
         async.concatSeries(input, asyncIdentity, (err, result) => {
             expect(result).to.eql(input);
@@ -619,6 +627,18 @@ module.exports = function () {
         ], (err, result) => {
             expect(result).to.eql(5);
             done(err);
+        })
+    });
+
+    it('should handle async functons in tryEach', (done) => {
+        async.tryEach([
+            async () => { throw new Error('fail1'); },
+            async () => { throw new Error('fail2'); },
+            async () => 5,
+            async () => { throw new Error('shoult not get here'); }
+        ], (err, result) => {
+            expect(result).to.eql(5);
+            done();
         })
     });
 

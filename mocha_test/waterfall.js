@@ -93,7 +93,6 @@ describe("waterfall", function () {
     it('multiple callback calls', function(){
         var arr = [
             function(callback){
-                // call the callback twice. this should call function 2 twice
                 callback(null, 'one', 'two');
                 callback(null, 'one', 'two');
             },
@@ -104,6 +103,37 @@ describe("waterfall", function () {
         expect(function () {
             async.waterfall(arr, function () {});
         }).to.throw(/already called/);
+    });
+
+    it('multiple callback calls (trickier) @nodeonly', function(done){
+
+        // do a weird dance to catch the async thrown error before mocha
+        var listeners = process.listeners('uncaughtException');
+        process.removeAllListeners('uncaughtException');
+        process.once('uncaughtException', function onErr(err) {
+            listeners.forEach(function(listener) {
+                process.on('uncaughtException', listener);
+            });
+            // can't throw errors in a uncaughtException handler, defer
+            setTimeout(checkErr, 0, err)
+        })
+
+        function checkErr(err) {
+            expect(err.message).to.match(/already called/);
+            done();
+        }
+
+        async.waterfall([
+            function(callback){
+                setTimeout(callback, 0, null, 'one', 'two');
+                setTimeout(callback, 10, null, 'one', 'two');
+            },
+            function(arg1, arg2, callback){
+                setTimeout(callback, 15, null, arg1, arg2, 'three');
+            }
+        ], function () {
+            throw new Error('should not get here')
+        });
     });
 
     it('call in another context @nycinvalid @nodeonly', function(done) {

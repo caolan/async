@@ -131,6 +131,24 @@ module.exports = [{
         }, done);
     }
 }, {
+    name: "concat",
+    // args lists are passed to the setup function
+    args: [
+        [10],
+        [300],
+        [10000]
+    ],
+    setup: function setup(count) {
+        tasks = _.range(count);
+    },
+    fn: function(async, done) {
+        async.concat(tasks, function(num, cb) {
+            async.setImmediate(function() {
+                cb(null, [num]);
+            });
+        }, done);
+    }
+}, {
     name: "eachOf",
     // args lists are passed to the setup function
     args: [
@@ -234,8 +252,32 @@ module.exports = [{
         async.waterfall(tasks, done);
     }
 }, {
+    name: "auto",
+    args: [
+        [5],
+        [10],
+        [100]
+    ],
+    setup: function setup(count) {
+        tasks = {
+            dep1: function (cb) { cb(null, 1); }
+        };
+        _.times(count, function(n) {
+            var task = ['dep' + (n+1), function(results, cb) {
+                setImmediate(cb, null, n);
+            }];
+            if (n > 2) task.unshift('dep' + n);
+            tasks['dep' + (n+2)] = task;
+        });
+    },
+    fn: function(async, done) {
+        async.auto(tasks, done);
+    }
+}, {
     name: "queue",
     args: [
+        [10],
+        [100],
         [1000],
         [30000],
         [100000],

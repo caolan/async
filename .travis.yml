@@ -5,7 +5,7 @@ node_js:
   - "0.12"
   - "4"
   - "6"
-  - "7"
+  - "8"
 
 matrix:
   include:
@@ -27,6 +27,6 @@ before_script:
 script:
   - npm test
   # ensure buildable
-  - "[ $MAKE_TEST == false ] || make"
+  - "[ $MAKE_TEST == false ] || make -j 4"
   # test in firefox
   - "[ $BROWSER == false ] || npm run mocha-browser-test"
