@@ -156,7 +156,7 @@ doc:
 	node support/jsdoc/jsdoc-fix-html.js
 
 publish-doc: doc
-	git diff-files --quiet # fail if unstanged changes
+	git diff-files --quiet # fail if unstaged changes
 	git diff-index --quiet HEAD # fail if uncommited changes
 	npm run-script jsdoc
 	gh-pages-deploy
