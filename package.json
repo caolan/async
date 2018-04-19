@@ -19,8 +19,6 @@
     "utility"
   ],
   "dependencies": {
-    "lodash": "^4.14.0",
-    "lodash-es": "^4.14.0",
     "lodash.isarraylike": "^4.2.0"
   },
   "devDependencies": {
@@ -47,6 +45,8 @@
     "karma-firefox-launcher": "^1.0.0",
     "karma-mocha": "^1.2.0",
     "karma-mocha-reporter": "^2.2.0",
+    "lodash": "^4.14.0",
+    "lodash-es": "^4.14.0",
     "mocha": "^3.1.2",
     "native-promise-only": "^0.8.0-a",
     "nyc": "^7.0.0",
