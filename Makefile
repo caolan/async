@@ -94,10 +94,12 @@ build-es: $(ES_MODULES)
 
 $(BUILD_ES)/%.js: lib/%.js
 	mkdir -p "$(@D)"
+	cat $< > $@
 
 define COPY_ES_ALIAS
 $A: $(shell node $(SCRIPTS)/get-alias.js $A)
 	mkdir -p "$$(@D)"
+	cat $$< > $$@
 endef
 $(foreach A,$(ALIAS_ES),$(eval $(COPY_ES_ALIAS)))
 
