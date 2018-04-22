@@ -170,4 +170,45 @@ describe("waterfall", function () {
 
         sameStack = false;
     });
+
+    it('should call methods using caller when caller is passed', function(done) {
+        class Test {
+            constructor (param) {
+                this.param = param;
+            }
+            method1 (callback) {
+                callback(null, this.param);
+            }
+        }
+
+        var value = 1;
+        var test = new Test(value);
+        async.waterfall([
+            [test.method1, test]
+        ], function(err, ret){
+            expect(ret).to.equal(value);
+            done();
+        });
+    });
+
+    it('should throw error when taskAndCaller format is wrong', function(done) {
+        class Test {
+            constructor (param) {
+                this.param = param;
+            }
+            method1 (callback) {
+                callback(null, this.param);
+            }
+        }
+
+        var value = 1;
+        var test = new Test(value);
+        async.waterfall([
+            [test.method1, test, "Gibberish"]
+        ], function(err, ret){
+            expect(err.message).to.equal('Wrong usage of caller based task execution, correct format: [function, caller]');
+            expect(ret).to.equal(undefined);
+            done();
+        });
+    });
 });
