@@ -1,3 +1,9 @@
+# v2.6.1
+- Updated lodash to prevent `npm audit` warnings. (#1532, #1533)
+- Made `async-es` more optimized for webpack users (#1517)
+- Fixed a stack overflow with large collections and a synchronous iterator (#1514)
+- Various small fixes/chores (#1505, #1511, #1527, #1530)
+
 # v2.6.0
 - Added missing aliases for many methods.  Previously, you could not (e.g.) `require('async/find')` or use `async.anyLimit`. (#1483)
 - Improved `queue` performance. (#1448, #1454)
