@@ -19,8 +19,8 @@
     "utility"
   ],
   "dependencies": {
-    "lodash": "^4.14.0",
-    "lodash-es": "^4.14.0"
+    "lodash": "^4.17.5",
+    "lodash-es": "^4.17.10"
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",
@@ -48,7 +48,7 @@
     "karma-mocha-reporter": "^2.2.0",
     "mocha": "^3.1.2",
     "native-promise-only": "^0.8.0-a",
-    "nyc": "^7.0.0",
+    "nyc": "^11.8.0",
     "recursive-readdir": "^1.3.0",
     "rimraf": "^2.5.0",
     "rollup": "^0.36.3",
