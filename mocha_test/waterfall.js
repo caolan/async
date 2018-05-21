@@ -126,7 +126,7 @@ describe("waterfall", function () {
         async.waterfall([
             function(callback){
                 setTimeout(callback, 0, null, 'one', 'two');
-                setTimeout(callback, 10, null, 'one', 'two');
+                setTimeout(callback, 2, null, 'one', 'two');
             },
             function(arg1, arg2, callback){
                 setTimeout(callback, 15, null, arg1, arg2, 'three');
