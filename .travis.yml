@@ -1,4 +1,5 @@
 sudo: false
+dist: trusty
 language: node_js
 node_js:
   - "6"
@@ -25,6 +26,7 @@ before_script:
 script:
   - "[ $BROWSER == true ] || npm test"
   # ensure buildable
+  - "[ $MAKE_TEST == false ] || make --version"
   - "[ $MAKE_TEST == false ] || make list"
   - "[ $MAKE_TEST == false ] || make -j 4"
   # test in firefox
