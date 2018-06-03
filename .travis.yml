@@ -17,6 +17,9 @@ env:
 
 after_success: npm run coveralls
 
+before_install:
+  - sudo apt-get install -y make
+
 # Needed to run Karma with Firefox on Travis
 # http://karma-runner.github.io/0.13/plus/travis.html
 before_script:
