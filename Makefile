@@ -2,6 +2,8 @@
 # created here are checked in so people on all platforms can run npm scripts.
 # This build should be run once per release.
 
+OLD_VARS := $(.VARIABLES)
+
 SHELL=/bin/bash
 export PATH := ./node_modules/.bin/:$(PATH):./bin/
 
@@ -32,18 +34,22 @@ $(shell cat $(SCRIPTS)/aliases.txt | grep "$(basename $(notdir $(1))) " | cut -d
 endef
 
 define COMPILE_ALIAS =
-$(A): lib/$(call ALIAS_SRC,$(A)).js
+SRC_$(A) := lib/$(call ALIAS_SRC,$(A)).js
+$(A): $$(SRC_$(A))
 	mkdir -p "$$(@D)"
 	node $$(SCRIPTS)/build/compile-module.js --file $$< --output $$@
 endef
 $(foreach A,$(ALIAS_CJS),$(eval $(COMPILE_ALIAS)))
 
 define COPY_ES_ALIAS =
-$(A): lib/$(call ALIAS_SRC,$(A)).js
+SRC_$(A) := lib/$(call ALIAS_SRC,$(A)).js
+$(A): $$(SRC_$(A))
 	mkdir -p "$$(@D)"
 	cp $$< $$@
 endef
 $(foreach A,$(ALIAS_ES),$(eval $(COPY_ES_ALIAS)))
+
+$(foreach V,$(filter-out $(OLD_VARS), $(.VARIABLES)), $(info $(V): $($(V))))
 
 all: clean lint build test
 
