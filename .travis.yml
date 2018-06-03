@@ -9,7 +9,7 @@ matrix:
   include:
     - node_js: "10"
       addons:
-        firefox: "57.0"
+        firefox: "60.0"
       env: BROWSER=true MAKE_TEST=true
 env:
   matrix: BROWSER=false MAKE_TEST=false

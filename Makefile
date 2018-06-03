@@ -17,7 +17,7 @@ JS_INDEX = lib/index.js
 SCRIPTS = ./support
 JS_SRC = $(shell find lib/ -type f -name '*.js') lib/index.js
 INDEX_SRC = $(shell find lib/ -type f -name '*.js' | grep -v 'index') $(SCRIPTS)/index-template.js $(SCRIPTS)/aliases.json ${SCRIPTS}/generate-index.js
-LINT_FILES = lib/ mocha_test/ $(shell find perf/ -maxdepth 2 -type f) $(shell find support/ -maxdepth 2 -type f -name "*.js") karma.conf.js
+LINT_FILES = lib/ test/ $(shell find perf/ -maxdepth 2 -type f) $(shell find support/ -maxdepth 2 -type f -name "*.js") karma.conf.js
 
 UMD_BUNDLE = $(BUILDDIR)/dist/async.js
 UMD_BUNDLE_MIN = $(BUILDDIR)/dist/async.min.js

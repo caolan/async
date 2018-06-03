@@ -4,7 +4,7 @@
   "ignore": [
     "bower_components",
     "lib",
-    "mocha_test",
+    "test",
     "node_modules",
     "perf",
     "support",
