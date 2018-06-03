@@ -23,6 +23,7 @@ after_success: npm run coveralls
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
+  - sudo apt-get install -y make
   - make --version
 
 script:
