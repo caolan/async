@@ -1,5 +1,5 @@
 sudo: false
-dist: trusty
+dist: xenial
 language: node_js
 node_js:
   - "6"
