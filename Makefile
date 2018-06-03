@@ -15,17 +15,17 @@ BUILD_ES = build-es
 DIST = dist
 JS_INDEX = lib/index.js
 SCRIPTS = ./support
-JS_SRC = $(shell find lib/ -type f -name '*.js') lib/index.js
-INDEX_SRC = $(shell find lib/ -type f -name '*.js' | grep -v 'index') $(SCRIPTS)/index-template.js $(SCRIPTS)/aliases.json ${SCRIPTS}/generate-index.js
-LINT_FILES = lib/ test/ $(shell find perf/ -maxdepth 2 -type f) $(shell find support/ -maxdepth 2 -type f -name "*.js") karma.conf.js
+JS_SRC := $(shell find lib/ -type f -name '*.js') lib/index.js
+INDEX_SRC := $(filter-out $(JS_SRC),$(JS_INDEX)) $(SCRIPTS)/index-template.js $(SCRIPTS)/aliases.json ${SCRIPTS}/generate-index.js
+LINT_FILES := lib/ test/ $(shell find perf/ -maxdepth 2 -type f) $(shell find support/ -maxdepth 2 -type f -name "*.js") karma.conf.js
 
-UMD_BUNDLE = $(BUILDDIR)/dist/async.js
-UMD_BUNDLE_MIN = $(BUILDDIR)/dist/async.min.js
-UMD_BUNDLE_MAP = $(BUILDDIR)/dist/async.min.map
-ALIAS_ES = $(shell node $(SCRIPTS)/list-aliases.js build-es/)
-ES_MODULES = $(patsubst lib/%.js, build-es/%.js,  $(JS_SRC)) $(ALIAS_ES)
-ALIAS_CJS = $(shell node $(SCRIPTS)/list-aliases.js build/)
-CJS_MODULES = $(patsubst lib/%.js, build/%.js,  $(JS_SRC)) $(ALIAS_CJS)
+UMD_BUNDLE := $(BUILDDIR)/dist/async.js
+UMD_BUNDLE_MIN := $(BUILDDIR)/dist/async.min.js
+UMD_BUNDLE_MAP := $(BUILDDIR)/dist/async.min.map
+ALIAS_ES := $(shell $(SCRIPTS)/list-aliases.js build-es/)
+ALIAS_CJS := $(patsubst build-es/%, build/%, $(ALIAS_ES))
+ES_MODULES := $(patsubst lib/%.js, build-es/%.js, $(JS_SRC)) $(ALIAS_ES)
+CJS_MODULES := $(patsubst lib/%.js, build/%.js,  $(JS_SRC)) $(ALIAS_CJS)
 
 
 all: clean lint build test
