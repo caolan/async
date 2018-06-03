@@ -13,7 +13,7 @@ generateIndex(err => {
 function generateIndex(cb) {
     autoInject({
         entries: cb => readEntries(cb),
-        aliases: cb => cb(null, require('./aliases')),
+        aliases: cb => loadAliases(cb),
         template: cb => fs.readFile(path.join(__dirname, './index-template.js'), 'utf8', cb),
         generated: (entries, aliases, template, cb) => {
             cb(null, renderTemplate(entries, aliases, template))
@@ -22,6 +22,18 @@ function generateIndex(cb) {
         if (err) return cb(err)
         console.log(results.generated)
     })
+}
+
+function loadAliases (cb) {
+    const aliases = {}
+    fs.readFileSync(path.join(__dirname, 'aliases.txt'), 'utf8')
+        .split('\n')
+        .filter(Boolean)
+        .forEach(line => {
+            const [alias, src] = line.split(' ')
+            aliases[alias] = src
+        })
+    cb(null, aliases)
 }
 
 function readEntries (cb) {

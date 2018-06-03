@@ -16,17 +16,34 @@ DIST = dist
 JS_INDEX = lib/index.js
 SCRIPTS = ./support
 JS_SRC := $(shell find lib/ -type f -name '*.js') lib/index.js
-INDEX_SRC := $(filter-out $(JS_SRC),$(JS_INDEX)) $(SCRIPTS)/index-template.js $(SCRIPTS)/aliases.json ${SCRIPTS}/generate-index.js
+INDEX_SRC := $(filter-out $(JS_INDEX),$(JS_SRC)) $(SCRIPTS)/index-template.js $(SCRIPTS)/aliases.txt ${SCRIPTS}/generate-index.js
 LINT_FILES := lib/ test/ $(shell find perf/ -maxdepth 2 -type f) $(shell find support/ -maxdepth 2 -type f -name "*.js") karma.conf.js
 
 UMD_BUNDLE := $(BUILDDIR)/dist/async.js
 UMD_BUNDLE_MIN := $(BUILDDIR)/dist/async.min.js
 UMD_BUNDLE_MAP := $(BUILDDIR)/dist/async.min.map
-ALIAS_ES := $(shell $(SCRIPTS)/list-aliases.js build-es/)
+ALIAS_ES := $(addprefix build-es/, $(addsuffix .js, $(shell cat $(SCRIPTS)/aliases.txt | cut -d ' ' -f1)))
 ALIAS_CJS := $(patsubst build-es/%, build/%, $(ALIAS_ES))
 ES_MODULES := $(patsubst lib/%.js, build-es/%.js, $(JS_SRC)) $(ALIAS_ES)
 CJS_MODULES := $(patsubst lib/%.js, build/%.js,  $(JS_SRC)) $(ALIAS_CJS)
 
+define ALIAS_SRC =
+$(shell cat $(SCRIPTS)/aliases.txt | grep "$(basename $(notdir $(1))) " | cut -d" " -f2 )
+endef
+
+define COMPILE_ALIAS =
+$(A): lib/$(call ALIAS_SRC,$(A)).js
+	mkdir -p "$$(@D)"
+	node $$(SCRIPTS)/build/compile-module.js --file $$< --output $$@
+endef
+$(foreach A,$(ALIAS_CJS),$(eval $(COMPILE_ALIAS)))
+
+define COPY_ES_ALIAS =
+$(A): lib/$(call ALIAS_SRC,$(A)).js
+	mkdir -p "$$(@D)"
+	cp $$< $$@
+endef
+$(foreach A,$(ALIAS_ES),$(eval $(COPY_ES_ALIAS)))
 
 all: clean lint build test
 
@@ -56,13 +73,6 @@ $(BUILDDIR)/%.js: lib/%.js
 	mkdir -p "$(@D)"
 	node $(SCRIPTS)/build/compile-module.js --file $< --output $@
 
-
-define COMPILE_ALIAS
-$A: $(shell node $(SCRIPTS)/get-alias.js $A)
-	mkdir -p "$$(@D)"
-	node $(SCRIPTS)/build/compile-module.js --file $$< --output $$@
-endef
-$(foreach A,$(ALIAS_CJS),$(eval $(COMPILE_ALIAS)))
 
 $(UMD_BUNDLE): $(ES_MODULES) package.json
 	mkdir -p "$(@D)"
@@ -95,13 +105,6 @@ build-es: $(ES_MODULES)
 $(BUILD_ES)/%.js: lib/%.js
 	mkdir -p "$(@D)"
 	cat $< > $@
-
-define COPY_ES_ALIAS
-$A: $(shell node $(SCRIPTS)/get-alias.js $A)
-	mkdir -p "$$(@D)"
-	cat $$< > $$@
-endef
-$(foreach A,$(ALIAS_ES),$(eval $(COPY_ES_ALIAS)))
 
 test-build: $(UMD_BUNDLE) $(UMD_BUNDLE_MIN)
 	mocha support/build.test.js
