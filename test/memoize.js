@@ -125,9 +125,9 @@ describe("memoize", function() {
             expect(err).to.equal(testerr);
             testerr = null;
 
-            memoized(5, 6, function (err, result) {
+            memoized(1, 3, function (err, result) {
                 expect(err).to.equal(null);
-                expect(result).to.equal(11);
+                expect(result).to.equal(4);
                 done();
             });
         });
