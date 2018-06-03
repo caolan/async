@@ -9,7 +9,6 @@ PACKAGE = asyncjs
 REQUIRE_NAME = async
 UGLIFY = uglifyjs
 XYZ = support/xyz.sh --repo git@github.com:caolan/async.git
-COPY_ES = sed -E "s/(import.+)lodash/\1lodash-es/g"
 
 BUILDDIR = build
 BUILD_ES = build-es
@@ -95,12 +94,12 @@ build-es: $(ES_MODULES)
 
 $(BUILD_ES)/%.js: lib/%.js
 	mkdir -p "$(@D)"
-	$(COPY_ES) $< > $@
+	cat $< > $@
 
 define COPY_ES_ALIAS
 $A: $(shell node $(SCRIPTS)/get-alias.js $A)
 	mkdir -p "$$(@D)"
-	$(COPY_ES) $$< > $$@
+	cat $$< > $$@
 endef
 $(foreach A,$(ALIAS_ES),$(eval $(COPY_ES_ALIAS)))
 
