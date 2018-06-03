@@ -664,10 +664,13 @@ var reIsUint = /^(?:0|[1-9]\d*)$/;
  * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
  */
 function isIndex(value, length) {
+  var type = typeof value;
   length = length == null ? MAX_SAFE_INTEGER$1 : length;
+
   return !!length &&
-    (typeof value == 'number' || reIsUint.test(value)) &&
-    (value > -1 && value % 1 == 0 && value < length);
+    (type == 'number' ||
+      (type != 'symbol' && reIsUint.test(value))) &&
+        (value > -1 && value % 1 == 0 && value < length);
 }
 
 /** `Object#toString` result references. */
@@ -753,6 +756,14 @@ var freeProcess = moduleExports$1 && freeGlobal.process;
 /** Used to access faster Node.js helpers. */
 var nodeUtil = (function() {
   try {
+    // Use `util.types` for Node.js 10+.
+    var types = freeModule$1 && freeModule$1.require && freeModule$1.require('util').types;
+
+    if (types) {
+      return types;
+    }
+
+    // Legacy `process.binding('util')` for Node.js < 10.
     return freeProcess && freeProcess.binding && freeProcess.binding('util');
   } catch (e) {}
 }());
@@ -968,6 +979,7 @@ function _eachOfLimit(limit) {
         var nextElem = iterator(obj);
         var done = false;
         var running = 0;
+        var looping = false;
 
         function iterateeCallback(err, value) {
             running -= 1;
@@ -979,12 +991,13 @@ function _eachOfLimit(limit) {
                 done = true;
                 return callback(null);
             }
-            else {
+            else if (!looping) {
                 replenish();
             }
         }
 
         function replenish () {
+            looping = true;
             while (running < limit && !done) {
                 var elem = nextElem();
                 if (elem === null) {
@@ -997,6 +1010,7 @@ function _eachOfLimit(limit) {
                 running += 1;
                 iteratee(elem.value, elem.key, onlyOnce(iterateeCallback));
             }
+            looping = false;
         }
 
         replenish();
@@ -3817,7 +3831,7 @@ function memoize(fn, hasher) {
 
 /**
  * Calls `callback` on a later loop around the event loop. In Node.js this just
- * calls `process.nextTicl`.  In the browser it will use `setImmediate` if
+ * calls `process.nextTick`.  In the browser it will use `setImmediate` if
  * available, otherwise `setTimeout(callback, 0)`, which means other higher
  * priority events may precede the execution of `callback`.
  *

@@ -1,17 +1,15 @@
 sudo: false
 language: node_js
 node_js:
-  - "0.10"
-  - "0.12"
-  - "4"
   - "6"
   - "8"
+  - "10"
 
 matrix:
   include:
-    - node_js: "7"
+    - node_js: "10"
       addons:
-        firefox: "52.0"
+        firefox: "57.0"
       env: BROWSER=true MAKE_TEST=true
 env:
   matrix: BROWSER=false MAKE_TEST=false
