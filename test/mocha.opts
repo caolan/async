@@ -1,3 +1,2 @@
 --require babel-register
---growl
 --ui bdd
