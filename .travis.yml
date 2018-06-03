@@ -23,9 +23,9 @@ before_script:
   - sh -e /etc/init.d/xvfb start
 
 script:
-  - "[ $BROWSER == false ] && npm test"
+  - "[ $BROWSER == true ] || npm test"
   # ensure buildable
-  - "[ $MAKE_TEST == false ] || make --version"
+  - "[ $MAKE_TEST == false ] || make list"
   - "[ $MAKE_TEST == false ] || make -j 4"
   # test in firefox
   - "[ $BROWSER == false ] || npm run mocha-browser-test"
