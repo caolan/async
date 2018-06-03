@@ -100,9 +100,8 @@ describe("memoize", function() {
         var fn2 = async.unmemoize(fn);
         fn2(1, 2, function(err, result) {
             expect(result).to.equal(3);
+            done();
         });
-
-        done();
     });
 
     it('error', function(done) {
@@ -112,8 +111,26 @@ describe("memoize", function() {
         };
         async.memoize(fn)(1, 2, function (err) {
             expect(err).to.equal(testerr);
+            done();
         });
-        done();
+    });
+
+    it('should not memoize result if error occurs', function(done) {
+        var testerr = new Error('test');
+        var fn = function (arg1, arg2, callback) {
+            callback(testerr, arg1 + arg2);
+        };
+        var memoized = async.memoize(fn);
+        memoized(1, 2, function (err) {
+            expect(err).to.equal(testerr);
+            testerr = null;
+
+            memoized(5, 6, function (err, result) {
+                expect(err).to.equal(null);
+                expect(result).to.equal(11);
+                done();
+            });
+        });
     });
 
     it('multiple calls', function(done) {
@@ -134,10 +151,8 @@ describe("memoize", function() {
     });
 
     it('custom hash function', function(done) {
-        var testerr = new Error('test');
-
         var fn = function (arg1, arg2, callback) {
-            callback(testerr, arg1 + arg2);
+            callback(null, arg1 + arg2);
         };
         var fn2 = async.memoize(fn, function () {
             return 'custom hash';
@@ -205,4 +220,5 @@ describe("memoize", function() {
             done();
         });
     });
+
 });
