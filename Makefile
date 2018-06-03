@@ -1,8 +1,6 @@
-# This makefile is meant to be run on OSX/Linux.  Make sure any artifacts
+# This makefile is meant to be run on OSX/Linux.  Make sure any dist/ artifacts
 # created here are checked in so people on all platforms can run npm scripts.
 # This build should be run once per release.
-
-OLD_VARS := $(.VARIABLES)
 
 SHELL=/bin/bash
 export PATH := ./node_modules/.bin/:$(PATH):./bin/
@@ -48,8 +46,6 @@ $(A): $$(SRC_$(A))
 	cp $$< $$@
 endef
 $(foreach A,$(ALIAS_ES),$(eval $(COPY_ES_ALIAS)))
-
-$(foreach V,$(filter-out $(OLD_VARS), $(.VARIABLES)), $(info $(V): $($(V))))
 
 all: clean lint build test
 

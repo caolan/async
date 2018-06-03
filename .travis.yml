@@ -17,8 +17,6 @@ env:
 
 after_success: npm run coveralls
 
-before_install:
-  - sudo apt-get install -y make
 
 # Needed to run Karma with Firefox on Travis
 # http://karma-runner.github.io/0.13/plus/travis.html
@@ -29,8 +27,6 @@ before_script:
 script:
   - "[ $BROWSER == true ] || npm test"
   # ensure buildable
-  - "[ $MAKE_TEST == false ] || make --version"
-  - "[ $MAKE_TEST == false ] || make list"
   - "[ $MAKE_TEST == false ] || make -j 4"
   # test in firefox
   - "[ $BROWSER == false ] || npm run mocha-browser-test"
