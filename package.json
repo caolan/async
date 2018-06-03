@@ -27,6 +27,7 @@
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-es2017": "^6.22.0",
+    "babel-register": "^6.26.0",
     "babelify": "^8.0.0",
     "benchmark": "^2.1.1",
     "bluebird": "^3.4.6",
@@ -62,7 +63,7 @@
     "jsdoc": "jsdoc -c ./support/jsdoc/jsdoc.json && node support/jsdoc/jsdoc-fix-html.js",
     "lint": "eslint lib/ test/ perf/memory.js perf/suites.js perf/benchmark.js support/build/ support/*.js karma.conf.js",
     "mocha-browser-test": "karma start",
-    "mocha-node-test": "mocha test/",
+    "mocha-node-test": "mocha",
     "mocha-test": "npm run mocha-node-test && npm run mocha-browser-test",
     "test": "npm run lint && npm run mocha-node-test"
   },
