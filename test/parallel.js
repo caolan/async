@@ -191,6 +191,32 @@ describe('parallel', function() {
         });
     });
 
+    it('parallel limit canceled', function(done) {
+        const call_order = []
+        async.parallelLimit([
+            function(callback){
+                call_order.push(1)
+                callback();
+            },
+            function(callback){
+                call_order.push(2)
+                callback(false);
+            },
+            function(callback){
+                call_order.push(3)
+                callback('error', 2);
+            }
+        ],
+        1,
+        function(err){
+            throw new Error('should not get here')
+        });
+        setTimeout(() => {
+            expect(call_order).to.eql([1, 2]);
+            done()
+        }, 25);
+    });
+
     it('parallel call in another context @nycinvalid @nodeonly', function(done) {
         var vm = require('vm');
         var sandbox = {

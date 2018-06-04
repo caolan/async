@@ -90,6 +90,28 @@ describe("waterfall", function () {
         });
     });
 
+
+    it('canceled', function(done){
+        const call_order = []
+        async.waterfall([
+            function(callback){
+                call_order.push(1)
+                callback(null);
+            },
+            function(callback){
+                call_order.push(2)
+                assert(false, 'next function should not be called');
+                callback();
+            }
+        ], function(err){
+            throw new Error('should not get here')
+        });
+        setTimeout(() => {
+            expect(call_order).to.eql([1])
+            done()
+        }, 10)
+    });
+
     it('multiple callback calls', function(){
         var arr = [
             function(callback){
