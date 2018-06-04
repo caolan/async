@@ -184,7 +184,7 @@ describe('auto', function () {
                 callback('testerror2');
             }
         },
-        function(err){
+        function(){
             throw new Error('should not get here')
         });
         setTimeout(() => {

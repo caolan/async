@@ -103,7 +103,7 @@ describe("waterfall", function () {
                 assert(false, 'next function should not be called');
                 callback();
             }
-        ], function(err){
+        ], function(){
             throw new Error('should not get here')
         });
         setTimeout(() => {

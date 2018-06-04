@@ -414,7 +414,7 @@ describe("eachOf", function() {
                 return callback(false);
             }
             callback()
-        }, function(err){
+        }, function(){
             throw new Error('should not get here')
         });
         setTimeout(() => {
@@ -435,7 +435,7 @@ describe("eachOf", function() {
                 }
                 callback()
             })
-        }, function(err){
+        }, function(){
             throw new Error('should not get here')
         });
         setTimeout(() => {
@@ -459,7 +459,7 @@ describe("eachOf", function() {
                 }
                 callback()
             })
-        }, function(err){
+        }, function(){
             throw new Error('should not get here')
         });
         setTimeout(() => {

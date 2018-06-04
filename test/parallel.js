@@ -208,7 +208,7 @@ describe('parallel', function() {
             }
         ],
         1,
-        function(err){
+        function(){
             throw new Error('should not get here')
         });
         setTimeout(() => {
