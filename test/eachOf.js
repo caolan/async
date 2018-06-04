@@ -403,4 +403,69 @@ describe("eachOf", function() {
             done();
         });
     });
+
+    it('forEachOfLimit canceled', function(done) {
+        var obj = { a: 1, b: 2, c: 3, d: 4, e: 5 };
+        var call_order = [];
+
+        async.forEachOfLimit(obj, 3, function(value, key, callback){
+            call_order.push(value, key);
+            if (value === 2) {
+                return callback(false);
+            }
+            callback()
+        }, function(err){
+            throw new Error('should not get here')
+        });
+        setTimeout(() => {
+            expect(call_order).to.eql([ 1, "a", 2, "b" ]);
+            done()
+        }, 10);
+    });
+
+    it('forEachOfLimit canceled (async)', function(done) {
+        var obj = { a: 1, b: 2, c: 3, d: 4, e: 5 };
+        var call_order = [];
+
+        async.forEachOfLimit(obj, 3, function(value, key, callback){
+            call_order.push(value, key);
+            setTimeout(() => {
+                if (value === 2) {
+                    return callback(false);
+                }
+                callback()
+            })
+        }, function(err){
+            throw new Error('should not get here')
+        });
+        setTimeout(() => {
+            expect(call_order).to.eql([ 1, "a", 2, "b", 3, "c", 4, "d" ]);
+            done()
+        }, 20);
+    });
+
+    it('forEachOfLimit canceled (async, w/ error)', function(done) {
+        var obj = { a: 1, b: 2, c: 3, d: 4, e: 5 };
+        var call_order = [];
+
+        async.forEachOfLimit(obj, 3, function(value, key, callback){
+            call_order.push(value, key);
+            setTimeout(() => {
+                if (value === 2) {
+                    return callback(false);
+                }
+                if (value === 3) {
+                    return callback('fail');
+                }
+                callback()
+            })
+        }, function(err){
+            throw new Error('should not get here')
+        });
+        setTimeout(() => {
+            expect(call_order).to.eql([ 1, "a", 2, "b", 3, "c", 4, "d" ]);
+            done()
+        }, 20);
+    });
+
 });
