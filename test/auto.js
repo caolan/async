@@ -168,6 +168,31 @@ describe('auto', function () {
         setTimeout(done, 100);
     });
 
+    it('auto canceled', function(done){
+        const call_order = []
+        async.auto({
+            task1: function(callback){
+                call_order.push(1)
+                callback(false);
+            },
+            task2: ['task1', function(/*results, callback*/){
+                call_order.push(2)
+                throw new Error('task2 should not be called');
+            }],
+            task3: function(callback){
+                call_order.push(3)
+                callback('testerror2');
+            }
+        },
+        function(err){
+            throw new Error('should not get here')
+        });
+        setTimeout(() => {
+            expect(call_order).to.eql([1, 3])
+            done()
+        }, 10);
+    });
+
     it('auto no callback', function(done){
         async.auto({
             task1: function(callback){callback();},
