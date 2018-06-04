@@ -96,7 +96,7 @@ describe("waterfall", function () {
         async.waterfall([
             function(callback){
                 call_order.push(1)
-                callback(null);
+                callback(false);
             },
             function(callback){
                 call_order.push(2)

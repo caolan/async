@@ -210,7 +210,7 @@ describe('auto', function () {
     it('auto error should pass partial results', function(done) {
         async.auto({
             task1: function(callback){
-                callback(false, 'result1');
+                callback(null, 'result1');
             },
             task2: ['task1', function(results, callback){
                 callback('testerror', 'result2');
