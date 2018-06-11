@@ -48,6 +48,22 @@ describe('whilst', function(){
         done();
     });
 
+    it('whilst canceling', function(done) {
+        var counter = 0;
+        async.whilst(
+            function () { return counter < 3; },
+            function (cb) {
+                counter++;
+                cb(counter === 2 ? false : null);
+            },
+            () => { throw new Error('should not get here')}
+        );
+        setTimeout(() => {
+            expect(counter).to.equal(2);
+            done();
+        }, 10)
+    });
+
     it('doWhilst', function(done) {
         var call_order = [];
 
@@ -122,4 +138,20 @@ describe('whilst', function(){
             }
         );
     });
+
+    it('doWhilst canceling', (done) => {
+        let counter = 0;
+        async.doWhilst(
+            cb => {
+                counter++
+                cb(counter === 2 ? false : null);
+            },
+            () => true,
+            () => { throw new Error('should not get here')}
+        );
+        setTimeout(() => {
+            expect(counter).to.equal(2);
+            done();
+        }, 10)
+    })
 });

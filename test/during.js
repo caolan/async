@@ -34,6 +34,22 @@ describe('during', function() {
         );
     });
 
+    it('during canceling', (done) => {
+        let counter = 0;
+        async.during(
+            cb => cb(null, true),
+            cb => {
+                counter++
+                cb(counter === 2 ? false : null);
+            },
+            () => { throw new Error('should not get here')}
+        );
+        setTimeout(() => {
+            expect(counter).to.equal(2);
+            done();
+        }, 10)
+    })
+
     it('doDuring', function(done) {
         var call_order = [];
 
@@ -95,4 +111,36 @@ describe('during', function() {
             }
         );
     });
+
+    it('doDuring canceling', (done) => {
+        let counter = 0;
+        async.doDuring(
+            cb => {
+                counter++
+                cb(counter === 2 ? false : null);
+            },
+            cb => cb(null, true),
+            () => { throw new Error('should not get here')}
+        );
+        setTimeout(() => {
+            expect(counter).to.equal(2);
+            done();
+        }, 10)
+    })
+
+    it('doDuring canceling in test', (done) => {
+        let counter = 0;
+        async.doDuring(
+            cb => {
+                counter++
+                cb(null, counter);
+            },
+            (n, cb) => cb(n === 2 ? false : null, true),
+            () => { throw new Error('should not get here')}
+        );
+        setTimeout(() => {
+            expect(counter).to.equal(2);
+            done();
+        }, 10)
+    })
 });

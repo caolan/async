@@ -38,5 +38,18 @@ describe('forever', function(){
                 done();
             });
         });
+
+        it('should cancel', (done) => {
+            var counter = 0;
+            async.forever(cb => {
+                counter++
+                cb(counter === 2 ? false : null)
+            }, () => { throw new Error('should not get here') })
+
+            setTimeout(() => {
+                expect(counter).to.eql(2)
+                done()
+            })
+        })
     });
 });
