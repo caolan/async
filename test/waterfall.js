@@ -153,9 +153,7 @@ describe("waterfall", function () {
             function(arg1, arg2, callback){
                 setTimeout(callback, 15, null, arg1, arg2, 'three');
             }
-        ], function () {
-            throw new Error('should not get here')
-        });
+        ]);
     });
 
     it('call in another context @nycinvalid @nodeonly', function(done) {
