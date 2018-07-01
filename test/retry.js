@@ -119,7 +119,7 @@ describe("retry", function () {
         setTimeout(function () {
             expect(calls).to.equal(5);
             done();
-        }, 10);
+        }, 50);
     });
 
     it("should be cancelable", function (done) {
