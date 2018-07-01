@@ -175,7 +175,7 @@ async.map([1, 2, 3], AsyncSquaringLibrary.square.bind(AsyncSquaringLibrary), fun
 
 ### Subtle Memory Leaks
 
-There are cases where you might want to exit early from async flow, when calling an Async method insice another async function:
+There are cases where you might want to exit early from async flow, when calling an Async method inside another async function:
 
 ```javascript
 function myFunction (args, outerCallback) {
