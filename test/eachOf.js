@@ -444,8 +444,7 @@ describe("eachOf", function() {
         }, 20);
     });
 
-
-    it('forEachOfLimit canceled (async, array)', function(done) {
+    it('eachOfLimit canceled (async, array)', function(done) {
         var obj = ['a', 'b', 'c', 'd', 'e'];
         var call_order = [];
 
@@ -462,6 +461,27 @@ describe("eachOf", function() {
         });
         setTimeout(() => {
             expect(call_order).to.eql([ 0, "a", 1, "b", 2, "c", 3, "d" ]);
+            done()
+        }, 20);
+    });
+
+    it('eachOf canceled (async, array)', function(done) {
+        var arr = ['a', 'b', 'c', 'd', 'e'];
+        var call_order = [];
+
+        async.eachOf(arr, function(value, key, callback){
+            call_order.push(key, value);
+            setTimeout(() => {
+                if (value === 'b') {
+                    return callback(false);
+                }
+                callback()
+            })
+        }, function(){
+            throw new Error('should not get here')
+        });
+        setTimeout(() => {
+            expect(call_order).to.eql([ 0, "a", 1, "b", 2, "c", 3, "d", 4, "e" ]);
             done()
         }, 20);
     });
