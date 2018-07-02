@@ -298,7 +298,7 @@ describe('concat', function() {
                 async.concatLimit([3, 2, 2, 1], 0, function(val, next) {
                     assert(false, 'iteratee should not be called');
                     next();
-                }, function(err, result) {
+                }, function() {
                     assert(false, 'callback should not be called');
                 });
             }).to.throw(/limit/)

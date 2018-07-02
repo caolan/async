@@ -252,7 +252,7 @@ describe('groupBy', function() {
                 async.groupByLimit([3, 2, 2, 1], 0, function(val, next) {
                     assert(false, 'iteratee should not be called');
                     next();
-                }, function(err, result) {
+                }, function() {
                     assert(false, 'should not be called');
                 });
             }).to.throw(/concurrency limit/)

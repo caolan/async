@@ -229,7 +229,7 @@ describe("map", function() {
             async.mapLimit([0, 1, 2, 3, 4, 5], 0, function(x, callback) {
                 assert(false, 'iteratee should not be called');
                 callback();
-            }, function(err, results) {
+            }, function() {
                 assert(false, 'should not be called');
             });
         }).to.throw(/concurrency limit/)

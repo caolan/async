@@ -304,7 +304,7 @@ describe("eachOf", function() {
             async.forEachOfLimit({ a: 1, b: 2 }, 0, function(x, callback){
                 assert(false, 'iteratee should not be called');
                 callback();
-            }, function(err){
+            }, function(){
                 assert(true, 'should call callback');
             });
         }).to.throw(/concurrency limit/)

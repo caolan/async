@@ -204,7 +204,7 @@ describe("each", function() {
             async.eachLimit([0,1,2,3,4,5], 0, function(x, callback){
                 assert(false, 'iteratee should not be called');
                 callback();
-            }, function(err){
+            }, function(){
                 assert(false, 'should not call callback');
             });
         }).to.throw(/limit/)
