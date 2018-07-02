@@ -49,7 +49,7 @@ describe('forever', function(){
             setTimeout(() => {
                 expect(counter).to.eql(2)
                 done()
-            })
+            }, 10)
         })
     });
 });
