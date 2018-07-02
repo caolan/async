@@ -224,15 +224,15 @@ describe("map", function() {
         });
     });
 
-    it('mapLimit zero limit', function(done) {
-        async.mapLimit([0, 1, 2, 3, 4, 5], 0, function(x, callback) {
-            assert(false, 'iteratee should not be called');
-            callback();
-        }, function(err, results) {
-            expect(results).to.eql([]);
-            assert(true, 'should call callback');
-        });
-        setTimeout(done, 25);
+    it('mapLimit zero limit', function() {
+        expect(() => {
+            async.mapLimit([0, 1, 2, 3, 4, 5], 0, function(x, callback) {
+                assert(false, 'iteratee should not be called');
+                callback();
+            }, function() {
+                assert(false, 'should not be called');
+            });
+        }).to.throw(/concurrency limit/)
     });
 
     it('mapLimit error', function(done) {
