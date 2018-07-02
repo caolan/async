@@ -82,7 +82,6 @@ describe('seq', function() {
             if (err) {
                 return done(err);
             }
-            expect(this).to.equal(testcontext);
             expect(result).to.equal(15);
             done();
         });
