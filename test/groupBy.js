@@ -247,15 +247,15 @@ describe('groupBy', function() {
             });
         });
 
-        it('zero limit', function(done) {
-            async.groupByLimit([3, 2, 2, 1], 0, function(val, next) {
-                assert(false, 'iteratee should not be called');
-                next();
-            }, function(err, result) {
-                expect(err).to.eql(null);
-                expect(result).to.eql({});
-                done();
-            });
+        it('zero limit', function() {
+            expect(() => {
+                async.groupByLimit([3, 2, 2, 1], 0, function(val, next) {
+                    assert(false, 'iteratee should not be called');
+                    next();
+                }, function(err, result) {
+                    assert(false, 'should not be called');
+                });
+            }).to.throw(/concurrency limit/)
         });
 
         it('does not continue replenishing after error', function(done) {

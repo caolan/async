@@ -299,15 +299,15 @@ describe("eachOf", function() {
         });
     });
 
-    it('forEachOfLimit zero limit', function(done) {
-        async.forEachOfLimit({ a: 1, b: 2 }, 0, function(x, callback){
-            assert(false, 'iteratee should not be called');
-            callback();
-        }, function(err){
-            if (err) throw err;
-            assert(true, 'should call callback');
-        });
-        setTimeout(done, 25);
+    it('forEachOfLimit zero limit', function() {
+        expect(() => {
+            async.forEachOfLimit({ a: 1, b: 2 }, 0, function(x, callback){
+                assert(false, 'iteratee should not be called');
+                callback();
+            }, function(err){
+                assert(true, 'should call callback');
+            });
+        }).to.throw(/concurrency limit/)
     });
 
     it('forEachOfLimit no limit', function(done) {

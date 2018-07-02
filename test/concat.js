@@ -293,15 +293,15 @@ describe('concat', function() {
             });
         });
 
-        it('zero limit', function(done) {
-            async.concatLimit([3, 2, 2, 1], 0, function(val, next) {
-                assert(false, 'iteratee should not be called');
-                next();
-            }, function(err, result) {
-                expect(err).to.eql(null);
-                expect(result).to.be.an('array').that.is.empty;
-                done();
-            });
+        it('zero limit', function() {
+            expect(() => {
+                async.concatLimit([3, 2, 2, 1], 0, function(val, next) {
+                    assert(false, 'iteratee should not be called');
+                    next();
+                }, function(err, result) {
+                    assert(false, 'callback should not be called');
+                });
+            }).to.throw(/limit/)
         });
 
         it('does not continue replenishing after error', function(done) {

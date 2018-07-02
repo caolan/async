@@ -199,15 +199,15 @@ describe("each", function() {
         });
     });
 
-    it('eachLimit zero limit', function(done) {
-        async.eachLimit([0,1,2,3,4,5], 0, function(x, callback){
-            assert(false, 'iteratee should not be called');
-            callback();
-        }, function(err){
-            if (err) throw err;
-            assert(true, 'should call callback');
-        });
-        setTimeout(done, 25);
+    it('eachLimit zero limit', function() {
+        expect(() => {
+            async.eachLimit([0,1,2,3,4,5], 0, function(x, callback){
+                assert(false, 'iteratee should not be called');
+                callback();
+            }, function(err){
+                assert(false, 'should not call callback');
+            });
+        }).to.throw(/limit/)
     });
 
     it('eachLimit error', function(done) {
