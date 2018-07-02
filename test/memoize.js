@@ -171,7 +171,7 @@ describe("memoize", function() {
             throw new Error("Function should never be called");
         });
         fn.memo.foo = ["bar"];
-        fn("foo", function(val) {
+        fn("foo", function(err, val) {
             expect(val).to.equal("bar");
             done();
         });
