@@ -168,6 +168,63 @@ describe('auto', function () {
         setTimeout(done, 100);
     });
 
+    it('auto canceled', function(done){
+        const call_order = []
+        async.auto({
+            task1: function(callback){
+                call_order.push(1)
+                callback(false);
+            },
+            task2: ['task1', function(/*results, callback*/){
+                call_order.push(2)
+                throw new Error('task2 should not be called');
+            }],
+            task3: function(callback){
+                call_order.push(3)
+                callback('testerror2');
+            }
+        },
+        function(){
+            throw new Error('should not get here')
+        });
+        setTimeout(() => {
+            expect(call_order).to.eql([1, 3])
+            done()
+        }, 10);
+    });
+
+    it('does not start other tasks when it has been canceled', function(done) {
+        const call_order = []
+        debugger
+        async.auto({
+            task1: function(callback) {
+                call_order.push(1);
+                // defer calling task2, so task3 has time to stop execution
+                async.setImmediate(callback);
+            },
+            task2: ['task1', function( /*results, callback*/ ) {
+                call_order.push(2);
+                throw new Error('task2 should not be called');
+            }],
+            task3: function(callback) {
+                call_order.push(3);
+                callback(false);
+            },
+            task4: ['task3', function( /*results, callback*/ ) {
+                call_order.push(4);
+                throw new Error('task4 should not be called');
+            }]
+        },
+        function() {
+            throw new Error('should not get here')
+        });
+
+        setTimeout(() => {
+            expect(call_order).to.eql([1, 3])
+            done()
+        }, 25)
+    });
+
     it('auto no callback', function(done){
         async.auto({
             task1: function(callback){callback();},
@@ -185,7 +242,7 @@ describe('auto', function () {
     it('auto error should pass partial results', function(done) {
         async.auto({
             task1: function(callback){
-                callback(false, 'result1');
+                callback(null, 'result1');
             },
             task2: ['task1', function(results, callback){
                 callback('testerror', 'result2');

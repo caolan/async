@@ -403,4 +403,111 @@ describe("eachOf", function() {
             done();
         });
     });
+
+    it('forEachOfLimit canceled', function(done) {
+        var obj = { a: 1, b: 2, c: 3, d: 4, e: 5 };
+        var call_order = [];
+
+        async.forEachOfLimit(obj, 3, function(value, key, callback){
+            call_order.push(value, key);
+            if (value === 2) {
+                return callback(false);
+            }
+            callback()
+        }, function(){
+            throw new Error('should not get here')
+        });
+        setTimeout(() => {
+            expect(call_order).to.eql([ 1, "a", 2, "b" ]);
+            done()
+        }, 10);
+    });
+
+    it('forEachOfLimit canceled (async)', function(done) {
+        var obj = { a: 1, b: 2, c: 3, d: 4, e: 5 };
+        var call_order = [];
+
+        async.forEachOfLimit(obj, 3, function(value, key, callback){
+            call_order.push(value, key);
+            setTimeout(() => {
+                if (value === 2) {
+                    return callback(false);
+                }
+                callback()
+            })
+        }, function(){
+            throw new Error('should not get here')
+        });
+        setTimeout(() => {
+            expect(call_order).to.eql([ 1, "a", 2, "b", 3, "c", 4, "d" ]);
+            done()
+        }, 20);
+    });
+
+    it('eachOfLimit canceled (async, array)', function(done) {
+        var obj = ['a', 'b', 'c', 'd', 'e'];
+        var call_order = [];
+
+        async.eachOfLimit(obj, 3, function(value, key, callback){
+            call_order.push(key, value);
+            setTimeout(() => {
+                if (value === 'b') {
+                    return callback(false);
+                }
+                callback()
+            })
+        }, function(){
+            throw new Error('should not get here')
+        });
+        setTimeout(() => {
+            expect(call_order).to.eql([ 0, "a", 1, "b", 2, "c", 3, "d" ]);
+            done()
+        }, 20);
+    });
+
+    it('eachOf canceled (async, array)', function(done) {
+        var arr = ['a', 'b', 'c', 'd', 'e'];
+        var call_order = [];
+
+        async.eachOf(arr, function(value, key, callback){
+            call_order.push(key, value);
+            setTimeout(() => {
+                if (value === 'b') {
+                    return callback(false);
+                }
+                callback()
+            })
+        }, function(){
+            throw new Error('should not get here')
+        });
+        setTimeout(() => {
+            expect(call_order).to.eql([ 0, "a", 1, "b", 2, "c", 3, "d", 4, "e" ]);
+            done()
+        }, 20);
+    });
+
+    it('forEachOfLimit canceled (async, w/ error)', function(done) {
+        var obj = { a: 1, b: 2, c: 3, d: 4, e: 5 };
+        var call_order = [];
+
+        async.forEachOfLimit(obj, 3, function(value, key, callback){
+            call_order.push(value, key);
+            setTimeout(() => {
+                if (value === 2) {
+                    return callback(false);
+                }
+                if (value === 3) {
+                    return callback('fail');
+                }
+                callback()
+            })
+        }, function(){
+            throw new Error('should not get here')
+        });
+        setTimeout(() => {
+            expect(call_order).to.eql([ 1, "a", 2, "b", 3, "c", 4, "d" ]);
+            done()
+        }, 20);
+    });
+
 });

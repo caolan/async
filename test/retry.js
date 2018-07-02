@@ -122,6 +122,18 @@ describe("retry", function () {
         }, 50);
     });
 
+    it("should be cancelable", function (done) {
+        var calls = 0;
+        async.retry(2, function(cb) {
+            calls++;
+            cb(calls > 1 ? false : 'fail');
+        }, () => { throw new Error('should not get here') });
+        setTimeout(function () {
+            expect(calls).to.equal(2);
+            done();
+        }, 10);
+    });
+
     it('retry does not precompute the intervals (#1226)', function(done) {
         var callTimes = [];
         function intervalFunc() {

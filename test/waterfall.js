@@ -90,6 +90,28 @@ describe("waterfall", function () {
         });
     });
 
+
+    it('canceled', function(done){
+        const call_order = []
+        async.waterfall([
+            function(callback){
+                call_order.push(1)
+                callback(false);
+            },
+            function(callback){
+                call_order.push(2)
+                assert(false, 'next function should not be called');
+                callback();
+            }
+        ], function(){
+            throw new Error('should not get here')
+        });
+        setTimeout(() => {
+            expect(call_order).to.eql([1])
+            done()
+        }, 10)
+    });
+
     it('multiple callback calls', function(){
         var arr = [
             function(callback){
@@ -131,9 +153,7 @@ describe("waterfall", function () {
             function(arg1, arg2, callback){
                 setTimeout(callback, 15, null, arg1, arg2, 'three');
             }
-        ], function () {
-            throw new Error('should not get here')
-        });
+        ]);
     });
 
     it('call in another context @nycinvalid @nodeonly', function(done) {

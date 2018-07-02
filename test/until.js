@@ -34,6 +34,22 @@ describe('until', function(){
         );
     });
 
+    it('until canceling', (done) => {
+        let counter = 0;
+        async.until(
+            () => false,
+            cb => {
+                counter++
+                cb(counter === 2 ? false: null);
+            },
+            () => { throw new Error('should not get here')}
+        );
+        setTimeout(() => {
+            expect(counter).to.equal(2);
+            done();
+        }, 10)
+    })
+
     it('doUntil', function(done) {
         var call_order = [];
         var count = 0;
@@ -92,4 +108,20 @@ describe('until', function(){
             }
         );
     });
+
+    it('doUntil canceling', (done) => {
+        let counter = 0;
+        async.doUntil(
+            cb => {
+                counter++
+                cb(counter === 2 ? false: null);
+            },
+            () => false,
+            () => { throw new Error('should not get here')}
+        );
+        setTimeout(() => {
+            expect(counter).to.equal(2);
+            done();
+        }, 10)
+    })
 });
