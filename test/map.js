@@ -122,7 +122,7 @@ describe("map", () => {
             callback(null, val * 2);
         }, (err, result) => {
             if (err) throw err;
-            expect(Object.prototype.toString.call(result)).to.equal('[object Array]');
+            expect(Array.isArray(result)).to.equal(true);
             expect(result).to.contain(2);
             expect(result).to.contain(4);
             expect(result).to.contain(6);
