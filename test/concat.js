@@ -308,8 +308,6 @@ describe('concat', function() {
             var started = 0;
             var arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
             var limit = 3;
-            var step = 0;
-            var maxSteps = arr.length;
 
             async.concatLimit(arr, limit, (val, next) => {
                 started++;
@@ -328,17 +326,11 @@ describe('concat', function() {
             // wait `maxSteps` event loop cycles before calling done to ensure
             // the iteratee is not called on more items in arr.
             function waitCycle() {
-                step++;
-                if (step >= maxSteps) {
-                    expect(started).to.equal(3);
-                    done();
-                    return;
-                } else {
-                    async.setImmediate(waitCycle);
-                }
+                expect(started).to.equal(3);
+                done();
             }
 
-            async.setImmediate(waitCycle);
+            setTimeout(waitCycle, 25);
         });
     });
 
