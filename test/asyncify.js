@@ -25,9 +25,8 @@ describe('asyncify', () => {
     });
 
     it('variable numbers of arguments', (done) => {
-        async.asyncify(function (/*x, y, z*/) {
-            return arguments;
-        })(1, 2, 3, (err, result) => {
+        const fn = (...args/*x, y, z*/) => args
+        async.asyncify(fn)(1, 2, 3, (err, result) => {
             expect(result.length).to.equal(3);
             expect(result[0]).to.equal(1);
             expect(result[1]).to.equal(2);

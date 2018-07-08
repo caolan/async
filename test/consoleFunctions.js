@@ -25,9 +25,9 @@ describe('console functions', () => {
                 };
                 var _console_fn = console[name];
                 var _error = console.error;
-                console[name] = function(val){
+                console[name] = function(val, ...extra){
                     expect(val).to.equal('test');
-                    expect(arguments.length).to.equal(1);
+                    expect(extra).to.equal(0);
                     console.error = function(val){
                         expect(val).to.equal('error');
                         console[name] = _console_fn;

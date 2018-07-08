@@ -10,12 +10,12 @@ function filterIteratee(x, callback) {
 function testLimit(arr, limitFunc, limit, iter, done) {
     var args = [];
 
-    limitFunc(arr, limit, function(x) {
+    limitFunc(arr, limit, (x, next) => {
         args.push(x);
-        iter.apply(this, arguments);
-    }, function() {
+        iter(x, next);
+    }, (err) => {
         expect(args).to.eql(arr);
-        done.apply(this, arguments);
+        done(err);
     });
 }
 

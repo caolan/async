@@ -50,8 +50,8 @@ describe('auto', () => {
         var runningTasks = [];
 
         function makeCallback(taskName) {
-            return function(/*..., callback*/) {
-                var callback = _.last(arguments);
+            return function(...args/*..., callback*/) {
+                var callback = _.last(args);
                 runningTasks.push(taskName);
                 setTimeout(() => {
                     // Each task returns the array of running tasks as results.
