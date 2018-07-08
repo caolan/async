@@ -2,14 +2,14 @@ var async = require('../lib');
 var expect = require('chai').expect;
 var assert = require('assert');
 
-describe('reduce', function() {
+describe('reduce', () => {
 
-    it('reduce', function(done) {
+    it('reduce', (done) => {
         var call_order = [];
-        async.reduce([1,2,3], 0, function(a, x, callback){
+        async.reduce([1,2,3], 0, (a, x, callback) => {
             call_order.push(x);
             callback(null, a + x);
-        }, function(err, result){
+        }, (err, result) => {
             assert(err === null, err + " passed instead of 'null'");
             expect(result).to.equal(6);
             expect(call_order).to.eql([1,2,3]);
@@ -17,41 +17,41 @@ describe('reduce', function() {
         });
     });
 
-    it('reduce async with non-reference memo', function(done) {
-        async.reduce([1,3,2], 0, function(a, x, callback){
-            setTimeout(function(){callback(null, a + x);}, Math.random()*100);
-        }, function(err, result){
+    it('reduce async with non-reference memo', (done) => {
+        async.reduce([1,3,2], 0, (a, x, callback) => {
+            setTimeout(() => {callback(null, a + x);}, Math.random()*100);
+        }, (err, result) => {
             expect(result).to.equal(6);
             done();
         });
     });
 
-    it('reduce error', function(done) {
-        async.reduce([1,2,3], 0, function(a, x, callback){
+    it('reduce error', (done) => {
+        async.reduce([1,2,3], 0, (a, x, callback) => {
             callback('error');
-        }, function(err){
+        }, (err) => {
             expect(err).to.equal('error');
         });
         setTimeout(done, 50);
     });
 
-    it('inject alias', function(done) {
+    it('inject alias', (done) => {
         expect(async.inject).to.equal(async.reduce);
         done();
     });
 
-    it('foldl alias', function(done) {
+    it('foldl alias', (done) => {
         expect(async.foldl).to.equal(async.reduce);
         done();
     });
 
-    it('reduceRight', function(done) {
+    it('reduceRight', (done) => {
         var call_order = [];
         var a = [1,2,3];
-        async.reduceRight(a, 0, function(a, x, callback){
+        async.reduceRight(a, 0, (a, x, callback) => {
             call_order.push(x);
             callback(null, a + x);
-        }, function(err, result){
+        }, (err, result) => {
             expect(result).to.equal(6);
             expect(call_order).to.eql([3,2,1]);
             expect(a).to.eql([1,2,3]);
@@ -59,7 +59,7 @@ describe('reduce', function() {
         });
     });
 
-    it('foldr alias', function(done) {
+    it('foldr alias', (done) => {
         expect(async.foldr).to.equal(async.reduceRight);
         done();
     });

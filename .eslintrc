@@ -9,6 +9,7 @@
     "ecmaVersion": 8,
     "sourceType": "module"
   },
+  "extends": "eslint:recommended",
   "rules": {
     "eqeqeq": 0,
     "guard-for-in": 2,
@@ -19,6 +20,7 @@
         "SwitchCase": 1
       }
     ],
+    "no-console": 0,
     "no-caller": 2,
     "no-undef": 2,
     "no-unused-vars": 2,
@@ -28,10 +30,14 @@
       "last"
     ],
     "semi": 0,
+    "prefer-arrow-callback": 2,
+    "arrow-spacing": 2,
+    "object-shorthand": 2,
     "no-eq-null": 0,
     "no-unused-expressions": 0,
     "no-loop-func": 2,
     "dot-notation": 0,
+    "no-trailing-spaces": 2,
     "valid-jsdoc": ["error", {
         "requireReturn": false,
         "requireReturnDescription": false,

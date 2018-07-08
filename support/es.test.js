@@ -9,24 +9,24 @@ import forEachOf from "../build-es/forEachOf";
 waterfall([
     constant(42),
     function (val, next) {
-        async.setImmediate(function () {
+        async.setImmediate(() => {
             next(null, val);
         });
     },
-    wrapSync(function (a) { return a; }),
+    wrapSync((a) => { return a; }),
     function (val, next) {
-        async.forEachOf({a: 1}, function (val, key, cb) {
+        async.forEachOf({a: 1}, (val, key, cb) => {
             if (val !== 1 && key !== 'a') return cb(new Error('fail!'));
             cb();
-        }, function (err) { next (err, val)});
+        }, (err) => { next (err, val)});
     },
     function (val, next) {
-        forEachOf([1, 2, 3], function (v, key, cb) {
+        forEachOf([1, 2, 3], (v, key, cb) => {
             val += key
             cb()
-        }, function (err) { next(err, val - 3) })
+        }, (err) => { next(err, val - 3) })
     }
-], function (err, result) {
+], (err, result) => {
     if (err) { throw err; }
     console.log(result);
     if (result !== 42) {

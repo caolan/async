@@ -2,23 +2,23 @@ var async = require('../lib');
 var expect = require('chai').expect;
 var assert = require('assert');
 
-describe('during', function() {
+describe('during', () => {
 
-    it('during', function(done) {
+    it('during', (done) => {
         var call_order = [];
 
         var count = 0;
         async.during(
-            function (cb) {
+            (cb) => {
                 call_order.push(['test', count]);
                 cb(null, count < 5);
             },
-            function (cb) {
+            (cb) => {
                 call_order.push(['iteratee', count]);
                 count++;
                 cb(null, count);
             },
-            function (err) {
+            (err) => {
                 assert(err === null, err + " passed instead of 'null'");
                 expect(call_order).to.eql([
                     ['test', 0],
@@ -50,22 +50,22 @@ describe('during', function() {
         }, 10)
     })
 
-    it('doDuring', function(done) {
+    it('doDuring', (done) => {
         var call_order = [];
 
         var count = 0;
         async.doDuring(
-            function (cb) {
+            (cb) => {
                 call_order.push(['iteratee', count]);
                 count++;
                 cb(null, count);
             },
-            function (c, cb) {
+            (c, cb) => {
                 expect(c).to.equal(count);
                 call_order.push(['test', count]);
                 cb(null, count < 5);
             },
-            function (err) {
+            (err) => {
                 assert(err === null, err + " passed instead of 'null'");
                 expect(call_order).to.eql([
                     ['iteratee', 0], ['test', 1],
@@ -80,32 +80,32 @@ describe('during', function() {
         );
     });
 
-    it('doDuring - error test', function(done) {
+    it('doDuring - error test', (done) => {
         var error = new Error('asdas');
 
         async.doDuring(
-            function (cb) {
+            (cb) => {
                 cb(error);
             },
-            function () {},
-            function (err) {
+            () => {},
+            (err) => {
                 expect(err).to.equal(error);
                 done();
             }
         );
     });
 
-    it('doDuring - error iteratee', function(done) {
+    it('doDuring - error iteratee', (done) => {
         var error = new Error('asdas');
 
         async.doDuring(
-            function (cb) {
+            (cb) => {
                 cb(null);
             },
-            function (cb) {
+            (cb) => {
                 cb(error);
             },
-            function (err) {
+            (err) => {
                 expect(err).to.equal(error);
                 done();
             }

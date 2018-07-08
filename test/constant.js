@@ -1,11 +1,11 @@
 var async = require('../lib');
 var expect = require('chai').expect;
 
-describe('constant', function () {
+describe('constant', () => {
 
-    it('basic usage', function(done){
+    it('basic usage', (done) => {
         var f = async.constant(42, 1, 2, 3);
-        f(function (err, value, a, b, c) {
+        f((err, value, a, b, c) => {
             expect(err).to.equal(null);
             expect(value).to.equal(42);
             expect(a).to.equal(1);
@@ -15,9 +15,9 @@ describe('constant', function () {
         });
     });
 
-    it('called with multiple arguments', function(done){
+    it('called with multiple arguments', (done) => {
         var f = async.constant(42, 1, 2, 3);
-        f('argument to ignore', 'another argument', function (err, value, a) {
+        f('argument to ignore', 'another argument', (err, value, a) => {
             expect(err).to.equal(null);
             expect(value).to.equal(42);
             expect(a).to.equal(1);

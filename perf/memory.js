@@ -11,14 +11,12 @@ function waterfallTest(cb) {
     var functions = [];
 
     for(var i = 0; i < 10000; i++) {
-        functions.push(function leaky(next) {
+        functions.push((next) => {
             function func1(cb) {return cb(); }
 
             function func2(callback) {
-                if (true) {
-                    callback();
-                    //return next();  // Should be callback here.
-                }
+                callback();
+                //return next();  // Should be callback here.
             }
 
             function func3(cb) {return cb(); }
@@ -41,6 +39,6 @@ function reportMemory() {
         (+(increase / 1024).toPrecision(3)) + "kB");
 }
 
-waterfallTest(function () {
+waterfallTest(() => {
     setTimeout(reportMemory, 0);
 });

@@ -56,7 +56,7 @@ function renderTemplate(entries, aliases, template) {
         .replace(
             `/*__default_object__*/`,
             entries
-                .map(entry => `    ${entry}: ${entry}`)
+                .map(entry => `    ${entry}`)
                 .join(',\n') + ',')
 
         .replace(

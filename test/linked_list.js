@@ -1,8 +1,8 @@
 var DLL = require('../lib/internal/DoublyLinkedList').default;
 var expect = require('chai').expect;
 
-describe('DoublyLinkedList', function () {
-    it('toArray', function() {
+describe('DoublyLinkedList', () => {
+    it('toArray', () => {
         var list = new DLL();
         expect(list.toArray()).to.eql([]);
 
@@ -12,63 +12,63 @@ describe('DoublyLinkedList', function () {
         expect(list.toArray()).to.eql([0, 1, 2, 3, 4]);
     });
 
-    it('remove', function() {
+    it('remove', () => {
         var list = new DLL();
 
         for (var i = 0; i < 5; i++) {
             list.push({data: i});
         }
 
-        list.remove(function (node) {
+        list.remove((node) => {
             return node.data === 3;
         })
 
         expect(list.toArray()).to.eql([0, 1, 2, 4]);
     });
 
-    it('remove (head)', function() {
+    it('remove (head)', () => {
         var list = new DLL();
 
         for (var i = 0; i < 5; i++) {
             list.push({data: i});
         }
 
-        list.remove(function (node) {
+        list.remove((node) => {
             return node.data === 0;
         })
 
         expect(list.toArray()).to.eql([1, 2, 3, 4]);
     });
 
-    it('remove (tail)', function() {
+    it('remove (tail)', () => {
         var list = new DLL();
 
         for (var i = 0; i < 5; i++) {
             list.push({data: i});
         }
 
-        list.remove(function (node) {
+        list.remove((node) => {
             return node.data === 4;
         })
 
         expect(list.toArray()).to.eql([0, 1, 2, 3]);
     });
 
-    it('remove (all)', function() {
+    it('remove (all)', () => {
         var list = new DLL();
 
         for (var i = 0; i < 5; i++) {
             list.push({data: i});
         }
 
-        list.remove(function (node) {
+        list.remove((node) => {
             return node.data < 5;
         })
 
         expect(list.toArray()).to.eql([]);
     });
 
-    it('empty', function() {
+    it('empty', () => {
         var list = new DLL();
 
         for (var i = 0; i < 5; i++) {

@@ -13,8 +13,8 @@ module.exports = [{
     setup: function setup(count) {
         tasks = _.range(count);
     },
-    fn: function(async, done) {
-        async.each(tasks, function(num, cb) {
+    fn(async, done) {
+        async.each(tasks, (num, cb) => {
             async.setImmediate(cb);
         }, done);
     }
@@ -28,8 +28,8 @@ module.exports = [{
     setup: function setup(count) {
         tasks = _.range(count);
     },
-    fn: function(async, done) {
-        async.eachSeries(tasks, function(num, cb) {
+    fn(async, done) {
+        async.eachSeries(tasks, (num, cb) => {
             async.setImmediate(cb);
         }, done);
     }
@@ -43,8 +43,8 @@ module.exports = [{
     setup: function setup(count) {
         tasks = _.range(count);
     },
-    fn: function(async, done) {
-        async.eachLimit(tasks, 4, function(num, cb) {
+    fn(async, done) {
+        async.eachLimit(tasks, 4, (num, cb) => {
             async.setImmediate(cb);
         }, done);
     }
@@ -59,8 +59,8 @@ module.exports = [{
     setup: function setup(count) {
         tasks = _.range(count);
     },
-    fn: function(async, done) {
-        async.map(tasks, function(num, cb) {
+    fn(async, done) {
+        async.map(tasks, (num, cb) => {
             async.setImmediate(cb);
         }, done);
     }
@@ -74,8 +74,8 @@ module.exports = [{
     setup: function setup(count) {
         tasks = _.range(count);
     },
-    fn: function(async, done) {
-        async.mapSeries(tasks, function(num, cb) {
+    fn(async, done) {
+        async.mapSeries(tasks, (num, cb) => {
             async.setImmediate(cb);
         }, done);
     }
@@ -89,8 +89,8 @@ module.exports = [{
     setup: function setup(count) {
         tasks = _.range(count);
     },
-    fn: function(async, done) {
-        async.mapLimit(tasks, 4, function(num, cb) {
+    fn(async, done) {
+        async.mapLimit(tasks, 4, (num, cb) => {
             async.setImmediate(cb);
         }, done);
     }
@@ -105,9 +105,9 @@ module.exports = [{
         count = c;
         tasks = _.range(count);
     },
-    fn: function(async, done) {
-        async.filter(tasks, function(num, cb) {
-            async.setImmediate(function() {
+    fn(async, done) {
+        async.filter(tasks, (num, cb) => {
+            async.setImmediate(() => {
                 cb(null, num > (count / 2));
             });
         }, done);
@@ -123,9 +123,9 @@ module.exports = [{
         count = c;
         tasks = _.range(count);
     },
-    fn: function(async, done) {
-        async.filterLimit(tasks, 10, function(num, cb) {
-            async.setImmediate(function() {
+    fn(async, done) {
+        async.filterLimit(tasks, 10, (num, cb) => {
+            async.setImmediate(() => {
                 cb(null, num > (count / 2));
             });
         }, done);
@@ -141,9 +141,9 @@ module.exports = [{
     setup: function setup(count) {
         tasks = _.range(count);
     },
-    fn: function(async, done) {
-        async.concat(tasks, function(num, cb) {
-            async.setImmediate(function() {
+    fn(async, done) {
+        async.concat(tasks, (num, cb) => {
+            async.setImmediate(() => {
                 cb(null, [num]);
             });
         }, done);
@@ -159,8 +159,8 @@ module.exports = [{
     setup: function setup(count) {
         tasks = _.range(count);
     },
-    fn: function(async, done) {
-        async.eachOf(tasks, function(num, i, cb) {
+    fn(async, done) {
+        async.eachOf(tasks, (num, i, cb) => {
             async.setImmediate(cb);
         }, done);
     }
@@ -174,8 +174,8 @@ module.exports = [{
     setup: function setup(count) {
         tasks = _.range(count);
     },
-    fn: function(async, done) {
-        async.eachOfSeries(tasks, function(num, i, cb) {
+    fn(async, done) {
+        async.eachOfSeries(tasks, (num, i, cb) => {
             async.setImmediate(cb);
         }, done);
     }
@@ -189,8 +189,8 @@ module.exports = [{
     setup: function setup(count) {
         tasks = _.range(count);
     },
-    fn: function(async, done) {
-        async.eachOfLimit(tasks, 4, function(num, i, cb) {
+    fn(async, done) {
+        async.eachOfLimit(tasks, 4, (num, i, cb) => {
             async.setImmediate(cb);
         }, done);
     }
@@ -202,13 +202,13 @@ module.exports = [{
         [1000]
     ],
     setup: function setup(count) {
-        tasks = _.range(count).map(function() {
+        tasks = _.range(count).map(() => {
             return function(cb) {
                 setImmediate(cb);
             };
         });
     },
-    fn: function(async, done) {
+    fn(async, done) {
         async.parallel(tasks, done);
     }
 }, {
@@ -219,13 +219,13 @@ module.exports = [{
         [1000]
     ],
     setup: function setup(count) {
-        tasks = _.range(count).map(function() {
+        tasks = _.range(count).map(() => {
             return function(cb) {
                 setImmediate(cb);
             };
         });
     },
-    fn: function(async, done) {
+    fn(async, done) {
         async.series(tasks, done);
     }
 }, {
@@ -240,15 +240,15 @@ module.exports = [{
             function(cb) {
                 return cb(null, 1);
             }
-        ].concat(_.range(count).map(function(i) {
+        ].concat(_.range(count).map((i) => {
             return function(arg, cb) {
-                setImmediate(function() {
+                setImmediate(() => {
                     cb(null, i);
                 });
             };
         }));
     },
-    fn: function(async, done) {
+    fn(async, done) {
         async.waterfall(tasks, done);
     }
 }, {
@@ -260,9 +260,9 @@ module.exports = [{
     ],
     setup: function setup(count) {
         tasks = {
-            dep1: function (cb) { cb(null, 1); }
+            dep1 (cb) { cb(null, 1); }
         };
-        _.times(count, function(n) {
+        _.times(count, (n) => {
             var task = ['dep' + (n+1), function(results, cb) {
                 setImmediate(cb, null, n);
             }];
@@ -270,7 +270,7 @@ module.exports = [{
             tasks['dep' + (n+2)] = task;
         });
     },
-    fn: function(async, done) {
+    fn(async, done) {
         async.auto(tasks, done);
     }
 }, {
@@ -286,7 +286,7 @@ module.exports = [{
     setup: function setup(count) {
         tasks = count;
     },
-    fn: function(async, done) {
+    fn(async, done) {
         var numEntries = tasks;
         var q = async.queue(worker, 1);
         for (var i = 1; i <= numEntries; i++) {
@@ -311,9 +311,9 @@ module.exports = [{
     setup: function setup(count) {
         tasks = _.range(count);
     },
-    fn: function(async, done) {
-        async.some(tasks, function(i, cb) {
-            async.setImmediate(function() {
+    fn(async, done) {
+        async.some(tasks, (i, cb) => {
+            async.setImmediate(() => {
                 cb(i >= 600);
             });
         }, done);
@@ -327,9 +327,9 @@ module.exports = [{
     setup: function setup(count) {
         tasks = _.range(count);
     },
-    fn: function(async, done) {
-        async.some(tasks, function(i, cb) {
-            async.setImmediate(function() {
+    fn(async, done) {
+        async.some(tasks, (i, cb) => {
+            async.setImmediate(() => {
                 cb(i >= 60);
             });
         }, done);
@@ -343,9 +343,9 @@ module.exports = [{
     setup: function setup(count) {
         tasks = _.range(count);
     },
-    fn: function(async, done) {
-        async.every(tasks, function(i, cb) {
-            async.setImmediate(function() {
+    fn(async, done) {
+        async.every(tasks, (i, cb) => {
+            async.setImmediate(() => {
                 cb(i <= 600);
             });
         }, done);
@@ -359,55 +359,55 @@ module.exports = [{
     setup: function setup(count) {
         tasks = _.range(count);
     },
-    fn: function(async, done) {
-        async.every(tasks, function(i, cb) {
-            async.setImmediate(function() {
+    fn(async, done) {
+        async.every(tasks, (i, cb) => {
+            async.setImmediate(() => {
                 cb(i <= 60);
             });
         }, done);
     }
 }, {
     name: "defer nextTick",
-    fn: function(async, done) {
+    fn(async, done) {
         process.nextTick(done);
     }
 }, {
     name: "defer setImmediate",
-    fn: function(async, done) {
+    fn(async, done) {
         setImmediate(done);
     }
 }, {
     name: "defer async.nextTick",
-    fn: function(async, done) {
+    fn(async, done) {
         async.nextTick(done);
     }
 }, {
     name: "defer async.setImmediate",
-    fn: function(async, done) {
+    fn(async, done) {
         async.setImmediate(done);
     }
 }, {
     name: "defer setTimeout",
-    fn: function(async, done) {
+    fn(async, done) {
         setTimeout(done, 0);
     }
 }, {
     name: "ensureAsync sync",
-    fn: function(async, done) {
-        async.ensureAsync(function(cb) {
+    fn(async, done) {
+        async.ensureAsync((cb) => {
             cb();
         })(done);
     }
 }, {
     name: "ensureAsync async",
-    fn: function(async, done) {
-        async.ensureAsync(function(cb) {
+    fn(async, done) {
+        async.ensureAsync((cb) => {
             setImmediate(cb);
         })(done);
     }
 }, {
     name: "ensureAsync async noWrap",
-    fn: function(async, done) {
+    fn(async, done) {
         (function(cb) {
             setImmediate(cb);
         }(done));

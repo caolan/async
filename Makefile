@@ -61,7 +61,7 @@ clean:
 	rm -rf perf/versions/
 
 lint:
-	eslint $(LINT_FILES)
+	eslint --fix $(LINT_FILES)
 
 # Compile the ES6 modules to singular bundles, and individual bundles
 build-bundle: build-modules $(UMD_BUNDLE)

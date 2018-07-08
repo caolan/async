@@ -2,29 +2,29 @@ var async = require('../lib');
 var expect = require('chai').expect;
 var assert = require('assert');
 
-describe('cargo', function () {
+describe('cargo', () => {
 
-    it('cargo', function (done) {
+    it('cargo', (done) => {
         var call_order = [],
             delays = [40, 40, 20];
 
         // worker: --12--34--5-
         // order of completion: 1,2,3,4,5
 
-        var c = async.cargo(function (tasks, callback) {
-            setTimeout(function () {
+        var c = async.cargo((tasks, callback) => {
+            setTimeout(() => {
                 call_order.push('process ' + tasks.join(' '));
                 callback('error', 'arg');
             }, delays.shift());
         }, 2);
 
-        c.push(1, function (err, arg) {
+        c.push(1, (err, arg) => {
             expect(err).to.equal('error');
             expect(arg).to.equal('arg');
             expect(c.length()).to.equal(3);
             call_order.push('callback ' + 1);
         });
-        c.push(2, function (err, arg) {
+        c.push(2, (err, arg) => {
             expect(err).to.equal('error');
             expect(arg).to.equal('arg');
             expect(c.length()).to.equal(3);
@@ -34,23 +34,23 @@ describe('cargo', function () {
         expect(c.length()).to.equal(2);
 
         // async push
-        setTimeout(function () {
-            c.push(3, function (err, arg) {
+        setTimeout(() => {
+            c.push(3, (err, arg) => {
                 expect(err).to.equal('error');
                 expect(arg).to.equal('arg');
                 expect(c.length()).to.equal(1);
                 call_order.push('callback ' + 3);
             });
         }, 15);
-        setTimeout(function () {
-            c.push(4, function (err, arg) {
+        setTimeout(() => {
+            c.push(4, (err, arg) => {
                 expect(err).to.equal('error');
                 expect(arg).to.equal('arg');
                 expect(c.length()).to.equal(1);
                 call_order.push('callback ' + 4);
             });
             expect(c.length()).to.equal(2);
-            c.push(5, function (err, arg) {
+            c.push(5, (err, arg) => {
                 expect(err).to.equal('error');
                 expect(arg).to.equal('arg');
                 expect(c.length()).to.equal(0);
@@ -70,15 +70,15 @@ describe('cargo', function () {
         };
     });
 
-    it('without callback', function (done) {
+    it('without callback', (done) => {
         var call_order = [],
             delays = [40,20,60,20];
 
         // worker: --1-2---34-5-
         // order of completion: 1,2,3,4,5
 
-        var c = async.cargo(function (tasks, callback) {
-            setTimeout(function () {
+        var c = async.cargo((tasks, callback) => {
+            setTimeout(() => {
                 call_order.push('process ' + tasks.join(' '));
                 callback('error', 'arg');
             }, delays.shift());
@@ -86,16 +86,16 @@ describe('cargo', function () {
 
         c.push(1);
 
-        setTimeout(function () {
+        setTimeout(() => {
             c.push(2);
         }, 30);
-        setTimeout(function () {
+        setTimeout(() => {
             c.push(3);
             c.push(4);
             c.push(5);
         }, 50);
 
-        setTimeout(function () {
+        setTimeout(() => {
             expect(call_order).to.eql([
                 'process 1',
                 'process 2',
@@ -106,28 +106,28 @@ describe('cargo', function () {
         }, 200);
     });
 
-    it('bulk task', function (done) {
+    it('bulk task', (done) => {
         var call_order = [],
             delays = [30,20];
 
         // worker: -123-4-
         // order of completion: 1,2,3,4
 
-        var c = async.cargo(function (tasks, callback) {
-            setTimeout(function () {
+        var c = async.cargo((tasks, callback) => {
+            setTimeout(() => {
                 call_order.push('process ' + tasks.join(' '));
                 callback('error', tasks.join(' '));
             }, delays.shift());
         }, 3);
 
-        c.push( [1,2,3,4], function (err, arg) {
+        c.push( [1,2,3,4], (err, arg) => {
             expect(err).to.equal('error');
             call_order.push('callback ' + arg);
         });
 
         expect(c.length()).to.equal(4);
 
-        setTimeout(function () {
+        setTimeout(() => {
             expect(call_order).to.eql([
                 'process 1 2 3', 'callback 1 2 3',
                 'callback 1 2 3', 'callback 1 2 3',
@@ -138,9 +138,9 @@ describe('cargo', function () {
         }, 200);
     });
 
-    it('drain once', function (done) {
+    it('drain once', (done) => {
 
-        var c = async.cargo(function (tasks, callback) {
+        var c = async.cargo((tasks, callback) => {
             callback();
         }, 3);
 
@@ -153,15 +153,15 @@ describe('cargo', function () {
             c.push(i);
         }
 
-        setTimeout(function(){
+        setTimeout(() => {
             expect(drainCounter).to.equal(1);
             done();
         }, 50);
     });
 
-    it('drain twice', function (done) {
+    it('drain twice', (done) => {
 
-        var c = async.cargo(function (tasks, callback) {
+        var c = async.cargo((tasks, callback) => {
             callback();
         }, 3);
 
@@ -179,15 +179,15 @@ describe('cargo', function () {
         loadCargo();
         setTimeout(loadCargo, 50);
 
-        setTimeout(function(){
+        setTimeout(() => {
             expect(drainCounter).to.equal(2);
             done();
         }, 100);
     });
 
-    it('events', function (done) {
+    it('events', (done) => {
         var calls = [];
-        var q = async.cargo(function(task, cb) {
+        var q = async.cargo((task, cb) => {
             // nop
             calls.push('process ' + task);
             async.setImmediate(cb);
@@ -227,16 +227,16 @@ describe('cargo', function () {
             ]);
             done();
         };
-        q.push('foo', function () {calls.push('foo cb');});
-        q.push('bar', function () {calls.push('bar cb');});
-        q.push('zoo', function () {calls.push('zoo cb');});
-        q.push('poo', function () {calls.push('poo cb');});
-        q.push('moo', function () {calls.push('moo cb');});
+        q.push('foo', () => {calls.push('foo cb');});
+        q.push('bar', () => {calls.push('bar cb');});
+        q.push('zoo', () => {calls.push('zoo cb');});
+        q.push('poo', () => {calls.push('poo cb');});
+        q.push('moo', () => {calls.push('moo cb');});
     });
 
-    it('expose payload', function (done) {
+    it('expose payload', (done) => {
         var called_once = false;
-        var cargo = async.cargo(function(tasks, cb) {
+        var cargo = async.cargo((tasks, cb) => {
             if (!called_once) {
                 expect(cargo.payload).to.equal(1);
                 assert(tasks.length === 1, 'should start with payload = 1');
@@ -256,28 +256,28 @@ describe('cargo', function () {
 
         cargo.push([1, 2, 3]);
 
-        setTimeout(function () {
+        setTimeout(() => {
             cargo.payload = 2;
         }, 15);
     });
 
-    it('workersList', function(done) {
+    it('workersList', (done) => {
         var called_once = false;
 
         function getWorkersListData(cargo) {
-            return cargo.workersList().map(function(v) {
+            return cargo.workersList().map((v) => {
                 return v.data;
             });
         }
 
-        var cargo = async.cargo(function(tasks, cb) {
+        var cargo = async.cargo((tasks, cb) => {
             if (!called_once) {
                 expect(tasks).to.eql(['foo', 'bar']);
             } else {
                 expect(tasks).to.eql(['baz']);
             }
             expect(getWorkersListData(cargo)).to.eql(tasks);
-            async.setImmediate(function() {
+            async.setImmediate(() => {
                 // ensure nothing has changed
                 expect(getWorkersListData(cargo)).to.eql(tasks);
                 called_once = true;
@@ -296,10 +296,10 @@ describe('cargo', function () {
         cargo.push('baz');
     });
 
-    it('running', function(done) {
-        var cargo = async.cargo(function(tasks, cb) {
+    it('running', (done) => {
+        var cargo = async.cargo((tasks, cb) => {
             expect(cargo.running()).to.equal(1);
-            async.setImmediate(function() {
+            async.setImmediate(() => {
                 expect(cargo.running()).to.equal(1);
                 cb();
             });

@@ -1,23 +1,23 @@
 var async = require('../lib');
 var expect = require('chai').expect;
 
-describe('timeout', function () {
+describe('timeout', () => {
 
-    it('timeout with series', function(done){
+    it('timeout with series', (done) => {
         async.series([
-            async.timeout(function asyncFn(callback) {
-                setTimeout(function() {
+            async.timeout((callback) => {
+                setTimeout(() => {
                     callback(null, 'I didn\'t time out');
                 }, 25);
             }, 50),
-            async.timeout(function asyncFn(callback) {
-                setTimeout(function() {
+            async.timeout((callback) => {
+                setTimeout(() => {
                     callback(null, 'I will time out');
                 }, 75);
             }, 50)
         ],
-        function(err, results) {
-            expect(err.message).to.equal('Callback function "asyncFn" timed out.');
+        (err, results) => {
+            expect(err.message).to.equal('Callback function "anonymous" timed out.');
             expect(err.code).to.equal('ETIMEDOUT');
             expect(err.info).to.equal(undefined);
             expect(results[0]).to.equal('I didn\'t time out');
@@ -25,22 +25,22 @@ describe('timeout', function () {
         });
     });
 
-    it('timeout with series and info', function (done) {
+    it('timeout with series and info', (done) => {
         var info = { custom: 'info about callback' };
         async.series([
-            async.timeout(function asyncFn(callback) {
-                setTimeout(function() {
+            async.timeout((callback) => {
+                setTimeout(() => {
                     callback(null, 'I didn\'t time out');
                 }, 25);
             }, 50),
-            async.timeout(function asyncFn(callback) {
-                setTimeout(function() {
+            async.timeout((callback) => {
+                setTimeout(() => {
                     callback(null, 'I will time out');
                 }, 75);
             }, 50, info)
         ],
-        function(err, results) {
-            expect(err.message).to.equal('Callback function "asyncFn" timed out.');
+        (err, results) => {
+            expect(err.message).to.equal('Callback function "anonymous" timed out.');
             expect(err.code).to.equal('ETIMEDOUT');
             expect(err.info).to.equal(info);
             expect(results[0]).to.equal('I didn\'t time out');
@@ -48,21 +48,21 @@ describe('timeout', function () {
         });
     });
 
-    it('timeout with parallel', function(done){
+    it('timeout with parallel', (done) => {
         async.parallel([
-            async.timeout(function asyncFn(callback) {
-                setTimeout(function() {
+            async.timeout((callback) => {
+                setTimeout(() => {
                     callback(null, 'I didn\'t time out');
                 }, 25);
             }, 50),
-            async.timeout(function asyncFn(callback) {
-                setTimeout(function() {
+            async.timeout((callback) => {
+                setTimeout(() => {
                     callback(null, 'I will time out');
                 }, 75);
             }, 50)
         ],
-        function(err, results) {
-            expect(err.message).to.equal('Callback function "asyncFn" timed out.');
+        (err, results) => {
+            expect(err.message).to.equal('Callback function "anonymous" timed out.');
             expect(err.code).to.equal('ETIMEDOUT');
             expect(err.info).to.equal(undefined);
             expect(results[0]).to.equal('I didn\'t time out');
@@ -70,14 +70,14 @@ describe('timeout', function () {
         });
     });
 
-    it('timeout with multiple calls (#1418)', function(done) {
-        var timeout = async.timeout(function asyncFn(n, callback) {
+    it('timeout with multiple calls (#1418)', (done) => {
+        var timeout = async.timeout((n, callback) => {
             if (n < 1) {
-                setTimeout(function() {
+                setTimeout(() => {
                     callback(null, 'I will time out');
                 }, 75);
             } else {
-                async.setImmediate(function() {
+                async.setImmediate(() => {
                     callback(null, 'I didn\'t time out');
                 })
             }
@@ -85,8 +85,8 @@ describe('timeout', function () {
 
         async.series([
             function(cb) {
-                timeout(0, function(err, result) {
-                    expect(err.message).to.equal('Callback function "asyncFn" timed out.');
+                timeout(0, (err, result) => {
+                    expect(err.message).to.equal('Callback function "anonymous" timed out.');
                     expect(err.code).to.equal('ETIMEDOUT');
                     expect(err.info).to.equal(undefined);
                     expect(result).to.equal(undefined);
@@ -94,13 +94,13 @@ describe('timeout', function () {
                 });
             },
             function(cb) {
-                timeout(1, function(err, result) {
+                timeout(1, (err, result) => {
                     expect(err).to.equal(null);
                     expect(result).to.equal('I didn\'t time out');
                     cb();
                 });
             }
-        ], function(err) {
+        ], (err) => {
             expect(err).to.equal(null);
             done();
         });

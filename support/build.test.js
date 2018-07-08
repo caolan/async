@@ -6,79 +6,79 @@ var rollupPluginNodeResolve = require('rollup-plugin-node-resolve');
 var fs = require('fs');
 var exec = require('child_process').exec;
 
-describe("async main", function() {
+describe("async main", () => {
     var async;
 
-    before(function() {
+    before(() => {
         async = require("../build/");
     });
 
-    it("should have methods", function() {
-        methods.forEach(function(methodName) {
+    it("should have methods", () => {
+        methods.forEach((methodName) => {
             expect(async[methodName]).to.be.a("function");
         });
     });
 });
 
-describe("async umd", function() {
+describe("async umd", () => {
     var async;
 
-    before(function() {
+    before(() => {
         async = require("../build/dist/async.js");
     });
 
-    it("should have methods", function() {
-        methods.forEach(function(methodName) {
+    it("should have methods", () => {
+        methods.forEach((methodName) => {
             expect(async[methodName]).to.be.a("function");
         });
     });
 });
 
-describe("async umd minified", function() {
+describe("async umd minified", () => {
     var async;
 
-    before(function() {
+    before(() => {
         async = require("../build/dist/async.min.js");
     });
 
-    it("should have methods", function() {
-        methods.forEach(function(methodName) {
+    it("should have methods", () => {
+        methods.forEach((methodName) => {
             expect(async[methodName]).to.be.a("function");
         });
     });
 });
 
-methods.forEach(function (methodName) {
-    describe("async." + methodName, function () {
+methods.forEach((methodName) => {
+    describe("async." + methodName, () => {
         var method;
-        before(function () {
+        before(() => {
             method = require("../build/" + methodName);
         });
 
-        it("should require the individual method", function() {
+        it("should require the individual method", () => {
             expect(method).to.be.a("function");
         });
     });
 });
 
-describe("ES Modules", function () {
+describe("ES Modules", () => {
     var tmpDir = __dirname + "/../tmp";
     var buildFile = __dirname + "/../tmp/es.test.js";
 
-    before(function (done) {
+    before((done) => {
         if (fs.existsSync(tmpDir)) {
             return done();
         }
         fs.mkdir(tmpDir, done);
     });
 
-    before(function () {
+    before(() => {
         return rollup({
             entry: __dirname + "/es.test.js",
             plugins: [
                 rollupPluginNodeResolve()
             ]
-        }).then(function (bundle) {
+        }).then((bundle) => {
             return bundle.write({
                 format: "umd",
                 dest: buildFile
@@ -86,8 +86,8 @@ describe("ES Modules", function () {
         });
     });
 
-    it("should build a successful bundle", function (done) {
-        exec("node " + buildFile, function (err, stdout) {
+    it("should build a successful bundle", (done) => {
+        exec("node " + buildFile, (err, stdout) => {
             if (err) { return done(err); }
             expect(stdout).to.match(/42/);
             done();

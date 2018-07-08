@@ -1,20 +1,20 @@
 var async = require('../lib');
 var expect = require('chai').expect;
 
-describe('forever', function(){
-    context('function is asynchronous', function(){
-        it('executes the function over and over until it yields an error', function(done){
+describe('forever', () => {
+    context('function is asynchronous', () => {
+        it('executes the function over and over until it yields an error', (done) => {
             var counter = 0;
             function addOne(callback) {
                 counter++;
                 if (counter === 50) {
                     return callback('too big!');
                 }
-                async.setImmediate(function () {
+                async.setImmediate(() => {
                     callback();
                 });
             }
-            async.forever(addOne, function (err) {
+            async.forever(addOne, (err) => {
                 expect(err).to.eql('too big!');
                 expect(counter).to.eql(50);
                 done();
@@ -22,8 +22,8 @@ describe('forever', function(){
         });
     });
 
-    context('function is synchronous', function(){
-        it('does not cause a stack overflow @nodeonly', function(done){ // this will take forever in a browser
+    context('function is synchronous', () => {
+        it('does not cause a stack overflow @nodeonly', (done) => { // this will take forever in a browser
             var counter = 0;
             function addOne(callback) {
                 counter++;
@@ -32,7 +32,7 @@ describe('forever', function(){
                 }
                 callback();
             }
-            async.forever(addOne, function (err) {
+            async.forever(addOne, (err) => {
                 expect(err).to.eql('too big!');
                 expect(counter).to.eql(50000);
                 done();

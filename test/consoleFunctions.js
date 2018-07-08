@@ -1,7 +1,7 @@
 var async = require('../lib');
 var expect = require('chai').expect;
 
-describe('console functions', function() {
+describe('console functions', () => {
 
     var names = [
         'log',
@@ -12,22 +12,22 @@ describe('console functions', function() {
     ];
 
     // generates tests for console functions such as async.log
-    names.forEach(function(name) {
+    names.forEach((name) => {
         if (typeof console !== 'undefined') {
-            it(name, function(done) {
+            it(name, (done) => {
                 var fn = function(arg1, callback){
                     expect(arg1).to.equal('one');
-                    setTimeout(function(){callback(null, 'test');}, 0);
+                    setTimeout(() => {callback(null, 'test');}, 0);
                 };
                 var fn_err = function(arg1, callback){
                     expect(arg1).to.equal('one');
-                    setTimeout(function(){callback('error');}, 0);
+                    setTimeout(() => {callback('error');}, 0);
                 };
                 var _console_fn = console[name];
                 var _error = console.error;
-                console[name] = function(val){
+                console[name] = function(val, ...extra){
                     expect(val).to.equal('test');
-                    expect(arguments.length).to.equal(1);
+                    expect(extra.length).to.equal(0);
                     console.error = function(val){
                         expect(val).to.equal('error');
                         console[name] = _console_fn;
@@ -39,7 +39,7 @@ describe('console functions', function() {
                 async[name](fn, 'one');
             });
 
-            it(name + ' with multiple result params', function(done) {
+            it(name + ' with multiple result params', (done) => {
                 var fn = function(callback){callback(null,'one','two','three');};
                 var _console_fn = console[name];
                 var called_with = [];
@@ -55,7 +55,7 @@ describe('console functions', function() {
 
         // browser-only test
         if (typeof window !== 'undefined') {
-            it(name + ' without console.' + name, function(done) {
+            it(name + ' without console.' + name, (done) => {
                 var _console = window.console;
                 window.console = undefined;
                 var fn = function(callback){callback(null, 'val');};
