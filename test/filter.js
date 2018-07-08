@@ -13,9 +13,9 @@ function testLimit(arr, limitFunc, limit, iter, done) {
     limitFunc(arr, limit, (x, next) => {
         args.push(x);
         iter(x, next);
-    }, (err) => {
+    }, (err, result) => {
         expect(args).to.eql(arr);
-        done(err);
+        done(err, result);
     });
 }
 
