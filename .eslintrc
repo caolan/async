@@ -32,6 +32,8 @@
     "no-unused-expressions": 0,
     "no-loop-func": 2,
     "dot-notation": 0,
+    "no-debugger": 2,
+    "no-trailing-spaces": 2,
     "valid-jsdoc": ["error", {
         "requireReturn": false,
         "requireReturnDescription": false,

@@ -195,7 +195,6 @@ describe('auto', function () {
 
     it('does not start other tasks when it has been canceled', function(done) {
         const call_order = []
-        debugger
         async.auto({
             task1: function(callback) {
                 call_order.push(1);
