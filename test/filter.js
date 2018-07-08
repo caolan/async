@@ -53,36 +53,34 @@ describe("filter", () => {
         });
     });
 
-    if (typeof Symbol === 'function' && Symbol.iterator) {
-        function makeIterator(array){
-            var nextIndex;
-            let iterator = {
-                next(){
-                    return nextIndex < array.length ?
-                        {value: array[nextIndex++], done: false} :
-                        {done: true};
-                }
-            };
-            iterator[Symbol.iterator] = function() {
-                nextIndex = 0; // reset iterator
-                return iterator;
-            };
+    function makeIterator(array){
+        var nextIndex;
+        let iterator = {
+            next(){
+                return nextIndex < array.length ?
+                    {value: array[nextIndex++], done: false} :
+                    {done: true};
+            }
+        };
+        iterator[Symbol.iterator] = function() {
+            nextIndex = 0; // reset iterator
             return iterator;
-        }
-
-        it('filter iterator', (done) => {
-            var a = makeIterator([500, 20, 100]);
-            async.filter(a, (x, callback) => {
-                setTimeout(() => {
-                    callback(null, x > 20);
-                }, x);
-            }, (err, results) => {
-                expect(err).to.equal(null);
-                expect(results).to.eql([500, 100]);
-                done();
-            });
-        });
+        };
+        return iterator;
     }
+
+    it('filter iterator', (done) => {
+        var a = makeIterator([500, 20, 100]);
+        async.filter(a, (x, callback) => {
+            setTimeout(() => {
+                callback(null, x > 20);
+            }, x);
+        }, (err, results) => {
+            expect(err).to.equal(null);
+            expect(results).to.eql([500, 100]);
+            done();
+        });
+    });
 
     it('filter error', (done) => {
         async.filter([3,1,2], (x, callback) => {

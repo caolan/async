@@ -9,6 +9,7 @@
     "ecmaVersion": 8,
     "sourceType": "module"
   },
+  "extends": "eslint:recommended",
   "rules": {
     "eqeqeq": 0,
     "guard-for-in": 2,
@@ -19,6 +20,7 @@
         "SwitchCase": 1
       }
     ],
+    "no-console": 0,
     "no-caller": 2,
     "no-undef": 2,
     "no-unused-vars": 2,
@@ -35,7 +37,6 @@
     "no-unused-expressions": 0,
     "no-loop-func": 2,
     "dot-notation": 0,
-    "no-debugger": 2,
     "no-trailing-spaces": 2,
     "valid-jsdoc": ["error", {
         "requireReturn": false,

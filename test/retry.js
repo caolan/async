@@ -139,7 +139,7 @@ describe("retry", () => {
         function intervalFunc() {
             callTimes.push(Date.now());
             return 100;
-        };
+        }
         function fn(callback) {
             callback({}); // respond with indexed values
         }

@@ -1,6 +1,6 @@
 /* eslint no-undef: "off" */
 if (typeof setImmediate !== 'function' && typeof async === 'object') {
-    setImmediate = async.setImmediate;
+    window.setImmediate = async.setImmediate;
 }
 
 $(() => {

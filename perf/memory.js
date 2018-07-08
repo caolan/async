@@ -15,10 +15,8 @@ function waterfallTest(cb) {
             function func1(cb) {return cb(); }
 
             function func2(callback) {
-                if (true) {
-                    callback();
-                    //return next();  // Should be callback here.
-                }
+                callback();
+                //return next();  // Should be callback here.
             }
 
             function func3(cb) {return cb(); }
