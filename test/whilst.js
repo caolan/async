@@ -2,23 +2,23 @@ var async = require('../lib');
 var expect = require('chai').expect;
 var assert = require('assert');
 
-describe('whilst', function(){
-    it('whilst', function(done) {
+describe('whilst', () => {
+    it('whilst', (done) => {
         var call_order = [];
 
         var count = 0;
         async.whilst(
-            function (c) {
+            (c) => {
                 expect(c).to.equal(undefined);
                 call_order.push(['test', count]);
                 return (count < 5);
             },
-            function (cb) {
+            (cb) => {
                 call_order.push(['iteratee', count]);
                 count++;
                 cb(null, count);
             },
-            function (err, result) {
+            (err, result) => {
                 assert(err === null, err + " passed instead of 'null'");
                 expect(result).to.equal(5, 'last result passed through');
                 expect(call_order).to.eql([
@@ -35,11 +35,11 @@ describe('whilst', function(){
         );
     });
 
-    it('whilst optional callback', function(done) {
+    it('whilst optional callback', (done) => {
         var counter = 0;
         async.whilst(
-            function () { return counter < 2; },
-            function (cb) {
+            () => { return counter < 2; },
+            (cb) => {
                 counter++;
                 cb();
             }
@@ -48,11 +48,11 @@ describe('whilst', function(){
         done();
     });
 
-    it('whilst canceling', function(done) {
+    it('whilst canceling', (done) => {
         var counter = 0;
         async.whilst(
-            function () { return counter < 3; },
-            function (cb) {
+            () => { return counter < 3; },
+            (cb) => {
                 counter++;
                 cb(counter === 2 ? false : null);
             },
@@ -64,22 +64,22 @@ describe('whilst', function(){
         }, 10)
     });
 
-    it('doWhilst', function(done) {
+    it('doWhilst', (done) => {
         var call_order = [];
 
         var count = 0;
         async.doWhilst(
-            function (cb) {
+            (cb) => {
                 call_order.push(['iteratee', count]);
                 count++;
                 cb(null, count);
             },
-            function (c) {
+            (c) => {
                 expect(c).to.equal(count);
                 call_order.push(['test', count]);
                 return (count < 5);
             },
-            function (err, result) {
+            (err, result) => {
                 assert(err === null, err + " passed instead of 'null'");
                 expect(result).to.equal(5, 'last result passed through');
                 expect(call_order).to.eql([
@@ -95,20 +95,20 @@ describe('whilst', function(){
         );
     });
 
-    it('doWhilst callback params', function(done) {
+    it('doWhilst callback params', (done) => {
         var call_order = [];
         var count = 0;
         async.doWhilst(
-            function (cb) {
+            (cb) => {
                 call_order.push(['iteratee', count]);
                 count++;
                 cb(null, count);
             },
-            function (c) {
+            (c) => {
                 call_order.push(['test', c]);
                 return (c < 5);
             },
-            function (err, result) {
+            (err, result) => {
                 if (err) throw err;
                 expect(result).to.equal(5, 'last result passed through');
                 expect(call_order).to.eql([
@@ -124,15 +124,15 @@ describe('whilst', function(){
         );
     });
 
-    it('doWhilst - error', function(done) {
+    it('doWhilst - error', (done) => {
         var error = new Error('asdas');
 
         async.doWhilst(
-            function (cb) {
+            (cb) => {
                 cb(error);
             },
-            function () {},
-            function (err) {
+            () => {},
+            (err) => {
                 expect(err).to.equal(error);
                 done();
             }

@@ -3,10 +3,10 @@ var expect = require('chai').expect;
 var assert = require('assert');
 var _ = require('lodash');
 
-describe("retry", function () {
+describe("retry", () => {
 
     // Issue 306 on github: https://github.com/caolan/async/issues/306
-    it('retry when attempt succeeds',function(done) {
+    it('retry when attempt succeeds',(done) => {
         var failed = 3;
         var callCount = 0;
         var expectedResult = 'success';
@@ -16,7 +16,7 @@ describe("retry", function () {
             if (!failed) callback(null, expectedResult);
             else callback(true); // respond with error
         }
-        async.retry(fn, function(err, result){
+        async.retry(fn, (err, result) => {
             assert(err === null, err + " passed instead of 'null'");
             assert.equal(callCount, 3, 'did not retry the correct number of times');
             assert.equal(result, expectedResult, 'did not return the expected result');
@@ -24,7 +24,7 @@ describe("retry", function () {
         });
     });
 
-    it('retry when all attempts fail',function(done) {
+    it('retry when all attempts fail',(done) => {
         var times = 3;
         var callCount = 0;
         var error = 'ERROR';
@@ -33,7 +33,7 @@ describe("retry", function () {
             callCount++;
             callback(error + callCount, erroredResult + callCount); // respond with indexed values
         }
-        async.retry(times, fn, function(err, result){
+        async.retry(times, fn, (err, result) => {
             assert.equal(callCount, 3, "did not retry the correct number of times");
             assert.equal(err, error + times, "Incorrect error was returned");
             assert.equal(result, erroredResult + times, "Incorrect result was returned");
@@ -41,15 +41,15 @@ describe("retry", function () {
         });
     });
 
-    it('retry fails with invalid arguments',function(done) {
-        expect(function() {
+    it('retry fails with invalid arguments',(done) => {
+        expect(() => {
             async.retry("");
         }).to.throw();
-        expect(function() {
+        expect(() => {
             async.retry();
         }).to.throw();
-        expect(function() {
-            async.retry(function() {}, 2, function() {});
+        expect(() => {
+            async.retry(() => {}, 2, () => {});
         }).to.throw();
         done();
     });
@@ -67,7 +67,7 @@ describe("retry", function () {
             callback(error + callCount, erroredResult + callCount); // respond with indexed values
         }
         var start = Date.now();
-        async.retry({ times: times, interval: interval}, fn, function(err, result){
+        async.retry({ times, interval}, fn, (err, result) => {
             var duration = Date.now() - start;
             expect(duration).to.be.above(interval * (times - 1) - times);
             assert.equal(callCount, 3, "did not retry the correct number of times");
@@ -77,7 +77,7 @@ describe("retry", function () {
         });
     });
 
-    it('retry with custom interval when all attempts fail',function(done) {
+    it('retry with custom interval when all attempts fail',(done) => {
         var times = 3;
         var intervalFunc = function(retryCount) { return retryCount * 100; };
         var callCount = 0;
@@ -88,7 +88,7 @@ describe("retry", function () {
             callback(error + callCount, erroredResult + callCount); // respond with indexed values
         }
         var start = Date.now();
-        async.retry({ times: times, interval: intervalFunc}, fn, function(err, result){
+        async.retry({ times, interval: intervalFunc}, fn, (err, result) => {
             var duration = Date.now() - start;
             expect(duration).to.be.above(300 - times);
             assert.equal(callCount, 3, "did not retry the correct number of times");
@@ -98,43 +98,43 @@ describe("retry", function () {
         });
     });
 
-    it("should not require a callback", function (done) {
+    it("should not require a callback", (done) => {
         var called = false;
-        async.retry(3, function(cb) {
+        async.retry(3, (cb) => {
             called = true;
             cb();
         });
-        setTimeout(function () {
+        setTimeout(() => {
             assert(called);
             done();
         }, 10);
     });
 
-    it("should not require a callback and use the default times", function (done) {
+    it("should not require a callback and use the default times", (done) => {
         var calls = 0;
-        async.retry(function(cb) {
+        async.retry((cb) => {
             calls++;
             cb("fail");
         });
-        setTimeout(function () {
+        setTimeout(() => {
             expect(calls).to.equal(5);
             done();
         }, 50);
     });
 
-    it("should be cancelable", function (done) {
+    it("should be cancelable", (done) => {
         var calls = 0;
-        async.retry(2, function(cb) {
+        async.retry(2, (cb) => {
             calls++;
             cb(calls > 1 ? false : 'fail');
         }, () => { throw new Error('should not get here') });
-        setTimeout(function () {
+        setTimeout(() => {
             expect(calls).to.equal(2);
             done();
         }, 10);
     });
 
-    it('retry does not precompute the intervals (#1226)', function(done) {
+    it('retry does not precompute the intervals (#1226)', (done) => {
         var callTimes = [];
         function intervalFunc() {
             callTimes.push(Date.now());
@@ -143,34 +143,34 @@ describe("retry", function () {
         function fn(callback) {
             callback({}); // respond with indexed values
         }
-        async.retry({ times: 4, interval: intervalFunc}, fn, function(){
+        async.retry({ times: 4, interval: intervalFunc}, fn, () => {
             expect(callTimes[1] - callTimes[0]).to.be.above(90);
             expect(callTimes[2] - callTimes[1]).to.be.above(90);
             done();
         });
     });
 
-    it('retry passes all resolve arguments to callback', function(done) {
+    it('retry passes all resolve arguments to callback', (done) => {
         function fn(callback) {
             callback(null, 1, 2, 3); // respond with indexed values
         }
-        async.retry(5, fn, _.rest(function(args) {
+        async.retry(5, fn, _.rest((args) => {
             expect(args).to.be.eql([null, 1, 2, 3]);
             done();
         }));
     });
 
     // note this is a synchronous test ensuring retry is synchrnous in the fastest (most straightforward) case
-    it('retry calls fn immediately and will call callback if successful', function() {
+    it('retry calls fn immediately and will call callback if successful', () => {
         function fn(callback) {
             callback(null, {a: 1});
         }
-        async.retry(5, fn, function(err, result) {
+        async.retry(5, fn, (err, result) => {
             expect(result).to.be.eql({a: 1});
         });
     });
 
-    it('retry when all attempts fail and error continue test returns true',function(done) {
+    it('retry when all attempts fail and error continue test returns true',(done) => {
         var times = 3;
         var callCount = 0;
         var error = 'ERROR';
@@ -184,10 +184,10 @@ describe("retry", function () {
             return err && err !== special;
         }
         var options = {
-            times: times,
+            times,
             errorFilter: errorTest
         };
-        async.retry(options, fn, function(err, result){
+        async.retry(options, fn, (err, result) => {
             assert.equal(callCount, 3, "did not retry the correct number of times");
             assert.equal(err, error + times, "Incorrect error was returned");
             assert.equal(result, erroredResult + times, "Incorrect result was returned");
@@ -195,7 +195,7 @@ describe("retry", function () {
         });
     });
 
-    it('retry when some attempts fail and error test returns false at some invokation',function(done) {
+    it('retry when some attempts fail and error test returns false at some invokation',(done) => {
         var callCount = 0;
         var error = 'ERROR';
         var special = 'SPECIAL_ERROR';
@@ -211,7 +211,7 @@ describe("retry", function () {
         var options = {
             errorFilter: errorTest
         };
-        async.retry(options, fn, function(err, result){
+        async.retry(options, fn, (err, result) => {
             assert.equal(callCount, 2, "did not retry the correct number of times");
             assert.equal(err, special, "Incorrect error was returned");
             assert.equal(result, erroredResult + 2, "Incorrect result was returned");
@@ -237,7 +237,7 @@ describe("retry", function () {
             return err && err !== special;
         }
         var start = Date.now();
-        async.retry({ interval: interval, errorFilter: errorTest }, fn, function(err, result){
+        async.retry({ interval, errorFilter: errorTest }, fn, (err, result) => {
             var duration = Date.now() - start;
             expect(duration).to.be.above(interval * (specialCount - 1) - specialCount);
             assert.equal(callCount, specialCount, "did not retry the correct number of times");
@@ -247,7 +247,7 @@ describe("retry", function () {
         });
     });
 
-    it('retry when first attempt succeeds and error test should not be called',function(done) {
+    it('retry when first attempt succeeds and error test should not be called',(done) => {
         var callCount = 0;
         var error = 'ERROR';
         var erroredResult = 'RESULT';
@@ -263,7 +263,7 @@ describe("retry", function () {
         var options = {
             errorFilter: errorTest
         };
-        async.retry(options, fn, _.rest(function(args) {
+        async.retry(options, fn, _.rest((args) => {
             assert.equal(callCount, 1, "did not retry the correct number of times");
             expect(args).to.be.eql([null, erroredResult + callCount]);
             assert.equal(continueTestCalled, false, "error test function was called");

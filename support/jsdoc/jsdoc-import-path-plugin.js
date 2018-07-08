@@ -1,7 +1,7 @@
 const path = require('path');
 
 exports.handlers = {
-    jsdocCommentFound: function(e) {
+    jsdocCommentFound(e) {
         var moduleName = path.parse(e.filename).name;
 
 

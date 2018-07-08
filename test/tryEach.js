@@ -2,42 +2,42 @@ var async = require('../lib');
 var expect = require('chai').expect;
 var assert = require('assert');
 
-describe('tryEach', function () {
-    it('no callback', function () {
+describe('tryEach', () => {
+    it('no callback', () => {
         async.tryEach([]);
     });
-    it('empty', function (done) {
-        async.tryEach([], function (err, results) {
+    it('empty', (done) => {
+        async.tryEach([], (err, results) => {
             expect(err).to.equal(null);
             expect(results).to.eql(undefined);
             done();
         });
     });
-    it('one task, multiple results', function (done) {
+    it('one task, multiple results', (done) => {
         var RESULTS = ['something', 'something2'];
         async.tryEach([
             function (callback) {
                 callback(null, RESULTS[0], RESULTS[1]);
             }
-        ], function (err, results) {
+        ], (err, results) => {
             expect(err).to.equal(null);
             expect(results).to.eql(RESULTS);
             done();
         });
     });
-    it('one task', function (done) {
+    it('one task', (done) => {
         var RESULT = 'something';
         async.tryEach([
             function (callback) {
                 callback(null, RESULT);
             }
-        ], function (err, results) {
+        ], (err, results) => {
             expect(err).to.equal(null);
             expect(results).to.eql(RESULT);
             done();
         });
     });
-    it('two tasks, one failing', function (done) {
+    it('two tasks, one failing', (done) => {
         var RESULT = 'something';
         async.tryEach([
             function (callback) {
@@ -46,13 +46,13 @@ describe('tryEach', function () {
             function (callback) {
                 callback(null, RESULT);
             }
-        ], function (err, results) {
+        ], (err, results) => {
             expect(err).to.equal(null);
             expect(results).to.eql(RESULT);
             done();
         });
     });
-    it('two tasks, both failing', function (done) {
+    it('two tasks, both failing', (done) => {
         var ERROR_RESULT = new Error('Failure2');
         async.tryEach([
             function (callback) {
@@ -61,13 +61,13 @@ describe('tryEach', function () {
             function (callback) {
                 callback(ERROR_RESULT);
             }
-        ], function (err, results) {
+        ], (err, results) => {
             expect(err).to.equal(ERROR_RESULT);
             expect(results).to.eql(undefined);
             done();
         });
     });
-    it('two tasks, non failing', function (done) {
+    it('two tasks, non failing', (done) => {
         var RESULT = 'something';
         async.tryEach([
             function (callback) {
@@ -76,7 +76,7 @@ describe('tryEach', function () {
             function () {
                 assert.fail('Should not been called');
             },
-        ], function (err, results) {
+        ], (err, results) => {
             expect(err).to.equal(null);
             expect(results).to.eql(RESULT);
             done();

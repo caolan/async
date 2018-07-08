@@ -60,7 +60,7 @@ console.log("Comparing " + version0 + " with " + version1 +
 console.log("--------------------------------------");
 
 
-async.eachSeries(versionNames, cloneVersion, function (err) {
+async.eachSeries(versionNames, cloneVersion, (err) => {
     if (err) { throw err; }
     versions = versionNames.map(requireVersion);
 
@@ -72,7 +72,7 @@ async.eachSeries(versionNames, cloneVersion, function (err) {
         .filter(doesNotMatch)
         .map(createSuite);
 
-    async.eachSeries(suites, runSuite, function () {
+    async.eachSeries(suites, runSuite, () => {
         var totalTime0 = +totalTime[version0].toPrecision(3);
         var totalTime1 = +totalTime[version1].toPrecision(3);
 
@@ -105,7 +105,7 @@ async.eachSeries(versionNames, cloneVersion, function (err) {
 });
 
 function runSuite(suite, callback) {
-    suite.on("complete", function () {
+    suite.on("complete", () => {
         callback();
     }).run({async: true});
 }
@@ -117,8 +117,8 @@ function setDefaultOptions(suiteConfig) {
 }
 
 function handleMultipleArgs(list, suiteConfig) {
-    return list.concat(suiteConfig.args.map(function (args) {
-        return _.defaults({args: args}, suiteConfig);
+    return list.concat(suiteConfig.args.map((args) => {
+        return _.defaults({args}, suiteConfig);
     }));
 }
 
@@ -145,7 +145,7 @@ function createSuite(suiteConfig) {
 
         try {
             suiteConfig.setup(1);
-            suiteConfig.fn(version, function () {});
+            suiteConfig.fn(version, () => {});
         } catch (e) {
             console.error(name + " Errored");
             errored = true;
@@ -153,17 +153,17 @@ function createSuite(suiteConfig) {
         }
 
         var options = _.extend({
-            versionName: versionName,
-            setup: function() {
+            versionName,
+            setup() {
                 suiteConfig.setup.apply(null, args);
             },
-            onError: function (err) {
+            onError (err) {
                 console.log(err.stack);
             }
         }, benchOptions);
 
-        suite.add(name, function (deferred) {
-            suiteConfig.fn(version, function () {
+        suite.add(name, (deferred) => {
+            suiteConfig.fn(version, () => {
                 deferred.resolve();
             });
         }, options);
@@ -173,27 +173,27 @@ function createSuite(suiteConfig) {
     addBench(versions[1], versionNames[1]);
 
 
-    return suite.on('cycle', function(event) {
+    return suite.on('cycle', (event) => {
         var mean = event.target.stats.mean * 1000;
         console.log(event.target + ", " + mean.toPrecision(3) + "ms per run");
         var version = event.target.options.versionName;
         if (errored) return;
         totalTime[version] += mean;
     })
-    .on('error', function (err) { console.error(err); })
-    .on('complete', function() {
-        if (!errored) {
-            var fastest = this.filter('fastest');
-            if (fastest.length === 2) {
-                console.log("Tie");
-            } else {
-                var winner = fastest[0].options.versionName;
-                console.log(winner + ' is faster');
-                wins[winner]++;
+        .on('error', (err) => { console.error(err); })
+        .on('complete', function() {
+            if (!errored) {
+                var fastest = this.filter('fastest');
+                if (fastest.length === 2) {
+                    console.log("Tie");
+                } else {
+                    var winner = fastest[0].options.versionName;
+                    console.log(winner + ' is faster');
+                    wins[winner]++;
+                }
             }
-        }
-        console.log("--------------------------------------");
-    });
+            console.log("--------------------------------------");
+        });
 
 }
 
@@ -210,7 +210,7 @@ function cloneVersion(tag, callback) {
 
     var versionDir = __dirname + "/versions/" + tag;
     mkdirp.sync(versionDir);
-    fs.open(versionDir + "/package.json", "r", function (err, handle) {
+    fs.open(versionDir + "/package.json", "r", (err, handle) => {
         if (!err) {
             // version has already been cloned
             return fs.close(handle, callback);
@@ -220,7 +220,7 @@ function cloneVersion(tag, callback) {
 
         var cmd = "git clone --branch " + tag + " " + repoPath + " " + versionDir;
 
-        exec(cmd, function (err) {
+        exec(cmd, (err) => {
             if (err) {
                 throw err;
             }

@@ -20,7 +20,7 @@ module.exports = function () {
     });
 
     it('should handle errors in async functions', (done) => {
-        async.asyncify(async function () {
+        async.asyncify(async () => {
             throw new Error('thrown error')
         })((err) => {
             assert(err.message = 'thrown error');
@@ -228,7 +228,7 @@ module.exports = function () {
     });
 
     it('should handle async functions in reduce', (done) => {
-        async.reduce(input, 0, async function (acc, val) {
+        async.reduce(input, 0, async (acc, val) => {
             var res = await Promise.resolve(acc + val);
             return res;
         },
@@ -239,7 +239,7 @@ module.exports = function () {
     });
 
     it('should handle async functions in reduceRight', (done) => {
-        async.reduceRight(input, 0, async function (acc, val) {
+        async.reduceRight(input, 0, async (acc, val) => {
             var res = await Promise.resolve(acc + val);
             return res;
         },
@@ -257,7 +257,7 @@ module.exports = function () {
     });
 
     it('should handle async functions in transform', (done) => {
-        async.transform(inputObj, async function (obj, val, key) {
+        async.transform(inputObj, async (obj, val, key) => {
             obj[key] = await Promise.resolve(val);
         }, (err, result) => {
             expect(result).to.eql(inputObj);
@@ -285,10 +285,10 @@ module.exports = function () {
 
     it('should handle async functions in auto', (done) => {
         async.auto({
-            a: async function () {
+            async a () {
                 return await Promise.resolve(1);
             },
-            b: async function () {
+            async b () {
                 return await Promise.resolve(2);
             },
             c: ['a', 'b', async function (results) {
@@ -302,10 +302,10 @@ module.exports = function () {
 
     it('should handle async functions in autoInject', (done) => {
         async.autoInject({
-            a: async function () {
+            async a () {
                 return await Promise.resolve(1);
             },
-            b: async function (a) {
+            async b (a) {
                 return await Promise.resolve(a + 1);
             },
             c: async (a, b) => {
@@ -342,7 +342,7 @@ module.exports = function () {
 
     it('should handle async functions in cargo', (done) => {
         var result = [];
-        var q = async.cargo(async function(val) {
+        var q = async.cargo(async (val) => {
             result.push(await Promise.resolve(val));
         }, 2)
 
@@ -358,7 +358,7 @@ module.exports = function () {
 
     it('should handle async functions in queue', (done) => {
         var result = [];
-        var q = async.queue(async function(val) {
+        var q = async.queue(async (val) => {
             result.push(await Promise.resolve(val));
         }, 2)
 
@@ -374,7 +374,7 @@ module.exports = function () {
 
     it('should handle async functions in priorityQueue', (done) => {
         var result = [];
-        var q = async.priorityQueue(async function(val) {
+        var q = async.priorityQueue(async (val) => {
             result.push(await Promise.resolve(val));
         }, 2)
 
@@ -435,10 +435,10 @@ module.exports = function () {
     it('should handle async functions in whilst', (done) => {
         var val = 0;
         async.whilst(() => val < 3,
-        async () => {
-            val += 1;
-            return val;
-        }, done);
+            async () => {
+                val += 1;
+                return val;
+            }, done);
     });
 
     it('should handle async functions in doWhilst', (done) => {
@@ -452,10 +452,10 @@ module.exports = function () {
     it('should handle async functions in until', (done) => {
         var val = 0;
         async.until(() => val > 3,
-        async () => {
-            val += 1;
-            return val;
-        }, done);
+            async () => {
+                val += 1;
+                return val;
+            }, done);
     });
 
     it('should handle async functions in doUntil', (done) => {

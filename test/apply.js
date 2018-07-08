@@ -1,8 +1,8 @@
 var async = require('../lib');
 var expect = require('chai').expect;
 
-describe('concat', function() {
-    it('apply', function(done) {
+describe('concat', () => {
+    it('apply', (done) => {
         var fn = function(){
             expect(Array.prototype.slice.call(arguments)).to.eql([1,2,3,4]);
         };
@@ -12,7 +12,7 @@ describe('concat', function() {
         async.apply(fn, 1)(2, 3, 4);
         async.apply(fn)(1, 2, 3, 4);
         expect(
-            async.apply(function(name){return 'hello ' + name;}, 'world')()
+            async.apply((name) => {return 'hello ' + name;}, 'world')()
         ).to.equal(
             'hello world'
         );

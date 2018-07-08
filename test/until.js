@@ -2,22 +2,22 @@ var async = require('../lib');
 var expect = require('chai').expect;
 var assert = require('assert');
 
-describe('until', function(){
-    it('until', function(done) {
+describe('until', () => {
+    it('until', (done) => {
         var call_order = [];
         var count = 0;
         async.until(
-            function (c) {
+            (c) => {
                 expect(c).to.equal(undefined);
                 call_order.push(['test', count]);
                 return (count == 5);
             },
-            function (cb) {
+            (cb) => {
                 call_order.push(['iteratee', count]);
                 count++;
                 cb(null, count);
             },
-            function (err, result) {
+            (err, result) => {
                 assert(err === null, err + " passed instead of 'null'");
                 expect(result).to.equal(5, 'last result passed through');
                 expect(call_order).to.eql([
@@ -50,21 +50,21 @@ describe('until', function(){
         }, 10)
     })
 
-    it('doUntil', function(done) {
+    it('doUntil', (done) => {
         var call_order = [];
         var count = 0;
         async.doUntil(
-            function (cb) {
+            (cb) => {
                 call_order.push(['iteratee', count]);
                 count++;
                 cb(null, count);
             },
-            function (c) {
+            (c) => {
                 expect(c).to.equal(count);
                 call_order.push(['test', count]);
                 return (count == 5);
             },
-            function (err, result) {
+            (err, result) => {
                 assert(err === null, err + " passed instead of 'null'");
                 expect(result).to.equal(5, 'last result passed through');
                 expect(call_order).to.eql([
@@ -80,20 +80,20 @@ describe('until', function(){
         );
     });
 
-    it('doUntil callback params', function(done) {
+    it('doUntil callback params', (done) => {
         var call_order = [];
         var count = 0;
         async.doUntil(
-            function (cb) {
+            (cb) => {
                 call_order.push(['iteratee', count]);
                 count++;
                 cb(null, count);
             },
-            function (c) {
+            (c) => {
                 call_order.push(['test', c]);
                 return (c == 5);
             },
-            function (err, result) {
+            (err, result) => {
                 if (err) throw err;
                 expect(result).to.equal(5, 'last result passed through');
                 expect(call_order).to.eql([

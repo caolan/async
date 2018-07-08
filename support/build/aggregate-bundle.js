@@ -5,11 +5,11 @@ rollup({
     entry: 'build-es/index.js',
     plugins: [ nodeResolve() ]
 })
-.then(function ( bundle ) {
-    return bundle.write({
-        format: 'umd',
-        moduleName: 'async',
-        dest: 'build/dist/async.js'
-    });
-})
-.catch((err) => { throw err; });
+    .then(( bundle ) => {
+        return bundle.write({
+            format: 'umd',
+            moduleName: 'async',
+            dest: 'build/dist/async.js'
+        });
+    })
+    .catch((err) => { throw err; });

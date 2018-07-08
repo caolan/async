@@ -1,25 +1,25 @@
 var async = require('../lib');
 var expect = require('chai').expect;
 
-describe('transform', function() {
+describe('transform', () => {
 
-    it('transform implictly determines memo if not provided', function(done) {
-        async.transform([1,2,3], function(memo, x, v, callback){
+    it('transform implictly determines memo if not provided', (done) => {
+        async.transform([1,2,3], (memo, x, v, callback) => {
             memo.push(x + 1);
             callback();
-        }, function(err, result){
+        }, (err, result) => {
             expect(result).to.eql([2, 3, 4]);
             done();
         });
     });
 
-    it('transform async with object memo', function(done) {
-        async.transform([1,3,2], {}, function(memo, v, k, callback){
-            setTimeout(function() {
+    it('transform async with object memo', (done) => {
+        async.transform([1,3,2], {}, (memo, v, k, callback) => {
+            setTimeout(() => {
                 memo[k] = v;
                 callback();
             });
-        }, function(err, result) {
+        }, (err, result) => {
             expect(err).to.equal(null);
             expect(result).to.eql({
                 0: 1,
@@ -30,31 +30,31 @@ describe('transform', function() {
         });
     });
 
-    it('transform iterating object', function(done) {
-        async.transform({a: 1, b: 3, c: 2}, function(memo, v, k, callback){
-            setTimeout(function() {
+    it('transform iterating object', (done) => {
+        async.transform({a: 1, b: 3, c: 2}, (memo, v, k, callback) => {
+            setTimeout(() => {
                 memo[k] = v + 1;
                 callback();
             });
-        }, function(err, result) {
+        }, (err, result) => {
             expect(err).to.equal(null);
             expect(result).to.eql({a: 2, b: 4, c: 3});
             done();
         });
     });
 
-    it('transform error', function(done) {
-        async.transform([1,2,3], function(a, v, k, callback){
+    it('transform error', (done) => {
+        async.transform([1,2,3], (a, v, k, callback) => {
             callback('error');
-        }, function(err){
+        }, (err) => {
             expect(err).to.equal('error');
             done();
         });
     });
 
-    it('transform with two arguments', function(done) {
+    it('transform with two arguments', (done) => {
         try {
-            async.transform([1, 2, 3], function (a, v, k, callback) {
+            async.transform([1, 2, 3], (a, v, k, callback) => {
                 callback();
             });
             done();

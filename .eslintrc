@@ -28,6 +28,9 @@
       "last"
     ],
     "semi": 0,
+    "prefer-arrow-callback": 2,
+    "arrow-spacing": 2,
+    "object-shorthand": 2,
     "no-eq-null": 0,
     "no-unused-expressions": 0,
     "no-loop-func": 2,

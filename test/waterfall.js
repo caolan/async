@@ -2,20 +2,20 @@ var async = require('../lib');
 var expect = require('chai').expect;
 var assert = require('assert');
 
-describe("waterfall", function () {
+describe("waterfall", () => {
 
-    it('basics', function(done){
+    it('basics', (done) => {
         var call_order = [];
         async.waterfall([
             function(callback){
                 call_order.push('fn1');
-                setTimeout(function(){callback(null, 'one', 'two');}, 0);
+                setTimeout(() => {callback(null, 'one', 'two');}, 0);
             },
             function(arg1, arg2, callback){
                 call_order.push('fn2');
                 expect(arg1).to.equal('one');
                 expect(arg2).to.equal('two');
-                setTimeout(function(){callback(null, arg1, arg2, 'three');}, 25);
+                setTimeout(() => {callback(null, arg1, arg2, 'three');}, 25);
             },
             function(arg1, arg2, arg3, callback){
                 call_order.push('fn3');
@@ -29,34 +29,34 @@ describe("waterfall", function () {
                 expect(call_order).to.eql(['fn1','fn2','fn3','fn4']);
                 callback(null, 'test');
             }
-        ], function(err){
+        ], (err) => {
             expect(err === null, err + " passed instead of 'null'");
             done();
         });
     });
 
-    it('empty array', function(done){
-        async.waterfall([], function(err){
+    it('empty array', (done) => {
+        async.waterfall([], (err) => {
             if (err) throw err;
             done();
         });
     });
 
-    it('non-array', function(done){
-        async.waterfall({}, function(err){
+    it('non-array', (done) => {
+        async.waterfall({}, (err) => {
             expect(err.message).to.equal('First argument to waterfall must be an array of functions');
             done();
         });
     });
 
-    it('no callback', function(done){
+    it('no callback', (done) => {
         async.waterfall([
             function(callback){callback();},
             function(callback){callback(); done();}
         ]);
     });
 
-    it('async', function(done){
+    it('async', (done) => {
         var call_order = [];
         async.waterfall([
             function(callback){
@@ -75,7 +75,7 @@ describe("waterfall", function () {
         ]);
     });
 
-    it('error', function(done){
+    it('error', (done) => {
         async.waterfall([
             function(callback){
                 callback('error');
@@ -84,14 +84,14 @@ describe("waterfall", function () {
                 assert(false, 'next function should not be called');
                 callback();
             }
-        ], function(err){
+        ], (err) => {
             expect(err).to.equal('error');
             done();
         });
     });
 
 
-    it('canceled', function(done){
+    it('canceled', (done) => {
         const call_order = []
         async.waterfall([
             function(callback){
@@ -103,7 +103,7 @@ describe("waterfall", function () {
                 assert(false, 'next function should not be called');
                 callback();
             }
-        ], function(){
+        ], () => {
             throw new Error('should not get here')
         });
         setTimeout(() => {
@@ -112,7 +112,7 @@ describe("waterfall", function () {
         }, 10)
     });
 
-    it('multiple callback calls', function(){
+    it('multiple callback calls', () => {
         var arr = [
             function(callback){
                 callback(null, 'one', 'two');
@@ -122,18 +122,18 @@ describe("waterfall", function () {
                 callback(null, arg1, arg2, 'three');
             }
         ];
-        expect(function () {
-            async.waterfall(arr, function () {});
+        expect(() => {
+            async.waterfall(arr, () => {});
         }).to.throw(/already called/);
     });
 
-    it('multiple callback calls (trickier) @nodeonly', function(done){
+    it('multiple callback calls (trickier) @nodeonly', (done) => {
 
         // do a weird dance to catch the async thrown error before mocha
         var listeners = process.listeners('uncaughtException');
         process.removeAllListeners('uncaughtException');
-        process.once('uncaughtException', function onErr(err) {
-            listeners.forEach(function(listener) {
+        process.once('uncaughtException', (err) => {
+            listeners.forEach((listener) => {
                 process.on('uncaughtException', listener);
             });
             // can't throw errors in a uncaughtException handler, defer
@@ -156,17 +156,17 @@ describe("waterfall", function () {
         ]);
     });
 
-    it('call in another context @nycinvalid @nodeonly', function(done) {
+    it('call in another context @nycinvalid @nodeonly', (done) => {
         var vm = require('vm');
         var sandbox = {
-            async: async,
-            done: done
+            async,
+            done
         };
 
         var fn = "(" + (function () {
             async.waterfall([function (callback) {
                 callback();
-            }], function (err) {
+            }], (err) => {
                 if (err) {
                     return done(err);
                 }
@@ -177,13 +177,13 @@ describe("waterfall", function () {
         vm.runInNewContext(fn, sandbox);
     });
 
-    it('should not use unnecessary deferrals', function (done) {
+    it('should not use unnecessary deferrals', (done) => {
         var sameStack = true;
 
         async.waterfall([
             function (cb) { cb(null, 1); },
             function (arg, cb) { cb(); }
-        ], function() {
+        ], () => {
             expect(sameStack).to.equal(true);
             done();
         });

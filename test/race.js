@@ -1,8 +1,8 @@
 var async = require('../lib');
 var assert = require('assert');
 
-describe('race', function () {
-    it('should call each function in parallel and callback with first result', function raceTest10(done) {
+describe('race', () => {
+    it('should call each function in parallel and callback with first result', (done) => {
         var finished = 0;
         var tasks = [];
         function eachTest(i) {
@@ -15,23 +15,23 @@ describe('race', function () {
         for (var i = 0; i < 10; i++) {
             tasks[i] = eachTest(i);
         }
-        async.race(tasks, function (err, result) {
+        async.race(tasks, (err, result) => {
             assert.ifError(err);
             //0 finished first
             assert.strictEqual(result, 0);
             assert.strictEqual(finished, 1);
-            async.setImmediate(function () {
+            async.setImmediate(() => {
                 assert.strictEqual(finished, 10);
                 done();
             });
         });
     });
-    it('should callback with the first error', function raceTest20(done) {
+    it('should callback with the first error', (done) => {
         var tasks = [];
         function eachTest(i) {
             var index = i;
             return function (next) {
-                setTimeout(function () {
+                setTimeout(() => {
                     next(new Error('ERR' + index));
                 }, 50 - index * 2);
             };
@@ -39,7 +39,7 @@ describe('race', function () {
         for (var i = 0; i <= 5; i++) {
             tasks[i] = eachTest(i);
         }
-        async.race(tasks, function (err, result) {
+        async.race(tasks, (err, result) => {
             assert.ok(err);
             assert.ok(err instanceof Error);
             assert.strictEqual(typeof result, 'undefined');
@@ -47,19 +47,19 @@ describe('race', function () {
             done();
         });
     });
-    it('should callback when task is empty', function raceTest30(done) {
-        async.race([], function (err, result) {
+    it('should callback when task is empty', (done) => {
+        async.race([], (err, result) => {
             assert.ifError(err);
             assert.strictEqual(typeof result, 'undefined');
             done();
         });
     });
-    it('should callback in error the task arg is not an Array', function raceTest40() {
+    it('should callback in error the task arg is not an Array', () => {
         var errors = [];
-        async.race(null, function (err) {
+        async.race(null, (err) => {
             errors.push(err);
         });
-        async.race({}, function (err) {
+        async.race({}, (err) => {
             errors.push(err);
         });
         assert.strictEqual(errors.length, 2);

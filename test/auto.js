@@ -2,19 +2,19 @@ var async = require('../lib');
 var expect = require('chai').expect;
 var _ = require('lodash');
 
-describe('auto', function () {
+describe('auto', () => {
 
-    it('basics', function(done){
+    it('basics', (done) => {
         var callOrder = [];
         async.auto({
             task1: ['task2', function(results, callback){
-                setTimeout(function(){
+                setTimeout(() => {
                     callOrder.push('task1');
                     callback();
                 }, 25);
             }],
-            task2: function(callback){
-                setTimeout(function(){
+            task2(callback){
+                setTimeout(() => {
                     callOrder.push('task2');
                     callback();
                 }, 50);
@@ -28,7 +28,7 @@ describe('auto', function () {
                 callback();
             }],
             task5: ['task2', function(results, callback){
-                setTimeout(function(){
+                setTimeout(() => {
                     callOrder.push('task5');
                     callback();
                 }, 0);
@@ -38,14 +38,14 @@ describe('auto', function () {
                 callback();
             }]
         },
-        function(err){
+        (err) => {
             expect(err).to.equal(null);
             expect(callOrder).to.eql(['task2','task3','task6','task5','task1','task4']);
             done();
         });
     });
 
-    it('auto concurrency', function (done) {
+    it('auto concurrency', (done) => {
         var concurrency = 2;
         var runningTasks = [];
 
@@ -53,7 +53,7 @@ describe('auto', function () {
             return function(/*..., callback*/) {
                 var callback = _.last(arguments);
                 runningTasks.push(taskName);
-                setTimeout(function(){
+                setTimeout(() => {
                     // Each task returns the array of running tasks as results.
                     var result = runningTasks.slice(0);
                     runningTasks.splice(runningTasks.indexOf(taskName), 1);
@@ -69,25 +69,25 @@ describe('auto', function () {
             task4: ['task1', 'task2', makeCallback('task4')],
             task5: ['task2', makeCallback('task5')],
             task6: ['task2', makeCallback('task6')]
-        }, concurrency, function(err, results){
-            _.each(results, function(result) {
+        }, concurrency, (err, results) => {
+            _.each(results, (result) => {
                 expect(result.length).to.be.below(concurrency + 1);
             });
             done();
         });
     });
 
-    it('auto petrify', function (done) {
+    it('auto petrify', (done) => {
         var callOrder = [];
         async.auto({
             task1: ['task2', function (results, callback) {
-                setTimeout(function () {
+                setTimeout(() => {
                     callOrder.push('task1');
                     callback();
                 }, 100);
             }],
-            task2: function (callback) {
-                setTimeout(function () {
+            task2 (callback) {
+                setTimeout(() => {
                     callOrder.push('task2');
                     callback();
                 }, 200);
@@ -101,25 +101,25 @@ describe('auto', function () {
                 callback();
             }]
         },
-        function (err) {
+        (err) => {
             if (err) throw err;
             expect(callOrder).to.eql(['task2', 'task3', 'task1', 'task4']);
             done();
         });
     });
 
-    it('auto results', function(done){
+    it('auto results', (done) => {
         var callOrder = [];
         async.auto({
             task1: ['task2', function(results, callback){
                 expect(results.task2).to.eql('task2');
-                setTimeout(function(){
+                setTimeout(() => {
                     callOrder.push('task1');
                     callback(null, 'task1a', 'task1b');
                 }, 25);
             }],
-            task2: function(callback){
-                setTimeout(function(){
+            task2(callback){
+                setTimeout(() => {
                     callOrder.push('task2');
                     callback(null, 'task2');
                 }, 50);
@@ -136,42 +136,42 @@ describe('auto', function () {
                 callback(null, 'task4');
             }]
         },
-        function(err, results){
+        (err, results) => {
             expect(callOrder).to.eql(['task2','task3','task1','task4']);
             expect(results).to.eql({task1: ['task1a','task1b'], task2: 'task2', task3: undefined, task4: 'task4'});
             done();
         });
     });
 
-    it('auto empty object', function(done){
-        async.auto({}, function(err){
+    it('auto empty object', (done) => {
+        async.auto({}, (err) => {
             expect(err).to.equal(null);
             done();
         });
     });
 
-    it('auto error', function(done){
+    it('auto error', (done) => {
         async.auto({
-            task1: function(callback){
+            task1(callback){
                 callback('testerror');
             },
             task2: ['task1', function(/*results, callback*/){
                 throw new Error('task2 should not be called');
             }],
-            task3: function(callback){
+            task3(callback){
                 callback('testerror2');
             }
         },
-        function(err){
+        (err) => {
             expect(err).to.equal('testerror');
         });
         setTimeout(done, 100);
     });
 
-    it('auto canceled', function(done){
+    it('auto canceled', (done) => {
         const call_order = []
         async.auto({
-            task1: function(callback){
+            task1(callback){
                 call_order.push(1)
                 callback(false);
             },
@@ -179,12 +179,12 @@ describe('auto', function () {
                 call_order.push(2)
                 throw new Error('task2 should not be called');
             }],
-            task3: function(callback){
+            task3(callback){
                 call_order.push(3)
                 callback('testerror2');
             }
         },
-        function(){
+        () => {
             throw new Error('should not get here')
         });
         setTimeout(() => {
@@ -193,10 +193,10 @@ describe('auto', function () {
         }, 10);
     });
 
-    it('does not start other tasks when it has been canceled', function(done) {
+    it('does not start other tasks when it has been canceled', (done) => {
         const call_order = []
         async.auto({
-            task1: function(callback) {
+            task1(callback) {
                 call_order.push(1);
                 // defer calling task2, so task3 has time to stop execution
                 async.setImmediate(callback);
@@ -205,7 +205,7 @@ describe('auto', function () {
                 call_order.push(2);
                 throw new Error('task2 should not be called');
             }],
-            task3: function(callback) {
+            task3(callback) {
                 call_order.push(3);
                 callback(false);
             },
@@ -214,7 +214,7 @@ describe('auto', function () {
                 throw new Error('task4 should not be called');
             }]
         },
-        function() {
+        () => {
             throw new Error('should not get here')
         });
 
@@ -224,23 +224,23 @@ describe('auto', function () {
         }, 25)
     });
 
-    it('auto no callback', function(done){
+    it('auto no callback', (done) => {
         async.auto({
-            task1: function(callback){callback();},
+            task1(callback){callback();},
             task2: ['task1', function(results, callback){callback(); done();}]
         });
     });
 
-    it('auto concurrency no callback', function(done){
+    it('auto concurrency no callback', (done) => {
         async.auto({
-            task1: function(callback){callback();},
+            task1(callback){callback();},
             task2: ['task1', function(results, callback){callback(); done();}]
         }, 1);
     });
 
-    it('auto error should pass partial results', function(done) {
+    it('auto error should pass partial results', (done) => {
         async.auto({
-            task1: function(callback){
+            task1(callback){
                 callback(null, 'result1');
             },
             task2: ['task1', function(results, callback){
@@ -250,7 +250,7 @@ describe('auto', function () {
                 throw new Error('task3 should not be called');
             }]
         },
-        function(err, results){
+        (err, results) => {
             expect(err).to.equal('testerror');
             expect(results.task1).to.equal('result1');
             expect(results.task2).to.equal('result2');
@@ -260,25 +260,25 @@ describe('auto', function () {
 
     // Issue 24 on github: https://github.com/caolan/async/issues#issue/24
     // Issue 76 on github: https://github.com/caolan/async/issues#issue/76
-    it('auto removeListener has side effect on loop iteratee', function(done) {
+    it('auto removeListener has side effect on loop iteratee', (done) => {
         async.auto({
             task1: ['task3', function(/*callback*/) { done(); }],
             task2: ['task3', function(/*callback*/) { /* by design: DON'T call callback */ }],
-            task3: function(callback) { callback(); }
+            task3(callback) { callback(); }
         });
     });
 
     // Issue 410 on github: https://github.com/caolan/async/issues/410
-    it('auto calls callback multiple times', function(done) {
+    it('auto calls callback multiple times', (done) => {
         var finalCallCount = 0;
         try {
             async.auto({
-                task1: function(callback) { callback(null); },
+                task1(callback) { callback(null); },
                 task2: ['task1', function(results, callback) { callback(null); }]
             },
 
             // Error throwing final callback. This should only run once
-            function() {
+            () => {
                 finalCallCount++;
                 var e = new Error('An error');
                 e._test_error = true;
@@ -289,20 +289,20 @@ describe('auto', function () {
                 throw e;
             }
         }
-        setTimeout(function () {
+        setTimeout(() => {
             expect(finalCallCount).to.equal(1);
             done();
         }, 10);
     });
 
 
-    it('auto calls callback multiple times with parallel functions', function(done) {
+    it('auto calls callback multiple times with parallel functions', (done) => {
         async.auto({
-            task1: function(callback) { setTimeout(callback,0,'err'); },
-            task2: function(callback) { setTimeout(callback,0,'err'); }
+            task1(callback) { setTimeout(callback,0,'err'); },
+            task2(callback) { setTimeout(callback,0,'err'); }
         },
         // Error throwing final callback. This should only run once
-        function(err) {
+        (err) => {
             expect(err).to.equal('err');
             done();
         });
@@ -310,24 +310,24 @@ describe('auto', function () {
 
 
     // Issue 462 on github: https://github.com/caolan/async/issues/462
-    it('auto modifying results causes final callback to run early', function(done) {
+    it('auto modifying results causes final callback to run early', (done) => {
         async.auto({
-            task1: function(callback){
+            task1(callback){
                 callback(null, 'task1');
             },
             task2: ['task1', function(results, callback){
                 results.inserted = true;
-                setTimeout(function(){
+                setTimeout(() => {
                     callback(null, 'task2');
                 }, 50);
             }],
-            task3: function(callback){
-                setTimeout(function(){
+            task3(callback){
+                setTimeout(() => {
                     callback(null, 'task3');
                 }, 100);
             }
         },
-        function(err, results){
+        (err, results) => {
             expect(results.inserted).to.equal(true);
             expect(results.task3).to.equal('task3');
             done();
@@ -335,8 +335,8 @@ describe('auto', function () {
     });
 
     // Issue 263 on github: https://github.com/caolan/async/issues/263
-    it('auto prevent dead-locks due to inexistant dependencies', function(done) {
-        expect(function () {
+    it('auto prevent dead-locks due to inexistant dependencies', (done) => {
+        expect(() => {
             async.auto({
                 task1: ['noexist', function(results, callback){
                     callback(null, 'task1');
@@ -347,8 +347,8 @@ describe('auto', function () {
     });
 
     // Issue 263 on github: https://github.com/caolan/async/issues/263
-    it('auto prevent dead-locks due to cyclic dependencies', function(done) {
-        expect(function () {
+    it('auto prevent dead-locks due to cyclic dependencies', (done) => {
+        expect(() => {
             async.auto({
                 task1: ['task2', function(results, callback){
                     callback(null, 'task1');
@@ -362,13 +362,13 @@ describe('auto', function () {
     });
 
     // Issue 1092 on github: https://github.com/caolan/async/issues/1092
-    it('extended cycle detection', function(done) {
+    it('extended cycle detection', (done) => {
         var task = function (name) {
             return function (results, callback) {
                 callback(null, 'task ' + name);
             };
         };
-        expect(function () {
+        expect(() => {
             async.auto({
                 a: ['c', task('a')],
                 b: ['a', task('b')],
@@ -379,50 +379,50 @@ describe('auto', function () {
     });
 
     // Issue 988 on github: https://github.com/caolan/async/issues/988
-    it('auto stops running tasks on error', function(done) {
+    it('auto stops running tasks on error', (done) => {
         async.auto({
-            task1: function (callback) {
+            task1 (callback) {
                 callback('error');
             },
-            task2: function (/*callback*/) {
+            task2 (/*callback*/) {
                 throw new Error('test2 should not be called');
             }
-        }, 1, function (error) {
+        }, 1, (error) => {
             expect(error).to.equal('error');
             done();
         });
     });
 
-    it('ignores results after an error', function (done) {
+    it('ignores results after an error', (done) => {
         async.auto({
-            task1: function (cb) {
+            task1 (cb) {
                 setTimeout(cb, 25, 'error');
             },
-            task2: function (cb) {
+            task2 (cb) {
                 setTimeout(cb, 30, null);
             },
             task3: ['task2', function () {
                 throw new Error("task should not have been called");
             }]
-        }, function (err) {
+        }, (err) => {
             expect(err).to.equal('error');
             setTimeout(done, 25, null);
         });
     });
 
-    it("does not allow calling callbacks twice", function () {
-        expect(function () {
+    it("does not allow calling callbacks twice", () => {
+        expect(() => {
             async.auto({
-                bad: function (cb) {
+                bad (cb) {
                     cb();
                     cb();
                 }
-            }, function () {});
+            }, () => {});
 
         }).to.throw();
     });
 
-    it('should handle array tasks with just a function', function (done) {
+    it('should handle array tasks with just a function', (done) => {
         async.auto({
             a: [function (cb) {
                 cb(null, 1);
@@ -434,15 +434,15 @@ describe('auto', function () {
         }, done);
     });
 
-    it("should avoid unncecessary deferrals", function (done) {
+    it("should avoid unncecessary deferrals", (done) => {
         var isSync = true;
 
         async.auto({
-            step1: function (cb) { cb(null, 1); },
+            step1 (cb) { cb(null, 1); },
             step2: ["step1", function (results, cb) {
                 cb();
             }]
-        }, function () {
+        }, () => {
             expect(isSync).to.equal(true);
             done();
         });
@@ -451,39 +451,39 @@ describe('auto', function () {
     });
 
     // Issue 1358 on github: https://github.com/caolan/async/issues/1358
-    it('should report errors when a task name is an array method', function (done) {
+    it('should report errors when a task name is an array method', (done) => {
         async.auto({
-            'one': function (next) {
+            'one' (next) {
                 next('Something bad happened here');
             },
-            'filter': function (next) {
-                _.delay(function () {
+            'filter' (next) {
+                _.delay(() => {
                     next(null, 'All fine here though');
                 }, 25);
             },
             'finally': ['one', 'filter', function (a, next) {
                 _.defer(next);
             }]
-        }, function (err) {
+        }, (err) => {
             expect(err).to.equal('Something bad happened here');
             _.delay(done, 30);
         });
     });
 
-    it('should report errors when a task name is an obj prototype method', function (done) {
+    it('should report errors when a task name is an obj prototype method', (done) => {
         async.auto({
-            'one': function (next) {
+            'one' (next) {
                 next('Something bad happened here');
             },
-            'hasOwnProperty': function (next) {
-                _.delay(function () {
+            'hasOwnProperty' (next) {
+                _.delay(() => {
                     next(null, 'All fine here though');
                 }, 25);
             },
             'finally': ['one', 'hasOwnProperty', function (a, next) {
                 _.defer(next);
             }]
-        }, function (err) {
+        }, (err) => {
             expect(err).to.equal('Something bad happened here');
             _.delay(done, 30);
         });

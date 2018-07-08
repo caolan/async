@@ -1,60 +1,60 @@
 var async = require('../lib');
 var expect = require('chai').expect;
 
-describe('autoInject', function () {
+describe('autoInject', () => {
 
-    it("basics", function (done) {
+    it("basics", (done) => {
         var callOrder = [];
         async.autoInject({
-            task1: function(task2, callback){
+            task1(task2, callback){
                 expect(task2).to.equal(2);
-                setTimeout(function(){
+                setTimeout(() => {
                     callOrder.push('task1');
                     callback(null, 1);
                 }, 25);
             },
-            task2: function(callback){
-                setTimeout(function(){
+            task2(callback){
+                setTimeout(() => {
                     callOrder.push('task2');
                     callback(null, 2);
                 }, 50);
             },
-            task3: function(task2, callback){
+            task3(task2, callback){
                 expect(task2).to.equal(2);
                 callOrder.push('task3');
                 callback(null, 3);
             },
-            task4: function(task1, task2, callback){
+            task4(task1, task2, callback){
                 expect(task1).to.equal(1);
                 expect(task2).to.equal(2);
                 callOrder.push('task4');
                 callback(null, 4);
             },
-            task5: function(task2, callback){
+            task5(task2, callback){
                 expect(task2).to.equal(2);
-                setTimeout(function(){
+                setTimeout(() => {
                     callOrder.push('task5');
                     callback(null, 5);
                 }, 0);
             },
-            task6: function(task2, callback){
+            task6(task2, callback){
                 expect(task2).to.equal(2);
                 callOrder.push('task6');
                 callback(null, 6);
             }
         },
-        function(err, results){
+        (err, results) => {
             expect(results.task6).to.equal(6);
             expect(callOrder).to.eql(['task2','task3','task6','task5','task1','task4']);
             done();
         });
     });
 
-    it('should work with array tasks', function (done) {
+    it('should work with array tasks', (done) => {
         var callOrder = [];
 
         async.autoInject({
-            task1: function (cb) {
+            task1 (cb) {
                 callOrder.push('task1');
                 cb(null, 1);
             },
@@ -63,17 +63,17 @@ describe('autoInject', function () {
                 callOrder.push('task2');
                 cb(null, 2);
             }],
-            task3: function (cb) {
+            task3 (cb) {
                 callOrder.push('task3');
                 cb(null, 3);
             }
-        }, function () {
+        }, () => {
             expect(callOrder).to.eql(['task1','task3','task2']);
             done();
         });
     });
 
-    it('should handle array tasks with just a function', function (done) {
+    it('should handle array tasks with just a function', (done) => {
         async.autoInject({
             a: [function (cb) {
                 cb(null, 1);
@@ -85,10 +85,10 @@ describe('autoInject', function () {
         }, done);
     });
 
-    it('should throw error for function without explicit parameters', function (done) {
+    it('should throw error for function without explicit parameters', (done) => {
         try {
             async.autoInject({
-                a: function (){}
+                a (){}
             });
         } catch (e) {
             // It's ok. It detected a void function

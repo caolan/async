@@ -1,37 +1,37 @@
 var async = require('../lib');
 var expect = require('chai').expect;
 
-describe('priorityQueue', function() {
+describe('priorityQueue', () => {
 
-    it('priorityQueue', function (done) {
+    it('priorityQueue', (done) => {
         var call_order = [];
 
         // order of completion: 2,1,4,3
 
-        var q = async.priorityQueue(function (task, callback) {
+        var q = async.priorityQueue((task, callback) => {
             call_order.push('process ' + task);
             callback('error', 'arg');
         }, 1);
 
-        q.push(1, 1.4, function (err, arg) {
+        q.push(1, 1.4, (err, arg) => {
             expect(err).to.equal('error');
             expect(arg).to.equal('arg');
             expect(q.length()).to.equal(2);
             call_order.push('callback ' + 1);
         });
-        q.push(2, 0.2, function (err, arg) {
+        q.push(2, 0.2, (err, arg) => {
             expect(err).to.equal('error');
             expect(arg).to.equal('arg');
             expect(q.length()).to.equal(3);
             call_order.push('callback ' + 2);
         });
-        q.push(3, 3.8, function (err, arg) {
+        q.push(3, 3.8, (err, arg) => {
             expect(err).to.equal('error');
             expect(arg).to.equal('arg');
             expect(q.length()).to.equal(0);
             call_order.push('callback ' + 3);
         });
-        q.push(4, 2.9, function (err, arg) {
+        q.push(4, 2.9, (err, arg) => {
             expect(err).to.equal('error');
             expect(arg).to.equal('arg');
             expect(q.length()).to.equal(1);
@@ -53,7 +53,7 @@ describe('priorityQueue', function() {
         };
     });
 
-    it('concurrency', function (done) {
+    it('concurrency', (done) => {
         var call_order = [],
             delays = [160,80,240,80];
 
@@ -61,32 +61,32 @@ describe('priorityQueue', function() {
         // worker2: -1---4
         // order of completion: 1,2,3,4
 
-        var q = async.priorityQueue(function (task, callback) {
-            setTimeout(function () {
+        var q = async.priorityQueue((task, callback) => {
+            setTimeout(() => {
                 call_order.push('process ' + task);
                 callback('error', 'arg');
             }, delays.splice(0,1)[0]);
         }, 2);
 
-        q.push(1, 1.4, function (err, arg) {
+        q.push(1, 1.4, (err, arg) => {
             expect(err).to.equal('error');
             expect(arg).to.equal('arg');
             expect(q.length()).to.equal(2);
             call_order.push('callback ' + 1);
         });
-        q.push(2, 0.2, function (err, arg) {
+        q.push(2, 0.2, (err, arg) => {
             expect(err).to.equal('error');
             expect(arg).to.equal('arg');
             expect(q.length()).to.equal(1);
             call_order.push('callback ' + 2);
         });
-        q.push(3, 3.8, function (err, arg) {
+        q.push(3, 3.8, (err, arg) => {
             expect(err).to.equal('error');
             expect(arg).to.equal('arg');
             expect(q.length()).to.equal(0);
             call_order.push('callback ' + 3);
         });
-        q.push(4, 2.9, function (err, arg) {
+        q.push(4, 2.9, (err, arg) => {
             expect(err).to.equal('error');
             expect(arg).to.equal('arg');
             expect(q.length()).to.equal(0);
@@ -108,12 +108,12 @@ describe('priorityQueue', function() {
         };
     });
 
-    it('pause in worker with concurrency', function(done) {
+    it('pause in worker with concurrency', (done) => {
         var call_order = [];
-        var q = async.priorityQueue(function (task, callback) {
+        var q = async.priorityQueue((task, callback) => {
             if (task.isLongRunning) {
                 q.pause();
-                setTimeout(function () {
+                setTimeout(() => {
                     call_order.push(task.id);
                     q.resume();
                     callback();
@@ -137,10 +137,10 @@ describe('priorityQueue', function() {
         };
     });
 
-    context('q.saturated(): ', function() {
-        it('should call the saturated callback if tasks length is concurrency', function(done) {
+    context('q.saturated(): ', () => {
+        it('should call the saturated callback if tasks length is concurrency', (done) => {
             var calls = [];
-            var q = async.priorityQueue(function(task, cb) {
+            var q = async.priorityQueue((task, cb) => {
                 calls.push('process ' + task);
                 async.setImmediate(cb);
             }, 4);
@@ -149,7 +149,7 @@ describe('priorityQueue', function() {
             };
             q.empty = function() {
                 expect(calls.indexOf('saturated')).to.be.above(-1);
-                setTimeout(function() {
+                setTimeout(() => {
                     expect(calls).eql([
                         'process foo4',
                         'process foo3',
@@ -167,18 +167,18 @@ describe('priorityQueue', function() {
                     done();
                 }, 50);
             };
-            q.push('foo0', 5, function () {calls.push('foo0 cb');});
-            q.push('foo1', 4, function () {calls.push('foo1 cb');});
-            q.push('foo2', 3, function () {calls.push('foo2 cb');});
-            q.push('foo3', 2, function () {calls.push('foo3 cb');});
-            q.push('foo4', 1, function () {calls.push('foo4 cb');});
+            q.push('foo0', 5, () => {calls.push('foo0 cb');});
+            q.push('foo1', 4, () => {calls.push('foo1 cb');});
+            q.push('foo2', 3, () => {calls.push('foo2 cb');});
+            q.push('foo3', 2, () => {calls.push('foo3 cb');});
+            q.push('foo4', 1, () => {calls.push('foo4 cb');});
         });
     });
 
-    context('q.unsaturated(): ',function() {
-        it('should have a default buffer property that equals 25% of the concurrenct rate', function(done) {
+    context('q.unsaturated(): ',() => {
+        it('should have a default buffer property that equals 25% of the concurrenct rate', (done) => {
             var calls = [];
-            var q = async.priorityQueue(function(task, cb) {
+            var q = async.priorityQueue((task, cb) => {
                 // nop
                 calls.push('process ' + task);
                 async.setImmediate(cb);
@@ -187,9 +187,9 @@ describe('priorityQueue', function() {
             done();
         });
 
-        it('should allow a user to change the buffer property', function(done) {
+        it('should allow a user to change the buffer property', (done) => {
             var calls = [];
-            var q = async.priorityQueue(function(task, cb) {
+            var q = async.priorityQueue((task, cb) => {
                 // nop
                 calls.push('process ' + task);
                 async.setImmediate(cb);
@@ -200,9 +200,9 @@ describe('priorityQueue', function() {
             done();
         });
 
-        it('should call the unsaturated callback if tasks length is less than concurrency minus buffer', function(done) {
+        it('should call the unsaturated callback if tasks length is less than concurrency minus buffer', (done) => {
             var calls = [];
-            var q = async.priorityQueue(function(task, cb) {
+            var q = async.priorityQueue((task, cb) => {
                 calls.push('process ' + task);
                 setTimeout(cb, 10);
             }, 4);
@@ -211,7 +211,7 @@ describe('priorityQueue', function() {
             };
             q.empty = function() {
                 expect(calls.indexOf('unsaturated')).to.be.above(-1);
-                setTimeout(function() {
+                setTimeout(() => {
                     expect(calls).eql([
                         'process foo4',
                         'process foo3',
@@ -232,11 +232,11 @@ describe('priorityQueue', function() {
                     done();
                 }, 50);
             };
-            q.push('foo0', 5, function () {calls.push('foo0 cb');});
-            q.push('foo1', 4, function () {calls.push('foo1 cb');});
-            q.push('foo2', 3, function () {calls.push('foo2 cb');});
-            q.push('foo3', 2, function () {calls.push('foo3 cb');});
-            q.push('foo4', 1, function () {calls.push('foo4 cb');});
+            q.push('foo0', 5, () => {calls.push('foo0 cb');});
+            q.push('foo1', 4, () => {calls.push('foo1 cb');});
+            q.push('foo2', 3, () => {calls.push('foo2 cb');});
+            q.push('foo3', 2, () => {calls.push('foo3 cb');});
+            q.push('foo4', 1, () => {calls.push('foo4 cb');});
         });
     });
 });

@@ -6,16 +6,16 @@ describe('groupBy', function() {
     this.timeout(250);
 
     function groupByIteratee(callOrder, val, next) {
-        setTimeout(function() {
+        setTimeout(() => {
             callOrder.push(val);
             next(null, val+1);
         }, val * 25);
     }
 
-    context('groupBy', function() {
+    context('groupBy', () => {
         it('basics', function(done) {
             var callOrder = [];
-            async.groupBy([1, 3, 2], groupByIteratee.bind(this, callOrder), function(err, result) {
+            async.groupBy([1, 3, 2], groupByIteratee.bind(this, callOrder), (err, result) => {
                 expect(err).to.eql(null);
                 expect(callOrder).to.eql([1, 2, 3]);
                 expect(result).to.eql({2: [1], 3: [2], 4: [3]});
@@ -23,24 +23,24 @@ describe('groupBy', function() {
             });
         });
 
-        it('error', function(done) {
-            async.groupBy([1, 3, 2], function(val, next) {
+        it('error', (done) => {
+            async.groupBy([1, 3, 2], (val, next) => {
                 if (val === 3) {
                     return next(new Error('fail'));
                 }
                 next(null, val+1);
-            }, function(err, result) {
+            }, (err, result) => {
                 expect(err).to.not.eql(null);
                 expect(result).to.eql({2: [1]});
                 done();
             });
         });
 
-        it('original untouched', function(done) {
+        it('original untouched', (done) => {
             var obj = {a: 'b', b: 'c', c: 'd'};
-            async.groupBy(obj, function(val, next) {
+            async.groupBy(obj, (val, next) => {
                 next(null, val);
-            }, function(err, result) {
+            }, (err, result) => {
                 expect(obj).to.eql({a: 'b', b: 'c', c: 'd'});
                 expect(result).to.eql({b: ['b'], c: ['c'], d: ['d']});
                 done();
@@ -49,7 +49,7 @@ describe('groupBy', function() {
 
         it('handles multiple matches', function(done) {
             var callOrder = [];
-            async.groupBy([1, 3, 2, 2], groupByIteratee.bind(this, callOrder), function(err, result) {
+            async.groupBy([1, 3, 2, 2], groupByIteratee.bind(this, callOrder), (err, result) => {
                 expect(err).to.eql(null);
                 expect(callOrder).to.eql([1, 2, 2, 3]);
                 expect(result).to.eql({2: [1], 3: [2, 2], 4: [3]});
@@ -57,18 +57,18 @@ describe('groupBy', function() {
             });
         });
 
-        it('handles objects', function(done) {
+        it('handles objects', (done) => {
             var obj = {a: 'b', b: 'c', c: 'd'};
             var concurrency = {b: 3, c: 2, d: 1};
             var running = 0;
-            async.groupBy(obj, function(val, next) {
+            async.groupBy(obj, (val, next) => {
                 running++;
-                async.setImmediate(function() {
+                async.setImmediate(() => {
                     expect(running).to.equal(concurrency[val]);
                     running--;
                     next(null, val);
                 });
-            }, function(err, result) {
+            }, (err, result) => {
                 expect(running).to.equal(0);
                 expect(err).to.eql(null);
                 expect(result).to.eql({b: ['b'], c: ['c'], d: ['d']});
@@ -76,35 +76,35 @@ describe('groupBy', function() {
             });
         });
 
-        it('handles undefined', function(done) {
-            async.groupBy(undefined, function(val, next) {
+        it('handles undefined', (done) => {
+            async.groupBy(undefined, (val, next) => {
                 assert(false, 'iteratee should not be called');
                 next();
-            }, function(err, result) {
+            }, (err, result) => {
                 expect(err).to.eql(null);
                 expect(result).to.eql({});
                 done();
             });
         });
 
-        it('handles empty object', function(done) {
-            async.groupBy({}, function(val, next) {
+        it('handles empty object', (done) => {
+            async.groupBy({}, (val, next) => {
                 assert(false, 'iteratee should not be called');
                 next();
-            }, function(err, result) {
+            }, (err, result) => {
                 expect(err).to.eql(null);
                 expect(result).to.eql({});
                 done();
             });
         });
 
-        it('main callback optional' , function(done) {
+        it('main callback optional' , (done) => {
             var arr = [1, 2, 3];
             var runs = [];
-            async.groupBy(arr, function(val, next) {
+            async.groupBy(arr, (val, next) => {
                 runs.push(val);
                 var _done = (runs.length === arr.length);
-                async.setImmediate(function() {
+                async.setImmediate(() => {
                     next(null);
                     if (_done) {
                         expect(runs).to.eql(arr);
@@ -114,22 +114,22 @@ describe('groupBy', function() {
             });
         });
 
-        it('iteratee callback is only called once', function(done) {
-            async.groupBy([1, 2], function(item, callback) {
+        it('iteratee callback is only called once', (done) => {
+            async.groupBy([1, 2], (item, callback) => {
                 try {
                     callback(item);
                 } catch (exception) {
-                    expect(function() {
+                    expect(() => {
                         callback(exception);
                     }).to.throw(/already called/);
                     done();
                 }
-            }, function() {
+            }, () => {
                 throw new Error();
             });
         });
 
-        it('handles Map', function(done) {
+        it('handles Map', (done) => {
             if (typeof Map !== 'function') {
                 return done();
             }
@@ -140,9 +140,9 @@ describe('groupBy', function() {
                 ['c', 'a']
             ]);
 
-            async.groupBy(map, function(val, next) {
+            async.groupBy(map, (val, next) => {
                 next(null, val[1]+1);
-            }, function(err, result) {
+            }, (err, result) => {
                 expect(err).to.eql(null);
                 expect(result).to.eql({
                     a1: [ ['a', 'a'], ['c', 'a']],
@@ -152,19 +152,19 @@ describe('groupBy', function() {
             });
         });
 
-        it('handles sparse results', function(done) {
+        it('handles sparse results', (done) => {
             var arr = [1, 2, 3];
-            async.groupBy(arr, function(val, next) {
+            async.groupBy(arr, (val, next) => {
                 if (val === 1) {
                     return next(null, val+1);
                 } else if (val === 2) {
-                    async.setImmediate(function() {
+                    async.setImmediate(() => {
                         return next(null, val+1);
                     });
                 } else {
                     return next('error');
                 }
-            }, function(err, result) {
+            }, (err, result) => {
                 expect(err).to.not.eql(null);
                 expect(result).to.eql({2: [1]});
                 async.setImmediate(done);
@@ -172,19 +172,19 @@ describe('groupBy', function() {
         });
     });
 
-    context('groupByLimit', function() {
+    context('groupByLimit', () => {
         var obj = {a: 'b', b: 'c', c: 'd'};
-        it('basics', function(done) {
+        it('basics', (done) => {
             var running = 0;
             var concurrency = {'b': 2, 'c': 2, 'd': 1};
-            async.groupByLimit(obj, 2, function(val, next) {
+            async.groupByLimit(obj, 2, (val, next) => {
                 running++;
-                async.setImmediate(function() {
+                async.setImmediate(() => {
                     expect(running).to.equal(concurrency[val]);
                     running--;
                     next(null, val);
                 });
-            }, function(err, result) {
+            }, (err, result) => {
                 expect(running).to.equal(0);
                 expect(err).to.eql(null);
                 expect(result).to.eql({'b': ['b'], 'c': ['c'], 'd': ['d']})
@@ -192,35 +192,35 @@ describe('groupBy', function() {
             });
         });
 
-        it('error', function(done) {
-            async.groupByLimit(obj, 1, function(val, next) {
+        it('error', (done) => {
+            async.groupByLimit(obj, 1, (val, next) => {
                 if (val === 'c') {
                     return next(new Error('fail'));
                 }
                 next(null, val);
-            }, function(err, result) {
+            }, (err, result) => {
                 expect(err).to.not.eql(null);
                 expect(result).to.eql({b: ['b']});
                 done();
             });
         });
 
-        it('handles empty object', function(done) {
-            async.groupByLimit({}, 2, function(val, next) {
+        it('handles empty object', (done) => {
+            async.groupByLimit({}, 2, (val, next) => {
                 assert(false, 'iteratee should not be called');
                 next();
-            }, function(err, result) {
+            }, (err, result) => {
                 expect(err).to.eql(null);
                 expect(result).to.eql({});
                 done();
             });
         });
 
-        it('handles undefined', function(done) {
-            async.groupByLimit(undefined, 2, function(val, next) {
+        it('handles undefined', (done) => {
+            async.groupByLimit(undefined, 2, (val, next) => {
                 assert(false, 'iteratee should not be called');
                 next();
-            }, function(err, result) {
+            }, (err, result) => {
                 expect(err).to.eql(null);
                 expect(result).to.eql({});
                 done();
@@ -229,7 +229,7 @@ describe('groupBy', function() {
 
         it('limit exceeds size', function(done) {
             var callOrder = [];
-            async.groupByLimit([3, 2, 2, 1], 10, groupByIteratee.bind(this, callOrder), function(err, result) {
+            async.groupByLimit([3, 2, 2, 1], 10, groupByIteratee.bind(this, callOrder), (err, result) => {
                 expect(err).to.eql(null);
                 expect(result).to.eql({2: [1], 3: [2, 2], 4: [3]});
                 expect(callOrder).to.eql([1, 2, 2, 3]);
@@ -239,7 +239,7 @@ describe('groupBy', function() {
 
         it('limit equal size', function(done) {
             var callOrder = [];
-            async.groupByLimit([3, 2, 2, 1], 4, groupByIteratee.bind(this, callOrder), function(err, result) {
+            async.groupByLimit([3, 2, 2, 1], 4, groupByIteratee.bind(this, callOrder), (err, result) => {
                 expect(err).to.eql(null);
                 expect(result).to.eql({2: [1], 3: [2, 2], 4: [3]});
                 expect(callOrder).to.eql([1, 2, 2, 3]);
@@ -247,58 +247,58 @@ describe('groupBy', function() {
             });
         });
 
-        it('zero limit', function() {
+        it('zero limit', () => {
             expect(() => {
-                async.groupByLimit([3, 2, 2, 1], 0, function(val, next) {
+                async.groupByLimit([3, 2, 2, 1], 0, (val, next) => {
                     assert(false, 'iteratee should not be called');
                     next();
-                }, function() {
+                }, () => {
                     assert(false, 'should not be called');
                 });
             }).to.throw(/concurrency limit/)
         });
 
-        it('does not continue replenishing after error', function(done) {
+        it('does not continue replenishing after error', (done) => {
             var started = 0;
             var arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
             var delay = 10;
             var limit = 3;
             var maxTime = 10 * arr.length;
 
-            async.groupByLimit(arr, limit, function(val, next) {
+            async.groupByLimit(arr, limit, (val, next) => {
                 started++;
                 if (started === 3) {
                     return next(new Error('fail'));
                 }
 
-                setTimeout(function() {
+                setTimeout(() => {
                     next();
                 }, delay);
-            }, function(err, result) {
+            }, (err, result) => {
                 expect(err).to.not.eql(null);
                 expect(result).to.eql({});
             });
 
-            setTimeout(function() {
+            setTimeout(() => {
                 expect(started).to.equal(3);
                 done();
             }, maxTime);
         });
     });
 
-    context('groupBySeries', function() {
+    context('groupBySeries', () => {
         var obj = {a: 'b', b: 'c', c: 'd'};
-        it('basics', function(done) {
+        it('basics', (done) => {
             var running = 0;
             var concurrency = {'b': 1, 'c': 1, 'd': 1};
-            async.groupBySeries(obj, function(val, next) {
+            async.groupBySeries(obj, (val, next) => {
                 running++;
-                async.setImmediate(function() {
+                async.setImmediate(() => {
                     expect(running).to.equal(concurrency[val]);
                     running--;
                     next(null, val);
                 });
-            }, function(err, result) {
+            }, (err, result) => {
                 expect(running).to.equal(0);
                 expect(err).to.eql(null);
                 expect(result).to.eql({'b': ['b'], 'c': ['c'], 'd': ['d']});
@@ -306,45 +306,45 @@ describe('groupBy', function() {
             });
         });
 
-        it('error', function(done) {
-            async.groupBySeries(obj, function(val, next) {
+        it('error', (done) => {
+            async.groupBySeries(obj, (val, next) => {
                 if (val === 'c') {
                     return next(new Error('fail'));
                 }
                 next(null, val);
-            }, function(err, result) {
+            }, (err, result) => {
                 expect(err).to.not.eql(null);
                 expect(result).to.eql({b: ['b']});
                 done();
             });
         });
 
-        it('handles arrays', function(done) {
-            async.groupBySeries(['a', 'a', 'b'], function(val, next) {
+        it('handles arrays', (done) => {
+            async.groupBySeries(['a', 'a', 'b'], (val, next) => {
                 next(null, val);
-            }, function(err, result) {
+            }, (err, result) => {
                 expect(err).to.eql(null);
                 expect(result).to.eql({'a': ['a', 'a'], 'b': ['b']});
                 done();
             });
         });
 
-        it('handles empty object', function(done) {
-            async.groupBySeries({}, function(val, next) {
+        it('handles empty object', (done) => {
+            async.groupBySeries({}, (val, next) => {
                 assert(false, 'iteratee should not be called');
                 next();
-            }, function(err, result) {
+            }, (err, result) => {
                 expect(err).to.eql(null);
                 expect(result).to.eql({});
                 done();
             });
         });
 
-        it('handles undefined', function(done) {
-            async.groupBySeries(undefined, function(val, next) {
+        it('handles undefined', (done) => {
+            async.groupBySeries(undefined, (val, next) => {
                 assert(false, 'iteratee should not be called');
                 next();
-            }, function(err, result) {
+            }, (err, result) => {
                 expect(err).to.eql(null);
                 expect(result).to.eql({});
                 done();

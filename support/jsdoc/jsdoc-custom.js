@@ -3,7 +3,7 @@ if (typeof setImmediate !== 'function' && typeof async === 'object') {
     setImmediate = async.setImmediate;
 }
 
-$(function initSearchBar() {
+$(() => {
     function matchSubstrs(methodName) {
         var tokens = [];
         var len = methodName.length;
@@ -40,8 +40,8 @@ $(function initSearchBar() {
             url: 'https://api.github.com/search/issues?q=%QUERY+repo:caolan/async',
             cache: true,
             wildcard: '%QUERY',
-            transform: function(response) {
-                return $.map(response.items, function(issue) {
+            transform(response) {
+                return $.map(response.items, (issue) => {
                     // if (issue.state !== 'open') {
                     //     return null;
                     // }
@@ -50,7 +50,7 @@ $(function initSearchBar() {
                         name: issue.number + ': ' + issue.title,
                         number: issue.number
                     };
-                }).sort(function(a, b) {
+                }).sort((a, b) => {
                     return b.number - a.number;
                 });
             }
@@ -80,7 +80,7 @@ $(function initSearchBar() {
         templates: {
             header: '<h3 class="search-bar-header">Issues</h3>'
         }
-    }).on('typeahead:select', function(ev, suggestion) {
+    }).on('typeahead:select', (ev, suggestion) => {
         var host;
         if (location.origin != "null") {
             host = location.origin;

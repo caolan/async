@@ -1,26 +1,26 @@
 var async = require('../lib');
 var expect = require('chai').expect;
 
-describe('compose', function(){
-    context('all functions succeed', function(){
-        it('yields the result of the composition of the functions', function(done){
+describe('compose', () => {
+    context('all functions succeed', () => {
+        it('yields the result of the composition of the functions', (done) => {
             var add2 = function (n, cb) {
-                setTimeout(function () {
+                setTimeout(() => {
                     cb(null, n + 2);
                 });
             };
             var mul3 = function (n, cb) {
-                setTimeout(function () {
+                setTimeout(() => {
                     cb(null, n * 3);
                 });
             };
             var add1 = function (n, cb) {
-                setTimeout(function () {
+                setTimeout(() => {
                     cb(null, n + 1);
                 });
             };
             var add2mul3add1 = async.compose(add1, mul3, add2);
-            add2mul3add1(3, function (err, result) {
+            add2mul3add1(3, (err, result) => {
                 expect(err).to.not.exist;
                 expect(result).to.eql(16);
                 done();
@@ -28,28 +28,28 @@ describe('compose', function(){
         });
     });
 
-    context('a function errors', function(){
-        it('yields the error and does not call later functions', function(done){
+    context('a function errors', () => {
+        it('yields the error and does not call later functions', (done) => {
             var add1called = false;
             var mul3error = new Error('mul3 error');
             var add2 = function (n, cb) {
-                setTimeout(function () {
+                setTimeout(() => {
                     cb(null, n + 2);
                 });
             };
             var mul3 = function (n, cb) {
-                setTimeout(function () {
+                setTimeout(() => {
                     cb(mul3error);
                 });
             };
             var add1 = function (n, cb) {
                 add1called = true;
-                setTimeout(function () {
+                setTimeout(() => {
                     cb(null, n + 1);
                 });
             };
             var add2mul3add1 = async.compose(add1, mul3, add2);
-            add2mul3add1(3, function (err, result) {
+            add2mul3add1(3, (err, result) => {
                 expect(err).to.eql(mul3error);
                 expect(result).to.not.exist;
                 expect(add1called).to.be.false;
@@ -58,24 +58,24 @@ describe('compose', function(){
         });
     });
 
-    it('calls each function with the binding of the composed function', function(done){
+    it('calls each function with the binding of the composed function', (done) => {
         var context = {};
         var add2Context = null;
         var mul3Context = null;
         var add2 = function (n, cb) {
             add2Context = this;
-            setTimeout(function () {
+            setTimeout(() => {
                 cb(null, n + 2);
             });
         };
         var mul3 = function (n, cb) {
             mul3Context = this;
-            setTimeout(function () {
+            setTimeout(() => {
                 cb(null, n * 3);
             });
         };
         var add2mul3 = async.compose(mul3, add2);
-        add2mul3.call(context, 3, function (err, result) {
+        add2mul3.call(context, 3, (err, result) => {
             expect(err).to.not.exist;
             expect(result).to.eql(15);
             expect(add2Context).to.equal(context);

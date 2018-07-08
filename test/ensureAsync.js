@@ -2,18 +2,18 @@ var async = require('../lib');
 var expect = require('chai').expect;
 var assert = require('assert');
 
-describe('ensureAsync', function() {
+describe('ensureAsync', () => {
     var passContext = function(cb) {
         cb(this);
     };
 
-    it('defer sync functions', function(done) {
+    it('defer sync functions', (done) => {
         var sync = true;
-        async.ensureAsync(function (arg1, arg2, cb) {
+        async.ensureAsync((arg1, arg2, cb) => {
             expect(arg1).to.equal(1);
             expect(arg2).to.equal(2);
             cb(null, 4, 5);
-        })(1, 2, function (err, arg4, arg5) {
+        })(1, 2, (err, arg4, arg5) => {
             expect(err).to.equal(null);
             expect(arg4).to.equal(4);
             expect(arg5).to.equal(5);
@@ -23,17 +23,17 @@ describe('ensureAsync', function() {
         sync = false;
     });
 
-    it('do not defer async functions', function(done) {
+    it('do not defer async functions', (done) => {
         var sync = false;
-        async.ensureAsync(function (arg1, arg2, cb) {
+        async.ensureAsync((arg1, arg2, cb) => {
             expect(arg1).to.equal(1);
             expect(arg2).to.equal(2);
-            async.setImmediate(function () {
+            async.setImmediate(() => {
                 sync = true;
                 cb(null, 4, 5);
                 sync = false;
             });
-        })(1, 2, function (err, arg4, arg5) {
+        })(1, 2, (err, arg4, arg5) => {
             expect(err).to.equal(null);
             expect(arg4).to.equal(4);
             expect(arg5).to.equal(5);
@@ -42,13 +42,13 @@ describe('ensureAsync', function() {
         });
     });
 
-    it('double wrapping', function(done) {
+    it('double wrapping', (done) => {
         var sync = true;
-        async.ensureAsync(async.ensureAsync(function (arg1, arg2, cb) {
+        async.ensureAsync(async.ensureAsync((arg1, arg2, cb) => {
             expect(arg1).to.equal(1);
             expect(arg2).to.equal(2);
             cb(null, 4, 5);
-        }))(1, 2, function (err, arg4, arg5) {
+        }))(1, 2, (err, arg4, arg5) => {
             expect(err).to.equal(null);
             expect(arg4).to.equal(4);
             expect(arg5).to.equal(5);
@@ -59,25 +59,25 @@ describe('ensureAsync', function() {
     });
 
 
-    it('should propely bind context to the wrapped function', function(done) {
+    it('should propely bind context to the wrapped function', (done) => {
 
         // call bind after wrapping with ensureAsync
         var context = {context: "post"};
         var postBind = async.ensureAsync(passContext);
         postBind = postBind.bind(context);
-        postBind(function(ref) {
+        postBind((ref) => {
             expect(ref).to.equal(context);
             done();
         });
     });
 
-    it('should not override the bound context of a function when wrapping', function(done) {
+    it('should not override the bound context of a function when wrapping', (done) => {
 
         // call bind before wrapping with ensureAsync
         var context = {context: "pre"};
         var preBind = passContext.bind(context);
         preBind = async.ensureAsync(preBind);
-        preBind(function(ref) {
+        preBind((ref) => {
             expect(ref).to.equal(context);
             done();
         });

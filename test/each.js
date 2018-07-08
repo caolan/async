@@ -2,10 +2,10 @@ var async = require('../lib');
 var expect = require('chai').expect;
 var assert = require('assert');
 
-describe("each", function() {
+describe("each", () => {
 
     function eachIteratee(args, x, callback) {
-        setTimeout(function(){
+        setTimeout(() => {
             args.push(x);
             callback();
         }, x*25);
@@ -19,16 +19,16 @@ describe("each", function() {
 
     it('each', function(done) {
         var args = [];
-        async.each([1,3,2], eachIteratee.bind(this, args), function(err){
+        async.each([1,3,2], eachIteratee.bind(this, args), (err) => {
             assert(err === null, err + " passed instead of 'null'");
             expect(args).to.eql([1,2,3]);
             done();
         });
     });
 
-    it('each extra callback', function(done) {
+    it('each extra callback', (done) => {
         var count = 0;
-        async.each([1,3,2], function(val, callback) {
+        async.each([1,3,2], (val, callback) => {
             count++;
             var done_ = count == 3;
             callback();
@@ -39,11 +39,11 @@ describe("each", function() {
         });
     });
 
-    it('each empty array', function(done) {
-        async.each([], function(x, callback){
+    it('each empty array', (done) => {
+        async.each([], (x, callback) => {
             assert(false, 'iteratee should not be called');
             callback();
-        }, function(err){
+        }, (err) => {
             if (err) throw err;
             assert(true, 'should call callback');
         });
@@ -51,13 +51,13 @@ describe("each", function() {
     });
 
 
-    it('each empty array, with other property on the array', function(done) {
+    it('each empty array, with other property on the array', (done) => {
         var myArray = [];
         myArray.myProp = "anything";
-        async.each(myArray, function(x, callback){
+        async.each(myArray, (x, callback) => {
             assert(false, 'iteratee should not be called');
             callback();
-        }, function(err){
+        }, (err) => {
             if (err) throw err;
             assert(true, 'should call callback');
         });
@@ -65,10 +65,10 @@ describe("each", function() {
     });
 
 
-    it('each error', function(done) {
-        async.each([1,2,3], function(x, callback){
+    it('each error', (done) => {
+        async.each([1,2,3], (x, callback) => {
             callback('error');
-        }, function(err){
+        }, (err) => {
             expect(err).to.equal('error');
         });
         setTimeout(done, 50);
@@ -80,29 +80,29 @@ describe("each", function() {
 
     it('eachSeries', function(done) {
         var args = [];
-        async.eachSeries([1,3,2], eachIteratee.bind(this, args), function(err){
+        async.eachSeries([1,3,2], eachIteratee.bind(this, args), (err) => {
             assert(err === null, err + " passed instead of 'null'");
             expect(args).to.eql([1,3,2]);
             done();
         });
     });
 
-    it('eachSeries empty array', function(done) {
-        async.eachSeries([], function(x, callback){
+    it('eachSeries empty array', (done) => {
+        async.eachSeries([], (x, callback) => {
             assert(false, 'iteratee should not be called');
             callback();
-        }, function(err){
+        }, (err) => {
             if (err) throw err;
             assert(true, 'should call callback');
         });
         setTimeout(done, 25);
     });
 
-    it('eachSeries array modification', function(done) {
+    it('eachSeries array modification', (done) => {
         var arr = [1, 2, 3, 4];
-        async.eachSeries(arr, function (x, callback) {
+        async.eachSeries(arr, (x, callback) => {
             async.setImmediate(callback);
-        }, function () {
+        }, () => {
             assert(true, 'should call callback');
         });
 
@@ -113,11 +113,11 @@ describe("each", function() {
     });
 
     // bug #782.  Remove in next major release
-    it('eachSeries single item', function(done) {
+    it('eachSeries single item', (done) => {
         var sync = true;
-        async.eachSeries([1], function (i, cb) {
+        async.eachSeries([1], (i, cb) => {
             cb(null);
-        }, function () {
+        }, () => {
             assert(sync, "callback not called on same tick");
         });
         sync = false;
@@ -125,23 +125,23 @@ describe("each", function() {
     });
 
     // bug #782.  Remove in next major release
-    it('eachSeries single item', function(done) {
+    it('eachSeries single item', (done) => {
         var sync = true;
-        async.eachSeries([1], function (i, cb) {
+        async.eachSeries([1], (i, cb) => {
             cb(null);
-        }, function () {
+        }, () => {
             assert(sync, "callback not called on same tick");
         });
         sync = false;
         done();
     });
 
-    it('eachSeries error', function(done) {
+    it('eachSeries error', (done) => {
         var call_order = [];
-        async.eachSeries([1,2,3], function(x, callback){
+        async.eachSeries([1,2,3], (x, callback) => {
             call_order.push(x);
             callback('error');
-        }, function(err){
+        }, (err) => {
             expect(call_order).to.eql([1]);
             expect(err).to.equal('error');
         });
@@ -153,26 +153,26 @@ describe("each", function() {
     });
 
 
-    it('eachLimit', function(done) {
+    it('eachLimit', (done) => {
         var args = [];
         var arr = [0,1,2,3,4,5,6,7,8,9];
-        async.eachLimit(arr, 2, function(x,callback){
-            setTimeout(function(){
+        async.eachLimit(arr, 2, (x,callback) => {
+            setTimeout(() => {
                 args.push(x);
                 callback();
             }, x*5);
-        }, function(err){
+        }, (err) => {
             assert(err === null, err + " passed instead of 'null'");
             expect(args).to.eql(arr);
             done();
         });
     });
 
-    it('eachLimit empty array', function(done) {
-        async.eachLimit([], 2, function(x, callback){
+    it('eachLimit empty array', (done) => {
+        async.eachLimit([], 2, (x, callback) => {
             assert(false, 'iteratee should not be called');
             callback();
-        }, function(err){
+        }, (err) => {
             if (err) throw err;
             assert(true, 'should call callback');
         });
@@ -182,7 +182,7 @@ describe("each", function() {
     it('eachLimit limit exceeds size', function(done) {
         var args = [];
         var arr = [0,1,2,3,4,5,6,7,8,9];
-        async.eachLimit(arr, 20, eachIteratee.bind(this, args), function(err){
+        async.eachLimit(arr, 20, eachIteratee.bind(this, args), (err) => {
             if (err) throw err;
             expect(args).to.eql(arr);
             done();
@@ -192,34 +192,34 @@ describe("each", function() {
     it('eachLimit limit equal size', function(done) {
         var args = [];
         var arr = [0,1,2,3,4,5,6,7,8,9];
-        async.eachLimit(arr, 10, eachIteratee.bind(this, args), function(err){
+        async.eachLimit(arr, 10, eachIteratee.bind(this, args), (err) => {
             if (err) throw err;
             expect(args).to.eql(arr);
             done();
         });
     });
 
-    it('eachLimit zero limit', function() {
+    it('eachLimit zero limit', () => {
         expect(() => {
-            async.eachLimit([0,1,2,3,4,5], 0, function(x, callback){
+            async.eachLimit([0,1,2,3,4,5], 0, (x, callback) => {
                 assert(false, 'iteratee should not be called');
                 callback();
-            }, function(){
+            }, () => {
                 assert(false, 'should not call callback');
             });
         }).to.throw(/limit/)
     });
 
-    it('eachLimit error', function(done) {
+    it('eachLimit error', (done) => {
         var arr = [0,1,2,3,4,5,6,7,8,9];
         var call_order = [];
 
-        async.eachLimit(arr, 3, function(x, callback){
+        async.eachLimit(arr, 3, (x, callback) => {
             call_order.push(x);
             if (x === 2) {
                 callback('error');
             }
-        }, function(err){
+        }, (err) => {
             expect(call_order).to.eql([0,1,2]);
             expect(err).to.equal('error');
         });
@@ -230,53 +230,53 @@ describe("each", function() {
         async.eachLimit([1], 1, eachNoCallbackIteratee.bind(this, done));
     });
 
-    it('eachLimit synchronous', function(done) {
+    it('eachLimit synchronous', (done) => {
         var args = [];
         var arr = [0,1,2];
-        async.eachLimit(arr, 5, function(x,callback){
+        async.eachLimit(arr, 5, (x,callback) => {
             args.push(x);
             callback();
-        }, function(err){
+        }, (err) => {
             if (err) throw err;
             expect(args).to.eql(arr);
             done();
         });
     });
 
-    it('eachLimit does not continue replenishing after error', function(done) {
+    it('eachLimit does not continue replenishing after error', (done) => {
         var started = 0;
         var arr = [0,1,2,3,4,5,6,7,8,9];
         var delay = 10;
         var limit = 3;
         var maxTime = 10 * arr.length;
 
-        async.eachLimit(arr, limit, function(x, callback) {
+        async.eachLimit(arr, limit, (x, callback) => {
             started ++;
             if (started === 3) {
                 return callback(new Error ("Test Error"));
             }
-            setTimeout(function(){
+            setTimeout(() => {
                 callback();
             }, delay);
-        }, function(){});
+        }, () => {});
 
-        setTimeout(function(){
+        setTimeout(() => {
             expect(started).to.equal(3);
             done();
         }, maxTime);
     });
 
-    it('forEach alias', function(done) {
+    it('forEach alias', (done) => {
         assert.strictEqual(async.each, async.forEach);
         done();
     });
 
-    it('forEachSeries alias', function(done) {
+    it('forEachSeries alias', (done) => {
         assert.strictEqual(async.eachSeries, async.forEachSeries);
         done();
     });
 
-    it('forEachLimit alias', function(done) {
+    it('forEachLimit alias', (done) => {
         assert.strictEqual(async.eachLimit, async.forEachLimit);
         done();
     });
