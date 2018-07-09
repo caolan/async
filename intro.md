@@ -206,6 +206,10 @@ As of version 3.0, you can call any Async callback with `false` as the `error` a
         },
 ```
 
+### Mutating collections
+
+If you pass an array to a collection method (such as `each`, `mapLimit`, or `filterSeries`), and then attempt to `push`, `pop`, or `splice` additional items on to the array, this could lead to unexpected or undefined behavior.  Async will iterate until the original `length` of the array is met, and the indexes of items `pop()`ed or `splice()`d could already have been processed. Therefore, it is not recommended to modify the array after Async has begun iterating over it.  If you do need to `push`, `pop`, or `splice`, use a `queue` instead.
+
 
 ## Download
 
