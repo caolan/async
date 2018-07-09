@@ -7,10 +7,10 @@ describe('until', () => {
         var call_order = [];
         var count = 0;
         async.until(
-            (c) => {
-                expect(c).to.equal(undefined);
+            (cb) => {
+                expect(cb).to.be.a('function');
                 call_order.push(['test', count]);
-                return (count == 5);
+                return cb(null, count == 5);
             },
             (cb) => {
                 call_order.push(['iteratee', count]);
@@ -37,7 +37,7 @@ describe('until', () => {
     it('until canceling', (done) => {
         let counter = 0;
         async.until(
-            () => false,
+            (cb) => cb(null, false),
             cb => {
                 counter++
                 cb(counter === 2 ? false: null);
@@ -59,10 +59,10 @@ describe('until', () => {
                 count++;
                 cb(null, count);
             },
-            (c) => {
+            (c, cb) => {
                 expect(c).to.equal(count);
                 call_order.push(['test', count]);
-                return (count == 5);
+                return cb(null, count == 5);
             },
             (err, result) => {
                 assert(err === null, err + " passed instead of 'null'");
@@ -89,9 +89,9 @@ describe('until', () => {
                 count++;
                 cb(null, count);
             },
-            (c) => {
+            (c, cb) => {
                 call_order.push(['test', c]);
-                return (c == 5);
+                return cb(null, c == 5);
             },
             (err, result) => {
                 if (err) throw err;
@@ -116,7 +116,7 @@ describe('until', () => {
                 counter++
                 cb(counter === 2 ? false: null);
             },
-            () => false,
+            (cb) => cb(null, false),
             () => { throw new Error('should not get here')}
         );
         setTimeout(() => {

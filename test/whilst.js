@@ -8,10 +8,10 @@ describe('whilst', () => {
 
         var count = 0;
         async.whilst(
-            (c) => {
-                expect(c).to.equal(undefined);
+            (cb) => {
+                expect(cb).to.be.a('function');
                 call_order.push(['test', count]);
-                return (count < 5);
+                return cb(null, count < 5);
             },
             (cb) => {
                 call_order.push(['iteratee', count]);
@@ -38,7 +38,7 @@ describe('whilst', () => {
     it('whilst optional callback', (done) => {
         var counter = 0;
         async.whilst(
-            () => { return counter < 2; },
+            (cb) => cb(null, counter < 2),
             (cb) => {
                 counter++;
                 cb();
@@ -51,7 +51,7 @@ describe('whilst', () => {
     it('whilst canceling', (done) => {
         var counter = 0;
         async.whilst(
-            () => { return counter < 3; },
+            (cb) => cb(null, counter < 3),
             (cb) => {
                 counter++;
                 cb(counter === 2 ? false : null);
@@ -74,10 +74,10 @@ describe('whilst', () => {
                 count++;
                 cb(null, count);
             },
-            (c) => {
+            (c, cb) => {
                 expect(c).to.equal(count);
                 call_order.push(['test', count]);
-                return (count < 5);
+                return cb(null, count < 5);
             },
             (err, result) => {
                 assert(err === null, err + " passed instead of 'null'");
@@ -104,9 +104,9 @@ describe('whilst', () => {
                 count++;
                 cb(null, count);
             },
-            (c) => {
+            (c, cb) => {
                 call_order.push(['test', c]);
-                return (c < 5);
+                return cb(null, c < 5);
             },
             (err, result) => {
                 if (err) throw err;
@@ -146,7 +146,7 @@ describe('whilst', () => {
                 counter++
                 cb(counter === 2 ? false : null);
             },
-            () => true,
+            (cb) => cb(null, true),
             () => { throw new Error('should not get here')}
         );
         setTimeout(() => {
