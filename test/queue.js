@@ -799,4 +799,23 @@ describe('queue', function(){
             done();
         }
     });
+
+    it('should be iterable', (done) => {
+        var q = async.queue((data, cb) => {
+            if (data === 3) {
+                q.push(6)
+                expect([...q]).to.eql([4, 5, 6]);
+            }
+            async.setImmediate(cb);
+        });
+
+        q.push([1, 2, 3, 4, 5]);
+
+        expect([...q]).to.eql([1, 2, 3, 4, 5]);
+
+        q.drain = function () {
+            expect([...q]).to.eql([]);
+            done();
+        }
+    })
 });
