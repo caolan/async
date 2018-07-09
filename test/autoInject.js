@@ -1,3 +1,4 @@
+/* eslint prefer-arrow-callback: 0, object-shorthand: 0 */
 var async = require('../lib');
 var {expect} = require('chai');
 
@@ -19,12 +20,12 @@ describe('autoInject', () => {
                     callback(null, 2);
                 }, 50);
             },
-            task3(task2, callback){
+            task3: function (task2, callback){
                 expect(task2).to.equal(2);
                 callOrder.push('task3');
                 callback(null, 3);
             },
-            task4(task1, task2, callback){
+            task4: function task4(task1, task2, callback){
                 expect(task1).to.equal(1);
                 expect(task2).to.equal(2);
                 callOrder.push('task4');
@@ -44,6 +45,7 @@ describe('autoInject', () => {
             }
         },
         (err, results) => {
+            expect(results).to.eql({task1: 1, task2: 2, task3: 3, task4: 4, task5: 5, task6: 6})
             expect(results.task6).to.equal(6);
             expect(callOrder).to.eql(['task2','task3','task6','task5','task1','task4']);
             done();
@@ -67,7 +69,8 @@ describe('autoInject', () => {
                 callOrder.push('task3');
                 cb(null, 3);
             }
-        }, () => {
+        }, (err, results) => {
+            expect(results).to.eql({task1: 1, task2: 2, task3: 3})
             expect(callOrder).to.eql(['task1','task3','task2']);
             done();
         });
@@ -85,76 +88,38 @@ describe('autoInject', () => {
         }, done);
     });
 
-    it('should throw error for function without explicit parameters', (done) => {
-        try {
-            async.autoInject({
-                a (){}
-            });
-        } catch (e) {
-            // It's ok. It detected a void function
-            return done();
-        }
-
-        // If didn't catch error, then it's a failed test
-        done(true)
+    it('should throw error for function without explicit parameters', () => {
+        expect(() => async.autoInject({
+            a () {}
+        })).to.throw()
     });
 
-    var arrowSupport = true;
-    try {
-        new Function('x => x');
-    } catch (e) {
-        arrowSupport = false;
-    }
-
-    if (arrowSupport) {
-        // Needs to be run on ES6 only
-
-        /* eslint {no-eval: 0}*/
-        eval("(function() {                                                 " +
-             "    it('should work with es6 arrow syntax', function (done) { " +
-             "        async.autoInject({                                    " +
-             "            task1: (cb)           => cb(null, 1),             " +
-             "            task2: ( task3 , cb ) => cb(null, 2),             " +
-             "            task3: cb             => cb(null, 3)              " +
-             "        }, (err, results) => {                                " +
-             "            expect(results.task1).to.equal(1);                " +
-             "            expect(results.task3).to.equal(3);                " +
-             "            done();                                           " +
-             "        });                                                   " +
-             "    });                                                       " +
-             "})                                                            "
-        )();
-    }
+    it('should work with es6 arrow syntax', (done) => {
+        async.autoInject({
+            task1: (cb)           => cb(null, 1),
+            task2: ( task3 , cb ) => cb(null, 2),
+            task3: cb             => cb(null, 3)
+        }, (err, results) => {
+            expect(results.task1).to.equal(1);
+            expect(results.task3).to.equal(3);
+            done();
+        });
+    });
 
 
-    var defaultSupport = true;
-    try {
-        eval('function x(y = 1){ return y }');
-    }catch (e){
-        defaultSupport = false;
-    }
-
-    if(arrowSupport && defaultSupport){
-        // Needs to be run on ES6 only
-
-        /* eslint {no-eval: 0}*/
-        eval("(function() {                                                 " +
-             "    it('should work with es6 obj method syntax', function (done) { " +
-             "        async.autoInject({                                    " +
-             "            task1 (cb){             cb(null, 1) },            " +
-             "            task2 ( task3 , cb ) {  cb(null, 2) },            " +
-             "            task3 (cb) {            cb(null, 3) },            " +
-             "            task4 ( task2 , cb ) {  cb(null) },               " +
-             "            task5 ( task4 = 4 , cb ) { cb(null, task4 + 1) }  " +
-             "        }, (err, results) => {                                " +
-             "            expect(results.task1).to.equal(1);                " +
-             "            expect(results.task3).to.equal(3);                " +
-             "            expect(results.task4).to.equal(undefined);        " +
-             "            expect(results.task5).to.equal(5);                " +
-             "            done();                                           " +
-             "        });                                                   " +
-             "    });                                                       " +
-             "})                                                            "
-        )();
-    }
+    it('should work with es6 default param syntax', (done) => {
+        async.autoInject({
+            task1 (cb){             cb(null, 1) },
+            task2 ( task3 , cb ) {  cb(null, 2) },
+            task3 (cb) {            cb(null, 3) },
+            task4 ( task2 , cb ) {  cb(null) },
+            task5 ( task4 = 4 , cb ) { cb(null, task4 + 1) }
+        }, (err, results) => {
+            expect(results.task1).to.equal(1);
+            expect(results.task3).to.equal(3);
+            expect(results.task4).to.equal(undefined);
+            expect(results.task5).to.equal(5);
+            done();
+        });
+    });
 });

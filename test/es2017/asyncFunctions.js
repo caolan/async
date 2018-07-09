@@ -300,22 +300,24 @@ module.exports = function () {
         });
     });
 
+    /* eslint prefer-arrow-callback: 0, object-shorthand: 0 */
     it('should handle async functions in autoInject', (done) => {
         async.autoInject({
-            async a () {
+            z: async function(){ return 0},
+            a: async function a () {
                 return await Promise.resolve(1);
             },
-            async b (a) {
+            b: async function (a) {
                 return await Promise.resolve(a + 1);
             },
             c: async (a, b) => {
                 return await Promise.resolve(a + b);
             },
-            d: async (c) => {
+            d: async c => {
                 return await Promise.resolve(c + 1);
             }
         }, (err, result) => {
-            expect(result).to.eql({a: 1, b: 2, c: 3, d: 4});
+            expect(result).to.eql({z: 0, a: 1, b: 2, c: 3, d: 4});
             done(err);
         });
     });
