@@ -10,8 +10,8 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function setup(count) {
-        tasks = _.range(count);
+    setup: function setup(num) {
+        tasks = _.range(num);
     },
     fn(async, done) {
         async.each(tasks, (num, cb) => {
@@ -25,8 +25,8 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function setup(count) {
-        tasks = _.range(count);
+    setup: function setup(num) {
+        tasks = _.range(num);
     },
     fn(async, done) {
         async.eachSeries(tasks, (num, cb) => {
@@ -40,8 +40,8 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function setup(count) {
-        tasks = _.range(count);
+    setup: function setup(num) {
+        tasks = _.range(num);
     },
     fn(async, done) {
         async.eachLimit(tasks, 4, (num, cb) => {
@@ -56,8 +56,8 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function setup(count) {
-        tasks = _.range(count);
+    setup: function setup(num) {
+        tasks = _.range(num);
     },
     fn(async, done) {
         async.map(tasks, (num, cb) => {
@@ -71,8 +71,8 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function setup(count) {
-        tasks = _.range(count);
+    setup: function setup(num) {
+        tasks = _.range(num);
     },
     fn(async, done) {
         async.mapSeries(tasks, (num, cb) => {
@@ -86,8 +86,8 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function setup(count) {
-        tasks = _.range(count);
+    setup: function setup(num) {
+        tasks = _.range(num);
     },
     fn(async, done) {
         async.mapLimit(tasks, 4, (num, cb) => {
@@ -138,8 +138,8 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function setup(count) {
-        tasks = _.range(count);
+    setup: function setup(num) {
+        tasks = _.range(num);
     },
     fn(async, done) {
         async.concat(tasks, (num, cb) => {
@@ -156,8 +156,8 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function setup(count) {
-        tasks = _.range(count);
+    setup: function setup(num) {
+        tasks = _.range(num);
     },
     fn(async, done) {
         async.eachOf(tasks, (num, i, cb) => {
@@ -171,8 +171,8 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function setup(count) {
-        tasks = _.range(count);
+    setup: function setup(num) {
+        tasks = _.range(num);
     },
     fn(async, done) {
         async.eachOfSeries(tasks, (num, i, cb) => {
@@ -186,8 +186,8 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function setup(count) {
-        tasks = _.range(count);
+    setup: function setup(num) {
+        tasks = _.range(num);
     },
     fn(async, done) {
         async.eachOfLimit(tasks, 4, (num, i, cb) => {
@@ -201,8 +201,8 @@ module.exports = [{
         [100],
         [1000]
     ],
-    setup: function setup(count) {
-        tasks = _.range(count).map(() => {
+    setup: function setup(num) {
+        tasks = _.range(num).map(() => {
             return function(cb) {
                 setImmediate(cb);
             };
@@ -218,8 +218,8 @@ module.exports = [{
         [100],
         [1000]
     ],
-    setup: function setup(count) {
-        tasks = _.range(count).map(() => {
+    setup: function setup(num) {
+        tasks = _.range(num).map(() => {
             return function(cb) {
                 setImmediate(cb);
             };
@@ -235,12 +235,12 @@ module.exports = [{
         [100],
         [1000]
     ],
-    setup: function setup(count) {
+    setup: function setup(num) {
         tasks = [
             function(cb) {
                 return cb(null, 1);
             }
-        ].concat(_.range(count).map((i) => {
+        ].concat(_.range(num).map((i) => {
             return function(arg, cb) {
                 setImmediate(() => {
                     cb(null, i);
@@ -258,11 +258,11 @@ module.exports = [{
         [10],
         [100]
     ],
-    setup: function setup(count) {
+    setup: function setup(num) {
         tasks = {
             dep1 (cb) { cb(null, 1); }
         };
-        _.times(count, (n) => {
+        _.times(num, (n) => {
             var task = ['dep' + (n+1), function(results, cb) {
                 setImmediate(cb, null, n);
             }];
@@ -283,8 +283,8 @@ module.exports = [{
         [100000],
         [200000]
     ],
-    setup: function setup(count) {
-        tasks = count;
+    setup: function setup(num) {
+        tasks = num;
     },
     fn(async, done) {
         var numEntries = tasks;
@@ -308,8 +308,8 @@ module.exports = [{
     args: [
         [500]
     ],
-    setup: function setup(count) {
-        tasks = _.range(count);
+    setup: function setup(num) {
+        tasks = _.range(num);
     },
     fn(async, done) {
         async.some(tasks, (i, cb) => {
@@ -324,8 +324,8 @@ module.exports = [{
     args: [
         [500]
     ],
-    setup: function setup(count) {
-        tasks = _.range(count);
+    setup: function setup(num) {
+        tasks = _.range(num);
     },
     fn(async, done) {
         async.some(tasks, (i, cb) => {
@@ -340,8 +340,8 @@ module.exports = [{
     args: [
         [500]
     ],
-    setup: function setup(count) {
-        tasks = _.range(count);
+    setup: function setup(num) {
+        tasks = _.range(num);
     },
     fn(async, done) {
         async.every(tasks, (i, cb) => {
@@ -356,8 +356,8 @@ module.exports = [{
     args: [
         [500]
     ],
-    setup: function setup(count) {
-        tasks = _.range(count);
+    setup: function setup(num) {
+        tasks = _.range(num);
     },
     fn(async, done) {
         async.every(tasks, (i, cb) => {

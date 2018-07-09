@@ -209,11 +209,10 @@ describe('concat', function() {
     });
 
     context('concatLimit', () => {
-        var arr = ['foo', 'bar', 'baz'];
         it('basics', (done) => {
             var running = 0;
             var concurrency = {'foo': 2, 'bar': 2, 'baz': 1};
-            async.concatLimit(arr, 2, (val, next) => {
+            async.concatLimit(['foo', 'bar', 'baz'], 2, (val, next) => {
                 running++;
                 async.setImmediate(() => {
                     expect(running).to.equal(concurrency[val]);
@@ -229,7 +228,7 @@ describe('concat', function() {
         });
 
         it('error', (done) => {
-            async.concatLimit(arr, 1, (val, next) => {
+            async.concatLimit(['foo', 'bar', 'baz'], 1, (val, next) => {
                 if (val === 'bar') {
                     return next(new Error('fail'));
                 }

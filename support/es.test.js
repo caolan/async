@@ -1,12 +1,10 @@
 // simple async example to test ES module build output
 
-import {waterfall as waterfall} from  "../build-es/index";
-import {wrapSync} from  "../build-es/index";
-import async from "../build-es/index";
+import {default as async, waterfall as wf, wrapSync} from  "../build-es/index";
 import constant from "../build-es/constant";
 import forEachOf from "../build-es/forEachOf";
 
-waterfall([
+wf([
     constant(42),
     function (val, next) {
         async.setImmediate(() => {
@@ -15,8 +13,8 @@ waterfall([
     },
     wrapSync((a) => { return a; }),
     function (val, next) {
-        async.forEachOf({a: 1}, (val, key, cb) => {
-            if (val !== 1 && key !== 'a') return cb(new Error('fail!'));
+        async.forEachOf({a: 1}, (v, key, cb) => {
+            if (v !== 1 && key !== 'a') return cb(new Error('fail!'));
             cb();
         }, (err) => { next (err, val)});
     },

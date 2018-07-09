@@ -47,14 +47,14 @@ describe('reduce', () => {
 
     it('reduceRight', (done) => {
         var call_order = [];
-        var a = [1,2,3];
-        async.reduceRight(a, 0, (a, x, callback) => {
+        var arr = [1,2,3];
+        async.reduceRight(arr, 0, (a, x, callback) => {
             call_order.push(x);
             callback(null, a + x);
         }, (err, result) => {
             expect(result).to.equal(6);
             expect(call_order).to.eql([3,2,1]);
-            expect(a).to.eql([1,2,3]);
+            expect(arr).to.eql([1,2,3]);
             done();
         });
     });

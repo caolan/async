@@ -10,7 +10,7 @@ generateIndex(err => {
     if (err) throw err
 })
 
-function generateIndex(cb) {
+function generateIndex(done) {
     autoInject({
         entries: cb => readEntries(cb),
         aliases: cb => loadAliases(cb),
@@ -19,8 +19,9 @@ function generateIndex(cb) {
             cb(null, renderTemplate(entries, aliases, template))
         }
     }, (err, results) => {
-        if (err) return cb(err)
+        if (err) return done(err)
         console.log(results.generated)
+        done()
     })
 }
 

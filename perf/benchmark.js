@@ -117,8 +117,8 @@ function setDefaultOptions(suiteConfig) {
 }
 
 function handleMultipleArgs(list, suiteConfig) {
-    return list.concat(suiteConfig.args.map((args) => {
-        return _.defaults({args}, suiteConfig);
+    return list.concat(suiteConfig.args.map((suiteArgs) => {
+        return _.defaults({args: suiteArgs}, suiteConfig);
     }));
 }
 
@@ -137,7 +137,6 @@ function doesNotMatch(suiteConfig) {
 
 function createSuite(suiteConfig) {
     var suite = new Benchmark.Suite();
-    var args = suiteConfig.args;
     var errored = false;
 
     function addBench(version, versionName) {
@@ -155,7 +154,7 @@ function createSuite(suiteConfig) {
         var options = _.extend({
             versionName,
             setup() {
-                suiteConfig.setup.apply(null, args);
+                suiteConfig.setup(...suiteConfig.args);
             },
             onError (err) {
                 console.log(err.stack);
@@ -220,12 +219,7 @@ function cloneVersion(tag, callback) {
 
         var cmd = "git clone --branch " + tag + " " + repoPath + " " + versionDir;
 
-        exec(cmd, (err) => {
-            if (err) {
-                throw err;
-            }
-            callback();
-        });
+        exec(cmd, callback);
 
     });
 }

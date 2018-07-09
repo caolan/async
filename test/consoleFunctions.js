@@ -28,8 +28,8 @@ describe('console functions', () => {
                 console[name] = function(val, ...extra){
                     expect(val).to.equal('test');
                     expect(extra.length).to.equal(0);
-                    console.error = function(val){
-                        expect(val).to.equal('error');
+                    console.error = function(errVal){
+                        expect(errVal).to.equal('error');
                         console[name] = _console_fn;
                         console.error = _error;
                         done();

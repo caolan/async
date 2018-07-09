@@ -18,10 +18,10 @@ describe("memoize", () => {
         fn2(1, 2, (err, result) => {
             assert(err === null, err + " passed instead of 'null'");
             expect(result).to.equal(3);
-            fn2(1, 2, (err, result) => {
-                expect(result).to.equal(3);
-                fn2(2, 2, (err, result) => {
-                    expect(result).to.equal(4);
+            fn2(1, 2, (err2, result2) => {
+                expect(result2).to.equal(3);
+                fn2(2, 2, (err3, result3) => {
+                    expect(result3).to.equal(4);
                     expect(call_order).to.eql([['fn',1,2], ['fn',2,2]]);
                     done();
                 });
@@ -43,8 +43,8 @@ describe("memoize", () => {
         var fn2 = async.memoize(fn);
         fn2(1, 2, (err, result) => {
             expect(result).to.equal(3);
-            fn2(1, 2, (err, result) => {
-                expect(result).to.equal(3);
+            fn2(1, 2, (err2, result2) => {
+                expect(result2).to.equal(3);
                 async.nextTick(memoize_done);
                 call_order.push('tick3');
             });
@@ -81,10 +81,10 @@ describe("memoize", () => {
         var fn3 = async.unmemoize(fn2);
         fn3(1, 2, (err, result) => {
             expect(result).to.equal(3);
-            fn3(1, 2, (err, result) => {
-                expect(result).to.equal(3);
-                fn3(2, 2, (err, result) => {
-                    expect(result).to.equal(4);
+            fn3(1, 2, (err2, result2) => {
+                expect(result2).to.equal(3);
+                fn3(2, 2, (err3, result3) => {
+                    expect(result3).to.equal(4);
                     expect(call_order).to.eql([['fn',1,2], ['fn',1,2], ['fn',2,2]]);
                     done();
                 });
@@ -125,8 +125,8 @@ describe("memoize", () => {
             expect(err).to.equal(testerr);
             testerr = null;
 
-            memoized(1, 3, (err, result) => {
-                expect(err).to.equal(null);
+            memoized(1, 3, (err2, result) => {
+                expect(err2).to.equal(null);
                 expect(result).to.equal(4);
                 done();
             });
@@ -159,8 +159,8 @@ describe("memoize", () => {
         });
         fn2(1, 2, (err, result) => {
             expect(result).to.equal(3);
-            fn2(2, 2, (err, result) => {
-                expect(result).to.equal(3);
+            fn2(2, 2, (err2, result2) => {
+                expect(result2).to.equal(3);
                 done();
             });
         });

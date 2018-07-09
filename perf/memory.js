@@ -7,7 +7,7 @@ var async = require("../");
 global.gc();
 var startMem = process.memoryUsage().heapUsed;
 
-function waterfallTest(cb) {
+function waterfallTest(done) {
     var functions = [];
 
     for(var i = 0; i < 10000; i++) {
@@ -29,7 +29,7 @@ function waterfallTest(cb) {
         });
     }
 
-    async.parallel(functions, cb);
+    async.parallel(functions, done);
 }
 
 function reportMemory() {

@@ -45,8 +45,8 @@ function extractModuleFiles(files) {
 function combineFakeModules(files, callback) {
     var moduleFiles = extractModuleFiles(files);
 
-    fs.readFile(path.join(docsDir, mainModuleFile), 'utf8', (err, mainModuleData) => {
-        if (err) return callback(err);
+    fs.readFile(path.join(docsDir, mainModuleFile), 'utf8', (fileErr, mainModuleData) => {
+        if (fileErr) return callback(fileErr);
 
         var $mainPage = $(mainModuleData);
         // each 'module' (category) has a separate page, with all of the
@@ -179,10 +179,8 @@ fs.copySync(path.join(__dirname, './jsdoc-custom.js'), path.join(docsDir, 'scrip
 fs.copySync(path.join(__dirname, '..', '..', 'logo', 'favicon.ico'), path.join(docsDir, 'favicon.ico'), { clobber: true });
 fs.copySync(path.join(__dirname, '..', '..', 'logo', 'async-logo.svg'), path.join(docsDir, 'img', 'async-logo.svg'), { clobber: true });
 
-fs.readdir(docsDir, (err, files) => {
-    if (err) {
-        throw err;
-    }
+fs.readdir(docsDir, (readErr, files) => {
+    if (readErr) { throw readErr; }
 
     var HTMLFiles = _.filter(files, (file) => {
         return path.extname(file) === '.html';
@@ -196,6 +194,9 @@ fs.readdir(docsDir, (err, files) => {
                 return callback(null);
             });
         },
+        async.asyncify(() => {
+            HTMLFiles.push(docFilename)
+        }),
         function(callback) {
             fixModuleLinks(HTMLFiles, callback);
         }

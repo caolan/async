@@ -37,27 +37,27 @@ describe('applyEach', () => {
 
     it('applyEachSeries', (done) => {
         var call_order = [];
-        var one = function (val, cb) {
+        function one(val, cb) {
             expect(val).to.equal(5);
             setTimeout(() => {
                 call_order.push('one');
                 cb(null, 1);
             }, 10);
-        };
-        var two = function (val, cb) {
+        }
+        function two(val, cb) {
             expect(val).to.equal(5);
             setTimeout(() => {
                 call_order.push('two');
                 cb(null, 2);
             }, 5);
-        };
-        var three = function (val, cb) {
+        }
+        function three(val, cb) {
             expect(val).to.equal(5);
             setTimeout(() => {
                 call_order.push('three');
                 cb(null, 3);
             }, 15);
-        };
+        }
         async.applyEachSeries([one, two, three], 5, (err, results) => {
             assert(err === null, err + " passed instead of 'null'");
             expect(call_order).to.eql(['one', 'two', 'three']);
