@@ -124,7 +124,7 @@ It is always good practice to `return callback(err, result)`  whenever a callbac
 Async accepts `async` functions wherever we accept a Node-style callback function.  However, we do not pass them a callback, and instead use the return value and handle any promise rejections or errors thrown.
 
 ```js
-async.mapLimit(files, async file => { // <- no callback!
+async.mapLimit(files, 10, async file => { // <- no callback!
     const text = await util.promisify(fs.readFile)(dir + file, 'utf8')
     const body = JSON.parse(text) // <- a parse error herre will be caught automatically
     if (!(await checkValidity(body))) {
