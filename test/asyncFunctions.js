@@ -1,4 +1,4 @@
-var isAsync = require('../lib/internal/wrapAsync').isAsync;
+var {isAsync} = require('../lib/internal/wrapAsync');
 
 function supportsAsync() {
     var supported;

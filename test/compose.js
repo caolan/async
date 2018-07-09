@@ -1,5 +1,5 @@
 var async = require('../lib');
-var expect = require('chai').expect;
+var {expect} = require('chai');
 
 describe('compose', () => {
     context('all functions succeed', () => {

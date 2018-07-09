@@ -1,5 +1,5 @@
 var DLL = require('../lib/internal/DoublyLinkedList').default;
-var expect = require('chai').expect;
+var {expect} = require('chai');
 
 describe('DoublyLinkedList', () => {
     it('toArray', () => {

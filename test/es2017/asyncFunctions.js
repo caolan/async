@@ -1,5 +1,5 @@
 var async = require('../../lib');
-const expect = require('chai').expect;
+const {expect} = require('chai');
 const assert = require('assert');
 
 

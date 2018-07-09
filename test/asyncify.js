@@ -1,6 +1,6 @@
 var async = require('../lib');
 var assert = require('assert');
-var expect = require('chai').expect;
+var {expect} = require('chai');
 
 describe('asyncify', () => {
 
@@ -146,12 +146,12 @@ describe('asyncify', () => {
         });
 
         describe('es6-promise', function() {
-            var Promise = require('es6-promise').Promise;
+            var {Promise} = require('es6-promise');
             promisifiedTests.call(this, Promise);
         });
 
         describe('rsvp', function() {
-            var Promise = require('rsvp').Promise;
+            var {Promise} = require('rsvp');
             promisifiedTests.call(this, Promise);
         });
 

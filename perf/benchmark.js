@@ -2,8 +2,7 @@
 
 var _ = require("lodash");
 var Benchmark = require("benchmark");
-var exec = require("child_process").exec;
-var execSync = require("child_process").execSync;
+var {exec, execSync} = require("child_process");
 var fs = require("fs");
 var path = require("path");
 var mkdirp = require("mkdirp");

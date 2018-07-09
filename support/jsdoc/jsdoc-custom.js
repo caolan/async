@@ -116,7 +116,7 @@ $(() => {
     });
 
     function fixOldHash() {
-        var hash = window.location.hash;
+        var {hash} = window.location;
         if (hash) {
             var hashMatches = hash.match(/^#\.(\w+)$/);
             if (hashMatches) {

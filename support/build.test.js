@@ -1,10 +1,10 @@
 // Smoke test for the CJS build
 var methods = ["each", "waterfall", "queue", "eachSeries", "forEachOf"];
-var expect = require('chai').expect;
-var rollup = require('rollup').rollup;
+var {expect} = require('chai');
+var {rollup} = require('rollup');
 var rollupPluginNodeResolve = require('rollup-plugin-node-resolve');
 var fs = require('fs');
-var exec = require('child_process').exec;
+var {exec} = require('child_process');
 
 describe("async main", () => {
     var async;

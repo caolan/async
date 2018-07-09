@@ -1,5 +1,5 @@
 var async = require('../lib');
-var expect = require('chai').expect;
+var {expect} = require('chai');
 
 describe('mapValues', () => {
     var obj = {a: 1, b: 2, c: 3};
