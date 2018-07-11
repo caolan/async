@@ -20,3 +20,5 @@ select filter
 selectLimit filterLimit
 selectSeries filterSeries
 wrapSync asyncify
+during whilst
+doDuring doWhilst
