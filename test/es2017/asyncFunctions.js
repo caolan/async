@@ -412,31 +412,9 @@ module.exports = function () {
         });
     });
 
-    it('should handle async functions in during', (done) => {
-        var val = 0;
-        async.during(async () => {
-            return val < 3;
-        },
-        async () => {
-            val += 1;
-            return val;
-        }, done);
-    });
-
-    it('should handle async functions in doDuring', (done) => {
-        var val = 0;
-        async.doDuring(async () => {
-            val += 1;
-            return val;
-        },
-        async (res) => {
-            return res < 3;
-        }, done);
-    });
-
     it('should handle async functions in whilst', (done) => {
         var val = 0;
-        async.whilst(() => val < 3,
+        async.whilst(async () => val < 3,
             async () => {
                 val += 1;
                 return val;
@@ -448,12 +426,12 @@ module.exports = function () {
         async.doWhilst(async () => {
             val += 1;
             return val;
-        }, (res) => res < 3, done);
+        }, async (res) => res < 3, done);
     });
 
     it('should handle async functions in until', (done) => {
         var val = 0;
-        async.until(() => val > 3,
+        async.until(async () => val > 3,
             async () => {
                 val += 1;
                 return val;
@@ -465,7 +443,7 @@ module.exports = function () {
         async.doUntil(async () => {
             val += 1;
             return val;
-        }, (res) => res > 3, done);
+        }, async (res) => res > 3, done);
     });
 
     it('should handle async functions in forever', (done) => {
