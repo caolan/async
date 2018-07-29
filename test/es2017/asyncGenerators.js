@@ -1,15 +1,9 @@
 var async = require('../../lib');
 const {expect} = require('chai');
-const assert = require('assert');
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 module.exports = function () {
-    async function asyncIdentity(val) {
-        var res = await Promise.resolve(val);
-        return res;
-    }
-
     async function * range (num) {
         for(let i = 0; i < num; i++) {
             await delay(1)
