@@ -74,14 +74,14 @@ describe("ES Modules", () => {
 
     before(() => {
         return rollup({
-            entry: __dirname + "/es.test.js",
+            input: __dirname + "/es.test.js",
             plugins: [
                 rollupPluginNodeResolve()
             ]
         }).then((bundle) => {
             return bundle.write({
                 format: "umd",
-                dest: buildFile
+                file: buildFile
             });
         });
     });

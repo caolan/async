@@ -52,7 +52,7 @@
     "native-promise-only": "^0.8.0-a",
     "nyc": "^11.8.0",
     "rimraf": "^2.5.0",
-    "rollup": "^0.36.3",
+    "rollup": "^0.63.4",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-npm": "^2.0.0",
     "rsvp": "^3.0.18",
