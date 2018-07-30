@@ -11,6 +11,21 @@ module.exports = function () {
         }
     }
 
+    function AsyncIterable (size) {
+        // cant use method shorthand because babel doesnt parse it right
+        async function * iterator () {
+            let idx = 0
+            while (idx < size) {
+                yield idx
+                await delay(1)
+                idx++
+            }
+        }
+        return {
+            [Symbol.asyncIterator]: iterator
+        }
+    }
+
     it('should handle async generators in each', (done) => {
         const calls = []
         async.each(range(5),
@@ -42,6 +57,21 @@ module.exports = function () {
     it('should handle async generators in eachSeries', (done) => {
         const calls = []
         async.eachSeries(range(5),
+            async (val) => {
+                calls.push(val)
+                await delay(5)
+            }, (err) => {
+                if (err) throw err
+                expect(calls).to.eql([0, 1, 2, 3, 4])
+                done()
+            }
+        )
+    });
+
+
+    it('should handle async iterables in each', (done) => {
+        const calls = []
+        async.each(new AsyncIterable(5),
             async (val) => {
                 calls.push(val)
                 await delay(5)
