@@ -23,7 +23,7 @@ function supportsAsyncGenerators() {
 }
 
 describe('async function support', function () {
-    this.timeout(100);
+    this.timeout(200);
 
     if (supportsAsync()) {
         require('./es2017/asyncFunctions.js').call(this);
