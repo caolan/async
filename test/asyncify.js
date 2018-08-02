@@ -91,6 +91,19 @@ describe('asyncify', () => {
                 });
             });
 
+            it('reject without reason', (done) => {
+                var promisified = function() {
+                    return new Promise(((resolve, reject) => {
+                        reject();
+                    }));
+                };
+                async.asyncify(promisified)("argument", (err) => {
+                    assert(err);
+                    expect(err.message).to.eql('');
+                    done();
+                });
+            });
+
             it('callback error @nodeonly', (done) => {
                 expectUncaughtException();
 
