@@ -4,6 +4,11 @@ var assert = require('assert');
 
 describe('cargoQueue', () => {
 
+    function worker (tasks, callback) {
+        this.call_order.push('process ' + tasks.join(' '));
+        callback('error', 'arg');
+    }
+
     it('cargoQueue', (done) => {
         var call_order = [],
             delays = [40, 40, 20];
@@ -71,41 +76,28 @@ describe('cargoQueue', () => {
     });
 
     it('without callback', (done) => {
-        var call_order = [],
-            delays = [40,20,60,20];
-
-        // worker: --1-2---34-5-
-        // order of completion: 1,2,3,4,5
-
-        var c = async.cargoQueue((tasks, callback) => {
-            setTimeout(() => {
-                call_order.push('process ' + tasks.join(' '));
-                callback('error', 'arg');
-            }, delays.shift());
-        }, 2, 2);
-
+        var call_order = [];
+        var c = async.cargoQueue(worker.bind({ call_order }), 2, 2);
         c.push(1);
-
-        setTimeout(() => {
+        setImmediate(() => {
             c.push(2);
-        }, 30);
-        setTimeout(() => {
-            c.push(3);
-            c.push(4);
-        }, 50);
-        setTimeout(() => {
-            c.push(5);
-        }, 120);
-
-        setTimeout(() => {
-            expect(call_order).to.eql([
-                'process 1',
-                'process 2',
-                'process 3 4',
-                'process 5'
-            ]);
-            done();
-        }, 200);
+            setImmediate(() => {
+                c.push(3);
+                c.push(4);
+                setImmediate(() => {
+                    c.push(5);
+                    c.drain = function complete () {
+                        expect(call_order).to.eql([
+                            'process 1',
+                            'process 2',
+                            'process 3 4',
+                            'process 5'
+                        ]);
+                        done();
+                    }
+                })
+            })
+        })
     });
 
     it('bulk task', (done) => {
