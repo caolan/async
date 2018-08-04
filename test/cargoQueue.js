@@ -2,7 +2,7 @@ var async = require('../lib');
 var {expect} = require('chai');
 var assert = require('assert');
 
-describe.only('cargoQueue', () => {
+describe('cargoQueue', () => {
 
     it('cargoQueue', (done) => {
         var call_order = [],
