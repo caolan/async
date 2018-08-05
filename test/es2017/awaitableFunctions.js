@@ -19,6 +19,23 @@ module.exports = function () {
         expect(sameStack).to.equal(true)
     })
 
+    it('should throw as expected (async)', async () => {
+        try {
+            await async.each(input, async val => { throw new Error(val) });
+        } catch (e) {
+            var thrown = e
+        }
+        expect(thrown).to.be.an('error')
+    });
+
+    it('should throw as expected (callback)', async () => {
+        try {
+            await async.each(input, (val, cb) => { cb(new Error(val)) });
+        } catch (e) {
+            var thrown = e
+        }
+        expect(thrown).to.be.an('error')
+    });
 
     /*
      * Collections
