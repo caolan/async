@@ -1,6 +1,6 @@
 var async = require('../../lib');
 const {expect} = require('chai');
-const assert = require('assert');
+const {default: wrapAsync} = require('../../lib/internal/wrapAsync')
 
 
 module.exports = function () {
@@ -12,12 +12,12 @@ module.exports = function () {
     const input = [1, 2, 3];
     const inputObj = {a: 1, b: 2, c: 3};
 
-    it('should asyncify async functions', (done) => {
-        async.asyncify(asyncIdentity)(42, (err, val) => {
-            assert(val === 42);
-            done(err);
-        })
-    });
+    it('asyncify should not add an additional level of wrapping', () => {
+        const wrapped = wrapAsync(async.each)
+        let sameStack = false
+        wrapped([1], (val, cb) => cb(), () => {sameStack = true})
+        expect(sameStack).to.equal(true)
+    })
 
 
     /*
