@@ -27,6 +27,9 @@ describe('async function support', function () {
 
     if (supportsAsync()) {
         require('./es2017/asyncFunctions.js').call(this);
+        describe('awaitable functions', () => {
+            require('./es2017/awaitableFunctions.js').call(this);
+        });
     } else {
         it('should not test async functions in this environment');
     }
