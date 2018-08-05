@@ -1,5 +1,8 @@
 {
-  "plugins": ["transform-es2015-modules-commonjs"],
+  "plugins": [
+    "transform-es2015-modules-commonjs",
+    "syntax-async-generators"
+  ],
   "env": {
     "test": {
       "plugins": ["istanbul"]
