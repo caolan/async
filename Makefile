@@ -7,7 +7,6 @@ export PATH := ./node_modules/.bin/:$(PATH):./bin/
 
 PACKAGE = asyncjs
 REQUIRE_NAME = async
-UGLIFY = uglifyjs
 XYZ = support/xyz.sh --repo git@github.com:caolan/async.git
 
 BUILDDIR = build
@@ -21,7 +20,7 @@ LINT_FILES := lib/ test/ $(shell find perf/ -maxdepth 2 -type f) $(shell find su
 
 UMD_BUNDLE := $(BUILDDIR)/dist/async.js
 UMD_BUNDLE_MIN := $(BUILDDIR)/dist/async.min.js
-UMD_BUNDLE_MAP := $(BUILDDIR)/dist/async.min.map
+# UMD_BUNDLE_MAP := $(BUILDDIR)/dist/async.min.map
 ALIAS_ES := $(addprefix build-es/, $(addsuffix .js, $(shell cat $(SCRIPTS)/aliases.txt | cut -d ' ' -f1)))
 ALIAS_CJS := $(patsubst build-es/%, build/%, $(ALIAS_ES))
 ES_MODULES := $(patsubst lib/%.js, build-es/%.js, $(JS_SRC)) $(ALIAS_ES)
@@ -81,17 +80,14 @@ $(UMD_BUNDLE): $(ES_MODULES) package.json
 	node $(SCRIPTS)/build/aggregate-bundle.js
 
 # Create the minified UMD versions and copy them to dist/ for bower
-build-dist: $(DIST) $(DIST)/async.js $(DIST)/async.min.js $(DIST)/async.min.map
+build-dist: $(DIST) $(DIST)/async.js $(DIST)/async.min.js # $(DIST)/async.min.map
 
 $(DIST):
 	mkdir -p $@
 
 $(UMD_BUNDLE_MIN): $(UMD_BUNDLE)
 	mkdir -p "$(@D)"
-	$(UGLIFY) $< --mangle --compress \
-		--source-map $(UMD_BUNDLE_MAP) \
-		--source-map-url async.min.map \
-		-o $@
+	babel-minify $< --mangle -o $@
 
 $(DIST)/async.js: $(UMD_BUNDLE)
 	cp $< $@
@@ -99,8 +95,8 @@ $(DIST)/async.js: $(UMD_BUNDLE)
 $(DIST)/async.min.js: $(UMD_BUNDLE_MIN)
 	cp $< $@
 
-$(DIST)/async.min.map: $(UMD_BUNDLE_MIN)
-	cp $(UMD_BUNDLE_MAP) $@
+# $(DIST)/async.min.map: $(UMD_BUNDLE_MIN)
+# 	cp $(UMD_BUNDLE_MAP) $@
 
 build-es: $(ES_MODULES)
 
