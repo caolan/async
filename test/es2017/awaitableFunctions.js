@@ -87,4 +87,23 @@ module.exports = function () {
         await async.eachOfLimit(inputObj, 1, async (...args) => { calls.push(args) });
         expect(calls).to.eql([[1, 'a'], [2, 'b'], [3, 'c']])
     });
+
+    it('should return a Promise: concat', async () => {
+        expect (async.concat.name).to.contain('concat')
+        const calls = []
+        await async.concat(inputObj, async (...args) => { calls.push(args) });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
+    it('should return a Promise: concatSeries', async () => {
+        expect (async.concatSeries.name).to.contain('concatSeries')
+        const calls = []
+        await async.concatSeries(inputObj, async (...args) => { calls.push(args) });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
+    it('should return a Promise: concatLimit', async () => {
+        expect (async.concatLimit.name).to.contain('concatLimit')
+        const calls = []
+        await async.concatLimit(inputObj, 1, async (...args) => { calls.push(args) });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
 };
