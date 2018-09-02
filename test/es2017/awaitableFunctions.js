@@ -106,4 +106,23 @@ module.exports = function () {
         await async.concatLimit(inputObj, 1, async (...args) => { calls.push(args) });
         expect(calls).to.eql([[1], [2], [3]])
     });
+
+    it('should return a Promise: detect', async () => {
+        expect (async.detect.name).to.contain('detect')
+        const calls = []
+        await async.detect(input, async (...args) => { calls.push(args); return args[0] === 3 });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
+    it('should return a Promise: detectSeries', async () => {
+        expect (async.detectSeries.name).to.contain('detectSeries')
+        const calls = []
+        await async.detectSeries(input, async (...args) => { calls.push(args); return args[0] === 3 });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
+    it('should return a Promise: detectLimit', async () => {
+        expect (async.detectLimit.name).to.contain('detectLimit')
+        const calls = []
+        await async.detectLimit(input, 1, async (...args) => { calls.push(args); return args[0] === 3 });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
 };
