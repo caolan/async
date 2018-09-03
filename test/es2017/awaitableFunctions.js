@@ -546,4 +546,16 @@ module.exports = function () {
         })
         expect(calls).to.eql([0, 1, 2])
     });
+
+    it('should return a Promise: tryEach', async () => {
+        expect (async.tryEach.name).to.contain('tryEach')
+        const calls = []
+        await async.tryEach([
+            async () => { await Promise.resolve(); calls.push(1); throw new Error() },
+            async () => { await Promise.resolve(); calls.push(2); throw new Error() },
+            async () => { await Promise.resolve(); calls.push(3) },
+            async () => { await Promise.resolve(); calls.push(4) },
+        ], 2)
+        expect(calls).to.eql([1, 2, 3])
+    });
 };
