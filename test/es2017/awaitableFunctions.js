@@ -443,4 +443,23 @@ module.exports = function () {
             'test', 5
         ])
     });
+
+
+    it('should return a Promise: forever', async () => {
+        expect (async.forever.name).to.contain('forever')
+        const calls = []
+        let counter = 0
+        try {
+            await async.forever(async () => {
+                calls.push(counter)
+                counter++
+                await Promise.resolve()
+                if (counter === 5) throw new Error()
+            })
+        } catch (e) {
+            var err = e
+        }
+        expect(calls).to.eql([0, 1, 2, 3, 4])
+        expect(err).to.be.an('error')
+    });
 };
