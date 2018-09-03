@@ -163,4 +163,23 @@ module.exports = function () {
         await async.filterLimit(inputObj, 1, async (...args) => { calls.push(args) });
         expect(calls).to.eql([[1], [2], [3]])
     });
+
+    it('should return a Promise: groupBy', async () => {
+        expect (async.groupBy.name).to.contain('groupBy')
+        const calls = []
+        await async.groupBy(inputObj, async (...args) => { calls.push(args) });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
+    it('should return a Promise: groupBySeries', async () => {
+        expect (async.groupBySeries.name).to.contain('groupBySeries')
+        const calls = []
+        await async.groupBySeries(inputObj, async (...args) => { calls.push(args) });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
+    it('should return a Promise: groupByLimit', async () => {
+        expect (async.groupByLimit.name).to.contain('groupByLimit')
+        const calls = []
+        await async.groupByLimit(inputObj, 1, async (...args) => { calls.push(args) });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
 };
