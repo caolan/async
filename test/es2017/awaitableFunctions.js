@@ -311,4 +311,45 @@ module.exports = function () {
         await async.transform(inputObj, async (...args) => calls.push(args));
         expect(calls).to.eql([[{}, 1, 'a'], [{}, 2, 'b'], [{}, 3, 'c']])
     });
+
+    /*
+     * Control flow
+     */
+
+    // TODO:  figure out to do with applyEach
+
+    it('should return a Promise: auto', async () => {
+        expect (async.auto.name).to.contain('auto')
+        const calls = []
+        await async.auto({
+            async a () {
+                calls.push('a')
+                return Promise.resolve('a')
+            },
+            b: ['a', 'c', async () => calls.push('b')],
+            async c () {
+                await Promise.resolve()
+                calls.push('c')
+                return Promise.resolve('c')
+            }
+        });
+        expect(calls).to.eql(['a', 'c', 'b'])
+    });
+    it('should return a Promise: autoInject', async () => {
+        expect (async.autoInject.name).to.contain('autoInject')
+        const calls = []
+        await async.autoInject({
+            async a () {
+                calls.push('a')
+                return 'a'
+            },
+            async b(a, c) { calls.push('b'); calls.push(a, c) },
+            async c () {
+                calls.push('c')
+                return 'c'
+            }
+        }, 1);
+        expect(calls).to.eql(['a', 'c', 'b', 'a', 'c'])
+    });
+
 };
