@@ -280,13 +280,31 @@ module.exports = function () {
         expect(calls).to.eql([[1], [2], [3]])
     });
 
+    it('should return a Promise: times', async () => {
+        expect (async.times.name).to.contain('times')
+        const calls = []
+        await async.times(3, async (...args) => { calls.push(args); return args[0] === 3 });
+        expect(calls).to.eql([[0], [1], [2]])
+    });
+    it('should return a Promise: timesSeries', async () => {
+        expect (async.timesSeries.name).to.contain('timesSeries')
+        const calls = []
+        await async.timesSeries(3, async (...args) => { calls.push(args); return args[0] === 3 });
+        expect(calls).to.eql([[0], [1], [2]])
+    });
+    it('should return a Promise: timesLimit', async () => {
+        expect (async.timesLimit.name).to.contain('timesLimit')
+        const calls = []
+        await async.timesLimit(3, 1, async (...args) => { calls.push(args); return args[0] === 3 });
+        expect(calls).to.eql([[0], [1], [2]])
+    });
+
     it('should return a Promise: transform', async () => {
         expect (async.transform.name).to.contain('transform')
         const calls = []
         await async.transform(inputObj, 1, async (...args) => calls.push(args));
         expect(calls).to.eql([[1, 1, 'a'], [1, 2, 'b'], [1, 3, 'c']])
     });
-
     it('should return a Promise: transform (2 args)', async () => {
         expect (async.transform.name).to.contain('transform')
         const calls = []
