@@ -253,4 +253,31 @@ module.exports = function () {
         await async.rejectLimit(inputObj, 1, async (...args) => { calls.push(args) });
         expect(calls).to.eql([[1], [2], [3]])
     });
+
+    it('should return a Promise: some', async () => {
+        expect (async.some.name).to.contain('some')
+        const calls = []
+        await async.some(input, async (...args) => { calls.push(args); return args[0] === 3 });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
+    it('should return a Promise: someSeries', async () => {
+        expect (async.someSeries.name).to.contain('someSeries')
+        const calls = []
+        await async.someSeries(input, async (...args) => { calls.push(args); return args[0] === 3 });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
+    it('should return a Promise: someLimit', async () => {
+        expect (async.someLimit.name).to.contain('someLimit')
+        const calls = []
+        await async.someLimit(input, 1, async (...args) => { calls.push(args); return args[0] === 3 });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
+
+
+    it('should return a Promise: sortBy', async () => {
+        expect (async.sortBy.name).to.contain('sortBy')
+        const calls = []
+        await async.sortBy(input, async (...args) => { calls.push(args) });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
 };
