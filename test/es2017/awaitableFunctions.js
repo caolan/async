@@ -352,4 +352,27 @@ module.exports = function () {
         expect(calls).to.eql(['a', 'c', 'b', 'a', 'c'])
     });
 
+    it('should return a Promise: compose', async () => {
+        expect (async.compose.name).to.contain('compose')
+        const calls = []
+        const fn = async.compose(
+            async (...args) => calls.push('a', args),
+            async (...args) => calls.push('b', args)
+        );
+        const result = await fn(1, 2)
+        expect(calls).to.eql(['b', [1, 2], 'a', [2]])
+        expect(result).to.eql(4)
+    });
+    it('should return a Promise: seq', async () => {
+        expect (async.seq.name).to.contain('seq')
+        const calls = []
+        const fn = async.seq(
+            async (...args) => calls.push('a', args),
+            async (...args) => calls.push('b', args)
+        );
+        const result = await fn(1, 2)
+        expect(calls).to.eql(['a', [1, 2], 'b', [2]])
+        expect(result).to.eql(4)
+    });
+
 };
