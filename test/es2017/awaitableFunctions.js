@@ -125,4 +125,42 @@ module.exports = function () {
         await async.detectLimit(input, 1, async (...args) => { calls.push(args); return args[0] === 3 });
         expect(calls).to.eql([[1], [2], [3]])
     });
+
+    it('should return a Promise: every', async () => {
+        expect (async.every.name).to.contain('every')
+        const calls = []
+        await async.every(input, async (...args) => { calls.push(args); return args[0] !== 3 });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
+    it('should return a Promise: everySeries', async () => {
+        expect (async.everySeries.name).to.contain('everySeries')
+        const calls = []
+        await async.everySeries(input, async (...args) => { calls.push(args); return args[0] !== 3 });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
+    it('should return a Promise: everyLimit', async () => {
+        expect (async.everyLimit.name).to.contain('everyLimit')
+        const calls = []
+        await async.everyLimit(input, 1, async (...args) => { calls.push(args); return args[0] !== 3 });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
+
+    it('should return a Promise: filter', async () => {
+        expect (async.filter.name).to.contain('filter')
+        const calls = []
+        await async.filter(inputObj, async (...args) => { calls.push(args) });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
+    it('should return a Promise: filterSeries', async () => {
+        expect (async.filterSeries.name).to.contain('filterSeries')
+        const calls = []
+        await async.filterSeries(inputObj, async (...args) => { calls.push(args) });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
+    it('should return a Promise: filterLimit', async () => {
+        expect (async.filterLimit.name).to.contain('filterLimit')
+        const calls = []
+        await async.filterLimit(inputObj, 1, async (...args) => { calls.push(args) });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
 };
