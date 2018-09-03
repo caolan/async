@@ -444,7 +444,6 @@ module.exports = function () {
         ])
     });
 
-
     it('should return a Promise: forever', async () => {
         expect (async.forever.name).to.contain('forever')
         const calls = []
@@ -461,5 +460,40 @@ module.exports = function () {
         }
         expect(calls).to.eql([0, 1, 2, 3, 4])
         expect(err).to.be.an('error')
+    });
+
+    it('should return a Promise: parallel', async () => {
+        expect (async.parallel.name).to.contain('parallel')
+        const calls = []
+        await async.parallel([
+            async () => { await Promise.resolve(); calls.push(1) },
+            async () => { await Promise.resolve(); calls.push(1) },
+            async () => { await Promise.resolve(); calls.push(1) },
+            async () => { await Promise.resolve(); calls.push(1) },
+        ])
+        expect(calls).to.eql([1, 1, 1, 1])
+    });
+    it('should return a Promise: parallelLimit', async () => {
+        expect (async.parallelLimit.name).to.contain('parallelLimit')
+        const calls = []
+        await async.parallelLimit([
+            async () => { await Promise.resolve(); calls.push(1) },
+            async () => { await Promise.resolve(); calls.push(1) },
+            async () => { await Promise.resolve(); calls.push(1) },
+            async () => { await Promise.resolve(); calls.push(1) },
+        ], 2)
+        expect(calls).to.eql([1, 1, 1, 1])
+    });
+
+    it('should return a Promise: race', async () => {
+        expect (async.race.name).to.contain('race')
+        const calls = []
+        await async.race([
+            async () => { await Promise.resolve(); calls.push(1) },
+            async () => { await Promise.resolve(); calls.push(1) },
+            async () => { await Promise.resolve(); calls.push(1) },
+            async () => { await Promise.resolve(); calls.push(1) },
+        ], 2)
+        expect(calls).to.eql([1, 1, 1, 1])
     });
 };
