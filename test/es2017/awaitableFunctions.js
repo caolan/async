@@ -234,4 +234,23 @@ module.exports = function () {
         await async.reduceRight(input, 1, async (...args) => calls.push(args));
         expect(calls).to.eql([[1, 3], [1, 2], [2, 1]])
     });
+
+    it('should return a Promise: reject', async () => {
+        expect (async.reject.name).to.contain('reject')
+        const calls = []
+        await async.reject(inputObj, async (...args) => { calls.push(args) });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
+    it('should return a Promise: rejectSeries', async () => {
+        expect (async.rejectSeries.name).to.contain('rejectSeries')
+        const calls = []
+        await async.rejectSeries(inputObj, async (...args) => { calls.push(args) });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
+    it('should return a Promise: rejectLimit', async () => {
+        expect (async.rejectLimit.name).to.contain('rejectLimit')
+        const calls = []
+        await async.rejectLimit(inputObj, 1, async (...args) => { calls.push(args) });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
 };
