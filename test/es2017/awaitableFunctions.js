@@ -375,4 +375,72 @@ module.exports = function () {
         expect(result).to.eql(4)
     });
 
+    it('should return a Promise: whilst', async () => {
+        expect (async.whilst.name).to.contain('whilst')
+        const calls = []
+        let counter = 0
+        await async.whilst(
+            async () => {calls.push('test', counter); return counter < 5},
+            async () => { calls.push('fn'); counter++ }
+        );
+        expect(calls).to.eql([
+            'test', 0, 'fn',
+            'test', 1, 'fn',
+            'test', 2, 'fn',
+            'test', 3, 'fn',
+            'test', 4, 'fn',
+            'test', 5
+        ])
+    });
+    it('should return a Promise: until', async () => {
+        expect (async.until.name).to.contain('until')
+        const calls = []
+        let counter = 0
+        await async.until(
+            async () => {calls.push('test', counter); return counter === 5},
+            async () => { calls.push('fn'); counter++ }
+        );
+        expect(calls).to.eql([
+            'test', 0, 'fn',
+            'test', 1, 'fn',
+            'test', 2, 'fn',
+            'test', 3, 'fn',
+            'test', 4, 'fn',
+            'test', 5
+        ])
+    });
+    it('should return a Promise: doWhilst', async () => {
+        expect (async.doWhilst.name).to.contain('doWhilst')
+        const calls = []
+        let counter = 0
+        await async.doWhilst(
+            async () => { calls.push('fn'); counter++ },
+            async () => {calls.push('test', counter); return counter < 5}
+        );
+        expect(calls).to.eql([
+            'fn',
+            'test', 1, 'fn',
+            'test', 2, 'fn',
+            'test', 3, 'fn',
+            'test', 4, 'fn',
+            'test', 5
+        ])
+    });
+    it('should return a Promise: doUntil', async () => {
+        expect (async.doUntil.name).to.contain('doUntil')
+        const calls = []
+        let counter = 0
+        await async.doUntil(
+            async () => { calls.push('fn'); counter++ },
+            async () => {calls.push('test', counter); return counter === 5}
+        );
+        expect(calls).to.eql([
+            'fn',
+            'test', 1, 'fn',
+            'test', 2, 'fn',
+            'test', 3, 'fn',
+            'test', 4, 'fn',
+            'test', 5
+        ])
+    });
 };
