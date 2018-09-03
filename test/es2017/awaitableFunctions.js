@@ -273,11 +273,24 @@ module.exports = function () {
         expect(calls).to.eql([[1], [2], [3]])
     });
 
-
     it('should return a Promise: sortBy', async () => {
         expect (async.sortBy.name).to.contain('sortBy')
         const calls = []
         await async.sortBy(input, async (...args) => { calls.push(args) });
         expect(calls).to.eql([[1], [2], [3]])
+    });
+
+    it('should return a Promise: transform', async () => {
+        expect (async.transform.name).to.contain('transform')
+        const calls = []
+        await async.transform(inputObj, 1, async (...args) => calls.push(args));
+        expect(calls).to.eql([[1, 1, 'a'], [1, 2, 'b'], [1, 3, 'c']])
+    });
+
+    it('should return a Promise: transform (2 args)', async () => {
+        expect (async.transform.name).to.contain('transform')
+        const calls = []
+        await async.transform(inputObj, async (...args) => calls.push(args));
+        expect(calls).to.eql([[{}, 1, 'a'], [{}, 2, 'b'], [{}, 3, 'c']])
     });
 };
