@@ -182,4 +182,42 @@ module.exports = function () {
         await async.groupByLimit(inputObj, 1, async (...args) => { calls.push(args) });
         expect(calls).to.eql([[1], [2], [3]])
     });
+
+    it('should return a Promise: map', async () => {
+        expect (async.map.name).to.contain('map')
+        const calls = []
+        await async.map(inputObj, async (...args) => { calls.push(args) });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
+    it('should return a Promise: mapSeries', async () => {
+        expect (async.mapSeries.name).to.contain('mapSeries')
+        const calls = []
+        await async.mapSeries(inputObj, async (...args) => { calls.push(args) });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
+    it('should return a Promise: mapLimit', async () => {
+        expect (async.mapLimit.name).to.contain('mapLimit')
+        const calls = []
+        await async.mapLimit(inputObj, 1, async (...args) => { calls.push(args) });
+        expect(calls).to.eql([[1], [2], [3]])
+    });
+
+    it('should return a Promise: mapValues', async () => {
+        expect (async.mapValues.name).to.contain('mapValues')
+        const calls = []
+        await async.mapValues(inputObj, async (...args) => { calls.push(args) });
+        expect(calls).to.eql([[1, 'a'], [2, 'b'], [3, 'c']])
+    });
+    it('should return a Promise: mapValuesSeries', async () => {
+        expect (async.mapValuesSeries.name).to.contain('mapValuesSeries')
+        const calls = []
+        await async.mapValuesSeries(inputObj, async (...args) => { calls.push(args) });
+        expect(calls).to.eql([[1, 'a'], [2, 'b'], [3, 'c']])
+    });
+    it('should return a Promise: mapValuesLimit', async () => {
+        expect (async.mapValuesLimit.name).to.contain('mapValuesLimit')
+        const calls = []
+        await async.mapValuesLimit(inputObj, 1, async (...args) => { calls.push(args) });
+        expect(calls).to.eql([[1, 'a'], [2, 'b'], [3, 'c']])
+    });
 };
