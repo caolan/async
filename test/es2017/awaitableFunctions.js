@@ -558,4 +558,16 @@ module.exports = function () {
         ], 2)
         expect(calls).to.eql([1, 2, 3])
     });
+
+    it('should return a Promise: waterfall', async () => {
+        expect (async.waterfall.name).to.contain('waterfall')
+        const calls = []
+        await async.waterfall([
+            async () => { await Promise.resolve(); calls.push(1) },
+            async () => { await Promise.resolve(); calls.push(2) },
+            async () => { await Promise.resolve(); calls.push(3) },
+            async () => { await Promise.resolve(); calls.push(4) },
+        ], 2)
+        expect(calls).to.eql([1, 2, 3, 4])
+    });
 };
