@@ -484,6 +484,17 @@ module.exports = function () {
         ], 2)
         expect(calls).to.eql([1, 1, 1, 1])
     });
+    it('should return a Promise: series', async () => {
+        expect (async.series.name).to.contain('series')
+        const calls = []
+        await async.series([
+            async () => { await Promise.resolve(); calls.push(1) },
+            async () => { await Promise.resolve(); calls.push(1) },
+            async () => { await Promise.resolve(); calls.push(1) },
+            async () => { await Promise.resolve(); calls.push(1) },
+        ], 2)
+        expect(calls).to.eql([1, 1, 1, 1])
+    });
 
     it('should return a Promise: race', async () => {
         expect (async.race.name).to.contain('race')
