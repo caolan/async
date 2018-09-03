@@ -220,4 +220,18 @@ module.exports = function () {
         await async.mapValuesLimit(inputObj, 1, async (...args) => { calls.push(args) });
         expect(calls).to.eql([[1, 'a'], [2, 'b'], [3, 'c']])
     });
+
+
+    it('should return a Promise: reduce', async () => {
+        expect (async.reduce.name).to.contain('reduce')
+        const calls = []
+        await async.reduce(input, 1, async (...args) => calls.push(args));
+        expect(calls).to.eql([[1, 1], [1, 2], [2, 3]])
+    });
+    it('should return a Promise: reduceRight', async () => {
+        expect (async.reduceRight.name).to.contain('reduceRight')
+        const calls = []
+        await async.reduceRight(input, 1, async (...args) => calls.push(args));
+        expect(calls).to.eql([[1, 3], [1, 2], [2, 1]])
+    });
 };
