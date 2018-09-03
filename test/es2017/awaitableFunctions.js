@@ -496,4 +496,43 @@ module.exports = function () {
         ], 2)
         expect(calls).to.eql([1, 1, 1, 1])
     });
+
+    it('should return a Promise: retryable', async () => {
+        expect (async.retryable.name).to.contain('retryable')
+        let counter = 0
+        const calls = []
+        const fn = async.retryable(async (a, b) => {
+            calls.push(a, b)
+            counter++
+            if (counter < 3) throw new Error()
+        })
+        const promise = fn(1, 2)
+        expect(promise.then).to.be.a('function')
+        await promise
+        expect(calls).to.eql([1, 2, 1, 2, 1, 2])
+    });
+    it('should return a Promise: retryable (arity 0)', async () => {
+        expect (async.retryable.name).to.contain('retryable')
+        let counter = 0
+        const calls = []
+        const fn = async.retryable({times: 5}, async () => {
+            calls.push(0)
+            counter++
+            if (counter < 3) throw new Error()
+        })
+        await fn()
+        expect(calls).to.eql([0, 0, 0])
+    });
+
+    it('should return a Promise: retry', async () => {
+        expect (async.retry.name).to.contain('retry')
+        let counter = 0
+        const calls = []
+        await async.retry(async () => {
+            calls.push(counter)
+            counter++
+            if (counter < 3) throw new Error()
+        })
+        expect(calls).to.eql([0, 1, 2])
+    });
 };

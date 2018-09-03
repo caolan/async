@@ -115,7 +115,7 @@ describe("retry", () => {
         async.retry((cb) => {
             calls++;
             cb("fail");
-        });
+        }).catch(() => {});
         setTimeout(() => {
             expect(calls).to.equal(5);
             done();
