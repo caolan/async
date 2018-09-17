@@ -126,7 +126,7 @@ Async accepts `async` functions wherever we accept a Node-style callback functio
 ```js
 async.mapLimit(files, 10, async file => { // <- no callback!
     const text = await util.promisify(fs.readFile)(dir + file, 'utf8')
-    const body = JSON.parse(text) // <- a parse error herre will be caught automatically
+    const body = JSON.parse(text) // <- a parse error here will be caught automatically
     if (!(await checkValidity(body))) {
         throw new Error(`${file} has invalid contents`) // <- this error will also be caught
     }
