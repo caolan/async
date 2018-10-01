@@ -106,8 +106,8 @@ esac
 [[ $(git rev-parse --abbrev-ref HEAD) == $branch ]] ||
   (echo "Current branch does not match specified --branch" >&2 ; exit 1)
 
-git diff-files --quiet ||
-  (echo "Working directory contains unstaged changes" >&2 ; exit 1)
+#git diff-files --quiet ||
+#  (echo "Working directory contains unstaged changes" >&2 ; exit 1)
 
 name=$(node -p "require('./package.json').name" 2>/dev/null) ||
   (echo "Cannot read package name" >&2 ; exit 1)
