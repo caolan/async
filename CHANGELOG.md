@@ -1,3 +1,39 @@
+# v3.0.0
+
+The `async`/`await` release!
+
+There are a lot of new features and subtle breaking changes in this major version, but the biggest feature is that most Async methods return a Promise if you omit the callback, meaning you can `await` them from within an `async` function.
+
+```js
+const results = await async.mapLimit(urls, 5, async url => {
+    const resp = await fetch(url)
+    return resp.body
+})
+```
+
+## Breaking Changes
+- Most Async methods return a Promise when the final callback is omitted, making them `await`-able! (#1572)
+- We are now making heavy use of ES2015 features, this means we have dropped out-of-the-box support for Node 4 and earlier, and many old versions of browsers. (#1541, #1553)
+- Calling `callback(false)` will cancel an async method, preventing further iteration and callback calls.  This is useful for preventing memory leaks when you break out of an async flow by calling an outer callback. (#1064, #1542)
+- `during` and `doDuring` have been removed, and instead `whilst`, `doWhilst`, `until` and `doUntil` now have asynchronous `test` functions. (#850, #1557)
+- `limits` of less than 1 now cause an error to be thrown in queues and collection methods. (#1249, #1552)
+- `memoize` no longer memoizes errors (#1465, #1466)
+
+## New Features
+- Async generators are now supported in all the Collection methods. (#1560)
+- Added `cargoQueue`, a queue with both `concurrency` and `payload` size parameters. (#1567)
+- Queue objects returned from `queue` now have a `Symbol.iterator` method, meaning they can be iterated over to inspect the current list of items in the queue. (#1459, #1556)
+
+## Bug fixes
+- Better handle arbitrary error objects in `asyncify` (#1568, #1569)
+
+## Other
+- Removed Lodash as a dependency (#1283, #1528)
+- Miscellaneous docs fixes (#1393, #1501, #1540, #1543, #1558, #1563, #1564, #1579, #1581)
+- Miscellaneous test fixes (#1538)
+
+-------
+
 # v2.6.1
 - Updated lodash to prevent `npm audit` warnings. (#1532, #1533)
 - Made `async-es` more optimized for webpack users (#1517)
