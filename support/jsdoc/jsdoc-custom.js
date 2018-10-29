@@ -113,7 +113,7 @@ $(() => {
                 location.hash = '#'+suggestion;
             }
         }
-    });
+    }).focus();
 
     function fixOldHash() {
         var {hash} = window.location;
