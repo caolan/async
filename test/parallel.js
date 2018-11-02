@@ -269,14 +269,18 @@ describe('parallel', () => {
             }),
             async.reflect((callback) => {
                 callback(null, 2);
+            }),
+            async.reflect((callback) => {
+                callback('error3');
             })
         ],
         (err, results) => {
             assert(err === null, err + " passed instead of 'null'");
             expect(results).to.eql([
-                { error: 'error' },
-                { error: 'error2' },
-                { value: 2 }
+                { error: 'error', value: 1 },
+                { error: 'error2', value: 2 },
+                { value: 2 },
+                { error: 'error3' },
             ]);
             done();
         });
@@ -296,6 +300,11 @@ describe('parallel', () => {
                 setTimeout(() => {
                     callback(null, 'three');
                 }, 100);
+            },
+            four(callback) {
+                setTimeout(() => {
+                    callback('four', 4);
+                }, 100);
             }
         };
 
@@ -303,7 +312,8 @@ describe('parallel', () => {
             expect(results).to.eql({
                 one: { value: 'one' },
                 two: { error: 'two' },
-                three: { value: 'three' }
+                three: { value: 'three' },
+                four: { error: 'four', value: 4 }
             });
             done();
         })
@@ -321,21 +331,21 @@ describe('parallel', () => {
     it('parallel empty object with reflect all (errors)', (done) => {
         var tasks = {
             one(callback) {
-                callback('one');
+                callback('one', 1);
             },
             two(callback) {
                 callback('two');
             },
             three(callback) {
-                callback('three');
+                callback('three', 3);
             }
         };
 
         async.parallel(async.reflectAll(tasks), (err, results) => {
             expect(results).to.eql({
-                one: { error: 'one' },
+                one: { error: 'one', value: 1 },
                 two: { error: 'two' },
-                three: { error: 'three' }
+                three: { error: 'three', value: 3 }
             });
             done();
         })
