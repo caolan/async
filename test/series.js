@@ -102,14 +102,18 @@ describe('series', () => {
             }),
             async.reflect((callback) => {
                 callback(null, 1);
+            }),
+            async.reflect((callback) => {
+                callback('error3');
             })
         ],
         (err, results) => {
             assert(err === null, err + " passed instead of 'null'");
             expect(results).to.eql([
-                { error: 'error' },
-                { error: 'error2' },
-                { value: 1 }
+                { error: 'error', value: 1 },
+                { error: 'error2', value: 2 },
+                { value: 1 },
+                { error: 'error3' },
             ]);
             done();
         });
