@@ -36,6 +36,24 @@ describe('concat', function() {
             });
         });
 
+        it('canceled', (done) => {
+            var callOrder = [];
+            async.concat([1, 3, 2], (val, next) => {
+                callOrder.push(val);
+                if (val === 3) {
+                    return next(false, [val, val + 1]);
+                }
+                next(null, [val, val + 1]);
+            }, () => {
+                throw new Error('should not get here');
+            });
+
+            setTimeout(() => {
+                expect(callOrder).to.eql([1, 3]);
+                done();
+            }, 25);
+        });
+
         it('original untouched', (done) => {
             var arr = ['foo', 'bar', 'baz'];
             async.concat(arr, (val, next) => {
@@ -240,6 +258,26 @@ describe('concat', function() {
             });
         });
 
+        it('canceled', (done) => {
+            var callOrder = [];
+            async.concatLimit([1, 2, 3, 4, 5], 2, (val, next) => {
+                callOrder.push(val);
+                async.setImmediate(() => {
+                    if (val === 3) {
+                        return next(false, val);
+                    }
+                    next(null, val)
+                });
+            }, () => {
+                throw new Error('should not get here');
+            });
+
+            setTimeout(() => {
+                expect(callOrder).to.eql([1, 2, 3, 4]);
+                done();
+            }, 50);
+        });
+
         it('handles objects', (done) => {
             async.concatLimit({'foo': 1, 'bar': 2, 'baz': 3}, 2, (val, next) => {
                 next(null, val+1);
@@ -371,6 +409,26 @@ describe('concat', function() {
                 expect(result).to.eql(['foo', 'foo']);
                 done();
             });
+        });
+
+        it('canceled', (done) => {
+            var callOrder = [];
+            async.concatSeries([1, 2, 3], (val, next) => {
+                callOrder.push(val);
+                async.setImmediate(() => {
+                    if (val === 2) {
+                        return next(false, val);
+                    }
+                    next(null, val)
+                });
+            }, () => {
+                throw new Error('should not get here');
+            });
+
+            setTimeout(() => {
+                expect(callOrder).to.eql([1, 2]);
+                done();
+            }, 50);
         });
 
         it('handles objects', (done) => {

@@ -35,6 +35,21 @@ describe('reduce', () => {
         setTimeout(done, 50);
     });
 
+    it('reduce canceled', (done) => {
+        var call_order = [];
+        async.reduce([1,2,3], 0, (a, x, callback) => {
+            call_order.push(x);
+            callback(x === 2 ? false : null, a + x)
+        }, () => {
+            throw new Error('should not get here');
+        });
+
+        setTimeout(() => {
+            expect(call_order).to.eql([1, 2]);
+            done();
+        }, 25);
+    });
+
     it('inject alias', (done) => {
         expect(async.inject).to.equal(async.reduce);
         done();
@@ -57,6 +72,21 @@ describe('reduce', () => {
             expect(arr).to.eql([1,2,3]);
             done();
         });
+    });
+
+    it('reduceRight canceled', (done) => {
+        var call_order = [];
+        async.reduceRight([1,2,3], 0, (a, x, callback) => {
+            call_order.push(x);
+            callback(x === 2 ? false : null, a + x)
+        }, () => {
+            throw new Error('should not get here');
+        });
+
+        setTimeout(() => {
+            expect(call_order).to.eql([3, 2]);
+            done();
+        }, 25);
     });
 
     it('foldr alias', (done) => {

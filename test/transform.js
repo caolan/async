@@ -52,6 +52,22 @@ describe('transform', () => {
         });
     });
 
+    it('transform canceled', (done) => {
+        var call_order = [];
+        async.transform([1,2,3], (a, v, k, callback) => {
+            call_order.push(v);
+            a.push(v + 1);
+            callback(v === 2 ? false : null);
+        }, () => {
+            throw new Error('should not get here');
+        });
+
+        setTimeout(() => {
+            expect(call_order).to.eql([1, 2, 3]);
+            done();
+        }, 25);
+    });
+
     it('transform with two arguments', (done) => {
         try {
             async.transform([1, 2, 3], (a, v, k, callback) => {
