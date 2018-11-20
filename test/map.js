@@ -112,7 +112,7 @@ describe("map", () => {
             }
             callback(null, x * 2);
         }, () => {
-            throw new Error('final callback - should not get here');
+            throw new Error('should not get here');
         });
         setTimeout(() => {
             expect(call_order).to.eql([1, 2, 3]);
@@ -177,7 +177,7 @@ describe("map", () => {
                 callback(null, x * 2);
             });
         }, () => {
-            throw new Error('final callback - should not get here');
+            throw new Error('should not get here');
         });
         setTimeout(() => {
             expect(call_order).to.eql([1, 2]);
@@ -298,7 +298,7 @@ describe("map", () => {
                 callback(null, x * 2);
             });
         }, () => {
-            throw new Error('final callback - should not get here');
+            throw new Error('should not get here');
         });
         setTimeout(() => {
             expect(call_order).to.eql([1, 2, 3, 4]);

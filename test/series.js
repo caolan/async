@@ -98,11 +98,11 @@ describe('series', () => {
                 callback(false, 1);
             },
             function(callback) {
-                assert(false, 'second function - should not be called');
+                assert(false, 'second function should not be called');
                 callback('error2', 2);
             }
         ], () => {
-            assert(false, 'final callback - should not be called');
+            assert(false, 'final callback should not be called');
         });
 
         setTimeout(done, 25);

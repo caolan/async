@@ -90,7 +90,7 @@ describe('tryEach', () => {
                 callback(false);
             },
             function() {
-                assert.fail('task2 - should not been called');
+                assert.fail('task2 should not been called');
             }
         ], () => {
             assert.fail('should not been called');

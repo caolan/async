@@ -45,7 +45,7 @@ describe('groupBy', function() {
                 }
                 next(null, val+1);
             }, () => {
-                throw new Error('final callback - should not get here');
+                throw new Error('should not get here');
             });
 
             setTimeout(() => {
@@ -234,7 +234,7 @@ describe('groupBy', function() {
                     next(null, val+1);
                 });
             }, () => {
-                throw new Error('final callback - should not get here');
+                throw new Error('should not get here');
             });
 
             setTimeout(() => {
@@ -368,7 +368,7 @@ describe('groupBy', function() {
                     next(null, val+1);
                 });
             }, () => {
-                throw new Error('final callback - should not get here');
+                throw new Error('should not get here');
             });
 
             setTimeout(() => {
