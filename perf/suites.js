@@ -303,6 +303,37 @@ module.exports = [{
         }
     }
 }, {
+    name: "priorityQueue",
+    args: [
+        [10],
+        [100],
+        [1000],
+        [30000],
+        [50000]
+    ],
+    setup: function setup(num) {
+        tasks = num;
+    },
+    fn(async, done) {
+        var numEntries = tasks;
+        var q = async.priorityQueue(worker, 1);
+        for (var i = 1; i <= numEntries; i++) {
+            q.push({
+                num: i
+            }, i);
+        }
+
+        var completedCnt = 0;
+
+        function worker(task, callback) {
+            completedCnt++;
+            if (completedCnt === numEntries) {
+                return done();
+            }
+            setImmediate(callback);
+        }
+    }
+}, {
     name: "some - no short circuit- false",
     // args lists are passed to the setup function
     args: [
