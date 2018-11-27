@@ -103,6 +103,23 @@ describe("map", () => {
         setTimeout(done, 50);
     });
 
+    it('map canceled', (done) => {
+        var call_order = [];
+        async.map([1, 2, 3], (x, callback) => {
+            call_order.push(x);
+            if (x === 2) {
+                return callback(false, x * 2);
+            }
+            callback(null, x * 2);
+        }, () => {
+            throw new Error('should not get here');
+        });
+        setTimeout(() => {
+            expect(call_order).to.eql([1, 2, 3]);
+            done();
+        }, 25);
+    });
+
     it('map undefined array', (done) => {
         async.map(undefined, (x, callback) => {
             callback();
@@ -147,6 +164,25 @@ describe("map", () => {
             expect(err).to.equal('error');
         });
         setTimeout(done, 50);
+    });
+
+    it('mapSeries canceled', (done) => {
+        var call_order = [];
+        async.mapSeries([1, 2, 3], (x, callback) => {
+            call_order.push(x);
+            async.setImmediate(() => {
+                if (x === 2) {
+                    return callback(false, x * 2);
+                }
+                callback(null, x * 2);
+            });
+        }, () => {
+            throw new Error('should not get here');
+        });
+        setTimeout(() => {
+            expect(call_order).to.eql([1, 2]);
+            done();
+        }, 50);
     });
 
     it('mapSeries undefined array', (done) => {
@@ -249,6 +285,25 @@ describe("map", () => {
             expect(err).to.equal('error');
         });
         setTimeout(done, 25);
+    });
+
+    it('mapLimit canceled', (done) => {
+        var call_order = [];
+        async.mapLimit([1, 2, 3, 4, 5], 2, (x, callback) => {
+            call_order.push(x);
+            async.setImmediate(() => {
+                if (x === 3) {
+                    return callback(false, x * 2);
+                }
+                callback(null, x * 2);
+            });
+        }, () => {
+            throw new Error('should not get here');
+        });
+        setTimeout(() => {
+            expect(call_order).to.eql([1, 2, 3, 4]);
+            done();
+        }, 50);
     });
 
     it('mapLimit does not continue replenishing after error', (done) => {

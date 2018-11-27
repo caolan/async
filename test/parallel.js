@@ -58,6 +58,27 @@ describe('parallel', () => {
         setTimeout(done, 100);
     });
 
+    it('parallel canceled', (done) => {
+        var call_order = [];
+        async.parallel([
+            function(callback) {
+                call_order.push('one');
+                callback(false);
+            },
+            function(callback){
+                call_order.push('two');
+                callback(null);
+            }
+        ], () => {
+            throw new Error('should not get here');
+        });
+
+        setTimeout(() => {
+            expect(call_order).to.eql(['one', 'two']);
+            done();
+        }, 25);
+    });
+
     it('parallel no callback', (done) => {
         async.parallel([
             function(callback){callback();},

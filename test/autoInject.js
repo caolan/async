@@ -122,4 +122,30 @@ describe('autoInject', () => {
             done();
         });
     });
+
+    it('should be cancelable', (done) => {
+        var call_order = [];
+
+        async.autoInject({
+            task1 (cb) {
+                call_order.push('task1');
+                cb(null, 1);
+            },
+            task2 (task3, cb) {
+                call_order.push('task2');
+                cb(null, 2);
+            },
+            task3 (cb) {
+                call_order.push('task3');
+                cb(false);
+            },
+        }, () => {
+            throw new Error('should not get here');
+        });
+
+        setTimeout(() => {
+            expect(call_order).to.eql(['task1', 'task3']);
+            done();
+        }, 25);
+    });
 });

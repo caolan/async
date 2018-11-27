@@ -82,5 +82,23 @@ describe('tryEach', () => {
             done();
         });
     });
-});
+    it('canceled', (done) => {
+        var call_order = [];
+        async.tryEach([
+            function(callback) {
+                call_order.push('task1');
+                callback(false);
+            },
+            function() {
+                assert.fail('task2 should not been called');
+            }
+        ], () => {
+            assert.fail('should not been called');
+        });
 
+        setTimeout(() => {
+            expect(call_order).to.eql(['task1']);
+            done();
+        }, 25);
+    });
+});

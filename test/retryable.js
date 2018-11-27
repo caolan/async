@@ -81,4 +81,20 @@ describe('retryable', () => {
             done();
         });
     });
+
+    it('should be cancelable', (done) => {
+        var calls = 0;
+        var retryableTask = async.retryable(3, (_, cb) => {
+            calls++;
+            cb(calls > 1 ? false : 'fail');
+        });
+        retryableTask('foo', () => {
+            throw new Error('should not get here');
+        })
+
+        setTimeout(() => {
+            expect(calls).to.equal(2);
+            done();
+        }, 25);
+    });
 });

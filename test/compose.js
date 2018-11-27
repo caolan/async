@@ -83,4 +83,29 @@ describe('compose', () => {
             done();
         });
     });
+
+    it('should be cancelable', (done) => {
+        var call_order = [];
+
+        var add2 = function (n, cb) {
+            call_order.push('add2');
+            cb(null, n + 2);
+        };
+        var mul3 = function (n, cb) {
+            call_order.push('mul3');
+            cb(false, n * 3);
+        };
+        var add1 = function () {
+            throw new Error('add1 - should not get here');
+        };
+        var add2mul3add1 = async.compose(add1, mul3, add2);
+        add2mul3add1(3, () => {
+            throw new Error('final callback - should not get here');
+        });
+
+        setTimeout(() => {
+            expect(call_order).to.eql(['add2', 'mul3']);
+            done();
+        }, 25);
+    });
 });
