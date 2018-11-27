@@ -92,12 +92,50 @@ describe("filter", () => {
         });
     });
 
+    it('filter canceled', (done) => {
+        var call_order = [];
+        async.filter([3,1,2], (x, callback) => {
+            call_order.push(x);
+            if (x === 1) {
+                return callback(false, true);
+            }
+            callback(null, true);
+        } , () => {
+            throw new Error('should not get here');
+        });
+
+        setTimeout(() => {
+            expect(call_order).to.eql([3,1,2]);
+            done();
+        }, 25);
+    });
+
     it('filterSeries', (done) => {
         async.filterSeries([3,1,2], filterIteratee, (err, results) => {
             expect(err).to.equal(null);
             expect(results).to.eql([3,1]);
             done();
         });
+    });
+
+    it('filterSeries canceled', (done) => {
+        var call_order = [];
+        async.filterSeries([3,1,2], (x, callback) => {
+            call_order.push(x);
+            async.setImmediate(() => {
+                if (x === 1) {
+                    return callback(false, true);
+                }
+                callback(null, true);
+            });
+        }, () => {
+            throw new Error('should not get here');
+        });
+
+        setTimeout(() => {
+            expect(call_order).to.eql([3,1]);
+            done();
+        }, 50);
     });
 
     it('select alias', () => {
@@ -116,6 +154,26 @@ describe("filter", () => {
             expect(result).to.eql([5, 3, 1]);
             done();
         });
+    });
+
+    it('filterLimit canceled', (done) => {
+        var call_order = [];
+        async.filterLimit([1,1,2,2,3], 2, (x, callback) => {
+            call_order.push(x);
+            async.setImmediate(() => {
+                if (x === 2) {
+                    return callback(false, true);
+                }
+                callback(null, true);
+            });
+        }, () => {
+            throw new Error('should not get here');
+        });
+
+        setTimeout(() => {
+            expect(call_order).to.eql([1,1,2,2]);
+            done();
+        }, 50);
     });
 
 });
@@ -152,12 +210,50 @@ describe("reject", () => {
         });
     });
 
+    it('reject canceled', (done) => {
+        var call_order = [];
+        async.filter([3,1,2], (x, callback) => {
+            call_order.push(x);
+            if (x === 2) {
+                return callback(false, false);
+            }
+            callback(null, false);
+        } , () => {
+            throw new Error('should not get here');
+        });
+
+        setTimeout(() => {
+            expect(call_order).to.eql([3,1,2]);
+            done();
+        }, 25);
+    });
+
     it('rejectSeries', (done) => {
         async.rejectSeries([3,1,2], filterIteratee, (err, results) => {
             expect(err).to.equal(null);
             expect(results).to.eql([2]);
             done();
         });
+    });
+
+    it('rejectSeries canceled', (done) => {
+        var call_order = [];
+        async.rejectSeries([3,1,2], (x, callback) => {
+            call_order.push(x);
+            async.setImmediate(() => {
+                if (x === 1) {
+                    return callback(false, false);
+                }
+                callback(null, false);
+            });
+        }, () => {
+            throw new Error('should not get here');
+        });
+
+        setTimeout(() => {
+            expect(call_order).to.eql([3,1]);
+            done();
+        }, 50);
     });
 
     it('rejectLimit', (done) => {
@@ -168,6 +264,26 @@ describe("reject", () => {
             expect(result).to.eql([4, 2]);
             done();
         });
+    });
+
+    it('rejectLimit canceled', (done) => {
+        var call_order = [];
+        async.filterLimit([1,1,2,2,3], 2, (x, callback) => {
+            call_order.push(x);
+            async.setImmediate(() => {
+                if (x === 2) {
+                    return callback(false, false);
+                }
+                callback(null, false);
+            });
+        }, () => {
+            throw new Error('should not get here');
+        });
+
+        setTimeout(() => {
+            expect(call_order).to.eql([1,1,2,2]);
+            done();
+        }, 50);
     });
 
     it('filter fails', (done) => {

@@ -36,6 +36,24 @@ describe('groupBy', function() {
             });
         });
 
+        it('canceled', (done) => {
+            var callOrder = [];
+            async.groupBy([1, 3, 2], (val, next) => {
+                callOrder.push(val);
+                if (val === 3) {
+                    return next(false, val+1);
+                }
+                next(null, val+1);
+            }, () => {
+                throw new Error('should not get here');
+            });
+
+            setTimeout(() => {
+                expect(callOrder).to.eql([1, 3]);
+                done();
+            }, 25);
+        });
+
         it('original untouched', (done) => {
             var obj = {a: 'b', b: 'c', c: 'd'};
             async.groupBy(obj, (val, next) => {
@@ -205,6 +223,26 @@ describe('groupBy', function() {
             });
         });
 
+        it('canceled', (done) => {
+            var callOrder = [];
+            async.groupByLimit([1, 1, 2, 2, 3], 2, (val, next) => {
+                callOrder.push(val);
+                async.setImmediate(() => {
+                    if (val === 2) {
+                        return next(false, val+1);
+                    }
+                    next(null, val+1);
+                });
+            }, () => {
+                throw new Error('should not get here');
+            });
+
+            setTimeout(() => {
+                expect(callOrder).to.eql([1, 1, 2, 2]);
+                done();
+            }, 50);
+        });
+
         it('handles empty object', (done) => {
             async.groupByLimit({}, 2, (val, next) => {
                 assert(false, 'iteratee should not be called');
@@ -317,6 +355,26 @@ describe('groupBy', function() {
                 expect(result).to.eql({b: ['b']});
                 done();
             });
+        });
+
+        it('canceled', (done) => {
+            var callOrder = [];
+            async.groupBySeries([1, 2, 3], (val, next) => {
+                callOrder.push(val);
+                async.setImmediate(() => {
+                    if (val === 2) {
+                        return next(false, val+1);
+                    }
+                    next(null, val+1);
+                });
+            }, () => {
+                throw new Error('should not get here');
+            });
+
+            setTimeout(() => {
+                expect(callOrder).to.eql([1, 2]);
+                done();
+            }, 50);
         });
 
         it('handles arrays', (done) => {

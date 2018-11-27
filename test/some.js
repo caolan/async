@@ -50,6 +50,24 @@ describe("some", () => {
         });
     });
 
+    it('some canceled', (done) => {
+        var call_order = [];
+        async.some([3,1,2], (x, callback) => {
+            call_order.push(x);
+            if (x === 1) {
+                return callback(false);
+            }
+            callback();
+        }, () => {
+            throw new Error('should not get here');
+        });
+
+        setTimeout(() => {
+            expect(call_order).to.eql([3, 1, 2]);
+            done();
+        }, 25);
+    });
+
     it('some no callback', (done) => {
         var calls = [];
 
@@ -82,6 +100,46 @@ describe("some", () => {
             expect(result).to.equal(false);
             done();
         });
+    });
+
+    it('someLimit canceled', (done) => {
+        var call_order = [];
+        async.someLimit([1,1,2,2,3], 2, (x, callback) => {
+            call_order.push(x);
+            async.setImmediate(() => {
+                if (x === 2) {
+                    return callback(false);
+                }
+                callback();
+            });
+        }, () => {
+            throw new Error('should not get here');
+        });
+
+        setTimeout(() => {
+            expect(call_order).to.eql([1, 1, 2, 2,]);
+            done();
+        }, 50);
+    });
+
+    it('someSeries canceled', (done) => {
+        var call_order = [];
+        async.someSeries([1, 2, 3], (x, callback) => {
+            call_order.push(x);
+            async.setImmediate(() => {
+                if (x === 2) {
+                    return callback(false);
+                }
+                callback();
+            });
+        }, () => {
+            throw new Error('should not get here');
+        });
+
+        setTimeout(() => {
+            expect(call_order).to.eql([1, 2]);
+            done();
+        }, 50);
     });
 
     it('someLimit short-circuit', (done) => {

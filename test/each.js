@@ -74,6 +74,24 @@ describe("each", () => {
         setTimeout(done, 50);
     });
 
+    it('each canceled', (done) => {
+        var call_order = [];
+        async.each([1, 2, 3], (x, callback) => {
+            call_order.push(x);
+            if (x === 2) {
+                return callback(false);
+            }
+            callback(null);
+        }, () => {
+            throw new Error('should not get here');
+        });
+
+        setTimeout(() => {
+            expect(call_order).to.eql([1, 2, 3]);
+            done();
+        }, 25);
+    });
+
     it('each no callback', function(done) {
         async.each([1], eachNoCallbackIteratee.bind(this, done));
     });
@@ -146,6 +164,26 @@ describe("each", () => {
             expect(err).to.equal('error');
         });
         setTimeout(done, 50);
+    });
+
+    it('eachSeries canceled', (done) => {
+        var call_order = [];
+        async.eachSeries([1, 2, 3], (x, callback) => {
+            call_order.push(x);
+            async.setImmediate(() => {
+                if (x === 2) {
+                    return callback(false);
+                }
+                callback(null);
+            });
+        }, () => {
+            throw new Error('should not get here');
+        });
+
+        setTimeout(() => {
+            expect(call_order).to.eql([1, 2]);
+            done();
+        }, 50);
     });
 
     it('eachSeries no callback', function(done) {
@@ -224,6 +262,26 @@ describe("each", () => {
             expect(err).to.equal('error');
         });
         setTimeout(done, 25);
+    });
+
+    it('eachLimit canceled', (done) => {
+        var call_order = [];
+        async.eachLimit([1, 1, 2, 2, 3], 2, (x, callback) => {
+            call_order.push(x);
+            async.setImmediate(() => {
+                if (x === 2) {
+                    return callback(false);
+                }
+                callback(null);
+            });
+        }, () => {
+            throw new Error('should not get here');
+        });
+
+        setTimeout(() => {
+            expect(call_order).to.eql([1, 1, 2, 2]);
+            done();
+        }, 50);
     });
 
     it('eachLimit no callback', function(done) {

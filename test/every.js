@@ -84,6 +84,23 @@ describe("every", () => {
         });
     });
 
+    it('canceled', (done) => {
+        var call_order = [];
+        async.every([1,2,3], (x, callback) => {
+            call_order.push(x);
+            if (x === 2) {
+                return callback(false, true);
+            }
+            callback(null, true);
+        }, () => {
+            throw new Error('should not get here');
+        });
+        setTimeout(() => {
+            expect(call_order).to.eql([1,2,3]);
+            done();
+        }, 25);
+    });
+
     it('everySeries doesn\'t cause stack overflow (#1293)', (done) => {
         var arr = _.range(10000);
         let calls = 0;
@@ -97,6 +114,25 @@ describe("every", () => {
         });
     });
 
+    it('everySeries canceled', (done) => {
+        var call_order = [];
+        async.everySeries([1,2,3], (x, callback) => {
+            call_order.push(x);
+            async.setImmediate(() => {
+                if (x === 2) {
+                    return callback(false, true);
+                }
+                callback(null, true);
+            });
+        }, () => {
+            throw new Error('should not get here');
+        });
+        setTimeout(() => {
+            expect(call_order).to.eql([1, 2]);
+            done();
+        }, 50);
+    });
+
     it('everyLimit doesn\'t cause stack overflow (#1293)', (done) => {
         var arr = _.range(10000);
         let calls = 0;
@@ -108,6 +144,25 @@ describe("every", () => {
             expect(calls).to.equal(100);
             done();
         });
+    });
+
+    it('everyLimit canceled', (done) => {
+        var call_order = [];
+        async.everyLimit([1,1,2,2,3], 2, (x, callback) => {
+            call_order.push(x);
+            async.setImmediate(() => {
+                if (x === 2) {
+                    return callback(false, true);
+                }
+                callback(null, true);
+            });
+        }, () => {
+            throw new Error('final callback - should not get here');
+        });
+        setTimeout(() => {
+            expect(call_order).to.eql([1,1,2,2]);
+            done();
+        }, 50);
     });
 
     it('all alias', () => {

@@ -47,6 +47,24 @@ describe("detect", () => {
         });
     });
 
+    it('detect canceled', (done) => {
+        var call_order = [];
+        async.detect({'a': 3, 'b': 2, 'c': 1}, (x, callback) => {
+            call_order.push(x);
+            if (x === 2) {
+                return callback(false);
+            }
+            callback(null);
+        }, () => {
+            throw new Error('should not get here');
+        });
+
+        setTimeout(() => {
+            expect(call_order).to.eql([3, 2]);
+            done();
+        }, 25);
+    });
+
     it('detectSeries', function(done){
         var call_order = [];
         async.detectSeries([3,2,1], detectIteratee.bind(this, call_order), (err, result) => {
@@ -98,6 +116,26 @@ describe("detect", () => {
         });
     });
 
+    it('detectSeries canceled', (done) => {
+        var call_order = [];
+        async.detectSeries([3, 2, 1], (x, callback) => {
+            async.setImmediate(() => {
+                call_order.push(x);
+                if (x === 2) {
+                    return callback(false);
+                }
+                callback(null);
+            });
+        }, () => {
+            throw new Error('should not get here');
+        });
+
+        setTimeout(() => {
+            expect(call_order).to.eql([3, 2]);
+            done();
+        }, 50);
+    });
+
     it('detectLimit', function(done){
         var call_order = [];
         async.detectLimit([3, 2, 1], 2, detectIteratee.bind(this, call_order), (err, result) => {
@@ -133,6 +171,26 @@ describe("detect", () => {
             expect(result).to.equal(3);
             done();
         });
+    });
+
+    it('detectLimit canceled', (done) => {
+        var call_order = [];
+        async.detectLimit([3, 3, 2, 2, 1], 2, (x, callback) => {
+            async.setImmediate(() => {
+                call_order.push(x);
+                if (x === 2) {
+                    return callback(false);
+                }
+                callback(null);
+            });
+        }, () => {
+            throw new Error('should not get here');
+        });
+
+        setTimeout(() => {
+            expect(call_order).to.eql([3, 3, 2, 2]);
+            done();
+        }, 50);
     });
 
     it('detectSeries doesn\'t cause stack overflow (#1293)', (done) => {

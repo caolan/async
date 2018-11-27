@@ -33,4 +33,22 @@ describe('sortBy', () => {
             done();
         });
     });
+
+    it('sortBy canceled', (done) => {
+        var call_order = [];
+        async.sortBy([{a:1},{a:15},{a:6}], (x, callback) => {
+            call_order.push(x.a);
+            if (x.a === 15) {
+                return callback(false, x.a);
+            }
+            callback(null, x.a);
+        }, () => {
+            throw new Error('should not get here');
+        });
+
+        setTimeout(() => {
+            expect(call_order).to.eql([1, 15, 6]);
+            done();
+        }, 25);
+    });
 });
