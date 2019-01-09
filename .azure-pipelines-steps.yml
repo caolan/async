@@ -1,0 +1,30 @@
+# Build steps common to all platforms
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: $(node_version)
+  displayName: 'Install Node.js'
+
+- task: Npm@1
+  inputs:
+    command: install
+  displayName: 'Install dependencies'
+
+- bash: |
+    npm test
+  displayName: 'Run tests'
+
+- bash: |
+      export DISPLAY=:99.0
+      make -j 4
+      npm run mocha-browser-test
+  displayName: 'Run browser tests'
+  condition: eq(variables['node_version'], '10.x')
+ 
+- bash: |
+    export COVERALLS_SERVICE_NAME=$(COVERALLS_SERVICE_NAME)
+    export COVERALLS_REPO_TOKEN=$(COVERALLS_REPO_TOKEN)
+    npm run coveralls
+  displayName: 'Run coveralls'
+  condition: eq(variables['os_name'], 'Linux')

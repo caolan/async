@@ -1,0 +1,61 @@
+jobs:
+
+- job: Windows
+  pool: 'Hosted VS2017'
+
+  variables:
+    os_name: Windows
+
+  strategy:
+    matrix:
+      node_6_x:
+        node_version: 6.x
+      node_8_x:
+        node_version: 8.x
+      node_10_x:
+        node_version: 10.x
+
+  steps:
+  - template: .azure-pipelines-steps.yml
+
+- job: Linux
+  pool:
+    vmImage: 'Ubuntu 16.04'
+
+  variables:
+    os_name: Linux
+
+  strategy:
+    matrix:
+      node_6_x:
+        node_version: 6.x
+      node_8_x:
+        node_version: 8.x
+      node_10_x:
+        node_version: 10.x
+
+  steps:
+  - script: |
+      /usr/bin/Xvfb :99 -ac >> /tmp/xvfb.out 2>&1 &
+      disown -ar
+    displayName: 'Start xvfb'
+  - template: .azure-pipelines-steps.yml
+
+- job: OSX
+  pool:
+    vmImage: 'macOS 10.13'
+
+  variables:
+    os_name: OSX
+
+  strategy:
+    matrix:
+      node_6_x:
+        node_version: 6.x
+      node_8_x:
+        node_version: 8.x
+      node_10_x:
+        node_version: 10.x
+
+  steps:
+  - template: .azure-pipelines-steps.yml
