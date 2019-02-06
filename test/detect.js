@@ -71,11 +71,10 @@ describe("detect", () => {
             call_order.push('callback');
             expect(err).to.equal(null);
             expect(result).to.equal(2);
-        });
-        setTimeout(() => {
+
             expect(call_order).to.eql([3,2,'callback']);
             done();
-        }, 50);
+        });
     });
 
     it('detectSeries - multiple matches', function(done){
@@ -84,11 +83,10 @@ describe("detect", () => {
             call_order.push('callback');
             expect(err).to.equal(null);
             expect(result).to.equal(2);
-        });
-        setTimeout(() => {
+
             expect(call_order).to.eql([3,2,'callback']);
             done();
-        }, 50);
+        });
     });
 
     it('detect no callback', (done) => {
