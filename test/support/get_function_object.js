@@ -10,7 +10,7 @@ module.exports = function (call_order) {
             setTimeout(() => {
                 call_order.push(2);
                 callback(null, 2);
-            }, 200);
+            }, 350);
         },
         three(callback) {
             setTimeout(() => {
