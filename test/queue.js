@@ -445,6 +445,11 @@ describe('queue', function(){
 
     it('start paused', (done) => {
         var q = async.queue((task, callback) => {
+            if (task === 2) {
+                expect(q.length()).to.equal(1);
+                expect(q.running()).to.equal(2);
+            }
+
             setTimeout(() => {
                 callback();
             }, 40);
@@ -457,12 +462,6 @@ describe('queue', function(){
             expect(q.running()).to.equal(0);
             q.resume();
         }, 5);
-
-        setTimeout(() => {
-            expect(q.length()).to.equal(1);
-            expect(q.running()).to.equal(2);
-            q.resume();
-        }, 15);
 
         q.drain = function () {
             done();
