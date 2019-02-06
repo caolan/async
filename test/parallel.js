@@ -149,7 +149,7 @@ describe('parallel', () => {
                 setTimeout(() => {
                     call_order.push(2);
                     callback(null, 2);
-                }, 100);
+                }, 200);
             },
             function(callback){
                 setTimeout(() => {
