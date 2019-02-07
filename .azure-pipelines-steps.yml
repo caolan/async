@@ -33,10 +33,7 @@ steps:
       in(variables['os_name'], 'Linux', 'Windows')
     )
 
-- bash: |
-      export DISPLAY=:99.0
-      make -j 4
-      npm run mocha-browser-test -- --browsers Safari
+- bash: npm run mocha-browser-test -- --browsers Safari
   displayName: 'Run Safari tests'
   condition: |
     and(

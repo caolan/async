@@ -12,7 +12,8 @@ module.exports = function(config) {
             'karma-safari-launcher'
         ],
         preprocessors: {
-            'test/*.js': ['browserify']
+            'test/*.js': ['browserify'],
+            'lib/*.js': ['browserify']
         },
         reporters: ['mocha', 'junit'],
         junitReporter: {
