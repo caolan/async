@@ -26,11 +26,22 @@ steps:
       export DISPLAY=:99.0
       make -j 4
       npm run mocha-browser-test
-  displayName: 'Run browser tests'
+  displayName: 'Run Firefox tests'
   condition: |
     and(
       eq(variables['node_version'], '10.x'),
       in(variables['os_name'], 'Linux', 'Windows')
+    )
+
+- bash: |
+      export DISPLAY=:99.0
+      make -j 4
+      npm run mocha-browser-test -- --browsers Safari
+  displayName: 'Run Safari tests'
+  condition: |
+    and(
+      eq(variables['node_version'], '10.x'),
+      in(variables['os_name'], 'OSX')
     )
 
 - task: PublishTestResults@2
@@ -38,11 +49,7 @@ steps:
     testResultsFiles: '**/browser-test-results.xml'
     testRunTitle: $(os_name) Node $(node_version) Browser tests
   displayName: 'Publishing the browser test results'
-  condition: |
-    and(
-      eq(variables['node_version'], '10.x'),
-      in(variables['os_name'], 'Linux', 'Windows')
-    )
+  condition: eq(variables['node_version'], '10.x')
  
 - bash: |
     export COVERALLS_REPO_TOKEN=$(COVERALLS_REPO_TOKEN)
