@@ -174,15 +174,16 @@ describe('cargo', () => {
         var drainCounter = 0;
         c.drain = function () {
             drainCounter++;
+
+            if (drainCounter === 1) {
+                loadCargo();
+            } else {
+                expect(drainCounter).to.equal(2);
+                done();
+            }
         };
 
         loadCargo();
-        setTimeout(loadCargo, 50);
-
-        setTimeout(() => {
-            expect(drainCounter).to.equal(2);
-            done();
-        }, 100);
     });
 
     it('events', (done) => {
