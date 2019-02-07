@@ -45,8 +45,11 @@ steps:
     )
  
 - bash: |
-    export COVERALLS_SERVICE_NAME=$(COVERALLS_SERVICE_NAME)
     export COVERALLS_REPO_TOKEN=$(COVERALLS_REPO_TOKEN)
     npm run coveralls
   displayName: 'Run coveralls'
-  condition: false
+  condition: |
+    and(
+      eq(variables['node_version'], '10.x'),
+      in(variables['os_name'], 'Linux', 'Windows')
+    )
