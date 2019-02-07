@@ -387,7 +387,7 @@ describe('concat', function() {
                         x--;
                     }
                     cb(null, r);
-                }, x*25);
+                }, x*10);
             };
             async.concatSeries([1,3,2], iteratee, (err, results) => {
                 expect(results).to.eql([1,3,2,1,2,1]);
