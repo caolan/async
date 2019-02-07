@@ -81,6 +81,16 @@ describe('cargo', () => {
             setTimeout(() => {
                 call_order.push('process ' + tasks.join(' '));
                 callback('error', 'arg');
+
+                if (tasks[0] === 5) {
+                    expect(call_order).to.eql([
+                        'process 1',
+                        'process 2',
+                        'process 3 4',
+                        'process 5'
+                    ]);
+                    done();
+                }
             }, delays.shift());
         }, 2);
 
@@ -94,16 +104,6 @@ describe('cargo', () => {
             c.push(4);
             c.push(5);
         }, 50);
-
-        setTimeout(() => {
-            expect(call_order).to.eql([
-                'process 1',
-                'process 2',
-                'process 3 4',
-                'process 5'
-            ]);
-            done();
-        }, 200);
     });
 
     it('bulk task', (done) => {
