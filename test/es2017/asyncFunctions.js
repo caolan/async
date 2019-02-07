@@ -673,7 +673,7 @@ module.exports = function () {
         var fn = async.timeout(async (val) => {
             await new Promise((resolve) => setTimeout(resolve, 100));
             return val;
-        }, 50);
+        }, 20);
         fn(1, (err) => {
             expect(err.message).to.match(/timed out/);
             done();
