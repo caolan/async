@@ -15,6 +15,7 @@ jobs:
       node_10_x:
         node_version: 10.x
         run_browser_tests: true
+        browser_name: Firefox
         run_coveralls: true
 
   steps:
@@ -37,6 +38,7 @@ jobs:
         node_version: 10.x
         DISPLAY: :99.0
         run_browser_tests: true
+        browser_name: Firefox
         run_coveralls: true
 
   steps:
@@ -64,6 +66,7 @@ jobs:
       node_10_x:
         node_version: 10.x
         run_browser_tests: true
+        browser_name: Safari
 
   steps:
   - template: .azure-pipelines-steps.yml

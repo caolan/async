@@ -32,21 +32,9 @@ steps:
 
 - bash: |
     export DISPLAY=$(DISPLAY)
-    npm run mocha-browser-test
-  displayName: 'Run Firefox tests'
-  condition: |
-    and(
-      variables.run_browser_tests,
-      in(variables['os_name'], 'Linux', 'Windows')
-    )
-
-- bash: npm run mocha-browser-test -- --browsers Safari
-  displayName: 'Run Safari tests'
-  condition: |
-    and(
-      variables.run_browser_tests,
-      in(variables['os_name'], 'OSX')
-    )
+    npm run mocha-browser-test -- --browsers $(browser_name)
+  displayName: 'Run browser tests'
+  condition: variables.run_browser_tests
 
 - task: PublishTestResults@2
   inputs:
