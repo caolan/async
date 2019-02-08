@@ -15,7 +15,7 @@ module.exports = function(config) {
             'test/*.js': ['browserify'],
             'lib/*.js': ['browserify']
         },
-        reporters: ['mocha', 'junit'],
+        reporters: ['mocha'],
         junitReporter: {
             outputFile: 'browser-test-results.xml'
         },

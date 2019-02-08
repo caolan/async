@@ -11,4 +11,4 @@ build
 build-es
 .idea
 docs
-test-results.xml
+*test-results.xml
