@@ -14,6 +14,8 @@ jobs:
         node_version: 8.x
       node_10_x:
         node_version: 10.x
+        run_browser_tests: true
+        run_coveralls: true
 
   steps:
   - template: .azure-pipelines-steps.yml
@@ -33,19 +35,16 @@ jobs:
         node_version: 8.x
       node_10_x:
         node_version: 10.x
+        DISPLAY: :99.0
+        run_browser_tests: true
+        run_coveralls: true
 
   steps:
   - script: |
-      export DISPLAY=:99.0
-      /usr/bin/Xvfb ${DISPLAY} -ac >> /tmp/xvfb.out 2>&1 &
+      /usr/bin/Xvfb $(DISPLAY) -ac >> /tmp/xvfb.out 2>&1 &
       disown -ar
     displayName: 'Start xvfb'
-
-  - script: |
-      echo Display is ${DISPLAY}
-      export MY_DISPLAY=123
-      echo My Display is ${MY_DISPLAY}
-    displayName: 'Check env DISPLAY'
+    condition: variables.run_browser_tests
 
   - template: .azure-pipelines-steps.yml
 
@@ -64,6 +63,7 @@ jobs:
         node_version: 8.x
       node_10_x:
         node_version: 10.x
+        run_browser_tests: true
 
   steps:
   - template: .azure-pipelines-steps.yml

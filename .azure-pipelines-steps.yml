@@ -30,14 +30,13 @@ steps:
   displayName: 'Publishing the test results'
   condition: always()
 
-- script: echo Display is ${DISPLAY}
-  displayName: 'Check env DISPLAY'
-
-- bash: npm run mocha-browser-test
+- bash: |
+    export DISPLAY=$(DISPLAY)
+    npm run mocha-browser-test
   displayName: 'Run Firefox tests'
   condition: |
     and(
-      eq(variables['node_version'], '10.x'),
+      variables.run_browser_tests,
       in(variables['os_name'], 'Linux', 'Windows')
     )
 
@@ -45,7 +44,7 @@ steps:
   displayName: 'Run Safari tests'
   condition: |
     and(
-      eq(variables['node_version'], '10.x'),
+      variables.run_browser_tests,
       in(variables['os_name'], 'OSX')
     )
 
@@ -54,14 +53,10 @@ steps:
     testResultsFiles: '**/browser-test-results.xml'
     testRunTitle: $(os_name) Node $(node_version) Browser tests
   displayName: 'Publishing the browser test results'
-  condition: eq(variables['node_version'], '10.x')
- 
+  condition: variables.run_browser_tests
+
 - bash: |
     export COVERALLS_REPO_TOKEN=$(COVERALLS_REPO_TOKEN)
     npm run coveralls
   displayName: 'Run coveralls'
-  condition: |
-    and(
-      eq(variables['node_version'], '10.x'),
-      in(variables['os_name'], 'Linux', 'Windows')
-    )
+  condition: variables.run_coveralls
