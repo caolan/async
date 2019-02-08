@@ -30,10 +30,10 @@ steps:
   displayName: 'Publishing the test results'
   condition: always()
 
-- bash: |
-      export DISPLAY=:99.0
-      make -j 4
-      npm run mocha-browser-test
+- script: echo Display is ${DISPLAY}
+  displayName: 'Check env DISPLAY'
+
+- bash: npm run mocha-browser-test
   displayName: 'Run Firefox tests'
   condition: |
     and(
