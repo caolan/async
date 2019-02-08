@@ -20,7 +20,7 @@ steps:
   displayName: 'Install dependencies'
 
 - bash: |
-    node_modules/.bin/mocha test --reporter mocha-junit-reporter --reporter-options mochaFile=./test-results.xml
+    npm test -- -- --reporter mocha-junit-reporter --reporter-options mochaFile=./test-results.xml
   displayName: 'Run tests'
 
 - task: PublishTestResults@2
