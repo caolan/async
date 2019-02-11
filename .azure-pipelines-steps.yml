@@ -9,14 +9,11 @@ steps:
 - task: Npm@1
   inputs:
     command: custom
-    customCommand: i -g npm
+    customCommand: install -g npm
   displayName: 'Update npm'
   condition: eq(variables['node_version'], '6.x')
 
-- task: Npm@1
-  inputs:
-    command: custom
-    customCommand: ci
+- script: npm ci
   displayName: 'Install dependencies'
 
 - bash: |
