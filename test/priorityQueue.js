@@ -55,7 +55,7 @@ describe('priorityQueue', () => {
 
     it('concurrency', (done) => {
         var call_order = [],
-            delays = [160,80,240,80];
+            delays = [80,20,140,20];
 
         // worker1: --2-3
         // worker2: -1---4
@@ -65,7 +65,7 @@ describe('priorityQueue', () => {
             setTimeout(() => {
                 call_order.push('process ' + task);
                 callback('error', 'arg');
-            }, delays.splice(0,1)[0]);
+            }, delays.shift());
         }, 2);
 
         q.push(1, 1.4, (err, arg) => {
