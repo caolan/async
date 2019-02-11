@@ -303,8 +303,8 @@ module.exports = function () {
     /* eslint prefer-arrow-callback: 0, object-shorthand: 0 */
     it('should handle async functions in autoInject', (done) => {
         async.autoInject({
-            z: async function(){ return 0},
-            a: async function a () {
+            z: async function () { return 0 },
+            a: async function () {
                 return await Promise.resolve(1);
             },
             b: async function (a) {
