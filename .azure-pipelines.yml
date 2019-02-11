@@ -1,7 +1,8 @@
 jobs:
 
 - job: Windows
-  pool: 'Hosted VS2017'
+  pool:
+    vmImage: vs2017-win2016
 
   variables:
     os_name: Windows
