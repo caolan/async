@@ -10,8 +10,7 @@ describe('queue', function(){
     it('basics', (done) => {
 
         var call_order = [];
-        var delays = [40,10,60,10];
-
+        var delays = [50,10,180,10];
 
         // worker1: --1-4
         // worker2: -2---3
@@ -66,7 +65,7 @@ describe('queue', function(){
 
     it('default concurrency', (done) => {
         var call_order = [],
-            delays = [40,10,60,10];
+            delays = [50,10,180,10];
 
         // order of completion: 1,2,3,4
 
@@ -223,7 +222,7 @@ describe('queue', function(){
         this.retries(3); // test can be flakey
 
         var call_order = [];
-        var delays = [40,10,60,10];
+        var delays = [50,10,180,10];
         var concurrencyList = [];
         var running = 0;
 
@@ -300,7 +299,7 @@ describe('queue', function(){
 
     it('bulk task', (done) => {
         var call_order = [],
-            delays = [40,10,60,10];
+            delays = [50,10,180,10];
 
         // worker1: --1-4
         // worker2: -2---3
