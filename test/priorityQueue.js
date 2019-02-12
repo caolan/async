@@ -55,7 +55,7 @@ describe('priorityQueue', () => {
 
     it('concurrency', (done) => {
         var call_order = [],
-            delays = [80,20,140,20];
+            delays = [80,20,180,20];
 
         // worker1: --2-3
         // worker2: -1---4
