@@ -103,9 +103,6 @@ case "$increment" in
   *) echo "Invalid --increment" >&2 ; exit 1 ;;
 esac
 
-[[ $(git rev-parse --abbrev-ref HEAD) == $branch ]] ||
-  (echo "Current branch does not match specified --branch" >&2 ; exit 1)
-
 git diff-files --quiet ||
   (echo "Working directory contains unstaged changes" >&2 ; exit 1)
 
