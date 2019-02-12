@@ -26,6 +26,8 @@ module.exports = function () {
         }
     }
 
+    this.retries(3);
+
     it('should handle async generators in each', (done) => {
         const calls = []
         async.each(range(5),

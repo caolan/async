@@ -9,6 +9,8 @@ module.exports = function () {
         return res;
     }
 
+    this.retries(3);
+
     const input = [1, 2, 3];
     const inputObj = {a: 1, b: 2, c: 3};
 
