@@ -1,3 +1,6 @@
+#v2.6.2
+- Updated lodash to squelch a security warning (#1620)
+
 # v2.6.1
 - Updated lodash to prevent `npm audit` warnings. (#1532, #1533)
 - Made `async-es` more optimized for webpack users (#1517)
