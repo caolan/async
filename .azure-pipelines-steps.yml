@@ -16,8 +16,7 @@ steps:
 - script: npm ci
   displayName: 'Install dependencies'
 
-- bash: |
-    npm test -- -- --reporter mocha-junit-reporter --reporter-options mochaFile=./test-results.xml
+- bash: npm test -- -- --reporter mocha-junit-reporter --reporter-options mochaFile=./test-results.xml
   displayName: 'Run tests'
 
 - task: PublishTestResults@2
@@ -39,8 +38,6 @@ steps:
   displayName: 'Publishing the browser test results'
   condition: variables.run_browser_tests
 
-- bash: |
-    export COVERALLS_REPO_TOKEN=$(COVERALLS_REPO_TOKEN)
-    npm run coveralls
+- bash: npm run coveralls
   displayName: 'Run coveralls'
   condition: variables.run_coveralls
