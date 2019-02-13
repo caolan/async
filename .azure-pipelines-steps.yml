@@ -30,6 +30,7 @@ steps:
 - bash: npm run mocha-browser-test -- --browsers $(browser_name) --reporters junit
   displayName: 'Run browser tests'
   condition: variables.run_browser_tests
+  continueOnError: true
 
 - task: PublishTestResults@2
   inputs:
