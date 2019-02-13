@@ -143,19 +143,19 @@ describe('parallel', () => {
                 setTimeout(() => {
                     call_order.push(1);
                     callback(null, 1);
-                }, 50);
+                }, 10);
             },
             function(callback){
                 setTimeout(() => {
                     call_order.push(2);
                     callback(null, 2);
-                }, 200);
+                }, 180);
             },
             function(callback){
                 setTimeout(() => {
                     call_order.push(3);
                     callback(null, 3,3);
-                }, 25);
+                }, 10);
             }
         ],
         2,
