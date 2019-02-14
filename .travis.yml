@@ -6,6 +6,9 @@ node_js:
   - "8"
   - "10"
 
+services:
+  - xvfb
+
 matrix:
   include:
     - node_js: "10"
@@ -21,8 +24,6 @@ after_success: npm run coveralls
 # Needed to run Karma with Firefox on Travis
 # http://karma-runner.github.io/0.13/plus/travis.html
 before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
   - sudo apt-get install -y make
   - make --version
 
