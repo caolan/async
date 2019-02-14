@@ -79,7 +79,11 @@ describe("retry", () => {
 
     it('retry with custom interval when all attempts fail',(done) => {
         var times = 3;
-        var intervalFunc = function(retryCount) { return retryCount * 100; };
+        var retryCounts = []
+        var intervalFunc = function(retryCount) {
+            retryCounts.push(retryCount)
+            return retryCount * 100;
+        };
         var callCount = 0;
         var error = 'ERROR';
         var erroredResult = 'RESULT';
@@ -94,6 +98,7 @@ describe("retry", () => {
             assert.equal(callCount, 3, "did not retry the correct number of times");
             assert.equal(err, error + times, "Incorrect error was returned");
             assert.equal(result, erroredResult + times, "Incorrect result was returned");
+            assert.deepEqual(retryCounts, [1, 2])
             done();
         });
     });
