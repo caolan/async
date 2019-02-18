@@ -272,7 +272,7 @@ describe('priorityQueue', () => {
             done();
         };
         
-        q.push([], 1, (err, arg) => {});
+        q.push([], 1, () => {});
     });
 });
 
