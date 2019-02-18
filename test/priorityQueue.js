@@ -239,5 +239,40 @@ describe('priorityQueue', () => {
             q.push('foo4', 1, () => {calls.push('foo4 cb');});
         });
     });
+    
+    it('should not call the drain callback if receives empty push and tasks are still pending', (done) => {
+        var call_order = [];
+
+        var q = async.priorityQueue((task, callback) => {
+            call_order.push('process ' + task);
+            callback('error', 'arg');
+        }, 1);
+        
+        q.push(1, 1, (err, arg) => {
+            expect(err).to.equal('error');
+            expect(arg).to.equal('arg');
+            call_order.push('callback ' + 1);
+        });
+        
+        q.push(2, 1, (err, arg) => {
+            expect(err).to.equal('error');
+            expect(arg).to.equal('arg');
+            call_order.push('callback ' + 2);
+        });
+        
+        expect(q.length()).to.equal(2);
+        
+        q.drain = function () {
+            expect(call_order).to.eql([
+                'process 1', 'callback 1',
+                'process 2', 'callback 2'
+            ]);
+            expect(q.concurrency).to.equal(1);
+            expect(q.length()).to.equal(0);
+            done();
+        };
+        
+        q.push([], 1, (err, arg) => {});
+    });
 });
 
