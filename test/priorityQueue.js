@@ -269,6 +269,7 @@ describe('priorityQueue', () => {
             ]);
             expect(q.concurrency).to.equal(1);
             expect(q.length()).to.equal(0);
+            expect(q.running()).to.equal(0);
             done();
         };
         
