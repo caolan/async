@@ -64,6 +64,24 @@ describe('whilst', () => {
         }, 10)
     });
 
+    it('should not error when test is false on first iteration', (done) => {
+        var counter = 0;
+
+        async.whilst(
+            (cb) => cb(null, false),
+            (cb) => {
+                counter++;
+                cb(null);
+            },
+            (err, result) => {
+                expect(err).to.eql(null);
+                expect(result).to.be.undefined;
+                expect(counter).to.equal(0);
+                done();
+            }
+        );
+    });
+
     it('doWhilst', (done) => {
         var call_order = [];
 
