@@ -9,7 +9,7 @@
 
 Async is a utility module which provides straight-forward, powerful functions
 for working with asynchronous JavaScript. Although originally designed for
-use with [Node.js](https://nodejs.org/) and installable via `npm install --save async`,
+use with [Node.js](https://nodejs.org/) and installable via `npm install async`,
 it can also be used directly in the browser.
 
 Async is also installable via:
@@ -218,7 +218,7 @@ The source is available for download from
 Alternatively, you can install using npm:
 
 ```bash
-$ npm install --save async
+$ npm install async
 ```
 
 As well as using Bower:
@@ -267,7 +267,7 @@ included in the `/dist` folder. Async can also be found on the [jsDelivr CDN](ht
 We also provide Async as a collection of ES2015 modules, in an alternative `async-es` package on npm.
 
 ```bash
-$ npm install --save async-es
+$ npm install async-es
 ```
 
 ```js
