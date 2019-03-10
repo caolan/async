@@ -7,6 +7,9 @@ anySeries someSeries
 find detect
 findLimit detectLimit
 findSeries detectSeries
+flatMap concat
+flatMapLimit concatLimit
+flatMapSeries concatSeries
 forEach each
 forEachSeries eachSeries
 forEachLimit eachLimit
