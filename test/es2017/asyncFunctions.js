@@ -656,7 +656,10 @@ module.exports = function () {
             throw thrown;
         });
         fn(1, (err, result) => {
-            expect(result).to.eql({error: thrown});
+            expect(result).to.eql({
+                error: thrown,
+                value: undefined
+            });
             done(err);
         })
     });
