@@ -8,6 +8,7 @@ module.exports = function(config) {
             'karma-mocha',
             'karma-mocha-reporter',
             'karma-junit-reporter',
+            'karma-edge-launcher',
             'karma-firefox-launcher',
             'karma-safari-launcher'
         ],

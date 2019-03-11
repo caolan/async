@@ -16,7 +16,7 @@ jobs:
       node_10_x:
         node_version: 10.x
         run_browser_tests: true
-        browser_name: Firefox
+        browser_name: Edge
         run_coveralls: true
 
   steps:
