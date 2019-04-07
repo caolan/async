@@ -72,7 +72,7 @@ describe('cargo', () => {
 
     it('without callback', (done) => {
         var call_order = [],
-            delays = [40,20,60,20];
+            delays = [40,60,60,20];
 
         // worker: --1-2---34-5-
         // order of completion: 1,2,3,4,5
@@ -88,14 +88,14 @@ describe('cargo', () => {
 
         setTimeout(() => {
             c.push(2);
-        }, 30);
+        }, 20);
         setTimeout(() => {
             c.push(3);
             c.push(4);
             c.push(5);
-        }, 50);
+        }, 80);
 
-        setTimeout(() => {
+        c.drain = function() {
             expect(call_order).to.eql([
                 'process 1',
                 'process 2',
@@ -103,7 +103,7 @@ describe('cargo', () => {
                 'process 5'
             ]);
             done();
-        }, 200);
+        }
     });
 
     it('bulk task', (done) => {
@@ -174,15 +174,16 @@ describe('cargo', () => {
         var drainCounter = 0;
         c.drain = function () {
             drainCounter++;
+
+            if (drainCounter === 1) {
+                loadCargo();
+            } else {
+                expect(drainCounter).to.equal(2);
+                done();
+            }
         };
 
         loadCargo();
-        setTimeout(loadCargo, 50);
-
-        setTimeout(() => {
-            expect(drainCounter).to.equal(2);
-            done();
-        }, 100);
     });
 
     it('events', (done) => {

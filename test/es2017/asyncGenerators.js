@@ -26,12 +26,14 @@ module.exports = function () {
         }
     }
 
+    this.retries(3);
+
     it('should handle async generators in each', (done) => {
         const calls = []
         async.each(range(5),
             async (val) => {
                 calls.push(val)
-                await delay(5)
+                await delay(1)
             }, (err) => {
                 if (err) throw err
                 expect(calls).to.eql([0, 1, 2, 3, 4])

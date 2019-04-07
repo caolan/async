@@ -11,12 +11,35 @@ describe('cargoQueue', () => {
 
     it('cargoQueue', (done) => {
         var call_order = [],
-            delays = [40, 40, 20];
+            delays = [50, 50, 50];
 
         // worker: --12--34--5-
         // order of completion: 1,2,3,4,5
 
         var c = async.cargoQueue((tasks, callback) => {
+            if (tasks[0] === 1) {
+                c.push(3, (err, arg) => {
+                    expect(err).to.equal('error');
+                    expect(arg).to.equal('arg');
+                    expect(c.length()).to.equal(0);
+                    call_order.push('callback ' + 3);
+                });
+            } else if (tasks[0] === 3) {
+                c.push(4, (err, arg) => {
+                    expect(err).to.equal('error');
+                    expect(arg).to.equal('arg');
+                    expect(c.length()).to.equal(0);
+                    call_order.push('callback ' + 4);
+                });
+                expect(c.length()).to.equal(1);
+                c.push(5, (err, arg) => {
+                    expect(err).to.equal('error');
+                    expect(arg).to.equal('arg');
+                    expect(c.length()).to.equal(0);
+                    call_order.push('callback ' + 5);
+                });
+            }
+
             setTimeout(() => {
                 call_order.push('process ' + tasks.join(' '));
                 callback('error', 'arg');
@@ -37,32 +60,6 @@ describe('cargoQueue', () => {
         });
 
         expect(c.length()).to.equal(2);
-
-        // async push
-        setTimeout(() => {
-            c.push(3, (err, arg) => {
-                expect(err).to.equal('error');
-                expect(arg).to.equal('arg');
-                expect(c.length()).to.equal(0);
-                call_order.push('callback ' + 3);
-            });
-        }, 15);
-        setTimeout(() => {
-            c.push(4, (err, arg) => {
-                expect(err).to.equal('error');
-                expect(arg).to.equal('arg');
-                expect(c.length()).to.equal(0);
-                call_order.push('callback ' + 4);
-            });
-            expect(c.length()).to.equal(1);
-            c.push(5, (err, arg) => {
-                expect(err).to.equal('error');
-                expect(arg).to.equal('arg');
-                expect(c.length()).to.equal(0);
-                call_order.push('callback ' + 5);
-            });
-        }, 30);
-
 
         c.drain = function () {
             expect(call_order).to.eql([
@@ -167,15 +164,16 @@ describe('cargoQueue', () => {
         var drainCounter = 0;
         c.drain = function () {
             drainCounter++;
+
+            if (drainCounter === 1) {
+                loadCargo();
+            } else {
+                expect(drainCounter).to.equal(2);
+                done();
+            }
         };
 
         loadCargo();
-        setTimeout(loadCargo, 50);
-
-        setTimeout(() => {
-            expect(drainCounter).to.equal(2);
-            done();
-        }, 100);
     });
 
     it('events', (done) => {

@@ -1,0 +1,43 @@
+# Build steps common to all platforms
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: $(node_version)
+  displayName: 'Install Node.js'
+
+- task: Npm@1
+  inputs:
+    command: custom
+    customCommand: install -g npm
+  displayName: 'Update npm'
+  condition: eq(variables['node_version'], '6.x')
+
+- script: npm ci
+  displayName: 'Install dependencies'
+
+- bash: npm test -- -- --reporter mocha-junit-reporter --reporter-options mochaFile=./test-results.xml
+  displayName: 'Run tests'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '**/test-results.xml'
+    testRunTitle: $(os_name) Node $(node_version)
+  displayName: 'Publishing the test results'
+  condition: always()
+
+- bash: npm run mocha-browser-test -- --browsers $(browser_name) --reporters junit
+  displayName: 'Run browser tests'
+  condition: variables.run_browser_tests
+  continueOnError: true
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '**/browser-test-results.xml'
+    testRunTitle: $(os_name) Node $(node_version) Browser tests
+  displayName: 'Publishing the browser test results'
+  condition: variables.run_browser_tests
+
+- bash: npm run coveralls
+  displayName: 'Run coveralls'
+  condition: variables.run_coveralls

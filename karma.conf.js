@@ -7,12 +7,19 @@ module.exports = function(config) {
             'karma-browserify',
             'karma-mocha',
             'karma-mocha-reporter',
-            'karma-firefox-launcher'
+            'karma-junit-reporter',
+            'karma-edge-launcher',
+            'karma-firefox-launcher',
+            'karma-safari-launcher'
         ],
         preprocessors: {
-            'test/*.js': ['browserify']
+            'test/*.js': ['browserify'],
+            'lib/*.js': ['browserify']
         },
         reporters: ['mocha'],
+        junitReporter: {
+            outputFile: 'browser-test-results.xml'
+        },
         singleRun: true,
 
         browserify: {

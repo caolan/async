@@ -124,7 +124,7 @@ describe("retry", () => {
         setTimeout(() => {
             expect(calls).to.equal(5);
             done();
-        }, 50);
+        }, 100);
     });
 
     it("should be cancelable", (done) => {

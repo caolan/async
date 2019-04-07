@@ -51,15 +51,15 @@ describe('timeout', () => {
     it('timeout with parallel', (done) => {
         async.parallel([
             async.timeout((callback) => {
-                setTimeout(() => {
+                setImmediate(() => {
                     callback(null, 'I didn\'t time out');
-                }, 25);
-            }, 50),
+                });
+            }, 20),
             async.timeout((callback) => {
                 setTimeout(() => {
                     callback(null, 'I will time out');
                 }, 75);
-            }, 50)
+            }, 20)
         ],
         (err, results) => {
             expect(err.message).to.equal('Callback function "anonymous" timed out.');
@@ -81,7 +81,7 @@ describe('timeout', () => {
                     callback(null, 'I didn\'t time out');
                 })
             }
-        }, 50);
+        }, 20);
 
         async.series([
             function(cb) {

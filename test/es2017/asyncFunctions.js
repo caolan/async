@@ -9,6 +9,8 @@ module.exports = function () {
         return res;
     }
 
+    this.retries(3);
+
     const input = [1, 2, 3];
     const inputObj = {a: 1, b: 2, c: 3};
 
@@ -303,8 +305,8 @@ module.exports = function () {
     /* eslint prefer-arrow-callback: 0, object-shorthand: 0 */
     it('should handle async functions in autoInject', (done) => {
         async.autoInject({
-            z: async function(){ return 0},
-            a: async function a () {
+            z: async function () { return 0 },
+            a: async function () {
                 return await Promise.resolve(1);
             },
             b: async function (a) {
@@ -676,7 +678,7 @@ module.exports = function () {
         var fn = async.timeout(async (val) => {
             await new Promise((resolve) => setTimeout(resolve, 100));
             return val;
-        }, 50);
+        }, 20);
         fn(1, (err) => {
             expect(err.message).to.match(/timed out/);
             done();
