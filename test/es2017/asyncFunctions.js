@@ -272,14 +272,14 @@ module.exports = function () {
      */
 
     it('should handle async functions in applyEach', (done) => {
-        async.applyEach([asyncIdentity, asyncIdentity])(input, (err, result) => {
+        async.applyEach([asyncIdentity, asyncIdentity], input)((err, result) => {
             expect(result).to.eql([input, input]);
             done(err);
         });
     });
 
     it('should handle async functions in applyEachSeries', (done) => {
-        async.applyEachSeries([asyncIdentity, asyncIdentity])(input, (err, result) => {
+        async.applyEachSeries([asyncIdentity, asyncIdentity], input)((err, result) => {
             expect(result).to.eql([input, input]);
             done(err);
         });
