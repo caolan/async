@@ -382,10 +382,10 @@ module.exports = function () {
             result.push(await Promise.resolve(val));
         }, 2)
 
-        q.drain = () => {
+        q.drain(() => {
             expect(result).to.eql([1, 2, 3]);
             done();
-        };
+        });
 
         q.push(1);
         q.push(2);
