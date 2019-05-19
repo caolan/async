@@ -579,11 +579,12 @@ module.exports = function () {
         }, 5)
 
         const calls = []
-
-        q.error().catch(d => calls.push('error ' + d))
+        const errorCalls = []
+        const emptyCalls = []
+        q.error().catch(d => errorCalls.push('error ' + d))
         q.saturated().then(() => calls.push('saturated'))
         q.unsaturated().then(() => calls.push('unsaturated'))
-        q.empty().then(() => calls.push('empty'))
+        q.empty().then(() => emptyCalls.push('empty'))
 
         q.push(1).then(d => calls.push('push cb ' + d))
         q.push(2).then(d => calls.push('push cb ' + d))
@@ -602,11 +603,16 @@ module.exports = function () {
             'push cb 3',
             'push cb 4',
             'push cb 5',
-            'empty',
-            'error Error: oh noes',
             'push cb 7',
             'unsaturated',
             'push cb 8'
+        ])
+
+        expect(errorCalls).to.eql([
+            'error Error: oh noes',
+        ])
+        expect(emptyCalls).to.eql([
+            'empty',
         ])
     })
 
