@@ -50,7 +50,7 @@ describe('queue', function(){
         expect(q.length()).to.equal(4);
         expect(q.concurrency).to.equal(2);
 
-        q.drain = function () {
+        q.drain(() => {
             expect(call_order).to.eql([
                 'process 2', 'callback 2',
                 'process 1', 'callback 1',
@@ -60,7 +60,7 @@ describe('queue', function(){
             expect(q.concurrency).to.equal(2);
             expect(q.length()).to.equal(0);
             done();
-        };
+        });
     });
 
     it('default concurrency', (done) => {
@@ -103,7 +103,7 @@ describe('queue', function(){
         expect(q.length()).to.equal(4);
         expect(q.concurrency).to.equal(1);
 
-        q.drain = function () {
+        q.drain(() => {
             expect(call_order).to.eql([
                 'process 1', 'callback 1',
                 'process 2', 'callback 2',
@@ -113,7 +113,7 @@ describe('queue', function(){
             expect(q.concurrency).to.equal(1);
             expect(q.length()).to.equal(0);
             done();
-        };
+        });
     });
 
     it('zero concurrency', (done) => {
@@ -132,10 +132,10 @@ describe('queue', function(){
             callback(task.name === 'foo' ? new Error('fooError') : null);
         }, 2);
 
-        q.drain = function() {
+        q.drain(() => {
             expect(results).to.eql(['bar', 'fooError']);
             done();
-        };
+        });
 
         q.push({name: 'bar'}, (err) => {
             if(err) {
@@ -163,17 +163,17 @@ describe('queue', function(){
             callback(task.name === 'foo' ? new Error('fooError') : null);
         }, 2);
 
-        q.error = function(error, task) {
+        q.error((error, task) => {
             expect(error).to.exist;
             expect(error.message).to.equal('fooError');
             expect(task.name).to.equal('foo');
             results.push('fooError');
-        };
+        });
 
-        q.drain = function() {
+        q.drain (() => {
             expect(results).to.eql(['fooError', 'bar']);
             done();
-        };
+        });
 
         q.push({name: 'foo'});
 
@@ -201,9 +201,7 @@ describe('queue', function(){
             q.push('');
         }
 
-        q.drain = function(){
-            done();
-        };
+        q.drain(done);
 
         setTimeout(() => {
             expect(q.concurrency).to.equal(1);
@@ -245,7 +243,7 @@ describe('queue', function(){
         q.push(3);
         q.push(4);
 
-        q.drain = function () {
+        q.drain(() => {
             expect(running).to.eql(0);
             expect(concurrencyList).to.eql([1, 2, 2, 2]);
             expect(call_order).to.eql([
@@ -255,7 +253,7 @@ describe('queue', function(){
                 'process 3'
             ]);
             done();
-        };
+        });
     });
 
     it('push with non-function', (done) => {
@@ -320,7 +318,7 @@ describe('queue', function(){
         expect(q.length()).to.equal(4);
         expect(q.concurrency).to.equal(2);
 
-        q.drain = function () {
+        q.drain(() => {
             expect(call_order).to.eql([
                 'process 2', 'callback 2',
                 'process 1', 'callback 1',
@@ -330,7 +328,7 @@ describe('queue', function(){
             expect(q.concurrency).to.equal(2);
             expect(q.length()).to.equal(0);
             done();
-        };
+        });
     });
 
     it('idle', (done) => {
@@ -351,11 +349,11 @@ describe('queue', function(){
         // Queue is busy when tasks added
         expect(q.idle()).to.equal(false);
 
-        q.drain = function() {
+        q.drain(() => {
             // Queue is idle after drain
             expect(q.idle()).to.equal(true);
             done();
-        };
+        });
     });
 
     it('pause', (done) => {
@@ -397,7 +395,7 @@ describe('queue', function(){
             q.resume();
             q.push(5);
             q.push(6);
-            q.drain = drain;
+            q.drain(drain);
         }
         function drain () {
             expect(concurrencyList).to.eql([1, 2, 2, 1, 2, 2]);
@@ -436,10 +434,10 @@ describe('queue', function(){
         q.push({ id: 4 });
         q.push({ id: 5 });
 
-        q.drain = function () {
+        q.drain(() => {
             expect(call_order).to.eql([1, 2, 3, 4, 5]);
             done();
-        };
+        });
     });
 
     it('start paused', (done) => {
@@ -462,9 +460,7 @@ describe('queue', function(){
             q.resume();
         }, 5);
 
-        q.drain = function () {
-            done();
-        };
+        q.drain(done);
     });
 
     it('kill', (done) => {
@@ -496,15 +492,15 @@ describe('queue', function(){
         }, 3);
         q.concurrency = 3;
 
-        q.saturated = function() {
+        q.saturated(() => {
             assert(q.running() == 3, 'queue should be saturated now');
             calls.push('saturated');
-        };
-        q.empty = function() {
+        });
+        q.empty(() => {
             assert(q.length() === 0, 'queue should be empty now');
             calls.push('empty');
-        };
-        q.drain = function() {
+        });
+        q.drain(() => {
             assert(
                 q.length() === 0 && q.running() === 0,
                 'queue should be empty now and no more workers should be running'
@@ -528,7 +524,7 @@ describe('queue', function(){
                 'drain'
             ]);
             done();
-        };
+        });
         q.push('foo', () => {calls.push('foo cb');});
         q.push('bar', () => {calls.push('bar cb');});
         q.push('zoo', () => {calls.push('zoo cb');});
@@ -544,7 +540,7 @@ describe('queue', function(){
             async.setImmediate(cb);
         }, 3);
 
-        q.drain = function() {
+        q.drain(() => {
             assert(
                 q.length() === 0 && q.running() === 0,
                 'queue should be empty now and no more workers should be running'
@@ -554,7 +550,7 @@ describe('queue', function(){
                 'drain'
             ]);
             done();
-        };
+        });
         q.push([]);
     });
 
@@ -568,14 +564,14 @@ describe('queue', function(){
             async.setImmediate(cb);
         }, 1);
 
-        q.empty = function () {
+        q.empty(() => {
             calls.push('empty');
             assert(q.idle() === false,
                 'tasks should be running when empty is called')
             expect(q.running()).to.equal(1);
-        }
+        })
 
-        q.drain = function() {
+        q.drain(() => {
             calls.push('drain');
             expect(calls).to.eql([
                 'empty',
@@ -583,7 +579,7 @@ describe('queue', function(){
                 'drain'
             ]);
             done();
-        };
+        });
         q.push(1);
     });
 
@@ -593,13 +589,13 @@ describe('queue', function(){
             async.setImmediate(cb);
         }, 2);
 
-        q.saturated = function () {
+        q.saturated(() => {
             saturatedCalled = true;
-        };
-        q.drain = function () {
+        })
+        q.drain(() => {
             assert(saturatedCalled, "saturated not called");
             done();
-        };
+        })
 
         q.push(['foo', 'bar', 'baz', 'moo']);
     });
@@ -623,10 +619,10 @@ describe('queue', function(){
                 calls.push('process ' + task);
                 async.setImmediate(cb);
             }, 4);
-            q.saturated = function() {
+            q.saturated(() => {
                 calls.push('saturated');
-            };
-            q.empty = function() {
+            });
+            q.empty(() => {
                 expect(calls.indexOf('saturated')).to.be.above(-1);
                 setTimeout(() => {
                     expect(calls).eql([
@@ -645,7 +641,7 @@ describe('queue', function(){
                     ]);
                     done();
                 }, 50);
-            };
+            });
             q.push('foo0', () => {calls.push('foo0 cb');});
             q.push('foo1', () => {calls.push('foo1 cb');});
             q.push('foo2', () => {calls.push('foo2 cb');});
@@ -683,10 +679,10 @@ describe('queue', function(){
                 calls.push('process ' + task);
                 async.setImmediate(cb);
             }, 4);
-            q.unsaturated = function() {
+            q.unsaturated(() => {
                 calls.push('unsaturated');
-            };
-            q.empty = function() {
+            });
+            q.empty(() => {
                 expect(calls.indexOf('unsaturated')).to.be.above(-1);
                 setTimeout(() => {
                     expect(calls).eql([
@@ -708,7 +704,7 @@ describe('queue', function(){
                     ]);
                     done();
                 }, 50);
-            };
+            });
             q.push('foo0', () => {calls.push('foo0 cb');});
             q.push('foo1', () => {calls.push('foo1 cb');});
             q.push('foo2', () => {calls.push('foo2 cb');});
@@ -726,11 +722,11 @@ describe('queue', function(){
                 });
             }, 2);
 
-            q.drain = function() {
+            q.drain(() => {
                 expect(q.workersList().length).to.equal(0);
                 expect(q.running()).to.equal(0);
                 done();
-            };
+            });
 
             q.push('foo');
             q.push('bar');
@@ -767,11 +763,11 @@ describe('queue', function(){
                 });
             }, 2);
 
-            q.drain = function() {
+            q.drain(() => {
                 expect(q.workersList()).to.eql([]);
                 expect(q.workersList().length).to.equal(q.running());
                 done();
-            };
+            });
 
             q.push('foo');
             q.push('bar');
@@ -792,10 +788,10 @@ describe('queue', function(){
             return node.data === 3;
         });
 
-        q.drain = function () {
+        q.drain(() => {
             expect(result).to.eql([1, 2, 4, 5]);
             done();
-        }
+        })
     });
 
     it('should be iterable', (done) => {
@@ -811,9 +807,9 @@ describe('queue', function(){
 
         expect([...q]).to.eql([1, 2, 3, 4, 5]);
 
-        q.drain = function () {
+        q.drain(() => {
             expect([...q]).to.eql([]);
             done();
-        }
+        })
     })
 });

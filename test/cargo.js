@@ -59,7 +59,7 @@ describe('cargo', () => {
         }, 30);
 
 
-        c.drain = function () {
+        c.drain(() => {
             expect(call_order).to.eql([
                 'process 1 2', 'callback 1', 'callback 2',
                 'process 3 4', 'callback 3', 'callback 4',
@@ -67,7 +67,7 @@ describe('cargo', () => {
             ]);
             expect(c.length()).to.equal(0);
             done();
-        };
+        });
     });
 
     it('without callback', (done) => {
@@ -95,7 +95,7 @@ describe('cargo', () => {
             c.push(5);
         }, 80);
 
-        c.drain = function() {
+        c.drain(() => {
             expect(call_order).to.eql([
                 'process 1',
                 'process 2',
@@ -103,7 +103,7 @@ describe('cargo', () => {
                 'process 5'
             ]);
             done();
-        }
+        })
     });
 
     it('bulk task', (done) => {
@@ -145,9 +145,9 @@ describe('cargo', () => {
         }, 3);
 
         var drainCounter = 0;
-        c.drain = function () {
+        c.drain(() => {
             drainCounter++;
-        };
+        });
 
         for(var i = 0; i < 10; i++){
             c.push(i);
@@ -172,7 +172,7 @@ describe('cargo', () => {
         }
 
         var drainCounter = 0;
-        c.drain = function () {
+        c.drain(() => {
             drainCounter++;
 
             if (drainCounter === 1) {
@@ -181,7 +181,7 @@ describe('cargo', () => {
                 expect(drainCounter).to.equal(2);
                 done();
             }
-        };
+        });
 
         loadCargo();
     });
@@ -195,15 +195,15 @@ describe('cargo', () => {
         }, 1);
         q.concurrency = 3;
 
-        q.saturated = function() {
+        q.saturated(() => {
             assert(q.running() == 3, 'cargo should be saturated now');
             calls.push('saturated');
-        };
-        q.empty = function() {
+        });
+        q.empty(() => {
             assert(q.length() === 0, 'cargo should be empty now');
             calls.push('empty');
-        };
-        q.drain = function() {
+        });
+        q.drain(() => {
             assert(
                 q.length() === 0 && q.running() === 0,
                 'cargo should be empty now and no more workers should be running'
@@ -227,7 +227,7 @@ describe('cargo', () => {
                 'drain'
             ]);
             done();
-        };
+        });
         q.push('foo', () => {calls.push('foo cb');});
         q.push('bar', () => {calls.push('bar cb');});
         q.push('zoo', () => {calls.push('zoo cb');});
@@ -249,9 +249,7 @@ describe('cargo', () => {
             setTimeout(cb, 25);
         }, 1);
 
-        cargo.drain = function () {
-            done();
-        };
+        cargo.drain(done);
 
         expect(cargo.payload).to.equal(1);
 
@@ -286,11 +284,11 @@ describe('cargo', () => {
             });
         }, 2);
 
-        cargo.drain = function() {
+        cargo.drain(() => {
             expect(cargo.workersList()).to.eql([]);
             expect(cargo.running()).to.equal(0);
             done();
-        };
+        });
 
         cargo.push('foo');
         cargo.push('bar');
@@ -306,10 +304,10 @@ describe('cargo', () => {
             });
         }, 2);
 
-        cargo.drain = function() {
+        cargo.drain(() => {
             expect(cargo.running()).to.equal(0);
             done();
-        };
+        });
 
         cargo.push('foo');
         cargo.push('bar');
