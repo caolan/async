@@ -18,6 +18,7 @@ const results = await async.mapLimit(urls, 5, async url => {
 - `during` and `doDuring` have been removed, and instead `whilst`, `doWhilst`, `until` and `doUntil` now have asynchronous `test` functions. (#850, #1557)
 - `limits` of less than 1 now cause an error to be thrown in queues and collection methods. (#1249, #1552)
 - `memoize` no longer memoizes errors (#1465, #1466)
+- `applyEach`/`applyEachSeries` have a simpler interface, to make them more easily type-able.  It always returns a function that takes in a single callback argument.  If that callback is omitted, a promise is returned, making it awaitable.
 
 ## New Features
 - Async generators are now supported in all the Collection methods. (#1560)
