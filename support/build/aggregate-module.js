@@ -9,7 +9,7 @@ rollup({
         return bundle.write({
             format: 'esm',
             name: 'async',
-            file: 'build/async.mjs'
+            file: 'build/dist/async.mjs'
         });
     })
     .catch((err) => { throw err; });

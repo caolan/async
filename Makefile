@@ -20,7 +20,7 @@ LINT_FILES := lib/ test/ $(shell find perf/ -maxdepth 2 -type f) $(shell find su
 
 UMD_BUNDLE := $(BUILDDIR)/dist/async.js
 UMD_BUNDLE_MIN := $(BUILDDIR)/dist/async.min.js
-MJS_BUNDLE := $(BUILDDIR)/async.mjs
+MJS_BUNDLE := $(BUILDDIR)/dist/async.mjs
 # UMD_BUNDLE_MAP := $(BUILDDIR)/dist/async.min.map
 ALIAS_ES := $(addprefix build-es/, $(addsuffix .js, $(shell cat $(SCRIPTS)/aliases.txt | cut -d ' ' -f1)))
 ALIAS_CJS := $(patsubst build-es/%, build/%, $(ALIAS_ES))
