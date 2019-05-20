@@ -27,7 +27,7 @@ describe('applyEach', () => {
                 cb(null, 3);
             }, 18);
         };
-        async.applyEach([one, two, three], 5, (err, results) => {
+        async.applyEach([one, two, three], 5)((err, results) => {
             assert(err === null, err + " passed instead of 'null'");
             expect(call_order).to.eql(['two', 'one', 'three']);
             expect(results).to.eql([1, 2, 3]);
@@ -51,7 +51,7 @@ describe('applyEach', () => {
             throw new Error('third task - should not get here');
         }
 
-        async.applyEach({one, two, three}, 5, () => {
+        async.applyEach({one, two, three}, 5)(() => {
             throw new Error('final callback - should not get here');
         });
 
@@ -84,7 +84,7 @@ describe('applyEach', () => {
                 cb(null, 3);
             }, 15);
         }
-        async.applyEachSeries([one, two, three], 5, (err, results) => {
+        async.applyEachSeries([one, two, three], 5)((err, results) => {
             assert(err === null, err + " passed instead of 'null'");
             expect(call_order).to.eql(['one', 'two', 'three']);
             expect(results).to.eql([1, 2, 3]);
@@ -109,7 +109,7 @@ describe('applyEach', () => {
         function three(/*, cb */) {
             throw new Error('third task - should not get here');
         }
-        async.applyEachSeries([one, two, three], 5, () => {
+        async.applyEachSeries([one, two, three], 5)(() => {
             throw new Error('final callback - should not get here');
         });
 
@@ -117,36 +117,5 @@ describe('applyEach', () => {
             expect(call_order).to.eql(['one', 'two']);
             done();
         }, 25);
-    });
-
-    it('applyEach partial application', (done) => {
-        var call_order = [];
-        var one = function (val, cb) {
-            expect(val).to.equal(5);
-            setTimeout(() => {
-                call_order.push('one');
-                cb(null, 1);
-            }, 10);
-        };
-        var two = function (val, cb) {
-            expect(val).to.equal(5);
-            setTimeout(() => {
-                call_order.push('two');
-                cb(null, 2);
-            }, 5);
-        };
-        var three = function (val, cb) {
-            expect(val).to.equal(5);
-            setTimeout(() => {
-                call_order.push('three');
-                cb(null, 3);
-            }, 15);
-        };
-        async.applyEach([one, two, three])(5, (err, results) => {
-            if (err) throw err;
-            expect(call_order).to.eql(['two', 'one', 'three']);
-            expect(results).to.eql([1, 2, 3]);
-            done();
-        });
     });
 });

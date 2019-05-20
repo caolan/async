@@ -316,7 +316,22 @@ module.exports = function () {
      * Control flow
      */
 
-    // TODO:  figure out to do with applyEach
+    it('should return a Promise: applyEach', async () => {
+        const calls = []
+        await async.applyEach([
+            async (v, x) => { calls.push(v, x) },
+            async (v, x) => { calls.push(v, x) }
+        ], 5, 6)();
+        expect(calls).to.eql([5, 6, 5, 6])
+    })
+    it('should return a Promise: applyEachSeries', async () => {
+        const calls = []
+        await async.applyEachSeries([
+            async (v, x) => { calls.push(v, x) },
+            async (v, x) => { calls.push(v, x) }
+        ], 5, 6)();
+        expect(calls).to.eql([5, 6, 5, 6])
+    })
 
     it('should return a Promise: auto', async () => {
         expect (async.auto.name).to.contain('auto')
