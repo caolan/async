@@ -469,9 +469,9 @@ describe('queue', function(){
                 throw new Error("Function should never be called");
             }, 20);
         }, 1);
-        q.drain = function() {
+        q.drain(() => {
             throw new Error("Function should never be called");
-        };
+        });
 
         q.push(0);
 
@@ -811,5 +811,12 @@ describe('queue', function(){
             expect([...q]).to.eql([]);
             done();
         })
+    })
+
+    it('should error when re-assigning event methods', () => {
+        var q = async.queue(() => {})
+        expect(() => {
+            q.drain = () => {}
+        }).to.throw()
     })
 });
