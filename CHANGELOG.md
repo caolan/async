@@ -14,11 +14,12 @@ const results = await async.mapLimit(urls, 5, async url => {
 ## Breaking Changes
 - Most Async methods return a Promise when the final callback is omitted, making them `await`-able! (#1572)
 - We are now making heavy use of ES2015 features, this means we have dropped out-of-the-box support for Node 4 and earlier, and many old versions of browsers. (#1541, #1553)
+- In `queue`, `priorityQueue`, `cargo` and `cargoQueue`, the "event"-style methods, like `q.drain` and `q.saturated` are now methods that register a callback, rather than properties you assign a callback to.  They are now of the form `q.drain(callback)`.  If you do not pass a callback a Promise will be returned for the next occurrence of the event, making them `await`-able, e.g. `await q.drain()`.  (#1586, #1641)
 - Calling `callback(false)` will cancel an async method, preventing further iteration and callback calls.  This is useful for preventing memory leaks when you break out of an async flow by calling an outer callback. (#1064, #1542)
 - `during` and `doDuring` have been removed, and instead `whilst`, `doWhilst`, `until` and `doUntil` now have asynchronous `test` functions. (#850, #1557)
 - `limits` of less than 1 now cause an error to be thrown in queues and collection methods. (#1249, #1552)
 - `memoize` no longer memoizes errors (#1465, #1466)
-- `applyEach`/`applyEachSeries` have a simpler interface, to make them more easily type-able.  It always returns a function that takes in a single callback argument.  If that callback is omitted, a promise is returned, making it awaitable.
+- `applyEach`/`applyEachSeries` have a simpler interface, to make them more easily type-able.  It always returns a function that takes in a single callback argument.  If that callback is omitted, a promise is returned, making it awaitable. (#1228, #1640)
 
 ## New Features
 - Async generators are now supported in all the Collection methods. (#1560)
