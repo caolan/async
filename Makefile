@@ -20,6 +20,7 @@ LINT_FILES := lib/ test/ $(shell find perf/ -maxdepth 2 -type f) $(shell find su
 
 UMD_BUNDLE := $(BUILDDIR)/dist/async.js
 UMD_BUNDLE_MIN := $(BUILDDIR)/dist/async.min.js
+MJS_BUNDLE := $(BUILDDIR)/async.mjs
 # UMD_BUNDLE_MAP := $(BUILDDIR)/dist/async.min.map
 ALIAS_ES := $(addprefix build-es/, $(addsuffix .js, $(shell cat $(SCRIPTS)/aliases.txt | cut -d ' ' -f1)))
 ALIAS_CJS := $(patsubst build-es/%, build/%, $(ALIAS_ES))
@@ -63,7 +64,7 @@ lint:
 	eslint --fix $(LINT_FILES)
 
 # Compile the ES6 modules to singular bundles, and individual bundles
-build-bundle: build-modules $(UMD_BUNDLE)
+build-bundle: build-modules $(UMD_BUNDLE) $(MJS_BUNDLE)
 
 build-modules: $(CJS_MODULES)
 
@@ -78,6 +79,10 @@ $(BUILDDIR)/%.js: lib/%.js
 $(UMD_BUNDLE): $(ES_MODULES) package.json
 	mkdir -p "$(@D)"
 	node $(SCRIPTS)/build/aggregate-bundle.js
+
+$(MJS_BUNDLE): $(ES_MODULES) package.json
+	mkdir -p "$(@D)"
+	node $(SCRIPTS)/build/aggregate-module.js
 
 # Create the minified UMD versions and copy them to dist/ for bower
 build-dist: $(DIST) $(DIST)/async.js $(DIST)/async.min.js # $(DIST)/async.min.map

@@ -264,7 +264,9 @@ included in the `/dist` folder. Async can also be found on the [jsDelivr CDN](ht
 
 ### ES Modules
 
-We also provide Async as a collection of ES2015 modules, in an alternative `async-es` package on npm.
+Async includes a `.mjs` version that should automatically be used by compatible bundlers such as Webpack or Rollup, anything that uses the `module` field of the `package.json`.
+
+We also provide Async as a collection of purely ES2015 modules, in an alternative `async-es` package on npm.
 
 ```bash
 $ npm install async-es
