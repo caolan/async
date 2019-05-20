@@ -25,6 +25,7 @@ const results = await async.mapLimit(urls, 5, async url => {
 - Async generators are now supported in all the Collection methods. (#1560)
 - Added `cargoQueue`, a queue with both `concurrency` and `payload` size parameters. (#1567)
 - Queue objects returned from `queue` now have a `Symbol.iterator` method, meaning they can be iterated over to inspect the current list of items in the queue. (#1459, #1556)
+- A ESM-flavored `async.mjs` is included in the `async` package.  This is described in the `package.json` `"module"` field, meaning it should be automatically used by Webpack and other compatible bundlers.
 
 ## Bug fixes
 - Better handle arbitrary error objects in `asyncify` (#1568, #1569)
