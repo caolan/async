@@ -244,7 +244,9 @@ __Development:__ [async.js](https://raw.githubusercontent.com/caolan/async/maste
 
 ### In the Browser
 
-Async should work in any ES5 environment (IE9 and above).
+Async should work in any ES2015 environment (Node 6+ and all modern browsers).
+
+If you want to use Async in an older environment, (e.g. Node 4, IE11) you will have to transpile.
 
 Usage:
 
