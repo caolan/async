@@ -1,3 +1,10 @@
+# v3.0.1
+
+## Bug fixes
+- Fixed a regression where arrays passed to `queue` and `cargo` would be completely flattened. (#1645)
+- Clarified Async's browser support (#1643)
+
+
 # v3.0.0
 
 The `async`/`await` release!
