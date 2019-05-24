@@ -264,6 +264,24 @@ describe('queue', function(){
         done();
     });
 
+    it('push with arrays', (done) => {
+        const tasks = []
+        var q = async.queue((task, cb) => {
+            tasks.push(task)
+            cb()
+        }, 1);
+
+        q.push([[1, 2, 3], [4, 5, 6]])
+
+        q.drain(() => {
+            expect(tasks).to.eql([
+                [1, 2, 3],
+                [4, 5, 6]
+            ])
+            done()
+        })
+    })
+
     it('unshift', (done) => {
         var queue_order = [];
 
@@ -607,7 +625,7 @@ describe('queue', function(){
         });
 
         expect(q.started).to.equal(false);
-        q.push([]);
+        q.push('a');
         expect(q.started).to.equal(true);
         done();
     });
