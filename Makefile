@@ -57,7 +57,7 @@ clean:
 	rm -rf $(BUILD_ES)
 	rm -rf $(DIST)
 	rm -rf $(JS_INDEX)
-	rm -rf tmp/ docs/ .nyc_output/ coverage/
+	rm -rf tmp/ .nyc_output/ coverage/
 	rm -rf perf/versions/
 
 lint:
