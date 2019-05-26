@@ -307,12 +307,12 @@ module.exports = function () {
         async.autoInject({
             z: async function () { return 0 },
             a: async function () {
-                return await Promise.resolve(1);
+                return 1;
             },
-            b: async function (a) {
-                return await Promise.resolve(a + 1);
+            b: function (a, next) {
+                next(null, a + 1);
             },
-            c: async (a, b) => {
+            async c(a, b) {
                 return await Promise.resolve(a + b);
             },
             d: async c => {
