@@ -1256,14 +1256,10 @@
                 throw new Error('task callback must be a function');
             }
             q.started = true;
-            if (Array.isArray(data)) {
-                if (data.length === 0 && q.idle()) {
-                    // call drain immediately if there are no tasks
-                    return setImmediate$1(() => trigger('drain'));
-                }
+            /*if (Array.isArray(data)) {
 
                 return data.map(datum => _insert(datum, insertAtFront, callback));
-            }
+            }*/
 
             var res;
 
@@ -1357,6 +1353,13 @@
             started: false,
             paused: false,
             push (data, callback) {
+                if (Array.isArray(data)) {
+                    if (data.length === 0 && q.idle()) {
+                        // call drain immediately if there are no tasks
+                        return setImmediate$1(() => trigger('drain'));
+                    }
+                    return data.map(datum => _insert(datum, false, callback))
+                }
                 return _insert(data, false, callback);
             },
             kill () {
@@ -1364,6 +1367,13 @@
                 q._tasks.empty();
             },
             unshift (data, callback) {
+                if (Array.isArray(data)) {
+                    if (data.length === 0 && q.idle()) {
+                        // call drain immediately if there are no tasks
+                        return setImmediate$1(() => trigger('drain'));
+                    }
+                    return data.map(datum => _insert(datum, true, callback))
+                }
                 return _insert(data, true, callback);
             },
             remove (testFn) {
