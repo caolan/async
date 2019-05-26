@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>auto.js - Documentation</title>
+
+
+    <link rel="icon" href="favicon.ico?v=2">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="styles/prettify-tomorrow.css">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
+    <link rel="stylesheet" href="styles/jsdoc-default.css">
+
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/ionicons/2.0.1/css/ionicons.min.css">
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="navbar-header">
+    <a class="navbar-brand" href="#">
+        <img src="img/async-logo.svg" alt="Async.js">
+    </a>
+  </div>
+  <ul class="nav navbar-nav">
+    <li id="version-dropdown" class="dropdown">
+      <a href="#" class="dropdown-toggle vertically-centered" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">v2.6.2 <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu">
+        <li><a href="docs.html">v2.6.2</a></li>
+        <li>
+          <a href="https://github.com/caolan/async/blob/v1.5.2/README.md">v1.5.x</a>
+        </li>
+      </ul>
+    </li>
+    <li><a href="./index.html">Home</a></li>
+    <li><a href="./docs.html">Docs</a></li>
+    <li><a href="https://github.com/caolan/async/blob/master/CHANGELOG.md">Changelog</a></li>
+    <li><a href="https://github.com/caolan/async"><i class="ion-social-github" aria-hidden="true"></i></a></li>
+  </ul>
+  <ul class="nav navbar-nav navbar-right">
+    <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control typeahead" id="doc-search" placeholder="Search" autofocus>
+      </div>
+    </form>
+  </ul>
+</div>
+
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger">
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<div id="main">
+    <div id="main-container" data-spy="scroll" data-target="#toc" data-offset="50">
+        
+        <h1 class="page-title">auto.js</h1>
+        
+
+        
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import arrayEach from &apos;lodash/_arrayEach&apos;;
+import forOwn from &apos;lodash/_baseForOwn&apos;;
+import indexOf from &apos;lodash/_baseIndexOf&apos;;
+import isArray from &apos;lodash/isArray&apos;;
+import okeys from &apos;lodash/keys&apos;;
+import noop from &apos;lodash/noop&apos;;
+
+import slice from &apos;./internal/slice&apos;;
+import once from &apos;./internal/once&apos;;
+import onlyOnce from &apos;./internal/onlyOnce&apos;;
+import wrapAsync from &apos;./internal/wrapAsync&apos;;
+
+/**
+ * Determines the best order for running the {@link AsyncFunction}s in `tasks`, based on
+ * their requirements. Each function can optionally depend on other functions
+ * being completed first, and each function is run as soon as its requirements
+ * are satisfied.
+ *
+ * If any of the {@link AsyncFunction}s pass an error to their callback, the `auto` sequence
+ * will stop. Further tasks will not execute (so any other functions depending
+ * on it will not run), and the main `callback` is immediately called with the
+ * error.
+ *
+ * {@link AsyncFunction}s also receive an object containing the results of functions which
+ * have completed so far as the first argument, if they have dependencies. If a
+ * task function has no dependencies, it will only be passed a callback.
+ *
+ * @name auto
+ * @static
+ * @memberOf module:ControlFlow
+ * @method
+ * @category Control Flow
+ * @param {Object} tasks - An object. Each of its properties is either a
+ * function or an array of requirements, with the {@link AsyncFunction} itself the last item
+ * in the array. The object&apos;s key of a property serves as the name of the task
+ * defined by that property, i.e. can be used when specifying requirements for
+ * other tasks. The function receives one or two arguments:
+ * * a `results` object, containing the results of the previously executed
+ *   functions, only passed if the task has any dependencies,
+ * * a `callback(err, result)` function, which must be called when finished,
+ *   passing an `error` (which can be `null`) and the result of the function&apos;s
+ *   execution.
+ * @param {number} [concurrency=Infinity] - An optional `integer` for
+ * determining the maximum number of tasks that can be run in parallel. By
+ * default, as many as possible.
+ * @param {Function} [callback] - An optional callback which is called when all
+ * the tasks have been completed. It receives the `err` argument if any `tasks`
+ * pass an error to their callback. Results are always returned; however, if an
+ * error occurs, no further `tasks` will be performed, and the results object
+ * will only contain partial results. Invoked with (err, results).
+ * @returns undefined
+ * @example
+ *
+ * async.auto({
+ *     // this function will just be passed a callback
+ *     readData: async.apply(fs.readFile, &apos;data.txt&apos;, &apos;utf-8&apos;),
+ *     showData: [&apos;readData&apos;, function(results, cb) {
+ *         // results.readData is the file&apos;s contents
+ *         // ...
+ *     }]
+ * }, callback);
+ *
+ * async.auto({
+ *     get_data: function(callback) {
+ *         console.log(&apos;in get_data&apos;);
+ *         // async code to get some data
+ *         callback(null, &apos;data&apos;, &apos;converted to array&apos;);
+ *     },
+ *     make_folder: function(callback) {
+ *         console.log(&apos;in make_folder&apos;);
+ *         // async code to create a directory to store a file in
+ *         // this is run at the same time as getting the data
+ *         callback(null, &apos;folder&apos;);
+ *     },
+ *     write_file: [&apos;get_data&apos;, &apos;make_folder&apos;, function(results, callback) {
+ *         console.log(&apos;in write_file&apos;, JSON.stringify(results));
+ *         // once there is some data and the directory exists,
+ *         // write the data to a file in the directory
+ *         callback(null, &apos;filename&apos;);
+ *     }],
+ *     email_link: [&apos;write_file&apos;, function(results, callback) {
+ *         console.log(&apos;in email_link&apos;, JSON.stringify(results));
+ *         // once the file is written let&apos;s email a link to it...
+ *         // results.write_file contains the filename returned by write_file.
+ *         callback(null, {&apos;file&apos;:results.write_file, &apos;email&apos;:&apos;user@example.com&apos;});
+ *     }]
+ * }, function(err, results) {
+ *     console.log(&apos;err = &apos;, err);
+ *     console.log(&apos;results = &apos;, results);
+ * });
+ */
+export default function (tasks, concurrency, callback) {
+    if (typeof concurrency === &apos;function&apos;) {
+        // concurrency is optional, shift the args.
+        callback = concurrency;
+        concurrency = null;
+    }
+    callback = once(callback || noop);
+    var keys = okeys(tasks);
+    var numTasks = keys.length;
+    if (!numTasks) {
+        return callback(null);
+    }
+    if (!concurrency) {
+        concurrency = numTasks;
+    }
+
+    var results = {};
+    var runningTasks = 0;
+    var hasError = false;
+
+    var listeners = Object.create(null);
+
+    var readyTasks = [];
+
+    // for cycle detection:
+    var readyToCheck = []; // tasks that have been identified as reachable
+    // without the possibility of returning to an ancestor task
+    var uncheckedDependencies = {};
+
+    forOwn(tasks, function (task, key) {
+        if (!isArray(task)) {
+            // no dependencies
+            enqueueTask(key, [task]);
+            readyToCheck.push(key);
+            return;
+        }
+
+        var dependencies = task.slice(0, task.length - 1);
+        var remainingDependencies = dependencies.length;
+        if (remainingDependencies === 0) {
+            enqueueTask(key, task);
+            readyToCheck.push(key);
+            return;
+        }
+        uncheckedDependencies[key] = remainingDependencies;
+
+        arrayEach(dependencies, function (dependencyName) {
+            if (!tasks[dependencyName]) {
+                throw new Error(&apos;async.auto task `&apos; + key +
+                    &apos;` has a non-existent dependency `&apos; +
+                    dependencyName + &apos;` in &apos; +
+                    dependencies.join(&apos;, &apos;));
+            }
+            addListener(dependencyName, function () {
+                remainingDependencies--;
+                if (remainingDependencies === 0) {
+                    enqueueTask(key, task);
+                }
+            });
+        });
+    });
+
+    checkForDeadlocks();
+    processQueue();
+
+    function enqueueTask(key, task) {
+        readyTasks.push(function () {
+            runTask(key, task);
+        });
+    }
+
+    function processQueue() {
+        if (readyTasks.length === 0 &amp;&amp; runningTasks === 0) {
+            return callback(null, results);
+        }
+        while(readyTasks.length &amp;&amp; runningTasks &lt; concurrency) {
+            var run = readyTasks.shift();
+            run();
+        }
+
+    }
+
+    function addListener(taskName, fn) {
+        var taskListeners = listeners[taskName];
+        if (!taskListeners) {
+            taskListeners = listeners[taskName] = [];
+        }
+
+        taskListeners.push(fn);
+    }
+
+    function taskComplete(taskName) {
+        var taskListeners = listeners[taskName] || [];
+        arrayEach(taskListeners, function (fn) {
+            fn();
+        });
+        processQueue();
+    }
+
+
+    function runTask(key, task) {
+        if (hasError) return;
+
+        var taskCallback = onlyOnce(function(err, result) {
+            runningTasks--;
+            if (arguments.length &gt; 2) {
+                result = slice(arguments, 1);
+            }
+            if (err) {
+                var safeResults = {};
+                forOwn(results, function(val, rkey) {
+                    safeResults[rkey] = val;
+                });
+                safeResults[key] = result;
+                hasError = true;
+                listeners = Object.create(null);
+
+                callback(err, safeResults);
+            } else {
+                results[key] = result;
+                taskComplete(key);
+            }
+        });
+
+        runningTasks++;
+        var taskFn = wrapAsync(task[task.length - 1]);
+        if (task.length &gt; 1) {
+            taskFn(results, taskCallback);
+        } else {
+            taskFn(taskCallback);
+        }
+    }
+
+    function checkForDeadlocks() {
+        // Kahn&apos;s algorithm
+        // https://en.wikipedia.org/wiki/Topological_sorting#Kahn.27s_algorithm
+        // http://connalle.blogspot.com/2013/10/topological-sortingkahn-algorithm.html
+        var currentTask;
+        var counter = 0;
+        while (readyToCheck.length) {
+            currentTask = readyToCheck.pop();
+            counter++;
+            arrayEach(getDependents(currentTask), function (dependent) {
+                if (--uncheckedDependencies[dependent] === 0) {
+                    readyToCheck.push(dependent);
+                }
+            });
+        }
+
+        if (counter !== numTasks) {
+            throw new Error(
+                &apos;async.auto cannot execute tasks due to a recursive dependency&apos;
+            );
+        }
+    }
+
+    function getDependents(taskName) {
+        var result = [];
+        forOwn(tasks, function (task, key) {
+            if (isArray(task) &amp;&amp; indexOf(task, taskName, 0) &gt;= 0) {
+                result.push(key);
+            }
+        });
+        return result;
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    <footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun May 26 2019 15:21:49 GMT-0700 (Pacific Daylight Time) using the Minami theme.
+ Documentation has been modified from the original.  For more information, please see the <a href="https://github.com/caolan/async">async</a> repository.</footer></div>
+</div>
+
+<nav id="toc">
+    <h3>Methods:</h3><ul class="nav methods"><li class="toc-header"><a href="docs.html#collections">Collections</a></li><li data-type="method" class="toc-method"><a href="docs.html#concat">concat</a></li><li data-type="method" class="toc-method"><a href="docs.html#concatLimit">concatLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#concatSeries">concatSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#detect">detect</a></li><li data-type="method" class="toc-method"><a href="docs.html#detectLimit">detectLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#detectSeries">detectSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#each">each</a></li><li data-type="method" class="toc-method"><a href="docs.html#eachLimit">eachLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#eachOf">eachOf</a></li><li data-type="method" class="toc-method"><a href="docs.html#eachOfLimit">eachOfLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#eachOfSeries">eachOfSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#eachSeries">eachSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#every">every</a></li><li data-type="method" class="toc-method"><a href="docs.html#everyLimit">everyLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#everySeries">everySeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#filter">filter</a></li><li data-type="method" class="toc-method"><a href="docs.html#filterLimit">filterLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#filterSeries">filterSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#groupBy">groupBy</a></li><li data-type="method" class="toc-method"><a href="docs.html#groupByLimit">groupByLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#groupBySeries">groupBySeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#map">map</a></li><li data-type="method" class="toc-method"><a href="docs.html#mapLimit">mapLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#mapSeries">mapSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#mapValues">mapValues</a></li><li data-type="method" class="toc-method"><a href="docs.html#mapValuesLimit">mapValuesLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#mapValuesSeries">mapValuesSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#reduce">reduce</a></li><li data-type="method" class="toc-method"><a href="docs.html#reduceRight">reduceRight</a></li><li data-type="method" class="toc-method"><a href="docs.html#reject">reject</a></li><li data-type="method" class="toc-method"><a href="docs.html#rejectLimit">rejectLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#rejectSeries">rejectSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#some">some</a></li><li data-type="method" class="toc-method"><a href="docs.html#someLimit">someLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#someSeries">someSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#sortBy">sortBy</a></li><li data-type="method" class="toc-method"><a href="docs.html#transform">transform</a></li><li class="toc-header"><a href="docs.html#controlflow">Control Flow</a></li><li data-type="method" class="toc-method"><a href="docs.html#applyEach">applyEach</a></li><li data-type="method" class="toc-method"><a href="docs.html#applyEachSeries">applyEachSeries</a></li><li data-type="method" class="toc-method active"><a href="docs.html#auto">auto</a></li><li data-type="method" class="toc-method"><a href="docs.html#autoInject">autoInject</a></li><li data-type="method" class="toc-method"><a href="docs.html#cargo">cargo</a></li><li data-type="method" class="toc-method"><a href="docs.html#compose">compose</a></li><li data-type="method" class="toc-method"><a href="docs.html#doDuring">doDuring</a></li><li data-type="method" class="toc-method"><a href="docs.html#doUntil">doUntil</a></li><li data-type="method" class="toc-method"><a href="docs.html#doWhilst">doWhilst</a></li><li data-type="method" class="toc-method"><a href="docs.html#during">during</a></li><li data-type="method" class="toc-method"><a href="docs.html#forever">forever</a></li><li data-type="method" class="toc-method"><a href="docs.html#parallel">parallel</a></li><li data-type="method" class="toc-method"><a href="docs.html#parallelLimit">parallelLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#priorityQueue">priorityQueue</a></li><li data-type="method" class="toc-method"><a href="docs.html#queue">queue</a></li><li data-type="method" class="toc-method"><a href="docs.html#race">race</a></li><li data-type="method" class="toc-method"><a href="docs.html#retry">retry</a></li><li data-type="method" class="toc-method"><a href="docs.html#retryable">retryable</a></li><li data-type="method" class="toc-method"><a href="docs.html#seq">seq</a></li><li data-type="method" class="toc-method"><a href="docs.html#series">series</a></li><li data-type="method" class="toc-method"><a href="docs.html#times">times</a></li><li data-type="method" class="toc-method"><a href="docs.html#timesLimit">timesLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#timesSeries">timesSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#tryEach">tryEach</a></li><li data-type="method" class="toc-method"><a href="docs.html#until">until</a></li><li data-type="method" class="toc-method"><a href="docs.html#waterfall">waterfall</a></li><li data-type="method" class="toc-method"><a href="docs.html#whilst">whilst</a></li><li class="toc-header"><a href="docs.html#utils">Utils</a></li><li data-type="method" class="toc-method"><a href="docs.html#apply">apply</a></li><li data-type="method" class="toc-method"><a href="docs.html#asyncify">asyncify</a></li><li data-type="method" class="toc-method"><a href="docs.html#constant">constant</a></li><li data-type="method" class="toc-method"><a href="docs.html#dir">dir</a></li><li data-type="method" class="toc-method"><a href="docs.html#ensureAsync">ensureAsync</a></li><li data-type="method" class="toc-method"><a href="docs.html#log">log</a></li><li data-type="method" class="toc-method"><a href="docs.html#memoize">memoize</a></li><li data-type="method" class="toc-method"><a href="docs.html#nextTick">nextTick</a></li><li data-type="method" class="toc-method"><a href="docs.html#reflect">reflect</a></li><li data-type="method" class="toc-method"><a href="docs.html#reflectAll">reflectAll</a></li><li data-type="method" class="toc-method"><a href="docs.html#setImmediate">setImmediate</a></li><li data-type="method" class="toc-method"><a href="docs.html#timeout">timeout</a></li><li data-type="method" class="toc-method"><a href="docs.html#unmemoize">unmemoize</a></li></ul><h3>Methods:</h3>
+</nav>
+
+<br class="clear">
+
+
+
+
+<script src="https://cdn.jsdelivr.net/prettify/0.1/prettify.js"></script>
+
+<script src="https://cdn.jsdelivr.net/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+<script>prettyPrint();</script>
+<script src="scripts/async.js"></script>
+
+<script src="scripts/linenumber.js" async></script>
+<script src="scripts/jsdoc-custom.js" async></script>
+</body>

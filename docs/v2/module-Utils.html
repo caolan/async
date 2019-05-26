@@ -1,0 +1,2720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Utils - Documentation</title>
+
+
+    <link rel="icon" href="favicon.ico?v=2">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="styles/prettify-tomorrow.css">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
+    <link rel="stylesheet" href="styles/jsdoc-default.css">
+
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/ionicons/2.0.1/css/ionicons.min.css">
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="navbar-header">
+    <a class="navbar-brand" href="#">
+        <img src="img/async-logo.svg" alt="Async.js">
+    </a>
+  </div>
+  <ul class="nav navbar-nav">
+    <li id="version-dropdown" class="dropdown">
+      <a href="#" class="dropdown-toggle vertically-centered" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">v2.6.2 <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu">
+        <li><a href="docs.html">v2.6.2</a></li>
+        <li>
+          <a href="https://github.com/caolan/async/blob/v1.5.2/README.md">v1.5.x</a>
+        </li>
+      </ul>
+    </li>
+    <li><a href="./index.html">Home</a></li>
+    <li><a href="./docs.html">Docs</a></li>
+    <li><a href="https://github.com/caolan/async/blob/master/CHANGELOG.md">Changelog</a></li>
+    <li><a href="https://github.com/caolan/async"><i class="ion-social-github" aria-hidden="true"></i></a></li>
+  </ul>
+  <ul class="nav navbar-nav navbar-right">
+    <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control typeahead" id="doc-search" placeholder="Search" autofocus>
+      </div>
+    </form>
+  </ul>
+</div>
+
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger">
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<div id="main">
+    <div id="main-container" data-spy="scroll" data-target="#toc" data-offset="50">
+        
+        <h1 class="page-title">Utils</h1>
+        
+
+        
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>A collection of <code>async</code> utility functions.</p></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line61">line 61</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="apply"><span class="type-signature">(static) </span>apply<span class="signature">(fn)</span><span class="type-signature"> &#x2192; {function}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import apply from &apos;async/apply&apos;;</code></pre><p>Creates a continuation function with some arguments already applied.</p>
+<p>Useful as a shorthand when combined with other control flow functions. Any
+arguments passed to the returned function are added to the arguments
+originally passed to apply.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The function you want to eventually apply all
+arguments to. Invokes with (arguments...).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>arguments...</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>Any number of arguments to automatically apply
+when the continuation is called.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>the partially-applied function</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">function</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// using apply
+async.parallel([
+    async.apply(fs.writeFile, &apos;testfile1&apos;, &apos;test1&apos;),
+    async.apply(fs.writeFile, &apos;testfile2&apos;, &apos;test2&apos;)
+]);
+
+
+// the same process without using apply
+async.parallel([
+    function(callback) {
+        fs.writeFile(&apos;testfile1&apos;, &apos;test1&apos;, callback);
+    },
+    function(callback) {
+        fs.writeFile(&apos;testfile2&apos;, &apos;test2&apos;, callback);
+    }
+]);
+
+// It&apos;s possible to pass any number of additional arguments when calling the
+// continuation:
+
+node&gt; var fn = async.apply(sys.puts, &apos;one&apos;);
+node&gt; fn(&apos;two&apos;, &apos;three&apos;);
+one
+two
+three</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="apply.js.html">apply.js</a>, <a href="apply.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="asyncify"><span class="type-signature">(static) </span>asyncify<span class="signature">(func)</span><span class="type-signature"> &#x2192; {<a href="global.html">AsyncFunction</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import asyncify from &apos;async/asyncify&apos;;</code></pre><p>Take a sync function and make it async, passing its return value to a
+callback. This is useful for plugging sync functions into a waterfall,
+series, or other async functions. Any arguments passed to the generated
+function will be passed to the wrapped function (except for the final
+callback argument). Errors thrown will be passed to the callback.</p>
+<p>If the function passed to <code>asyncify</code> returns a Promise, that promises&apos;s
+resolved/rejected state will be used to call the callback, rather than simply
+the synchronous return value.</p>
+<p>This also means you can asyncify ES2017 <code>async</code> functions.</p>
+</div>
+
+
+
+    <dl class="details alias-details">
+        <dt class="tag-alias">Alias:</dt>
+        <dd class="tag-alias"><ul class="dummy"><li>wrapSync</li></ul></dd>
+    </dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>func</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The synchronous function, or Promise-returning
+function to convert to an <a href="global.html">AsyncFunction</a>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>An asynchronous wrapper of the <code>func</code>. To be
+invoked with <code>(args..., callback)</code>.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// passing a regular synchronous function
+async.waterfall([
+    async.apply(fs.readFile, filename, &quot;utf8&quot;),
+    async.asyncify(JSON.parse),
+    function (data, next) {
+        // data is the result of parsing the text.
+        // If there was a parsing error, it would have been caught.
+    }
+], callback);
+
+// passing a function returning a promise
+async.waterfall([
+    async.apply(fs.readFile, filename, &quot;utf8&quot;),
+    async.asyncify(function (contents) {
+        return db.model.create(contents);
+    }),
+    function (model, next) {
+        // `model` is the instantiated model object.
+        // If there was an error, this function would be skipped.
+    }
+], callback);
+
+// es2017 example, though `asyncify` is not needed if your JS environment
+// supports async functions out of the box
+var q = async.queue(async.asyncify(async function(file) {
+    var intermediateStep = await processFile(file);
+    return await somePromise(intermediateStep)
+}));
+
+q.push(files);</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="asyncify.js.html">asyncify.js</a>, <a href="asyncify.js.html#line5">line 5</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="constant"><span class="type-signature">(static) </span>constant<span class="signature">()</span><span class="type-signature"> &#x2192; {<a href="global.html">AsyncFunction</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import constant from &apos;async/constant&apos;;</code></pre><p>Returns a function that when called, calls-back with the values provided.
+Useful as the first function in a <a href="docs.html#waterfall"><code>waterfall</code></a>, or for plugging values in to
+<a href="docs.html#auto"><code>auto</code></a>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>arguments...</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>Any number of arguments to automatically invoke
+callback with.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Returns a function that when invoked, automatically
+invokes the callback with the previous given arguments.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>async.waterfall([
+    async.constant(42),
+    function (value, next) {
+        // value === 42
+    },
+    //...
+], callback);
+
+async.waterfall([
+    async.constant(filename, &quot;utf8&quot;),
+    fs.readFile,
+    function (fileData, next) {
+        //...
+    }
+    //...
+], callback);
+
+async.auto({
+    hostname: async.constant(&quot;https://server.net/&quot;),
+    port: findFreePort,
+    launchServer: [&quot;hostname&quot;, &quot;port&quot;, function (options, cb) {
+        startServer(options, cb);
+    }],
+    //...
+}, callback);</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="constant.js.html">constant.js</a>, <a href="constant.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="dir"><span class="type-signature">(static) </span>dir<span class="signature">(function)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import dir from &apos;async/dir&apos;;</code></pre><p>Logs the result of an <a href="global.html"><code>async</code> function</a> to the
+<code>console</code> using <code>console.dir</code> to display the properties of the resulting object.
+Only works in Node.js or in browsers that support <code>console.dir</code> and
+<code>console.error</code> (such as FF and Chrome).
+If multiple arguments are returned from the async function,
+<code>console.dir</code> is called on each argument in order.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>function</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The function you want to eventually apply
+all arguments to.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>arguments...</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>Any number of arguments to apply to the function.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// in a module
+var hello = function(name, callback) {
+    setTimeout(function() {
+        callback(null, {hello: name});
+    }, 1000);
+};
+
+// in the node repl
+node&gt; async.dir(hello, &apos;world&apos;);
+{hello: &apos;world&apos;}</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="dir.js.html">dir.js</a>, <a href="dir.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="ensureAsync"><span class="type-signature">(static) </span>ensureAsync<span class="signature">(fn)</span><span class="type-signature"> &#x2192; {<a href="global.html">AsyncFunction</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import ensureAsync from &apos;async/ensureAsync&apos;;</code></pre><p>Wrap an async function and ensure it calls its callback on a later tick of
+the event loop.  If the function already calls its callback on a next tick,
+no extra deferral is added. This is useful for preventing stack overflows
+(<code>RangeError: Maximum call stack size exceeded</code>) and generally keeping
+<a href="http://blog.izs.me/post/59142742143/designing-apis-for-asynchrony">Zalgo</a>
+contained. ES2017 <code>async</code> functions are returned as-is -- they are immune
+to Zalgo&apos;s corrupting influences, as they always resolve on a later tick.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>an async function, one that expects a node-style
+callback as its last argument.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Returns a wrapped function with the exact same call
+signature as the function passed in.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>function sometimesAsync(arg, callback) {
+    if (cache[arg]) {
+        return callback(null, cache[arg]); // this would be synchronous!!
+    } else {
+        doSomeIO(arg, callback); // this IO would be asynchronous
+    }
+}
+
+// this has a risk of stack overflows if many results are cached in a row
+async.mapSeries(args, sometimesAsync, done);
+
+// this will defer sometimesAsync&apos;s callback if necessary,
+// preventing stack overflows
+async.mapSeries(args, async.ensureAsync(sometimesAsync), done);</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ensureAsync.js.html">ensureAsync.js</a>, <a href="ensureAsync.js.html#line5">line 5</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="log"><span class="type-signature">(static) </span>log<span class="signature">(function)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import log from &apos;async/log&apos;;</code></pre><p>Logs the result of an <code>async</code> function to the <code>console</code>. Only works in
+Node.js or in browsers that support <code>console.log</code> and <code>console.error</code> (such
+as FF and Chrome). If multiple arguments are returned from the async
+function, <code>console.log</code> is called on each argument in order.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>function</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The function you want to eventually apply
+all arguments to.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>arguments...</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>Any number of arguments to apply to the function.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// in a module
+var hello = function(name, callback) {
+    setTimeout(function() {
+        callback(null, &apos;hello &apos; + name);
+    }, 1000);
+};
+
+// in the node repl
+node&gt; async.log(hello, &apos;world&apos;);
+&apos;hello world&apos;</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="log.js.html">log.js</a>, <a href="log.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="memoize"><span class="type-signature">(static) </span>memoize<span class="signature">(fn, hasher)</span><span class="type-signature"> &#x2192; {<a href="global.html">AsyncFunction</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import memoize from &apos;async/memoize&apos;;</code></pre><p>Caches the results of an async function. When creating a hash to store
+function results against, the callback is omitted from the hash and an
+optional hash function can be used.</p>
+<p>If no hash function is specified, the first argument is used as a hash key,
+which may work reasonably if it is a string or a data type that converts to a
+distinct string. Note that objects and arrays will not behave reasonably.
+Neither will cases where the other arguments are significant. In such cases,
+specify your own hash function.</p>
+<p>The cache of results is exposed as the <code>memo</code> property of the function
+returned by <code>memoize</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The async function to proxy and cache results from.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hasher</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>An optional function for generating a custom hash
+for storing results. It has all the arguments applied to it apart from the
+callback, and must be synchronous.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>a memoized version of <code>fn</code></p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>var slow_fn = function(name, callback) {
+    // do something
+    callback(null, result);
+};
+var fn = async.memoize(slow_fn);
+
+// fn can now be used as if it were slow_fn
+fn(&apos;some name&apos;, function() {
+    // callback
+});</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="memoize.js.html">memoize.js</a>, <a href="memoize.js.html#line12">line 12</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="nextTick"><span class="type-signature">(static) </span>nextTick<span class="signature">(callback)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import nextTick from &apos;async/nextTick&apos;;</code></pre><p>Calls <code>callback</code> on a later loop around the event loop. In Node.js this just
+calls <code>process.nextTick</code>.  In the browser it will use <code>setImmediate</code> if
+available, otherwise <code>setTimeout(callback, 0)</code>, which means other higher
+priority events may precede the execution of <code>callback</code>.</p>
+<p>This is used internally for browser-compatibility purposes.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The function to call on a later loop around
+the event loop. Invoked with (args...).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>args...</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>any number of additional arguments to pass to the
+callback on the next tick.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>var call_order = [];
+async.nextTick(function() {
+    call_order.push(&apos;two&apos;);
+    // call_order now equals [&apos;one&apos;,&apos;two&apos;]
+});
+call_order.push(&apos;one&apos;);
+
+async.setImmediate(function (a, b, c) {
+    // a, b, and c equal 1, 2, and 3
+}, 1, 2, 3);</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="nextTick.js.html">nextTick.js</a>, <a href="nextTick.js.html#line5">line 5</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#setImmediate">async.setImmediate</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="reflect"><span class="type-signature">(static) </span>reflect<span class="signature">(fn)</span><span class="type-signature"> &#x2192; {function}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import reflect from &apos;async/reflect&apos;;</code></pre><p>Wraps the async function in another function that always completes with a
+result object, even when it errors.</p>
+<p>The result object has either the property <code>error</code> or <code>value</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The async function you want to wrap</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>A function that always passes null to it&apos;s callback as
+the error. The second argument to the callback will be an <code>object</code> with
+either an <code>error</code> or a <code>value</code> property.</li>
+</ul>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">function</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>async.parallel([
+    async.reflect(function(callback) {
+        // do some stuff ...
+        callback(null, &apos;one&apos;);
+    }),
+    async.reflect(function(callback) {
+        // do some more stuff but error ...
+        callback(&apos;bad stuff happened&apos;);
+    }),
+    async.reflect(function(callback) {
+        // do some more stuff ...
+        callback(null, &apos;two&apos;);
+    })
+],
+// optional callback
+function(err, results) {
+    // values
+    // results[0].value = &apos;one&apos;
+    // results[1].error = &apos;bad stuff happened&apos;
+    // results[2].value = &apos;two&apos;
+});</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="reflect.js.html">reflect.js</a>, <a href="reflect.js.html#line5">line 5</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="reflectAll"><span class="type-signature">(static) </span>reflectAll<span class="signature">(tasks)</span><span class="type-signature"> &#x2192; {Array}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import reflectAll from &apos;async/reflectAll&apos;;</code></pre><p>A helper function that wraps an array or an object of functions with <code>reflect</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tasks</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">Iterable</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The collection of
+<a href="global.html">async functions</a> to wrap in <code>async.reflect</code>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Returns an array of async functions, each wrapped in
+<code>async.reflect</code></p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>let tasks = [
+    function(callback) {
+        setTimeout(function() {
+            callback(null, &apos;one&apos;);
+        }, 200);
+    },
+    function(callback) {
+        // do some more stuff but error ...
+        callback(new Error(&apos;bad stuff happened&apos;));
+    },
+    function(callback) {
+        setTimeout(function() {
+            callback(null, &apos;two&apos;);
+        }, 100);
+    }
+];
+
+async.parallel(async.reflectAll(tasks),
+// optional callback
+function(err, results) {
+    // values
+    // results[0].value = &apos;one&apos;
+    // results[1].error = Error(&apos;bad stuff happened&apos;)
+    // results[2].value = &apos;two&apos;
+});
+
+// an example using an object instead of an array
+let tasks = {
+    one: function(callback) {
+        setTimeout(function() {
+            callback(null, &apos;one&apos;);
+        }, 200);
+    },
+    two: function(callback) {
+        callback(&apos;two&apos;);
+    },
+    three: function(callback) {
+        setTimeout(function() {
+            callback(null, &apos;three&apos;);
+        }, 100);
+    }
+};
+
+async.parallel(async.reflectAll(tasks),
+// optional callback
+function(err, results) {
+    // values
+    // results.one.value = &apos;one&apos;
+    // results.two.error = &apos;two&apos;
+    // results.three.value = &apos;three&apos;
+});</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="reflectAll.js.html">reflectAll.js</a>, <a href="reflectAll.js.html#line6">line 6</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#reflect">async.reflect</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="setImmediate"><span class="type-signature">(static) </span>setImmediate<span class="signature">(callback)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import setImmediate from &apos;async/setImmediate&apos;;</code></pre><p>Calls <code>callback</code> on a later loop around the event loop. In Node.js this just
+calls <code>setImmediate</code>.  In the browser it will use <code>setImmediate</code> if
+available, otherwise <code>setTimeout(callback, 0)</code>, which means other higher
+priority events may precede the execution of <code>callback</code>.</p>
+<p>This is used internally for browser-compatibility purposes.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The function to call on a later loop around
+the event loop. Invoked with (args...).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>args...</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>any number of additional arguments to pass to the
+callback on the next tick.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>var call_order = [];
+async.nextTick(function() {
+    call_order.push(&apos;two&apos;);
+    // call_order now equals [&apos;one&apos;,&apos;two&apos;]
+});
+call_order.push(&apos;one&apos;);
+
+async.setImmediate(function (a, b, c) {
+    // a, b, and c equal 1, 2, and 3
+}, 1, 2, 3);</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="setImmediate.js.html">setImmediate.js</a>, <a href="setImmediate.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#nextTick">async.nextTick</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="timeout"><span class="type-signature">(static) </span>timeout<span class="signature">(asyncFn, milliseconds, info<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &#x2192; {<a href="global.html">AsyncFunction</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import timeout from &apos;async/timeout&apos;;</code></pre><p>Sets a time limit on an asynchronous function. If the function does not call
+its callback within the specified milliseconds, it will be called with a
+timeout error. The code property for the error object will be <code>&apos;ETIMEDOUT&apos;</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>asyncFn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The async function to limit in time.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>milliseconds</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The specified time limit.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>info</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>Any variable you want attached (<code>string</code>, <code>object</code>, etc)
+to timeout Error for more information..</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Returns a wrapped function that can be used with any
+of the control flow functions.
+Invoke this function with the same parameters as you would <code>asyncFunc</code>.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>function myFunction(foo, callback) {
+    doAsyncTask(foo, function(err, data) {
+        // handle errors
+        if (err) return callback(err);
+
+        // do some stuff ...
+
+        // return processed data
+        return callback(null, data);
+    });
+}
+
+var wrapped = async.timeout(myFunction, 1000);
+
+// call `wrapped` as you would `myFunction`
+wrapped({ bar: &apos;bar&apos; }, function(err, data) {
+    // if `myFunction` takes &lt; 1000 ms to execute, `err`
+    // and `data` will have their expected values
+
+    // else `err` will be an Error with the code &apos;ETIMEDOUT&apos;
+});</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="timeout.js.html">timeout.js</a>, <a href="timeout.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="unmemoize"><span class="type-signature">(static) </span>unmemoize<span class="signature">(fn)</span><span class="type-signature"> &#x2192; {<a href="global.html">AsyncFunction</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import unmemoize from &apos;async/unmemoize&apos;;</code></pre><p>Undoes a <a href="docs.html#memoize">memoize</a>d function, reverting it to the original,
+unmemoized form. Handy for testing.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>the memoized function</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>a function that calls the original unmemoized function</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="unmemoize.js.html">unmemoize.js</a>, <a href="unmemoize.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#memoize">async.memoize</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    <footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun May 26 2019 15:21:49 GMT-0700 (Pacific Daylight Time) using the Minami theme.
+ Documentation has been modified from the original.  For more information, please see the <a href="https://github.com/caolan/async">async</a> repository.</footer></div>
+</div>
+
+<nav id="toc">
+    <h3>Methods:</h3><ul class="nav methods"><li class="toc-header"><a href="docs.html#collections">Collections</a></li><li data-type="method" class="toc-method"><a href="docs.html#concat">concat</a></li><li data-type="method" class="toc-method"><a href="docs.html#concatLimit">concatLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#concatSeries">concatSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#detect">detect</a></li><li data-type="method" class="toc-method"><a href="docs.html#detectLimit">detectLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#detectSeries">detectSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#each">each</a></li><li data-type="method" class="toc-method"><a href="docs.html#eachLimit">eachLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#eachOf">eachOf</a></li><li data-type="method" class="toc-method"><a href="docs.html#eachOfLimit">eachOfLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#eachOfSeries">eachOfSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#eachSeries">eachSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#every">every</a></li><li data-type="method" class="toc-method"><a href="docs.html#everyLimit">everyLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#everySeries">everySeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#filter">filter</a></li><li data-type="method" class="toc-method"><a href="docs.html#filterLimit">filterLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#filterSeries">filterSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#groupBy">groupBy</a></li><li data-type="method" class="toc-method"><a href="docs.html#groupByLimit">groupByLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#groupBySeries">groupBySeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#map">map</a></li><li data-type="method" class="toc-method"><a href="docs.html#mapLimit">mapLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#mapSeries">mapSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#mapValues">mapValues</a></li><li data-type="method" class="toc-method"><a href="docs.html#mapValuesLimit">mapValuesLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#mapValuesSeries">mapValuesSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#reduce">reduce</a></li><li data-type="method" class="toc-method"><a href="docs.html#reduceRight">reduceRight</a></li><li data-type="method" class="toc-method"><a href="docs.html#reject">reject</a></li><li data-type="method" class="toc-method"><a href="docs.html#rejectLimit">rejectLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#rejectSeries">rejectSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#some">some</a></li><li data-type="method" class="toc-method"><a href="docs.html#someLimit">someLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#someSeries">someSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#sortBy">sortBy</a></li><li data-type="method" class="toc-method"><a href="docs.html#transform">transform</a></li><li class="toc-header"><a href="docs.html#controlflow">Control Flow</a></li><li data-type="method" class="toc-method"><a href="docs.html#applyEach">applyEach</a></li><li data-type="method" class="toc-method"><a href="docs.html#applyEachSeries">applyEachSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#auto">auto</a></li><li data-type="method" class="toc-method"><a href="docs.html#autoInject">autoInject</a></li><li data-type="method" class="toc-method"><a href="docs.html#cargo">cargo</a></li><li data-type="method" class="toc-method"><a href="docs.html#compose">compose</a></li><li data-type="method" class="toc-method"><a href="docs.html#doDuring">doDuring</a></li><li data-type="method" class="toc-method"><a href="docs.html#doUntil">doUntil</a></li><li data-type="method" class="toc-method"><a href="docs.html#doWhilst">doWhilst</a></li><li data-type="method" class="toc-method"><a href="docs.html#during">during</a></li><li data-type="method" class="toc-method"><a href="docs.html#forever">forever</a></li><li data-type="method" class="toc-method"><a href="docs.html#parallel">parallel</a></li><li data-type="method" class="toc-method"><a href="docs.html#parallelLimit">parallelLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#priorityQueue">priorityQueue</a></li><li data-type="method" class="toc-method"><a href="docs.html#queue">queue</a></li><li data-type="method" class="toc-method"><a href="docs.html#race">race</a></li><li data-type="method" class="toc-method"><a href="docs.html#retry">retry</a></li><li data-type="method" class="toc-method"><a href="docs.html#retryable">retryable</a></li><li data-type="method" class="toc-method"><a href="docs.html#seq">seq</a></li><li data-type="method" class="toc-method"><a href="docs.html#series">series</a></li><li data-type="method" class="toc-method"><a href="docs.html#times">times</a></li><li data-type="method" class="toc-method"><a href="docs.html#timesLimit">timesLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#timesSeries">timesSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#tryEach">tryEach</a></li><li data-type="method" class="toc-method"><a href="docs.html#until">until</a></li><li data-type="method" class="toc-method"><a href="docs.html#waterfall">waterfall</a></li><li data-type="method" class="toc-method"><a href="docs.html#whilst">whilst</a></li><li class="toc-header"><a href="docs.html#utils">Utils</a></li><li data-type="method" class="toc-method"><a href="docs.html#apply">apply</a></li><li data-type="method" class="toc-method"><a href="docs.html#asyncify">asyncify</a></li><li data-type="method" class="toc-method"><a href="docs.html#constant">constant</a></li><li data-type="method" class="toc-method"><a href="docs.html#dir">dir</a></li><li data-type="method" class="toc-method"><a href="docs.html#ensureAsync">ensureAsync</a></li><li data-type="method" class="toc-method"><a href="docs.html#log">log</a></li><li data-type="method" class="toc-method"><a href="docs.html#memoize">memoize</a></li><li data-type="method" class="toc-method"><a href="docs.html#nextTick">nextTick</a></li><li data-type="method" class="toc-method"><a href="docs.html#reflect">reflect</a></li><li data-type="method" class="toc-method"><a href="docs.html#reflectAll">reflectAll</a></li><li data-type="method" class="toc-method"><a href="docs.html#setImmediate">setImmediate</a></li><li data-type="method" class="toc-method"><a href="docs.html#timeout">timeout</a></li><li data-type="method" class="toc-method"><a href="docs.html#unmemoize">unmemoize</a></li></ul><h3>Methods:</h3>
+</nav>
+
+<br class="clear">
+
+
+
+
+<script src="https://cdn.jsdelivr.net/prettify/0.1/prettify.js"></script>
+
+<script src="https://cdn.jsdelivr.net/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+<script>prettyPrint();</script>
+<script src="scripts/async.js"></script>
+
+<script src="scripts/linenumber.js" async></script>
+<script src="scripts/jsdoc-custom.js" async></script>
+</body>

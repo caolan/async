@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>autoInject.js - Documentation</title>
+
+
+    <link rel="icon" href="favicon.ico?v=2">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="styles/prettify-tomorrow.css">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
+    <link rel="stylesheet" href="styles/jsdoc-default.css">
+
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/ionicons/2.0.1/css/ionicons.min.css">
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="navbar-header">
+    <a class="navbar-brand" href="#">
+        <img src="img/async-logo.svg" alt="Async.js">
+    </a>
+  </div>
+  <ul class="nav navbar-nav">
+    <li id="version-dropdown" class="dropdown">
+      <a href="#" class="dropdown-toggle vertically-centered" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">v2.6.2 <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu">
+        <li><a href="docs.html">v2.6.2</a></li>
+        <li>
+          <a href="https://github.com/caolan/async/blob/v1.5.2/README.md">v1.5.x</a>
+        </li>
+      </ul>
+    </li>
+    <li><a href="./index.html">Home</a></li>
+    <li><a href="./docs.html">Docs</a></li>
+    <li><a href="https://github.com/caolan/async/blob/master/CHANGELOG.md">Changelog</a></li>
+    <li><a href="https://github.com/caolan/async"><i class="ion-social-github" aria-hidden="true"></i></a></li>
+  </ul>
+  <ul class="nav navbar-nav navbar-right">
+    <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control typeahead" id="doc-search" placeholder="Search" autofocus>
+      </div>
+    </form>
+  </ul>
+</div>
+
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger">
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<div id="main">
+    <div id="main-container" data-spy="scroll" data-target="#toc" data-offset="50">
+        
+        <h1 class="page-title">autoInject.js</h1>
+        
+
+        
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import auto from &apos;./auto&apos;;
+import forOwn from &apos;lodash/_baseForOwn&apos;;
+import arrayMap from &apos;lodash/_arrayMap&apos;;
+import isArray from &apos;lodash/isArray&apos;;
+import trim from &apos;lodash/trim&apos;;
+import wrapAsync from &apos;./internal/wrapAsync&apos;;
+import { isAsync } from &apos;./internal/wrapAsync&apos;;
+
+var FN_ARGS = /^(?:async\s+)?(function)?\s*[^\(]*\(\s*([^\)]*)\)/m;
+var FN_ARG_SPLIT = /,/;
+var FN_ARG = /(=.+)?(\s*)$/;
+var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
+
+function parseParams(func) {
+    func = func.toString().replace(STRIP_COMMENTS, &apos;&apos;);
+    func = func.match(FN_ARGS)[2].replace(&apos; &apos;, &apos;&apos;);
+    func = func ? func.split(FN_ARG_SPLIT) : [];
+    func = func.map(function (arg){
+        return trim(arg.replace(FN_ARG, &apos;&apos;));
+    });
+    return func;
+}
+
+/**
+ * A dependency-injected version of the [async.auto]{@link module:ControlFlow.auto} function. Dependent
+ * tasks are specified as parameters to the function, after the usual callback
+ * parameter, with the parameter names matching the names of the tasks it
+ * depends on. This can provide even more readable task graphs which can be
+ * easier to maintain.
+ *
+ * If a final callback is specified, the task results are similarly injected,
+ * specified as named parameters after the initial error parameter.
+ *
+ * The autoInject function is purely syntactic sugar and its semantics are
+ * otherwise equivalent to [async.auto]{@link module:ControlFlow.auto}.
+ *
+ * @name autoInject
+ * @static
+ * @memberOf module:ControlFlow
+ * @method
+ * @see [async.auto]{@link module:ControlFlow.auto}
+ * @category Control Flow
+ * @param {Object} tasks - An object, each of whose properties is an {@link AsyncFunction} of
+ * the form &apos;func([dependencies...], callback). The object&apos;s key of a property
+ * serves as the name of the task defined by that property, i.e. can be used
+ * when specifying requirements for other tasks.
+ * * The `callback` parameter is a `callback(err, result)` which must be called
+ *   when finished, passing an `error` (which can be `null`) and the result of
+ *   the function&apos;s execution. The remaining parameters name other tasks on
+ *   which the task is dependent, and the results from those tasks are the
+ *   arguments of those parameters.
+ * @param {Function} [callback] - An optional callback which is called when all
+ * the tasks have been completed. It receives the `err` argument if any `tasks`
+ * pass an error to their callback, and a `results` object with any completed
+ * task results, similar to `auto`.
+ * @example
+ *
+ * //  The example from `auto` can be rewritten as follows:
+ * async.autoInject({
+ *     get_data: function(callback) {
+ *         // async code to get some data
+ *         callback(null, &apos;data&apos;, &apos;converted to array&apos;);
+ *     },
+ *     make_folder: function(callback) {
+ *         // async code to create a directory to store a file in
+ *         // this is run at the same time as getting the data
+ *         callback(null, &apos;folder&apos;);
+ *     },
+ *     write_file: function(get_data, make_folder, callback) {
+ *         // once there is some data and the directory exists,
+ *         // write the data to a file in the directory
+ *         callback(null, &apos;filename&apos;);
+ *     },
+ *     email_link: function(write_file, callback) {
+ *         // once the file is written let&apos;s email a link to it...
+ *         // write_file contains the filename returned by write_file.
+ *         callback(null, {&apos;file&apos;:write_file, &apos;email&apos;:&apos;user@example.com&apos;});
+ *     }
+ * }, function(err, results) {
+ *     console.log(&apos;err = &apos;, err);
+ *     console.log(&apos;email_link = &apos;, results.email_link);
+ * });
+ *
+ * // If you are using a JS minifier that mangles parameter names, `autoInject`
+ * // will not work with plain functions, since the parameter names will be
+ * // collapsed to a single letter identifier.  To work around this, you can
+ * // explicitly specify the names of the parameters your task function needs
+ * // in an array, similar to Angular.js dependency injection.
+ *
+ * // This still has an advantage over plain `auto`, since the results a task
+ * // depends on are still spread into arguments.
+ * async.autoInject({
+ *     //...
+ *     write_file: [&apos;get_data&apos;, &apos;make_folder&apos;, function(get_data, make_folder, callback) {
+ *         callback(null, &apos;filename&apos;);
+ *     }],
+ *     email_link: [&apos;write_file&apos;, function(write_file, callback) {
+ *         callback(null, {&apos;file&apos;:write_file, &apos;email&apos;:&apos;user@example.com&apos;});
+ *     }]
+ *     //...
+ * }, function(err, results) {
+ *     console.log(&apos;err = &apos;, err);
+ *     console.log(&apos;email_link = &apos;, results.email_link);
+ * });
+ */
+export default function autoInject(tasks, callback) {
+    var newTasks = {};
+
+    forOwn(tasks, function (taskFn, key) {
+        var params;
+        var fnIsAsync = isAsync(taskFn);
+        var hasNoDeps =
+            (!fnIsAsync &amp;&amp; taskFn.length === 1) ||
+            (fnIsAsync &amp;&amp; taskFn.length === 0);
+
+        if (isArray(taskFn)) {
+            params = taskFn.slice(0, -1);
+            taskFn = taskFn[taskFn.length - 1];
+
+            newTasks[key] = params.concat(params.length &gt; 0 ? newTask : taskFn);
+        } else if (hasNoDeps) {
+            // no dependencies, use the function as-is
+            newTasks[key] = taskFn;
+        } else {
+            params = parseParams(taskFn);
+            if (taskFn.length === 0 &amp;&amp; !fnIsAsync &amp;&amp; params.length === 0) {
+                throw new Error(&quot;autoInject task functions require explicit parameters.&quot;);
+            }
+
+            // remove callback param
+            if (!fnIsAsync) params.pop();
+
+            newTasks[key] = params.concat(newTask);
+        }
+
+        function newTask(results, taskCb) {
+            var newArgs = arrayMap(params, function (name) {
+                return results[name];
+            });
+            newArgs.push(taskCb);
+            wrapAsync(taskFn).apply(null, newArgs);
+        }
+    });
+
+    auto(newTasks, callback);
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    <footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun May 26 2019 15:21:49 GMT-0700 (Pacific Daylight Time) using the Minami theme.
+ Documentation has been modified from the original.  For more information, please see the <a href="https://github.com/caolan/async">async</a> repository.</footer></div>
+</div>
+
+<nav id="toc">
+    <h3>Methods:</h3><ul class="nav methods"><li class="toc-header"><a href="docs.html#collections">Collections</a></li><li data-type="method" class="toc-method"><a href="docs.html#concat">concat</a></li><li data-type="method" class="toc-method"><a href="docs.html#concatLimit">concatLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#concatSeries">concatSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#detect">detect</a></li><li data-type="method" class="toc-method"><a href="docs.html#detectLimit">detectLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#detectSeries">detectSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#each">each</a></li><li data-type="method" class="toc-method"><a href="docs.html#eachLimit">eachLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#eachOf">eachOf</a></li><li data-type="method" class="toc-method"><a href="docs.html#eachOfLimit">eachOfLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#eachOfSeries">eachOfSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#eachSeries">eachSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#every">every</a></li><li data-type="method" class="toc-method"><a href="docs.html#everyLimit">everyLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#everySeries">everySeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#filter">filter</a></li><li data-type="method" class="toc-method"><a href="docs.html#filterLimit">filterLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#filterSeries">filterSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#groupBy">groupBy</a></li><li data-type="method" class="toc-method"><a href="docs.html#groupByLimit">groupByLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#groupBySeries">groupBySeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#map">map</a></li><li data-type="method" class="toc-method"><a href="docs.html#mapLimit">mapLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#mapSeries">mapSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#mapValues">mapValues</a></li><li data-type="method" class="toc-method"><a href="docs.html#mapValuesLimit">mapValuesLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#mapValuesSeries">mapValuesSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#reduce">reduce</a></li><li data-type="method" class="toc-method"><a href="docs.html#reduceRight">reduceRight</a></li><li data-type="method" class="toc-method"><a href="docs.html#reject">reject</a></li><li data-type="method" class="toc-method"><a href="docs.html#rejectLimit">rejectLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#rejectSeries">rejectSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#some">some</a></li><li data-type="method" class="toc-method"><a href="docs.html#someLimit">someLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#someSeries">someSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#sortBy">sortBy</a></li><li data-type="method" class="toc-method"><a href="docs.html#transform">transform</a></li><li class="toc-header"><a href="docs.html#controlflow">Control Flow</a></li><li data-type="method" class="toc-method"><a href="docs.html#applyEach">applyEach</a></li><li data-type="method" class="toc-method"><a href="docs.html#applyEachSeries">applyEachSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#auto">auto</a></li><li data-type="method" class="toc-method active"><a href="docs.html#autoInject">autoInject</a></li><li data-type="method" class="toc-method"><a href="docs.html#cargo">cargo</a></li><li data-type="method" class="toc-method"><a href="docs.html#compose">compose</a></li><li data-type="method" class="toc-method"><a href="docs.html#doDuring">doDuring</a></li><li data-type="method" class="toc-method"><a href="docs.html#doUntil">doUntil</a></li><li data-type="method" class="toc-method"><a href="docs.html#doWhilst">doWhilst</a></li><li data-type="method" class="toc-method"><a href="docs.html#during">during</a></li><li data-type="method" class="toc-method"><a href="docs.html#forever">forever</a></li><li data-type="method" class="toc-method"><a href="docs.html#parallel">parallel</a></li><li data-type="method" class="toc-method"><a href="docs.html#parallelLimit">parallelLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#priorityQueue">priorityQueue</a></li><li data-type="method" class="toc-method"><a href="docs.html#queue">queue</a></li><li data-type="method" class="toc-method"><a href="docs.html#race">race</a></li><li data-type="method" class="toc-method"><a href="docs.html#retry">retry</a></li><li data-type="method" class="toc-method"><a href="docs.html#retryable">retryable</a></li><li data-type="method" class="toc-method"><a href="docs.html#seq">seq</a></li><li data-type="method" class="toc-method"><a href="docs.html#series">series</a></li><li data-type="method" class="toc-method"><a href="docs.html#times">times</a></li><li data-type="method" class="toc-method"><a href="docs.html#timesLimit">timesLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#timesSeries">timesSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#tryEach">tryEach</a></li><li data-type="method" class="toc-method"><a href="docs.html#until">until</a></li><li data-type="method" class="toc-method"><a href="docs.html#waterfall">waterfall</a></li><li data-type="method" class="toc-method"><a href="docs.html#whilst">whilst</a></li><li class="toc-header"><a href="docs.html#utils">Utils</a></li><li data-type="method" class="toc-method"><a href="docs.html#apply">apply</a></li><li data-type="method" class="toc-method"><a href="docs.html#asyncify">asyncify</a></li><li data-type="method" class="toc-method"><a href="docs.html#constant">constant</a></li><li data-type="method" class="toc-method"><a href="docs.html#dir">dir</a></li><li data-type="method" class="toc-method"><a href="docs.html#ensureAsync">ensureAsync</a></li><li data-type="method" class="toc-method"><a href="docs.html#log">log</a></li><li data-type="method" class="toc-method"><a href="docs.html#memoize">memoize</a></li><li data-type="method" class="toc-method"><a href="docs.html#nextTick">nextTick</a></li><li data-type="method" class="toc-method"><a href="docs.html#reflect">reflect</a></li><li data-type="method" class="toc-method"><a href="docs.html#reflectAll">reflectAll</a></li><li data-type="method" class="toc-method"><a href="docs.html#setImmediate">setImmediate</a></li><li data-type="method" class="toc-method"><a href="docs.html#timeout">timeout</a></li><li data-type="method" class="toc-method"><a href="docs.html#unmemoize">unmemoize</a></li></ul><h3>Methods:</h3>
+</nav>
+
+<br class="clear">
+
+
+
+
+<script src="https://cdn.jsdelivr.net/prettify/0.1/prettify.js"></script>
+
+<script src="https://cdn.jsdelivr.net/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+<script>prettyPrint();</script>
+<script src="scripts/async.js"></script>
+
+<script src="scripts/linenumber.js" async></script>
+<script src="scripts/jsdoc-custom.js" async></script>
+</body>

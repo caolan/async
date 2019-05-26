@@ -1,0 +1,8170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Collections - Documentation</title>
+
+
+    <link rel="icon" href="favicon.ico?v=2">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="styles/prettify-tomorrow.css">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
+    <link rel="stylesheet" href="styles/jsdoc-default.css">
+
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/ionicons/2.0.1/css/ionicons.min.css">
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="navbar-header">
+    <a class="navbar-brand" href="#">
+        <img src="img/async-logo.svg" alt="Async.js">
+    </a>
+  </div>
+  <ul class="nav navbar-nav">
+    <li id="version-dropdown" class="dropdown">
+      <a href="#" class="dropdown-toggle vertically-centered" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">v2.6.2 <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu">
+        <li><a href="docs.html">v2.6.2</a></li>
+        <li>
+          <a href="https://github.com/caolan/async/blob/v1.5.2/README.md">v1.5.x</a>
+        </li>
+      </ul>
+    </li>
+    <li><a href="./index.html">Home</a></li>
+    <li><a href="./docs.html">Docs</a></li>
+    <li><a href="https://github.com/caolan/async/blob/master/CHANGELOG.md">Changelog</a></li>
+    <li><a href="https://github.com/caolan/async"><i class="ion-social-github" aria-hidden="true"></i></a></li>
+  </ul>
+  <ul class="nav navbar-nav navbar-right">
+    <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control typeahead" id="doc-search" placeholder="Search" autofocus>
+      </div>
+    </form>
+  </ul>
+</div>
+
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger">
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<div id="main">
+    <div id="main-container" data-spy="scroll" data-target="#toc" data-offset="50">
+        
+        <h1 class="page-title">Collections</h1>
+        
+
+        
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>A collection of <code>async</code> functions for manipulating collections, such as
+arrays and objects.</p></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line50">line 50</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="concat"><span class="type-signature">(static) </span>concat<span class="signature">(coll, iteratee, callback(err)<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import concat from &apos;async/concat&apos;;</code></pre><p>Applies <code>iteratee</code> to each item in <code>coll</code>, concatenating the results. Returns
+the concatenated list. The <code>iteratee</code>s are called in parallel, and the
+results are concatenated as they return. There is no guarantee that the
+results array will be returned in the original order of <code>coll</code> passed to the
+<code>iteratee</code> function.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A function to apply to each item in <code>coll</code>,
+which should use an array as its result. Invoked with (item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback(err)</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called after all the
+<code>iteratee</code> functions have finished, or an error occurs. Results is an array
+containing the concatenated results of the <code>iteratee</code> function. Invoked with
+(err, results).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>async.concat([&apos;dir1&apos;,&apos;dir2&apos;,&apos;dir3&apos;], fs.readdir, function(err, files) {
+    // files is now a list of filenames that exist in the 3 directories
+});</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="concat.js.html">concat.js</a>, <a href="concat.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="concatLimit"><span class="type-signature">(static) </span>concatLimit<span class="signature">(coll, limit, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import concatLimit from &apos;async/concatLimit&apos;;</code></pre><p>The same as <a href="docs.html#concat"><code>concat</code></a> but runs a maximum of <code>limit</code> async operations at a time.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The maximum number of async operations at a time.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A function to apply to each item in <code>coll</code>,
+which should use an array as its result. Invoked with (item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called after all the
+<code>iteratee</code> functions have finished, or an error occurs. Results is an array
+containing the concatenated results of the <code>iteratee</code> function. Invoked with
+(err, results).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="concatLimit.js.html">concatLimit.js</a>, <a href="concatLimit.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#concat">async.concat</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="concatSeries"><span class="type-signature">(static) </span>concatSeries<span class="signature">(coll, iteratee, callback(err)<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import concatSeries from &apos;async/concatSeries&apos;;</code></pre><p>The same as <a href="docs.html#concat"><code>concat</code></a> but runs only a single async operation at a time.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A function to apply to each item in <code>coll</code>.
+The iteratee should complete with an array an array of results.
+Invoked with (item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback(err)</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called after all the
+<code>iteratee</code> functions have finished, or an error occurs. Results is an array
+containing the concatenated results of the <code>iteratee</code> function. Invoked with
+(err, results).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="concatSeries.js.html">concatSeries.js</a>, <a href="concatSeries.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#concat">async.concat</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="detect"><span class="type-signature">(static) </span>detect<span class="signature">(coll, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import detect from &apos;async/detect&apos;;</code></pre><p>Returns the first value in <code>coll</code> that passes an async truth test. The
+<code>iteratee</code> is applied in parallel, meaning the first iteratee to return
+<code>true</code> will fire the detect <code>callback</code> with that result. That means the
+result might not be the first item in the original <code>coll</code> (in terms of order)
+that passes the test.
+If order within the original <code>coll</code> is important, then look at
+<a href="docs.html#detectSeries"><code>detectSeries</code></a>.</p>
+</div>
+
+
+
+    <dl class="details alias-details">
+        <dt class="tag-alias">Alias:</dt>
+        <dd class="tag-alias"><ul class="dummy"><li>find</li></ul></dd>
+    </dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A truth test to apply to each item in <code>coll</code>.
+The iteratee must complete with a boolean value as its result.
+Invoked with (item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called as soon as any
+iteratee returns <code>true</code>, or after all the <code>iteratee</code> functions have finished.
+Result will be the first item in the array that passes the truth test
+(iteratee) or the value <code>undefined</code> if none passed. Invoked with
+(err, result).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>async.detect([&apos;file1&apos;,&apos;file2&apos;,&apos;file3&apos;], function(filePath, callback) {
+    fs.access(filePath, function(err) {
+        callback(null, !err)
+    });
+}, function(err, result) {
+    // result now equals the first file in the list that exists
+});</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="detect.js.html">detect.js</a>, <a href="detect.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="detectLimit"><span class="type-signature">(static) </span>detectLimit<span class="signature">(coll, limit, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import detectLimit from &apos;async/detectLimit&apos;;</code></pre><p>The same as <a href="docs.html#detect"><code>detect</code></a> but runs a maximum of <code>limit</code> async operations at a
+time.</p>
+</div>
+
+
+
+    <dl class="details alias-details">
+        <dt class="tag-alias">Alias:</dt>
+        <dd class="tag-alias"><ul class="dummy"><li>findLimit</li></ul></dd>
+    </dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The maximum number of async operations at a time.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A truth test to apply to each item in <code>coll</code>.
+The iteratee must complete with a boolean value as its result.
+Invoked with (item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called as soon as any
+iteratee returns <code>true</code>, or after all the <code>iteratee</code> functions have finished.
+Result will be the first item in the array that passes the truth test
+(iteratee) or the value <code>undefined</code> if none passed. Invoked with
+(err, result).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="detectLimit.js.html">detectLimit.js</a>, <a href="detectLimit.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#detect">async.detect</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="detectSeries"><span class="type-signature">(static) </span>detectSeries<span class="signature">(coll, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import detectSeries from &apos;async/detectSeries&apos;;</code></pre><p>The same as <a href="docs.html#detect"><code>detect</code></a> but runs only a single async operation at a time.</p>
+</div>
+
+
+
+    <dl class="details alias-details">
+        <dt class="tag-alias">Alias:</dt>
+        <dd class="tag-alias"><ul class="dummy"><li>findSeries</li></ul></dd>
+    </dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A truth test to apply to each item in <code>coll</code>.
+The iteratee must complete with a boolean value as its result.
+Invoked with (item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called as soon as any
+iteratee returns <code>true</code>, or after all the <code>iteratee</code> functions have finished.
+Result will be the first item in the array that passes the truth test
+(iteratee) or the value <code>undefined</code> if none passed. Invoked with
+(err, result).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="detectSeries.js.html">detectSeries.js</a>, <a href="detectSeries.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#detect">async.detect</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="each"><span class="type-signature">(static) </span>each<span class="signature">(coll, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import each from &apos;async/each&apos;;</code></pre><p>Applies the function <code>iteratee</code> to each item in <code>coll</code>, in parallel.
+The <code>iteratee</code> is called with an item from the list, and a callback for when
+it has finished. If the <code>iteratee</code> passes an error to its <code>callback</code>, the
+main <code>callback</code> (for the <code>each</code> function) is immediately called with the
+error.</p>
+<p>Note, that since this function applies <code>iteratee</code> to each item in parallel,
+there is no guarantee that the iteratee functions will complete in order.</p>
+</div>
+
+
+
+    <dl class="details alias-details">
+        <dt class="tag-alias">Alias:</dt>
+        <dd class="tag-alias"><ul class="dummy"><li>forEach</li></ul></dd>
+    </dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>An async function to apply to
+each item in <code>coll</code>. Invoked with (item, callback).
+The array index is not passed to the iteratee.
+If you need the index, use <code>eachOf</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called when all
+<code>iteratee</code> functions have finished, or an error occurs. Invoked with (err).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// assuming openFiles is an array of file names and saveFile is a function
+// to save the modified contents of that file:
+
+async.each(openFiles, saveFile, function(err){
+  // if any of the saves produced an error, err would equal that error
+});
+
+// assuming openFiles is an array of file names
+async.each(openFiles, function(file, callback) {
+
+    // Perform operation on file here.
+    console.log(&apos;Processing file &apos; + file);
+
+    if( file.length &gt; 32 ) {
+      console.log(&apos;This file name is too long&apos;);
+      callback(&apos;File name too long&apos;);
+    } else {
+      // Do work to process file here
+      console.log(&apos;File processed&apos;);
+      callback();
+    }
+}, function(err) {
+    // if any of the file processing produced an error, err would equal that error
+    if( err ) {
+      // One of the iterations produced an error.
+      // All processing will now stop.
+      console.log(&apos;A file failed to process&apos;);
+    } else {
+      console.log(&apos;All files have been processed successfully&apos;);
+    }
+});</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="each.js.html">each.js</a>, <a href="each.js.html#line5">line 5</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="eachLimit"><span class="type-signature">(static) </span>eachLimit<span class="signature">(coll, limit, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import eachLimit from &apos;async/eachLimit&apos;;</code></pre><p>The same as <a href="docs.html#each"><code>each</code></a> but runs a maximum of <code>limit</code> async operations at a time.</p>
+</div>
+
+
+
+    <dl class="details alias-details">
+        <dt class="tag-alias">Alias:</dt>
+        <dd class="tag-alias"><ul class="dummy"><li>forEachLimit</li></ul></dd>
+    </dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The maximum number of async operations at a time.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>An async function to apply to each item in
+<code>coll</code>.
+The array index is not passed to the iteratee.
+If you need the index, use <code>eachOfLimit</code>.
+Invoked with (item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called when all
+<code>iteratee</code> functions have finished, or an error occurs. Invoked with (err).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="eachLimit.js.html">eachLimit.js</a>, <a href="eachLimit.js.html#line5">line 5</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#each">async.each</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="eachOf"><span class="type-signature">(static) </span>eachOf<span class="signature">(coll, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import eachOf from &apos;async/eachOf&apos;;</code></pre><p>Like <a href="docs.html#each"><code>each</code></a>, except that it passes the key (or index) as the second argument
+to the iteratee.</p>
+</div>
+
+
+
+    <dl class="details alias-details">
+        <dt class="tag-alias">Alias:</dt>
+        <dd class="tag-alias"><ul class="dummy"><li>forEachOf</li></ul></dd>
+    </dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A function to apply to each
+item in <code>coll</code>.
+The <code>key</code> is the item&apos;s key, or index in the case of an array.
+Invoked with (item, key, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called when all
+<code>iteratee</code> functions have finished, or an error occurs. Invoked with (err).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>var obj = {dev: &quot;/dev.json&quot;, test: &quot;/test.json&quot;, prod: &quot;/prod.json&quot;};
+var configs = {};
+
+async.forEachOf(obj, function (value, key, callback) {
+    fs.readFile(__dirname + value, &quot;utf8&quot;, function (err, data) {
+        if (err) return callback(err);
+        try {
+            configs[key] = JSON.parse(data);
+        } catch (e) {
+            return callback(e);
+        }
+        callback();
+    });
+}, function (err) {
+    if (err) console.error(err.message);
+    // configs is now a map of JSON data
+    doSomethingWith(configs);
+});</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="eachOf.js.html">eachOf.js</a>, <a href="eachOf.js.html#line37">line 37</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#each">async.each</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="eachOfLimit"><span class="type-signature">(static) </span>eachOfLimit<span class="signature">(coll, limit, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import eachOfLimit from &apos;async/eachOfLimit&apos;;</code></pre><p>The same as <a href="docs.html#eachOf"><code>eachOf</code></a> but runs a maximum of <code>limit</code> async operations at a
+time.</p>
+</div>
+
+
+
+    <dl class="details alias-details">
+        <dt class="tag-alias">Alias:</dt>
+        <dd class="tag-alias"><ul class="dummy"><li>forEachOfLimit</li></ul></dd>
+    </dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The maximum number of async operations at a time.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>An async function to apply to each
+item in <code>coll</code>. The <code>key</code> is the item&apos;s key, or index in the case of an
+array.
+Invoked with (item, key, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called when all
+<code>iteratee</code> functions have finished, or an error occurs. Invoked with (err).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="eachOfLimit.js.html">eachOfLimit.js</a>, <a href="eachOfLimit.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#eachOf">async.eachOf</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="eachOfSeries"><span class="type-signature">(static) </span>eachOfSeries<span class="signature">(coll, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import eachOfSeries from &apos;async/eachOfSeries&apos;;</code></pre><p>The same as <a href="docs.html#eachOf"><code>eachOf</code></a> but runs only a single async operation at a time.</p>
+</div>
+
+
+
+    <dl class="details alias-details">
+        <dt class="tag-alias">Alias:</dt>
+        <dd class="tag-alias"><ul class="dummy"><li>forEachOfSeries</li></ul></dd>
+    </dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>An async function to apply to each item in
+<code>coll</code>.
+Invoked with (item, key, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called when all <code>iteratee</code>
+functions have finished, or an error occurs. Invoked with (err).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="eachOfSeries.js.html">eachOfSeries.js</a>, <a href="eachOfSeries.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#eachOf">async.eachOf</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="eachSeries"><span class="type-signature">(static) </span>eachSeries<span class="signature">(coll, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import eachSeries from &apos;async/eachSeries&apos;;</code></pre><p>The same as <a href="docs.html#each"><code>each</code></a> but runs only a single async operation at a time.</p>
+</div>
+
+
+
+    <dl class="details alias-details">
+        <dt class="tag-alias">Alias:</dt>
+        <dd class="tag-alias"><ul class="dummy"><li>forEachSeries</li></ul></dd>
+    </dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>An async function to apply to each
+item in <code>coll</code>.
+The array index is not passed to the iteratee.
+If you need the index, use <code>eachOfSeries</code>.
+Invoked with (item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called when all
+<code>iteratee</code> functions have finished, or an error occurs. Invoked with (err).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="eachSeries.js.html">eachSeries.js</a>, <a href="eachSeries.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#each">async.each</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="every"><span class="type-signature">(static) </span>every<span class="signature">(coll, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import every from &apos;async/every&apos;;</code></pre><p>Returns <code>true</code> if every element in <code>coll</code> satisfies an async test. If any
+iteratee call returns <code>false</code>, the main <code>callback</code> is immediately called.</p>
+</div>
+
+
+
+    <dl class="details alias-details">
+        <dt class="tag-alias">Alias:</dt>
+        <dd class="tag-alias"><ul class="dummy"><li>all</li></ul></dd>
+    </dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>An async truth test to apply to each item
+in the collection in parallel.
+The iteratee must complete with a boolean result value.
+Invoked with (item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called after all the
+<code>iteratee</code> functions have finished. Result will be either <code>true</code> or <code>false</code>
+depending on the values of the async tests. Invoked with (err, result).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>async.every([&apos;file1&apos;,&apos;file2&apos;,&apos;file3&apos;], function(filePath, callback) {
+    fs.access(filePath, function(err) {
+        callback(null, !err)
+    });
+}, function(err, result) {
+    // if result is true then every file exists
+});</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="every.js.html">every.js</a>, <a href="every.js.html#line5">line 5</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="everyLimit"><span class="type-signature">(static) </span>everyLimit<span class="signature">(coll, limit, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import everyLimit from &apos;async/everyLimit&apos;;</code></pre><p>The same as <a href="docs.html#every"><code>every</code></a> but runs a maximum of <code>limit</code> async operations at a time.</p>
+</div>
+
+
+
+    <dl class="details alias-details">
+        <dt class="tag-alias">Alias:</dt>
+        <dd class="tag-alias"><ul class="dummy"><li>allLimit</li></ul></dd>
+    </dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The maximum number of async operations at a time.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>An async truth test to apply to each item
+in the collection in parallel.
+The iteratee must complete with a boolean result value.
+Invoked with (item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called after all the
+<code>iteratee</code> functions have finished. Result will be either <code>true</code> or <code>false</code>
+depending on the values of the async tests. Invoked with (err, result).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="everyLimit.js.html">everyLimit.js</a>, <a href="everyLimit.js.html#line5">line 5</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#every">async.every</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="everySeries"><span class="type-signature">(static) </span>everySeries<span class="signature">(coll, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import everySeries from &apos;async/everySeries&apos;;</code></pre><p>The same as <a href="docs.html#every"><code>every</code></a> but runs only a single async operation at a time.</p>
+</div>
+
+
+
+    <dl class="details alias-details">
+        <dt class="tag-alias">Alias:</dt>
+        <dd class="tag-alias"><ul class="dummy"><li>allSeries</li></ul></dd>
+    </dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>An async truth test to apply to each item
+in the collection in series.
+The iteratee must complete with a boolean result value.
+Invoked with (item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called after all the
+<code>iteratee</code> functions have finished. Result will be either <code>true</code> or <code>false</code>
+depending on the values of the async tests. Invoked with (err, result).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="everySeries.js.html">everySeries.js</a>, <a href="everySeries.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#every">async.every</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="filter"><span class="type-signature">(static) </span>filter<span class="signature">(coll, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import filter from &apos;async/filter&apos;;</code></pre><p>Returns a new array of all the values in <code>coll</code> which pass an async truth
+test. This operation is performed in parallel, but the results array will be
+in the same order as the original.</p>
+</div>
+
+
+
+    <dl class="details alias-details">
+        <dt class="tag-alias">Alias:</dt>
+        <dd class="tag-alias"><ul class="dummy"><li>select</li></ul></dd>
+    </dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A truth test to apply to each item in <code>coll</code>.
+The <code>iteratee</code> is passed a <code>callback(err, truthValue)</code>, which must be called
+with a boolean argument once it has completed. Invoked with (item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called after all the
+<code>iteratee</code> functions have finished. Invoked with (err, results).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>async.filter([&apos;file1&apos;,&apos;file2&apos;,&apos;file3&apos;], function(filePath, callback) {
+    fs.access(filePath, function(err) {
+        callback(null, !err)
+    });
+}, function(err, results) {
+    // results now equals an array of the existing files
+});</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="filter.js.html">filter.js</a>, <a href="filter.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="filterLimit"><span class="type-signature">(static) </span>filterLimit<span class="signature">(coll, limit, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import filterLimit from &apos;async/filterLimit&apos;;</code></pre><p>The same as <a href="docs.html#filter"><code>filter</code></a> but runs a maximum of <code>limit</code> async operations at a
+time.</p>
+</div>
+
+
+
+    <dl class="details alias-details">
+        <dt class="tag-alias">Alias:</dt>
+        <dd class="tag-alias"><ul class="dummy"><li>selectLimit</li></ul></dd>
+    </dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The maximum number of async operations at a time.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A truth test to apply to each item in <code>coll</code>.
+The <code>iteratee</code> is passed a <code>callback(err, truthValue)</code>, which must be called
+with a boolean argument once it has completed. Invoked with (item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called after all the
+<code>iteratee</code> functions have finished. Invoked with (err, results).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="filterLimit.js.html">filterLimit.js</a>, <a href="filterLimit.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#filter">async.filter</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="filterSeries"><span class="type-signature">(static) </span>filterSeries<span class="signature">(coll, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import filterSeries from &apos;async/filterSeries&apos;;</code></pre><p>The same as <a href="docs.html#filter"><code>filter</code></a> but runs only a single async operation at a time.</p>
+</div>
+
+
+
+    <dl class="details alias-details">
+        <dt class="tag-alias">Alias:</dt>
+        <dd class="tag-alias"><ul class="dummy"><li>selectSeries</li></ul></dd>
+    </dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A truth test to apply to each item in <code>coll</code>.
+The <code>iteratee</code> is passed a <code>callback(err, truthValue)</code>, which must be called
+with a boolean argument once it has completed. Invoked with (item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called after all the
+<code>iteratee</code> functions have finished. Invoked with (err, results)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="filterSeries.js.html">filterSeries.js</a>, <a href="filterSeries.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#filter">async.filter</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="groupBy"><span class="type-signature">(static) </span>groupBy<span class="signature">(coll, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import groupBy from &apos;async/groupBy&apos;;</code></pre><p>Returns a new object, where each value corresponds to an array of items, from
+<code>coll</code>, that returned the corresponding key. That is, the keys of the object
+correspond to the values passed to the <code>iteratee</code> callback.</p>
+<p>Note: Since this function applies the <code>iteratee</code> to each item in parallel,
+there is no guarantee that the <code>iteratee</code> functions will complete in order.
+However, the values for each key in the <code>result</code> will be in the same order as
+the original <code>coll</code>. For Objects, the values will roughly be in the order of
+the original Objects&apos; keys (but this can vary across JavaScript engines).</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>An async function to apply to each item in
+<code>coll</code>.
+The iteratee should complete with a <code>key</code> to group the value under.
+Invoked with (value, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called when all <code>iteratee</code>
+functions have finished, or an error occurs. Result is an <code>Object</code> whoses
+properties are arrays of values which returned the corresponding key.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>async.groupBy([&apos;userId1&apos;, &apos;userId2&apos;, &apos;userId3&apos;], function(userId, callback) {
+    db.findById(userId, function(err, user) {
+        if (err) return callback(err);
+        return callback(null, user.age);
+    });
+}, function(err, result) {
+    // result is object containing the userIds grouped by age
+    // e.g. { 30: [&apos;userId1&apos;, &apos;userId3&apos;], 42: [&apos;userId2&apos;]};
+});</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="groupBy.js.html">groupBy.js</a>, <a href="groupBy.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="groupByLimit"><span class="type-signature">(static) </span>groupByLimit<span class="signature">(coll, limit, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import groupByLimit from &apos;async/groupByLimit&apos;;</code></pre><p>The same as <a href="docs.html#groupBy"><code>groupBy</code></a> but runs a maximum of <code>limit</code> async operations at a time.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The maximum number of async operations at a time.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>An async function to apply to each item in
+<code>coll</code>.
+The iteratee should complete with a <code>key</code> to group the value under.
+Invoked with (value, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called when all <code>iteratee</code>
+functions have finished, or an error occurs. Result is an <code>Object</code> whoses
+properties are arrays of values which returned the corresponding key.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="groupByLimit.js.html">groupByLimit.js</a>, <a href="groupByLimit.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#groupBy">async.groupBy</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="groupBySeries"><span class="type-signature">(static) </span>groupBySeries<span class="signature">(coll, limit, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import groupBySeries from &apos;async/groupBySeries&apos;;</code></pre><p>The same as <a href="docs.html#groupBy"><code>groupBy</code></a> but runs only a single async operation at a time.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The maximum number of async operations at a time.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>An async function to apply to each item in
+<code>coll</code>.
+The iteratee should complete with a <code>key</code> to group the value under.
+Invoked with (value, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called when all <code>iteratee</code>
+functions have finished, or an error occurs. Result is an <code>Object</code> whoses
+properties are arrays of values which returned the corresponding key.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="groupBySeries.js.html">groupBySeries.js</a>, <a href="groupBySeries.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#groupBy">async.groupBy</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="map"><span class="type-signature">(static) </span>map<span class="signature">(coll, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import map from &apos;async/map&apos;;</code></pre><p>Produces a new collection of values by mapping each value in <code>coll</code> through
+the <code>iteratee</code> function. The <code>iteratee</code> is called with an item from <code>coll</code>
+and a callback for when it has finished processing. Each of these callback
+takes 2 arguments: an <code>error</code>, and the transformed item from <code>coll</code>. If
+<code>iteratee</code> passes an error to its callback, the main <code>callback</code> (for the
+<code>map</code> function) is immediately called with the error.</p>
+<p>Note, that since this function applies the <code>iteratee</code> to each item in
+parallel, there is no guarantee that the <code>iteratee</code> functions will complete
+in order. However, the results array will be in the same order as the
+original <code>coll</code>.</p>
+<p>If <code>map</code> is passed an Object, the results will be an Array.  The results
+will roughly be in the order of the original Objects&apos; keys (but this can
+vary across JavaScript engines).</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>An async function to apply to each item in
+<code>coll</code>.
+The iteratee should complete with the transformed item.
+Invoked with (item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called when all <code>iteratee</code>
+functions have finished, or an error occurs. Results is an Array of the
+transformed items from the <code>coll</code>. Invoked with (err, results).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>async.map([&apos;file1&apos;,&apos;file2&apos;,&apos;file3&apos;], fs.stat, function(err, results) {
+    // results is now an array of stats for each file
+});</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="map.js.html">map.js</a>, <a href="map.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="mapLimit"><span class="type-signature">(static) </span>mapLimit<span class="signature">(coll, limit, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import mapLimit from &apos;async/mapLimit&apos;;</code></pre><p>The same as <a href="docs.html#map"><code>map</code></a> but runs a maximum of <code>limit</code> async operations at a time.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The maximum number of async operations at a time.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>An async function to apply to each item in
+<code>coll</code>.
+The iteratee should complete with the transformed item.
+Invoked with (item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called when all <code>iteratee</code>
+functions have finished, or an error occurs. Results is an array of the
+transformed items from the <code>coll</code>. Invoked with (err, results).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="mapLimit.js.html">mapLimit.js</a>, <a href="mapLimit.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#map">async.map</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="mapSeries"><span class="type-signature">(static) </span>mapSeries<span class="signature">(coll, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import mapSeries from &apos;async/mapSeries&apos;;</code></pre><p>The same as <a href="docs.html#map"><code>map</code></a> but runs only a single async operation at a time.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>An async function to apply to each item in
+<code>coll</code>.
+The iteratee should complete with the transformed item.
+Invoked with (item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called when all <code>iteratee</code>
+functions have finished, or an error occurs. Results is an array of the
+transformed items from the <code>coll</code>. Invoked with (err, results).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="mapSeries.js.html">mapSeries.js</a>, <a href="mapSeries.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#map">async.map</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="mapValues"><span class="type-signature">(static) </span>mapValues<span class="signature">(obj, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import mapValues from &apos;async/mapValues&apos;;</code></pre><p>A relative of <a href="docs.html#map"><code>map</code></a>, designed for use with objects.</p>
+<p>Produces a new Object by mapping each value of <code>obj</code> through the <code>iteratee</code>
+function. The <code>iteratee</code> is called each <code>value</code> and <code>key</code> from <code>obj</code> and a
+callback for when it has finished processing. Each of these callbacks takes
+two arguments: an <code>error</code>, and the transformed item from <code>obj</code>. If <code>iteratee</code>
+passes an error to its callback, the main <code>callback</code> (for the <code>mapValues</code>
+function) is immediately called with the error.</p>
+<p>Note, the order of the keys in the result is not guaranteed.  The keys will
+be roughly in the order they complete, (but this is very engine-specific)</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>obj</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A function to apply to each value and key
+in <code>coll</code>.
+The iteratee should complete with the transformed value as its result.
+Invoked with (value, key, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called when all <code>iteratee</code>
+functions have finished, or an error occurs. <code>result</code> is a new object consisting
+of each key from <code>obj</code>, with each transformed value on the right-hand side.
+Invoked with (err, result).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>async.mapValues({
+    f1: &apos;file1&apos;,
+    f2: &apos;file2&apos;,
+    f3: &apos;file3&apos;
+}, function (file, key, callback) {
+  fs.stat(file, callback);
+}, function(err, result) {
+    // result is now a map of stats for each file, e.g.
+    // {
+    //     f1: [stats for file1],
+    //     f2: [stats for file2],
+    //     f3: [stats for file3]
+    // }
+});</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="mapValues.js.html">mapValues.js</a>, <a href="mapValues.js.html#line5">line 5</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="mapValuesLimit"><span class="type-signature">(static) </span>mapValuesLimit<span class="signature">(obj, limit, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import mapValuesLimit from &apos;async/mapValuesLimit&apos;;</code></pre><p>The same as <a href="docs.html#mapValues"><code>mapValues</code></a> but runs a maximum of <code>limit</code> async operations at a
+time.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>obj</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The maximum number of async operations at a time.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A function to apply to each value and key
+in <code>coll</code>.
+The iteratee should complete with the transformed value as its result.
+Invoked with (value, key, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called when all <code>iteratee</code>
+functions have finished, or an error occurs. <code>result</code> is a new object consisting
+of each key from <code>obj</code>, with each transformed value on the right-hand side.
+Invoked with (err, result).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="mapValuesLimit.js.html">mapValuesLimit.js</a>, <a href="mapValuesLimit.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#mapValues">async.mapValues</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="mapValuesSeries"><span class="type-signature">(static) </span>mapValuesSeries<span class="signature">(obj, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import mapValuesSeries from &apos;async/mapValuesSeries&apos;;</code></pre><p>The same as <a href="docs.html#mapValues"><code>mapValues</code></a> but runs only a single async operation at a time.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>obj</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A function to apply to each value and key
+in <code>coll</code>.
+The iteratee should complete with the transformed value as its result.
+Invoked with (value, key, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called when all <code>iteratee</code>
+functions have finished, or an error occurs. <code>result</code> is a new object consisting
+of each key from <code>obj</code>, with each transformed value on the right-hand side.
+Invoked with (err, result).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="mapValuesSeries.js.html">mapValuesSeries.js</a>, <a href="mapValuesSeries.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#mapValues">async.mapValues</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="reduce"><span class="type-signature">(static) </span>reduce<span class="signature">(coll, memo, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import reduce from &apos;async/reduce&apos;;</code></pre><p>Reduces <code>coll</code> into a single value using an async <code>iteratee</code> to return each
+successive step. <code>memo</code> is the initial state of the reduction. This function
+only operates in series.</p>
+<p>For performance reasons, it may make sense to split a call to this function
+into a parallel map, and then use the normal <code>Array.prototype.reduce</code> on the
+results. This function is for situations where each step in the reduction
+needs to be async; if you can get the data before reducing it, then it&apos;s
+probably a good idea to do so.</p>
+</div>
+
+
+
+    <dl class="details alias-details">
+        <dt class="tag-alias">Alias:</dt>
+        <dd class="tag-alias"><ul class="dummy"><li>foldl</li></ul></dd>
+    </dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>memo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The initial state of the reduction.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A function applied to each item in the
+array to produce the next step in the reduction.
+The <code>iteratee</code> should complete with the next state of the reduction.
+If the iteratee complete with an error, the reduction is stopped and the
+main <code>callback</code> is immediately called with the error.
+Invoked with (memo, item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called after all the
+<code>iteratee</code> functions have finished. Result is the reduced value. Invoked with
+(err, result).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>async.reduce([1,2,3], 0, function(memo, item, callback) {
+    // pointless async:
+    process.nextTick(function() {
+        callback(null, memo + item)
+    });
+}, function(err, result) {
+    // result is now equal to the last value of memo, which is 6
+});</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="reduce.js.html">reduce.js</a>, <a href="reduce.js.html#line6">line 6</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="reduceRight"><span class="type-signature">(static) </span>reduceRight<span class="signature">(array, memo, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import reduceRight from &apos;async/reduceRight&apos;;</code></pre><p>Same as <a href="docs.html#reduce"><code>reduce</code></a>, only operates on <code>array</code> in reverse order.</p>
+</div>
+
+
+
+    <dl class="details alias-details">
+        <dt class="tag-alias">Alias:</dt>
+        <dd class="tag-alias"><ul class="dummy"><li>foldr</li></ul></dd>
+    </dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>array</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>memo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The initial state of the reduction.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A function applied to each item in the
+array to produce the next step in the reduction.
+The <code>iteratee</code> should complete with the next state of the reduction.
+If the iteratee complete with an error, the reduction is stopped and the
+main <code>callback</code> is immediately called with the error.
+Invoked with (memo, item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called after all the
+<code>iteratee</code> functions have finished. Result is the reduced value. Invoked with
+(err, result).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="reduceRight.js.html">reduceRight.js</a>, <a href="reduceRight.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#reduce">async.reduce</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="reject"><span class="type-signature">(static) </span>reject<span class="signature">(coll, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import reject from &apos;async/reject&apos;;</code></pre><p>The opposite of <a href="docs.html#filter"><code>filter</code></a>. Removes values that pass an <code>async</code> truth test.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>An async truth test to apply to each item in
+<code>coll</code>.
+The should complete with a boolean value as its <code>result</code>.
+Invoked with (item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called after all the
+<code>iteratee</code> functions have finished. Invoked with (err, results).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>async.reject([&apos;file1&apos;,&apos;file2&apos;,&apos;file3&apos;], function(filePath, callback) {
+    fs.access(filePath, function(err) {
+        callback(null, !err)
+    });
+}, function(err, results) {
+    // results now equals an array of missing files
+    createFiles(results);
+});</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="reject.js.html">reject.js</a>, <a href="reject.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#filter">async.filter</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="rejectLimit"><span class="type-signature">(static) </span>rejectLimit<span class="signature">(coll, limit, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import rejectLimit from &apos;async/rejectLimit&apos;;</code></pre><p>The same as <a href="docs.html#reject"><code>reject</code></a> but runs a maximum of <code>limit</code> async operations at a
+time.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The maximum number of async operations at a time.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>An async truth test to apply to each item in
+<code>coll</code>.
+The should complete with a boolean value as its <code>result</code>.
+Invoked with (item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called after all the
+<code>iteratee</code> functions have finished. Invoked with (err, results).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="rejectLimit.js.html">rejectLimit.js</a>, <a href="rejectLimit.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#reject">async.reject</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="rejectSeries"><span class="type-signature">(static) </span>rejectSeries<span class="signature">(coll, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import rejectSeries from &apos;async/rejectSeries&apos;;</code></pre><p>The same as <a href="docs.html#reject"><code>reject</code></a> but runs only a single async operation at a time.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>An async truth test to apply to each item in
+<code>coll</code>.
+The should complete with a boolean value as its <code>result</code>.
+Invoked with (item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called after all the
+<code>iteratee</code> functions have finished. Invoked with (err, results).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="rejectSeries.js.html">rejectSeries.js</a>, <a href="rejectSeries.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#reject">async.reject</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="some"><span class="type-signature">(static) </span>some<span class="signature">(coll, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import some from &apos;async/some&apos;;</code></pre><p>Returns <code>true</code> if at least one element in the <code>coll</code> satisfies an async test.
+If any iteratee call returns <code>true</code>, the main <code>callback</code> is immediately
+called.</p>
+</div>
+
+
+
+    <dl class="details alias-details">
+        <dt class="tag-alias">Alias:</dt>
+        <dd class="tag-alias"><ul class="dummy"><li>any</li></ul></dd>
+    </dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>An async truth test to apply to each item
+in the collections in parallel.
+The iteratee should complete with a boolean <code>result</code> value.
+Invoked with (item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called as soon as any
+iteratee returns <code>true</code>, or after all the iteratee functions have finished.
+Result will be either <code>true</code> or <code>false</code> depending on the values of the async
+tests. Invoked with (err, result).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>async.some([&apos;file1&apos;,&apos;file2&apos;,&apos;file3&apos;], function(filePath, callback) {
+    fs.access(filePath, function(err) {
+        callback(null, !err)
+    });
+}, function(err, result) {
+    // if result is true then at least one of the files exists
+});</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="some.js.html">some.js</a>, <a href="some.js.html#line5">line 5</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="someLimit"><span class="type-signature">(static) </span>someLimit<span class="signature">(coll, limit, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import someLimit from &apos;async/someLimit&apos;;</code></pre><p>The same as <a href="docs.html#some"><code>some</code></a> but runs a maximum of <code>limit</code> async operations at a time.</p>
+</div>
+
+
+
+    <dl class="details alias-details">
+        <dt class="tag-alias">Alias:</dt>
+        <dd class="tag-alias"><ul class="dummy"><li>anyLimit</li></ul></dd>
+    </dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The maximum number of async operations at a time.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>An async truth test to apply to each item
+in the collections in parallel.
+The iteratee should complete with a boolean <code>result</code> value.
+Invoked with (item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called as soon as any
+iteratee returns <code>true</code>, or after all the iteratee functions have finished.
+Result will be either <code>true</code> or <code>false</code> depending on the values of the async
+tests. Invoked with (err, result).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="someLimit.js.html">someLimit.js</a>, <a href="someLimit.js.html#line5">line 5</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#some">async.some</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="someSeries"><span class="type-signature">(static) </span>someSeries<span class="signature">(coll, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import someSeries from &apos;async/someSeries&apos;;</code></pre><p>The same as <a href="docs.html#some"><code>some</code></a> but runs only a single async operation at a time.</p>
+</div>
+
+
+
+    <dl class="details alias-details">
+        <dt class="tag-alias">Alias:</dt>
+        <dd class="tag-alias"><ul class="dummy"><li>anySeries</li></ul></dd>
+    </dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>An async truth test to apply to each item
+in the collections in series.
+The iteratee should complete with a boolean <code>result</code> value.
+Invoked with (item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called as soon as any
+iteratee returns <code>true</code>, or after all the iteratee functions have finished.
+Result will be either <code>true</code> or <code>false</code> depending on the values of the async
+tests. Invoked with (err, result).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="someSeries.js.html">someSeries.js</a>, <a href="someSeries.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><p><a href="docs.html#some">async.some</a></p></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="sortBy"><span class="type-signature">(static) </span>sortBy<span class="signature">(coll, iteratee, callback)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import sortBy from &apos;async/sortBy&apos;;</code></pre><p>Sorts a list by the results of running each <code>coll</code> value through an async
+<code>iteratee</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>An async function to apply to each item in
+<code>coll</code>.
+The iteratee should complete with a value to use as the sort criteria as
+its <code>result</code>.
+Invoked with (item, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called after all the
+<code>iteratee</code> functions have finished, or an error occurs. Results is the items
+from the original <code>coll</code> sorted by the values returned by the <code>iteratee</code>
+calls. Invoked with (err, results).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>async.sortBy([&apos;file1&apos;,&apos;file2&apos;,&apos;file3&apos;], function(file, callback) {
+    fs.stat(file, function(err, stats) {
+        callback(err, stats.mtime);
+    });
+}, function(err, results) {
+    // results is now the original array of files sorted by
+    // modified date
+});
+
+// By modifying the callback parameter the
+// sorting order can be influenced:
+
+// ascending order
+async.sortBy([1,9,3,5], function(x, callback) {
+    callback(null, x);
+}, function(err,result) {
+    // result callback
+});
+
+// descending order
+async.sortBy([1,9,3,5], function(x, callback) {
+    callback(null, x*-1);    //&lt;- x*-1 instead of x, turns the order around
+}, function(err,result) {
+    // result callback
+});</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="sortBy.js.html">sortBy.js</a>, <a href="sortBy.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="transform"><span class="type-signature">(static) </span>transform<span class="signature">(coll, accumulator<span class="signature-attributes">opt</span>, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <pre class="prettyprint source"><code>import transform from &apos;async/transform&apos;;</code></pre><p>A relative of <code>reduce</code>.  Takes an Object or Array, and iterates over each
+element in series, each step potentially mutating an <code>accumulator</code> value.
+The type of the accumulator defaults to the type of collection passed in.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>coll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+|
+
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A collection to iterate over.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>accumulator</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>The initial state of the transform.  If omitted,
+it will default to an empty Object or Array, depending on the type of <code>coll</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A function applied to each item in the
+collection that potentially modifies the accumulator.
+Invoked with (accumulator, item, key, callback).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+
+            
+                <span class="optional">&lt;optional&gt;</span>
+            
+            </td>
+
+            
+
+            <td class="description last"><p>A callback which is called after all the
+<code>iteratee</code> functions have finished. Result is the transformed accumulator.
+Invoked with (err, result).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>async.transform([1,2,3], function(acc, item, index, callback) {
+    // pointless async:
+    process.nextTick(function() {
+        acc.push(item * 2)
+        callback(null)
+    });
+}, function(err, result) {
+    // result is now equal to [2, 4, 6]
+});</code></pre>
+
+    <pre class="prettyprint"><code>async.transform({a: 1, b: 2, c: 3}, function (obj, val, key, callback) {
+    setImmediate(function () {
+        obj[key] = val * 2;
+        callback();
+    })
+}, function (err, result) {
+    // result is equal to {a: 2, b: 4, c: 6}
+})</code></pre>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="transform.js.html">transform.js</a>, <a href="transform.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    <footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun May 26 2019 15:21:49 GMT-0700 (Pacific Daylight Time) using the Minami theme.
+ Documentation has been modified from the original.  For more information, please see the <a href="https://github.com/caolan/async">async</a> repository.</footer></div>
+</div>
+
+<nav id="toc">
+    <h3>Methods:</h3><ul class="nav methods"><li class="toc-header"><a href="docs.html#collections">Collections</a></li><li data-type="method" class="toc-method"><a href="docs.html#concat">concat</a></li><li data-type="method" class="toc-method"><a href="docs.html#concatLimit">concatLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#concatSeries">concatSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#detect">detect</a></li><li data-type="method" class="toc-method"><a href="docs.html#detectLimit">detectLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#detectSeries">detectSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#each">each</a></li><li data-type="method" class="toc-method"><a href="docs.html#eachLimit">eachLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#eachOf">eachOf</a></li><li data-type="method" class="toc-method"><a href="docs.html#eachOfLimit">eachOfLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#eachOfSeries">eachOfSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#eachSeries">eachSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#every">every</a></li><li data-type="method" class="toc-method"><a href="docs.html#everyLimit">everyLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#everySeries">everySeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#filter">filter</a></li><li data-type="method" class="toc-method"><a href="docs.html#filterLimit">filterLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#filterSeries">filterSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#groupBy">groupBy</a></li><li data-type="method" class="toc-method"><a href="docs.html#groupByLimit">groupByLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#groupBySeries">groupBySeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#map">map</a></li><li data-type="method" class="toc-method"><a href="docs.html#mapLimit">mapLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#mapSeries">mapSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#mapValues">mapValues</a></li><li data-type="method" class="toc-method"><a href="docs.html#mapValuesLimit">mapValuesLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#mapValuesSeries">mapValuesSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#reduce">reduce</a></li><li data-type="method" class="toc-method"><a href="docs.html#reduceRight">reduceRight</a></li><li data-type="method" class="toc-method"><a href="docs.html#reject">reject</a></li><li data-type="method" class="toc-method"><a href="docs.html#rejectLimit">rejectLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#rejectSeries">rejectSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#some">some</a></li><li data-type="method" class="toc-method"><a href="docs.html#someLimit">someLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#someSeries">someSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#sortBy">sortBy</a></li><li data-type="method" class="toc-method"><a href="docs.html#transform">transform</a></li><li class="toc-header"><a href="docs.html#controlflow">Control Flow</a></li><li data-type="method" class="toc-method"><a href="docs.html#applyEach">applyEach</a></li><li data-type="method" class="toc-method"><a href="docs.html#applyEachSeries">applyEachSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#auto">auto</a></li><li data-type="method" class="toc-method"><a href="docs.html#autoInject">autoInject</a></li><li data-type="method" class="toc-method"><a href="docs.html#cargo">cargo</a></li><li data-type="method" class="toc-method"><a href="docs.html#compose">compose</a></li><li data-type="method" class="toc-method"><a href="docs.html#doDuring">doDuring</a></li><li data-type="method" class="toc-method"><a href="docs.html#doUntil">doUntil</a></li><li data-type="method" class="toc-method"><a href="docs.html#doWhilst">doWhilst</a></li><li data-type="method" class="toc-method"><a href="docs.html#during">during</a></li><li data-type="method" class="toc-method"><a href="docs.html#forever">forever</a></li><li data-type="method" class="toc-method"><a href="docs.html#parallel">parallel</a></li><li data-type="method" class="toc-method"><a href="docs.html#parallelLimit">parallelLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#priorityQueue">priorityQueue</a></li><li data-type="method" class="toc-method"><a href="docs.html#queue">queue</a></li><li data-type="method" class="toc-method"><a href="docs.html#race">race</a></li><li data-type="method" class="toc-method"><a href="docs.html#retry">retry</a></li><li data-type="method" class="toc-method"><a href="docs.html#retryable">retryable</a></li><li data-type="method" class="toc-method"><a href="docs.html#seq">seq</a></li><li data-type="method" class="toc-method"><a href="docs.html#series">series</a></li><li data-type="method" class="toc-method"><a href="docs.html#times">times</a></li><li data-type="method" class="toc-method"><a href="docs.html#timesLimit">timesLimit</a></li><li data-type="method" class="toc-method"><a href="docs.html#timesSeries">timesSeries</a></li><li data-type="method" class="toc-method"><a href="docs.html#tryEach">tryEach</a></li><li data-type="method" class="toc-method"><a href="docs.html#until">until</a></li><li data-type="method" class="toc-method"><a href="docs.html#waterfall">waterfall</a></li><li data-type="method" class="toc-method"><a href="docs.html#whilst">whilst</a></li><li class="toc-header"><a href="docs.html#utils">Utils</a></li><li data-type="method" class="toc-method"><a href="docs.html#apply">apply</a></li><li data-type="method" class="toc-method"><a href="docs.html#asyncify">asyncify</a></li><li data-type="method" class="toc-method"><a href="docs.html#constant">constant</a></li><li data-type="method" class="toc-method"><a href="docs.html#dir">dir</a></li><li data-type="method" class="toc-method"><a href="docs.html#ensureAsync">ensureAsync</a></li><li data-type="method" class="toc-method"><a href="docs.html#log">log</a></li><li data-type="method" class="toc-method"><a href="docs.html#memoize">memoize</a></li><li data-type="method" class="toc-method"><a href="docs.html#nextTick">nextTick</a></li><li data-type="method" class="toc-method"><a href="docs.html#reflect">reflect</a></li><li data-type="method" class="toc-method"><a href="docs.html#reflectAll">reflectAll</a></li><li data-type="method" class="toc-method"><a href="docs.html#setImmediate">setImmediate</a></li><li data-type="method" class="toc-method"><a href="docs.html#timeout">timeout</a></li><li data-type="method" class="toc-method"><a href="docs.html#unmemoize">unmemoize</a></li></ul><h3>Methods:</h3>
+</nav>
+
+<br class="clear">
+
+
+
+
+<script src="https://cdn.jsdelivr.net/prettify/0.1/prettify.js"></script>
+
+<script src="https://cdn.jsdelivr.net/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+<script>prettyPrint();</script>
+<script src="scripts/async.js"></script>
+
+<script src="scripts/linenumber.js" async></script>
+<script src="scripts/jsdoc-custom.js" async></script>
+</body>
