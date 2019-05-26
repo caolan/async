@@ -6,7 +6,7 @@ var $ = require('cheerio');
 var _ = require('lodash');
 
 var VERSION = require('../../package.json').version;
-var docsDir = path.join(__dirname, '../../docs');
+var docsDir = path.join(__dirname, '../../docs/v3');
 var pageTitle = 'Methods:';
 
 var docFilename = 'docs.html';
