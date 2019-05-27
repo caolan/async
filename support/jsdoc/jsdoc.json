@@ -11,7 +11,7 @@
     "readme": "intro.md",
     "template": "support/jsdoc/theme",
     "encoding": "utf8",
-    "destination": "./docs",
+    "destination": "./docs/v3",
     "recurse": true
   },
   "templates": {

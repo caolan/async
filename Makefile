@@ -57,7 +57,7 @@ clean:
 	rm -rf $(BUILD_ES)
 	rm -rf $(DIST)
 	rm -rf $(JS_INDEX)
-	rm -rf tmp/ docs/ .nyc_output/ coverage/
+	rm -rf tmp/ .nyc_output/ coverage/
 	rm -rf perf/versions/
 
 lint:
@@ -144,7 +144,7 @@ build: build-bundle build-dist build-es build-config build-es-config test-build
 
 .PHONY: release-major release-minor release-patch release-prerelease
 release-major release-minor release-patch release-prerelease: all
-	npm i # ensure dependencies are up to date (#1158)
+	npm ci # ensure dependencies are up to date (#1158)
 	git add --force $(DIST)
 	git commit -am "Update built files"; true
 	$(XYZ) --increment $(@:release-%=%)
@@ -161,10 +161,6 @@ doc:
 	node support/jsdoc/jsdoc-fix-html.js
 
 publish-doc: doc
-	git diff-files --quiet # fail if unstaged changes
-	git diff-index --quiet HEAD # fail if uncommited changes
-	npm run-script jsdoc
-	gh-pages-deploy
 
 .PHONY: list
 list:
