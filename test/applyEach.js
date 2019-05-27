@@ -7,29 +7,29 @@ describe('applyEach', () => {
     it('applyEach', (done) => {
         var call_order = [];
         var one = function (val, cb) {
-            expect(val).to.equal(5);
+            call_order.push(val)
             setTimeout(() => {
-                call_order.push('one');
+                call_order.push('done');
                 cb(null, 1);
-            }, 12);
+            }, 1);
         };
         var two = function (val, cb) {
-            expect(val).to.equal(5);
+            call_order.push(val)
             setTimeout(() => {
-                call_order.push('two');
+                call_order.push('done');
                 cb(null, 2);
             }, 2);
         };
         var three = function (val, cb) {
-            expect(val).to.equal(5);
+            call_order.push(val)
             setTimeout(() => {
-                call_order.push('three');
+                call_order.push('done');
                 cb(null, 3);
-            }, 18);
+            }, 2);
         };
         async.applyEach([one, two, three], 5)((err, results) => {
             assert(err === null, err + " passed instead of 'null'");
-            expect(call_order).to.eql(['two', 'one', 'three']);
+            expect(call_order).to.eql([5, 5, 5, 'done', 'done', 'done']);
             expect(results).to.eql([1, 2, 3]);
             done();
         });
@@ -64,29 +64,29 @@ describe('applyEach', () => {
     it('applyEachSeries', (done) => {
         var call_order = [];
         function one(val, cb) {
-            expect(val).to.equal(5);
+            call_order.push(val)
             setTimeout(() => {
-                call_order.push('one');
+                call_order.push('done');
                 cb(null, 1);
-            }, 10);
+            }, 1);
         }
         function two(val, cb) {
-            expect(val).to.equal(5);
+            call_order.push(val)
             setTimeout(() => {
-                call_order.push('two');
+                call_order.push('done');
                 cb(null, 2);
             }, 5);
         }
         function three(val, cb) {
-            expect(val).to.equal(5);
+            call_order.push(val)
             setTimeout(() => {
-                call_order.push('three');
+                call_order.push('done');
                 cb(null, 3);
-            }, 15);
+            }, 1);
         }
         async.applyEachSeries([one, two, three], 5)((err, results) => {
             assert(err === null, err + " passed instead of 'null'");
-            expect(call_order).to.eql(['one', 'two', 'three']);
+            expect(call_order).to.eql([5, 'done', 5, 'done', 5, 'done']);
             expect(results).to.eql([1, 2, 3]);
             done();
         });
