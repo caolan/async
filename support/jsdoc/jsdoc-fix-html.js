@@ -122,8 +122,8 @@ function fixToc(file, $page, moduleFiles) {
     $nav.children('h2').remove();
 
     scrollSpyFix($page, $nav);
-
-    var prependFilename = (file === docFilename) ? '' : docFilename;
+    var isDocsFile = file === docFilename
+    var prependFilename = isDocsFile ? '' : docFilename;
     // make everything point to the same 'docs.html' page
     _.each(moduleFiles, (filename) => {
         $page.find('[href^="'+filename+'"]').each(function() {
@@ -178,18 +178,14 @@ fs.copySync(path.join(__dirname, '..', '..', 'logo', 'async-logo.svg'), path.joi
 fs.readdir(docsDir, (readErr, files) => {
     if (readErr) { throw readErr; }
 
-    var HTMLFiles = _.filter(files, (file) => {
-        return path.extname(file) === '.html';
-    });
+    var HTMLFiles = files
+        .filter(file => path.extname(file) === '.html')
+        .filter(file => file !== 'docs.html')
+
 
     async.waterfall([
-        function(callback) {
-            combineFakeModules(HTMLFiles, (err) => {
-                if (err) return callback(err);
-                HTMLFiles.push(docFilename);
-                return callback(null);
-            });
-        },
+        async.constant(HTMLFiles),
+        combineFakeModules,
         async.asyncify(() => {
             HTMLFiles.push(docFilename)
         }),
