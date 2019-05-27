@@ -143,7 +143,6 @@ function fixToc(file, $page, moduleFiles) {
 }
 
 function fixFooter($page) {
-    // add a note to the footer that the documentation has been modified
     var $footer = $page.find('footer');
     $page.find(mainScrollableSection).append($footer);
 }

@@ -129,10 +129,15 @@ tt, code, kbd, samp {
 }
 
 #main-container h4 {
-    margin-top: 120px !important;
-    padding-top: 0px;
+    padding-top: 120px;
     padding-left: 16px;
     margin-left: -16px;
+}
+
+#main-container h4::before {
+    content: '';
+    position: relative;
+    left: -16px;
     border-left: 2px solid #3391FE;
 }
 
@@ -377,7 +382,7 @@ nav > h2 > a {
 
 footer {
     max-width: 800px;
-    margin: 0 auto;
+    margin: 0 auto 4em;
     color: hsl(0, 0%, 56%);
     display: block;
     padding: 30px 30px 0;
