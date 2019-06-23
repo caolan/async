@@ -60,6 +60,8 @@
         };
     }
 
+    /* istanbul ignore file */
+
     var hasSetImmediate = typeof setImmediate === 'function' && setImmediate;
     var hasNextTick = typeof process === 'object' && typeof process.nextTick === 'function';
 
@@ -617,13 +619,14 @@
      * function.
      * @param {Function} [callback] - the final argument should be the callback,
      * called when all functions have completed processing.
-     * @returns {Function} - If only the first argument, `fns`, is provided, it will
-     * return a function which lets you pass in the arguments as if it were a single
-     * function call. The signature is `(..args, callback)`. If invoked with any
-     * arguments, `callback` is required.
+     * @returns {AsyncFunction} - Returns a function that takes no args other than
+     * an optional callback, that is the result of applying the `args` to each
+     * of the functions.
      * @example
      *
-     * async.applyEach([enableSearch, updateSchema], 'bucket', (err, results) => {
+     * const appliedFn = async.applyEach([enableSearch, updateSchema], 'bucket')
+     *
+     * appliedFn((err, results) => {
      *     // results[0] is the results for `enableSearch`
      *     // results[1] is the results for `updateSchema`
      * });
@@ -631,7 +634,7 @@
      * // partial application example:
      * async.each(
      *     buckets,
-     *     async.applyEach([enableSearch, updateSchema]),
+     *     async (bucket) => async.applyEach([enableSearch, updateSchema], bucket)(),
      *     callback
      * );
      */
@@ -699,9 +702,9 @@
      * function.
      * @param {Function} [callback] - the final argument should be the callback,
      * called when all functions have completed processing.
-     * @returns {Function} - If only the first argument is provided, it will return
-     * a function which lets you pass in the arguments as if it were a single
-     * function call.
+     * @returns {AsyncFunction} - A function, that when called, is the result of
+     * appling the `args` to the list of functions.  It takes no args, other than
+     * a callback.
      */
     var applyEachSeries = applyEach(mapSeries$1);
 
@@ -973,8 +976,8 @@
         return callback[PROMISE_SYMBOL]
     }
 
-    var FN_ARGS = /^(?:async\s+)?(?:function)?\s*[^(]*\(\s*([^)]+)\s*\)(?:\s*{)/m;
-    var ARROW_FN_ARGS = /^(?:async\s+)?(?:function\s+)?\(?\s*([^)^=]+)\s*\)?(?:\s*=>)/m;
+    var FN_ARGS = /^(?:async\s+)?(?:function)?\s*\w*\s*\(\s*([^)]+)\s*\)(?:\s*{)/;
+    var ARROW_FN_ARGS = /^(?:async\s+)?\(?\s*([^)=]+)\s*\)?(?:\s*=>)/;
     var FN_ARG_SPLIT = /,/;
     var FN_ARG = /(=.+)?(\s*)$/;
     var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
@@ -1251,27 +1254,26 @@
         }
 
         var processingScheduled = false;
-        function _insert(data, insertAtFront, callback) {
+        function _insert(data, insertAtFront, rejectOnError, callback) {
             if (callback != null && typeof callback !== 'function') {
                 throw new Error('task callback must be a function');
             }
             q.started = true;
-            /*if (Array.isArray(data)) {
 
-                return data.map(datum => _insert(datum, insertAtFront, callback));
-            }*/
-
-            var res;
+            var res, rej;
+            function promiseCallback (err, ...args) {
+                // we don't care about the error, let the global error handler
+                // deal with it
+                if (err) return rejectOnError ? rej(err) : res()
+                if (args.length <= 1) return res(args[0])
+                res(args);
+            }
 
             var item = {
                 data,
-                callback: callback || function (err, ...args) {
-                    // we don't care about the error, let the global error handler
-                    // deal with it
-                    if (err) return
-                    if (args.length <= 1) return res(args[0])
-                    res(args);
-                }
+                callback: rejectOnError ?
+                    promiseCallback :
+                    (callback || promiseCallback)
             };
 
             if (insertAtFront) {
@@ -1288,9 +1290,10 @@
                 });
             }
 
-            if (!callback) {
-                return new Promise((resolve) => {
+            if (rejectOnError || !callback) {
+                return new Promise((resolve, reject) => {
                     res = resolve;
+                    rej = reject;
                 })
             }
         }
@@ -1327,6 +1330,15 @@
             };
         }
 
+        function _maybeDrain(data) {
+            if (data.length === 0 && q.idle()) {
+                // call drain immediately if there are no tasks
+                setImmediate$1(() => trigger('drain'));
+                return true
+            }
+            return false
+        }
+
         const eventMethod = (name) => (handler) => {
             if (!handler) {
                 return new Promise((resolve, reject) => {
@@ -1354,13 +1366,17 @@
             paused: false,
             push (data, callback) {
                 if (Array.isArray(data)) {
-                    if (data.length === 0 && q.idle()) {
-                        // call drain immediately if there are no tasks
-                        return setImmediate$1(() => trigger('drain'));
-                    }
-                    return data.map(datum => _insert(datum, false, callback))
+                    if (_maybeDrain(data)) return
+                    return data.map(datum => _insert(datum, false, false, callback))
                 }
-                return _insert(data, false, callback);
+                return _insert(data, false, false, callback);
+            },
+            pushAsync (data, callback) {
+                if (Array.isArray(data)) {
+                    if (_maybeDrain(data)) return
+                    return data.map(datum => _insert(datum, false, true, callback))
+                }
+                return _insert(data, false, true, callback);
             },
             kill () {
                 off();
@@ -1368,13 +1384,17 @@
             },
             unshift (data, callback) {
                 if (Array.isArray(data)) {
-                    if (data.length === 0 && q.idle()) {
-                        // call drain immediately if there are no tasks
-                        return setImmediate$1(() => trigger('drain'));
-                    }
-                    return data.map(datum => _insert(datum, true, callback))
+                    if (_maybeDrain(data)) return
+                    return data.map(datum => _insert(datum, true, false, callback))
                 }
-                return _insert(data, true, callback);
+                return _insert(data, true, false, callback);
+            },
+            unshiftAsync (data, callback) {
+                if (Array.isArray(data)) {
+                    if (_maybeDrain(data)) return
+                    return data.map(datum => _insert(datum, true, true, callback))
+                }
+                return _insert(data, true, true, callback);
             },
             remove (testFn) {
                 q._tasks.remove(testFn);
@@ -3057,12 +3077,16 @@
      * @property {number} payload - an integer that specifies how many items are
      * passed to the worker function at a time. only applies if this is a
      * [cargo]{@link module:ControlFlow.cargo} object
-     * @property {Function} push - add a new task to the `queue`. Calls `callback`
+     * @property {AsyncFunction} push - add a new task to the `queue`. Calls `callback`
      * once the `worker` has finished processing the task. Instead of a single task,
      * a `tasks` array can be submitted. The respective callback is used for every
      * task in the list. Invoke with `queue.push(task, [callback])`,
-     * @property {Function} unshift - add a new task to the front of the `queue`.
+     * @property {AsyncFunction} unshift - add a new task to the front of the `queue`.
      * Invoke with `queue.unshift(task, [callback])`.
+     * @property {AsyncFunction} pushAsync - the same as `q.push`, except this returns
+     * a promise that rejects if an error occurs.
+     * @property {AsyncFunction} unshirtAsync - the same as `q.unshift`, except this returns
+     * a promise that rejects if an error occurs.
      * @property {Function} remove - remove items from the queue that match a test
      * function.  The test function will be passed an object with a `data` property,
      * and a `priority` property, if this is a
@@ -4469,14 +4493,14 @@
      *
      * @example
      * const results = []
-     * async.until(function iter(next) {
+     * async.until(function test(page, cb) {
+     *     cb(null, page.next == null)
+     * }, function iter(next) {
      *     fetchPage(url, (err, body) => {
      *         if (err) return next(err)
      *         results = results.concat(body.objects)
      *         next(err, body)
      *     })
-     * }, function test(page, cb) {
-     *     cb(null, page.next == null)
      * }, function done (err) {
      *     // all pages have been fetched
      * })
