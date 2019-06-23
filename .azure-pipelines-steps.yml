@@ -38,6 +38,6 @@ steps:
   displayName: 'Publishing the browser test results'
   condition: variables.run_browser_tests
 
-- bash: npm run coveralls
-  displayName: 'Run coveralls'
-  condition: variables.run_coveralls
+#- bash: npm run coveralls
+#  displayName: 'Run coveralls'
+#  condition: variables.run_coveralls
