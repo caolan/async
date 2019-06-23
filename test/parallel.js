@@ -328,25 +328,25 @@ describe('parallel', () => {
         })
     });
 
-    it('parallel empty object with reflect all (errors)', (done) => {
-        var tasks = {
-            one(callback) {
+    it('parallel array with reflect all (errors)', (done) => {
+        var tasks = [
+            function (callback) {
                 callback('one', 1);
             },
-            two(callback) {
+            function (callback) {
                 callback('two');
             },
-            three(callback) {
+            function (callback) {
                 callback('three', 3);
             }
-        };
+        ];
 
         async.parallel(async.reflectAll(tasks), (err, results) => {
-            expect(results).to.eql({
-                one: { error: 'one', value: 1 },
-                two: { error: 'two' },
-                three: { error: 'three', value: 3 }
-            });
+            expect(results).to.eql([
+                { error: 'one', value: 1 },
+                { error: 'two' },
+                { error: 'three', value: 3 }
+            ]);
             done();
         })
     });
