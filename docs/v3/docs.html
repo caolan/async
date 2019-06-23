@@ -14657,14 +14657,14 @@ callback. Invoked with (err, [results]);</p></td>
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>const results = []
-async.until(function iter(next) {
+async.until(function test(page, cb) {
+    cb(null, page.next == null)
+}, function iter(next) {
     fetchPage(url, (err, body) =&gt; {
         if (err) return next(err)
         results = results.concat(body.objects)
         next(err, body)
     })
-}, function test(page, cb) {
-    cb(null, page.next == null)
 }, function done (err) {
     // all pages have been fetched
 })</code></pre>
