@@ -1,3 +1,11 @@
+# v3.1.0
+
+- Added `q.pushAsync` and `q.unshiftAsync`, analagous to `q.push` and `q.unshift`, except they always do not accept a callback, and reject if processing the task errors. (#1659)
+- Promises returned from `q.push` and `q.unshift` when a callback is not passed now resolve even if an error ocurred. (#1659)
+- Fixed a parsing bug in `autoInject` with complicated function bodies (#1663)
+- Added ES6+ configuration for Browserify bundlers (#1653)
+- Various doc fixes (#1664, #1658, #1665, #1652)
+
 # v3.0.1
 
 ## Bug fixes
