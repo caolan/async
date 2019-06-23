@@ -14,7 +14,7 @@ BUILD_ES = build-es
 DIST = dist
 JS_INDEX = lib/index.js
 SCRIPTS = ./support
-JS_SRC := $(shell find lib/ -type f -name '*.js') lib/index.js
+JS_SRC := $(shell find lib/ -type f -name '*.js') lib/index.js lib/asyncify.js
 INDEX_SRC := $(filter-out $(JS_INDEX),$(JS_SRC)) $(SCRIPTS)/index-template.js $(SCRIPTS)/aliases.txt ${SCRIPTS}/generate-index.js
 LINT_FILES := lib/ test/ $(shell find perf/ -maxdepth 2 -type f) $(shell find support/ -maxdepth 2 -type f -name "*.js") karma.conf.js
 
@@ -109,7 +109,7 @@ $(BUILD_ES)/%.js: lib/%.js
 	mkdir -p "$(@D)"
 	cat $< > $@
 
-test-build: $(UMD_BUNDLE) $(UMD_BUNDLE_MIN)
+test-build: $(UMD_BUNDLE) $(UMD_BUNDLE_MIN) $(ES_MODULES) $(CJS_MODULES)
 	mocha support/build.test.js
 
 build-config: $(BUILDDIR)/package.json $(BUILDDIR)/bower.json $(BUILDDIR)/README.md $(BUILDDIR)/LICENSE $(BUILDDIR)/CHANGELOG.md
