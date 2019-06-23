@@ -618,6 +618,7 @@ module.exports = function () {
             'push cb 3',
             'push cb 4',
             'push cb 5',
+            'push cb undefined',
             'push cb 7',
             'unsaturated',
             'push cb 8'

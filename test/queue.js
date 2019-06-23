@@ -156,6 +156,46 @@ describe('queue', function(){
         });
     });
 
+    it('pushAsync', done => {
+        const calls = []
+        var q = async.queue((task, cb) => {
+            if (task === 2) return cb(new Error('fail'))
+            cb()
+        })
+
+        q.pushAsync(1, () => { throw new Error('should not be called') }).then(() => calls.push(1))
+        q.pushAsync(2).catch(err => {
+            expect(err.message).to.equal('fail')
+            calls.push(2)
+        })
+        q.pushAsync([3, 4]).map(p => p.then(() => calls.push('arr')))
+        q.drain(() => setTimeout(() => {
+            console.log('drain')
+            expect(calls).to.eql([1, 2, 'arr', 'arr'])
+            done()
+        }))
+    })
+
+    it('unshiftAsync', done => {
+        const calls = []
+        var q = async.queue((task, cb) => {
+            if (task === 2) return cb(new Error('fail'))
+            cb()
+        })
+
+        q.unshiftAsync(1).then(() => calls.push(1))
+        q.unshiftAsync(2).catch(err => {
+            expect(err.message).to.equal('fail')
+            calls.push(2)
+        })
+        q.unshiftAsync([3, 4]).map(p => p.then(() => calls.push('arr')))
+        q.drain(() => setTimeout(() => {
+            console.log('drain')
+            expect(calls).to.eql(['arr', 'arr', 2, 1])
+            done()
+        }))
+    })
+
     it('global error handler', (done) => {
         var results = [];
 
