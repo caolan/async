@@ -111,7 +111,7 @@ module.exports = function () {
                 throw new Error('should not get here')
             }
         )
-        await delay(10)
+        await delay(20)
         expect(calls).to.eql([0, 1, 2, 3])
     })
 }
