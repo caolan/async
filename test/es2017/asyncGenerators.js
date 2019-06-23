@@ -105,13 +105,13 @@ module.exports = function () {
         async.each(new AsyncIterable(5),
             (val, cb) => {
                 calls.push(val)
-                if (val === 3) cb(false)
+                if (val === 2) cb(false)
                 cb()
             }, () => {
                 throw new Error('should not get here')
             }
         )
         await delay(20)
-        expect(calls).to.eql([0, 1, 2, 3])
+        expect(calls).to.eql([0, 1, 2])
     })
 }
