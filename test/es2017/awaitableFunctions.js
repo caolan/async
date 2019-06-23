@@ -588,7 +588,7 @@ module.exports = function () {
 
     it('should work with queues', async () => {
         const q = async.queue(async (data) => {
-            if (data === 6) throw new Error('oh noes')
+            if (data === 2) throw new Error('oh noes')
             await new Promise(resolve => setTimeout(resolve, 10))
             return data
         }, 5)
@@ -602,7 +602,7 @@ module.exports = function () {
         q.empty().then(() => emptyCalls.push('empty'))
 
         q.push(1).then(d => calls.push('push cb ' + d))
-        q.push(2).then(d => calls.push('push cb ' + d))
+        q.push(2).then(d => errorCalls.push('push cb ' + d))
         q.push([3, 4, 5, 6]).map(p => p.then(d => calls.push('push cb ' + d)))
         q.push(7).then(d => calls.push('push cb ' + d))
         q.push(8).then(d => calls.push('push cb ' + d))
@@ -611,20 +611,20 @@ module.exports = function () {
 
         await q.drain()
         await multiP
-        expect(calls).to.eql([
+        expect(calls.join()).to.eql([
             'saturated',
             'push cb 1',
-            'push cb 2',
             'push cb 3',
             'push cb 4',
             'push cb 5',
-            'push cb undefined',
+            'push cb 6',
             'push cb 7',
             'unsaturated',
             'push cb 8'
-        ])
+        ].join())
 
         expect(errorCalls).to.eql([
+            'push cb undefined',
             'error Error: oh noes',
         ])
         expect(emptyCalls).to.eql([
