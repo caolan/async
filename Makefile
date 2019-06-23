@@ -47,7 +47,7 @@ $(A): $$(SRC_$(A))
 endef
 $(foreach A,$(ALIAS_ES),$(eval $(COPY_ES_ALIAS)))
 
-all: clean lint build test
+all: lint build test
 
 test:
 	npm test
@@ -143,7 +143,9 @@ build: build-bundle build-dist build-es build-config build-es-config test-build
 .PHONY: test lint build all clean
 
 .PHONY: release-major release-minor release-patch release-prerelease
-release-major release-minor release-patch release-prerelease: all
+release-major release-minor release-patch release-prerelease:
+	$(MAKE) clean
+	$(MAKE) all
 	npm ci # ensure dependencies are up to date (#1158)
 	git add --force $(DIST)
 	git commit -am "Update built files"; true
