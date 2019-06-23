@@ -18,6 +18,23 @@ describe('retryable', () => {
         });
     });
 
+    it('success', (done) => {
+        var calls = 0;
+        var retryableTask = async.retryable(3, (arg, cb) => {
+            calls++;
+            expect(arg).to.equal(42);
+            if (calls > 1) return cb (null, 1, 2)
+            cb('fail');
+        });
+
+        retryableTask(42, (err, a, b) => {
+            expect(err).to.eql(null);
+            expect(calls).to.equal(2);
+            expect([a, b]).to.eql([1, 2])
+            done();
+        });
+    });
+
     it('basics with error test function', (done) => {
         var calls = 0;
         var special = 'special';

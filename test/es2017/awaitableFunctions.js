@@ -562,6 +562,17 @@ module.exports = function () {
         expect(calls).to.eql([0, 1, 2])
     });
 
+    it('should return a Promise: retry (multiple cb args)', async () => {
+        expect (async.retry.name).to.contain('retry')
+        let counter = 0
+        const results = await async.retry((cb) => {
+            counter++
+            if (counter < 3) return cb(new Error())
+            cb(null, 0, 1, 2)
+        })
+        expect(results).to.eql([0, 1, 2])
+    });
+
     it('should return a Promise: tryEach', async () => {
         expect (async.tryEach.name).to.contain('tryEach')
         const calls = []
