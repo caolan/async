@@ -84,4 +84,34 @@ module.exports = function () {
             }
         )
     });
+
+    it('should handle async iterables in each (errors)', (done) => {
+        const calls = []
+        async.each(new AsyncIterable(5),
+            async (val) => {
+                calls.push(val)
+                if (val === 3) throw new Error('fail')
+                await delay(5)
+            }, (err) => {
+                expect(err.message).to.equal('fail')
+                expect(calls).to.eql([0, 1, 2, 3])
+                done()
+            }
+        )
+    })
+
+    it('should handle async iterables in each (cancelled)', async () => {
+        const calls = []
+        async.each(new AsyncIterable(5),
+            (val, cb) => {
+                calls.push(val)
+                if (val === 3) cb(false)
+                cb()
+            }, () => {
+                throw new Error('should not get here')
+            }
+        )
+        await delay(10)
+        expect(calls).to.eql([0, 1, 2, 3])
+    })
 }
