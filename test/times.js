@@ -20,7 +20,7 @@ describe('times', () => {
             setTimeout(() => {
                 args.push(n);
                 callback();
-            }, n * 25);
+            }, 15);
         }, (err) => {
             if (err) throw err;
             expect(args).to.eql([0,1,2]);
@@ -45,7 +45,7 @@ describe('times', () => {
         }, (err) => {
             expect(err).to.equal('error');
         });
-        setTimeout(done, 50);
+        setTimeout(done, 10);
     });
 
     it('times canceled', (done) => {
@@ -72,7 +72,7 @@ describe('times', () => {
             setTimeout(() => {
                 call_order.push(n);
                 callback(null, n);
-            }, 100 - n * 10);
+            }, 5);
         }, (err, results) => {
             expect(call_order).to.eql([0,1,2,3,4]);
             expect(results).to.eql([0,1,2,3,4]);
@@ -86,7 +86,7 @@ describe('times', () => {
         }, (err) => {
             expect(err).to.equal('error');
         });
-        setTimeout(done, 50);
+        setTimeout(done, 10);
     });
 
     it('timesSeries canceled', (done) => {
