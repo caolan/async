@@ -148,7 +148,6 @@ release-major release-minor release-patch release-prerelease: all
 	$(MAKE) build-es-config
 	cd build/ && npm publish
 	cd build-es/ && npm publish
-	$(MAKE) publish-doc
 
 .PHONY: doc publish-doc
 doc:

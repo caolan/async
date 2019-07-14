@@ -1,4 +1,7 @@
-#v2.6.2
+# v2.6.3
+- Updated lodash to squelch a security warning (#1675)
+
+# v2.6.2
 - Updated lodash to squelch a security warning (#1620)
 
 # v2.6.1
