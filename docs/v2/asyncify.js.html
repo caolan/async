@@ -63,15 +63,15 @@
 
 <div id="main">
     <div id="main-container" data-spy="scroll" data-target="#toc" data-offset="50">
-        
+
         <h1 class="page-title">asyncify.js</h1>
-        
-
-        
 
 
 
-    
+
+
+
+
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import isObject from &apos;lodash/isObject&apos;;
@@ -147,7 +147,7 @@ export default function asyncify(func) {
             result.then(function(value) {
                 invokeCallback(callback, null, value);
             }, function(err) {
-                invokeCallback(callback, err.message ? err : new Error(err));
+                invokeCallback(callback, (err.name || err.message) ? err : new Error(err));
             });
         } else {
             callback(null, result);
