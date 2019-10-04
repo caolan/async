@@ -45,6 +45,22 @@ describe('asyncify', () => {
         });
     });
 
+    it('catch custom errors extending Error class', (done) => {
+        class CustomError extends Error {
+            get name() {
+                return 'CustomError';
+            }
+        }
+        async.asyncify(() => {
+            const err = new CustomError();
+            throw err;
+        })((err) => {
+            assert(err);
+            expect(err.name).to.equal("CustomError");
+            done();
+        });
+    });
+
     it('dont catch errors in the callback', (done) => {
         try {
             async.asyncify(() => {})((err) => {
