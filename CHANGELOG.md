@@ -1,3 +1,6 @@
+# v3.1.1
+- Allow redefining `name` property on wrapped functions.
+
 # v3.1.0
 
 - Added `q.pushAsync` and `q.unshiftAsync`, analagous to `q.push` and `q.unshift`, except they always do not accept a callback, and reject if processing the task errors. (#1659)
