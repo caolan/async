@@ -125,6 +125,13 @@ describe('queue', function(){
         done();
     });
 
+    it('correctly awaitable', async () => {
+        var q = async.queue((t, cb) => cb(null, t));
+        q.push(1, () => {});
+        await q.drain();
+        await q.drain();
+    });
+
     it('error propagation', (done) => {
         var results = [];
 
