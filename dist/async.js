@@ -218,6 +218,7 @@
         }
 
         Object.defineProperty(awaitable, 'name', {
+            configurable: true, // allows redefining
             value: `awaitable(${asyncFn.name})`
         });
 
