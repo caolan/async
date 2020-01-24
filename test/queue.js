@@ -128,8 +128,21 @@ describe('queue', function(){
     it('correctly awaitable', async () => {
         var q = async.queue((t, cb) => cb(null, t));
         q.push(1, () => {});
-        await q.drain();
-        await q.drain();
+        // double await
+        const p = await q.drain();
+        await p;
+
+        // await on empty queue
+        const p2 = q.drain();
+        await p2;
+
+        // await on queue refilled
+        q.push(1, () => {});
+        const p3 = q.drain();
+        await p3;
+        expect(p).to.not.eql(p2);
+        expect(p).to.not.eql(p3);
+        expect(p2).to.not.eql(p3);
     });
 
     it('error propagation', (done) => {
