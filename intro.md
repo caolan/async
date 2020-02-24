@@ -9,19 +9,20 @@
 
 Async is a utility module which provides straight-forward, powerful functions
 for working with asynchronous JavaScript. Although originally designed for
-use with [Node.js](https://nodejs.org/) and installable via `npm install async`,
+use with [Node.js](https://nodejs.org/) and installable via `npm i async`,
 it can also be used directly in the browser.
 
 Async is also installable via:
 
 - [yarn](https://yarnpkg.com/en/): `yarn add async`
-- [bower](http://bower.io/): `bower install async`
 
 Async provides around 70 functions that include the usual 'functional'
 suspects (`map`, `reduce`, `filter`, `each`…) as well as some common patterns
 for asynchronous control flow (`parallel`, `series`, `waterfall`…). All these
 functions assume you follow the Node.js convention of providing a single
 callback as the last argument of your asynchronous function -- a callback which expects an Error as its first argument -- and calling the callback once.
+
+You can also pass `async` functions to Async methods, instead of callback-accepting functions.  For more information, see [AsyncFunction](global.html#AsyncFunction)
 
 
 ## Quick Examples
@@ -206,7 +207,7 @@ As of version 3.0, you can call any Async callback with `false` as the `error` a
         },
 ```
 
-### Mutating collections
+### Mutating collections while processing them
 
 If you pass an array to a collection method (such as `each`, `mapLimit`, or `filterSeries`), and then attempt to `push`, `pop`, or `splice` additional items on to the array, this could lead to unexpected or undefined behavior.  Async will iterate until the original `length` of the array is met, and the indexes of items `pop()`ed or `splice()`d could already have been processed. Therefore, it is not recommended to modify the array after Async has begun iterating over it.  If you do need to `push`, `pop`, or `splice`, use a `queue` instead.
 
@@ -218,13 +219,7 @@ The source is available for download from
 Alternatively, you can install using npm:
 
 ```bash
-$ npm install async
-```
-
-As well as using Bower:
-
-```bash
-$ bower install async
+$ npm i async
 ```
 
 You can then `require()` async as normal:
@@ -277,6 +272,24 @@ $ npm install async-es
 ```js
 import waterfall from 'async-es/waterfall';
 import async from 'async-es';
+```
+
+### Typescript
+
+There are third-party type definitions for Async.
+
+```
+npm i -D @types/async
+```
+
+It is recommended to target ES2017 or higher in your `tsconfig.json`, so `async` functions are preserved:
+
+```json
+{
+  "compilerOptions": {
+    "target": "es2017"
+  }
+}
 ```
 
 ## Other Libraries
