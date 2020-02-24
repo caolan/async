@@ -1,3 +1,8 @@
+# v3.2.0
+- Fix a bug in Safari related to overwriting `func.name`
+- Remove built-in browserify configuration (#1653)
+- Varios doc fixes (#1688, #1703, #1704)
+
 # v3.1.1
 - Allow redefining `name` property on wrapped functions.
 
