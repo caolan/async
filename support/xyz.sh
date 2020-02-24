@@ -135,12 +135,6 @@ run() {
   fi
 }
 
-# Prune before running tests to catch dependencies that have been
-# installed but not specified in the project's `package.json` file.
-
-run "npm prune"
-run "npm test"
-
 for script in "${scripts[@]}" ; do
   [[ $script == /* ]] || script="$(pwd)/$script"
   run "VERSION=$next_version PREVIOUS_VERSION=$version '$script'"
