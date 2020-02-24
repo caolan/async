@@ -30,7 +30,7 @@
   </div>
   <ul class="nav navbar-nav">
     <li id="version-dropdown" class="dropdown">
-      <a href="#" class="dropdown-toggle vertically-centered" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">v3.0.1 <span class="caret"></span>
+      <a href="#" class="dropdown-toggle vertically-centered" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">v3.1.1 <span class="caret"></span>
       </a>
       <ul class="dropdown-menu">
         <li><a href="../v3/">v3.0.x</a></li>
@@ -195,7 +195,9 @@
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import applyEach from &apos;async/applyEach&apos;;</code></pre><p>Applies the provided arguments to each function in the array, calling
+    <pre class="prettyprint source"><code>import applyEach from &apos;async/applyEach&apos;;
+</code></pre>
+<p>Applies the provided arguments to each function in the array, calling
 <code>callback</code> after all functions have completed. If you only provide the first
 argument, <code>fns</code>, then it will return a function which lets you pass in the
 arguments as if it were a single function call. If more arguments are
@@ -438,7 +440,9 @@ async.each(
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import applyEachSeries from &apos;async/applyEachSeries&apos;;</code></pre><p>The same as <a href="docs.html#applyEach"><code>applyEach</code></a> but runs only a single async operation at a time.</p>
+    <pre class="prettyprint source"><code>import applyEachSeries from &apos;async/applyEachSeries&apos;;
+</code></pre>
+<p>The same as <a href="docs.html#applyEach"><code>applyEach</code></a> but runs only a single async operation at a time.</p>
 </div>
 
 
@@ -665,7 +669,9 @@ a callback.</li>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import auto from &apos;async/auto&apos;;</code></pre><p>Determines the best order for running the <a href="global.html">AsyncFunction</a>s in <code>tasks</code>, based on
+    <pre class="prettyprint source"><code>import auto from &apos;async/auto&apos;;
+</code></pre>
+<p>Determines the best order for running the <a href="global.html">AsyncFunction</a>s in <code>tasks</code>, based on
 their requirements. Each function can optionally depend on other functions
 being completed first, and each function is run as soon as its requirements
 are satisfied.</p>
@@ -953,7 +959,9 @@ async.auto({
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import autoInject from &apos;async/autoInject&apos;;</code></pre><p>A dependency-injected version of the <a href="docs.html#auto">async.auto</a> function. Dependent
+    <pre class="prettyprint source"><code>import autoInject from &apos;async/autoInject&apos;;
+</code></pre>
+<p>A dependency-injected version of the <a href="docs.html#auto">async.auto</a> function. Dependent
 tasks are specified as parameters to the function, after the usual callback
 parameter, with the parameter names matching the names of the tasks it
 depends on. This can provide even more readable task graphs which can be
@@ -1211,7 +1219,9 @@ async.autoInject({
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import cargo from &apos;async/cargo&apos;;</code></pre><p>Creates a <code>cargo</code> object with the specified payload. Tasks added to the
+    <pre class="prettyprint source"><code>import cargo from &apos;async/cargo&apos;;
+</code></pre>
+<p>Creates a <code>cargo</code> object with the specified payload. Tasks added to the
 cargo will be processed altogether (up to the <code>payload</code> limit). If the
 <code>worker</code> is in progress, the task is queued until it becomes available. Once
 the <code>worker</code> has completed some tasks, each callback of those tasks is
@@ -1443,7 +1453,9 @@ console.log(&apos;finished processing baz&apos;);</code></pre>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import cargoQueue from &apos;async/cargoQueue&apos;;</code></pre><p>Creates a <code>cargoQueue</code> object with the specified payload. Tasks added to the
+    <pre class="prettyprint source"><code>import cargoQueue from &apos;async/cargoQueue&apos;;
+</code></pre>
+<p>Creates a <code>cargoQueue</code> object with the specified payload. Tasks added to the
 cargoQueue will be processed together (up to the <code>payload</code> limit) in <code>concurrency</code> parallel workers.
 If the all <code>workers</code> are in progress, the task is queued until one becomes available. Once
 a <code>worker</code> has completed some tasks, each callback of those tasks is
@@ -1714,7 +1726,9 @@ cargoQueue.push({name: &apos;boo&apos;}, function(err) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import compose from &apos;async/compose&apos;;</code></pre><p>Creates a function which is a composition of the passed asynchronous
+    <pre class="prettyprint source"><code>import compose from &apos;async/compose&apos;;
+</code></pre>
+<p>Creates a function which is a composition of the passed asynchronous
 functions. Each function consumes the return value of the function that
 follows. Composing functions <code>f()</code>, <code>g()</code>, and <code>h()</code> would produce the result
 of <code>f(g(h()))</code>, only this version uses callbacks to obtain the return values.</p>
@@ -1895,7 +1909,9 @@ add1mul3(4, function (err, result) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import doUntil from &apos;async/doUntil&apos;;</code></pre><p>Like <a href="docs.html#doWhilst">&apos;doWhilst&apos;</a>, except the <code>test</code> is inverted. Note the
+    <pre class="prettyprint source"><code>import doUntil from &apos;async/doUntil&apos;;
+</code></pre>
+<p>Like <a href="docs.html#doWhilst">&apos;doWhilst&apos;</a>, except the <code>test</code> is inverted. Note the
 argument ordering differs from <code>until</code>.</p>
 </div>
 
@@ -2111,7 +2127,9 @@ callback. Invoked with (err, [results]);</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import doWhilst from &apos;async/doWhilst&apos;;</code></pre><p>The post-check version of <a href="docs.html#whilst"><code>whilst</code></a>. To reflect the difference in
+    <pre class="prettyprint source"><code>import doWhilst from &apos;async/doWhilst&apos;;
+</code></pre>
+<p>The post-check version of <a href="docs.html#whilst"><code>whilst</code></a>. To reflect the difference in
 the order of operations, the arguments <code>test</code> and <code>iteratee</code> are switched.</p>
 <p><code>doWhilst</code> is to <code>whilst</code> as <code>do while</code> is to <code>while</code> in plain JavaScript.</p>
 </div>
@@ -2328,7 +2346,9 @@ function has failed and repeated execution of <code>iteratee</code> has stopped.
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import forever from &apos;async/forever&apos;;</code></pre><p>Calls the asynchronous function <code>fn</code> with a callback parameter that allows it
+    <pre class="prettyprint source"><code>import forever from &apos;async/forever&apos;;
+</code></pre>
+<p>Calls the asynchronous function <code>fn</code> with a callback parameter that allows it
 to call itself again, in series, indefinitely.
 If an error is passed to the callback then <code>errback</code> is called with the
 error, and execution stops, otherwise it will never be called.</p>
@@ -2527,7 +2547,9 @@ is not passed</p>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import parallel from &apos;async/parallel&apos;;</code></pre><p>Run the <code>tasks</code> collection of functions in parallel, without waiting until
+    <pre class="prettyprint source"><code>import parallel from &apos;async/parallel&apos;;
+</code></pre>
+<p>Run the <code>tasks</code> collection of functions in parallel, without waiting until
 the previous function has completed. If any of the functions pass an error to
 its callback, the main <code>callback</code> is immediately called with the value of the
 error. Once the <code>tasks</code> have completed, the results are passed to the final
@@ -2772,7 +2794,9 @@ async.parallel({
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import parallelLimit from &apos;async/parallelLimit&apos;;</code></pre><p>The same as <a href="docs.html#parallel"><code>parallel</code></a> but runs a maximum of <code>limit</code> async operations at a
+    <pre class="prettyprint source"><code>import parallelLimit from &apos;async/parallelLimit&apos;;
+</code></pre>
+<p>The same as <a href="docs.html#parallel"><code>parallel</code></a> but runs a maximum of <code>limit</code> async operations at a
 time.</p>
 </div>
 
@@ -2996,7 +3020,9 @@ Invoked with (err, results).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import priorityQueue from &apos;async/priorityQueue&apos;;</code></pre><p>The same as <a href="docs.html#queue">async.queue</a> only tasks are assigned a priority and
+    <pre class="prettyprint source"><code>import priorityQueue from &apos;async/priorityQueue&apos;;
+</code></pre>
+<p>The same as <a href="docs.html#queue">async.queue</a> only tasks are assigned a priority and
 completed in ascending priority order.</p>
 </div>
 
@@ -3192,7 +3218,9 @@ array of <code>tasks</code> is given, all tasks will be assigned the same priori
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import queue from &apos;async/queue&apos;;</code></pre><p>Creates a <code>queue</code> object with the specified <code>concurrency</code>. Tasks added to the
+    <pre class="prettyprint source"><code>import queue from &apos;async/queue&apos;;
+</code></pre>
+<p>Creates a <code>queue</code> object with the specified <code>concurrency</code>. Tasks added to the
 <code>queue</code> are processed in parallel (up to the <code>concurrency</code> limit). If all
 <code>worker</code>s are in progress, the task is queued until one becomes available.
 Once a <code>worker</code> completes a <code>task</code>, that <code>task</code>&apos;s callback is called.</p>
@@ -3396,7 +3424,7 @@ q.unshift({name: &apos;bar&apos;}, function (err) {
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queue.js.html">queue.js</a>, <a href="queue.js.html#line85">line 85</a>
+        <a href="queue.js.html">queue.js</a>, <a href="queue.js.html#line89">line 89</a>
     </li></ul></dd>
     
 
@@ -3430,7 +3458,9 @@ q.unshift({name: &apos;bar&apos;}, function (err) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import race from &apos;async/race&apos;;</code></pre><p>Runs the <code>tasks</code> array of functions in parallel, without waiting until the
+    <pre class="prettyprint source"><code>import race from &apos;async/race&apos;;
+</code></pre>
+<p>Runs the <code>tasks</code> array of functions in parallel, without waiting until the
 previous function has completed. Once any of the <code>tasks</code> complete or pass an
 error to its callback, the main <code>callback</code> is immediately called. It&apos;s
 equivalent to <code>Promise.race()</code>.</p>
@@ -3621,7 +3651,9 @@ function(err, result) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import retry from &apos;async/retry&apos;;</code></pre><p>Attempts to get a successful response from <code>task</code> no more than <code>times</code> times
+    <pre class="prettyprint source"><code>import retry from &apos;async/retry&apos;;
+</code></pre>
+<p>Attempts to get a successful response from <code>task</code> no more than <code>times</code> times
 before returning an error. If the task is successful, the <code>callback</code> will be
 passed the result of the successful task. If all attempts fail, the callback
 will be passed the error and result (if any) of the final attempt.</p>
@@ -3924,7 +3956,9 @@ async.auto({
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import retryable from &apos;async/retryable&apos;;</code></pre><p>A close relative of <a href="docs.html#retry"><code>retry</code></a>.  This method
+    <pre class="prettyprint source"><code>import retryable from &apos;async/retryable&apos;;
+</code></pre>
+<p>A close relative of <a href="docs.html#retry"><code>retry</code></a>.  This method
 wraps a task and makes it retryable, rather than immediately calling it
 with retries.</p>
 </div>
@@ -4143,7 +4177,9 @@ This function will accept the same parameters as <code>task</code>.</p>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import seq from &apos;async/seq&apos;;</code></pre><p>Version of the compose function that is more natural to read. Each function
+    <pre class="prettyprint source"><code>import seq from &apos;async/seq&apos;;
+</code></pre>
+<p>Version of the compose function that is more natural to read. Each function
 consumes the return value of the previous function. It is the equivalent of
 <a href="docs.html#compose">compose</a> with the arguments reversed.</p>
 <p>Each function is executed with the <code>this</code> binding of the composed function.</p>
@@ -4331,7 +4367,9 @@ app.get(&apos;/cats&apos;, function(request, response) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import series from &apos;async/series&apos;;</code></pre><p>Run the functions in the <code>tasks</code> collection in series, each one running once
+    <pre class="prettyprint source"><code>import series from &apos;async/series&apos;;
+</code></pre>
+<p>Run the functions in the <code>tasks</code> collection in series, each one running once
 the previous function has completed. If any functions in the series pass an
 error to its callback, no more functions are run, and <code>callback</code> is
 immediately called with the value of the error. Otherwise, <code>callback</code>
@@ -4339,7 +4377,7 @@ receives an array of results when <code>tasks</code> have completed.</p>
 <p>It is also possible to use an object instead of an array. Each property will
 be run as a function, and the results will be passed to the final <code>callback</code>
 as an object instead of an array. This can be a more readable way of handling
- results from async.series.</p>
+results from async.series.</p>
 <p><strong>Note</strong> that while many implementations preserve the order of object
 properties, the <a href="http://www.ecma-international.org/ecma-262/5.1/#sec-8.6">ECMAScript Language Specification</a>
 explicitly states that</p>
@@ -4573,7 +4611,9 @@ async.series({
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import times from &apos;async/times&apos;;</code></pre><p>Calls the <code>iteratee</code> function <code>n</code> times, and accumulates results in the same
+    <pre class="prettyprint source"><code>import times from &apos;async/times&apos;;
+</code></pre>
+<p>Calls the <code>iteratee</code> function <code>n</code> times, and accumulates results in the same
 manner you would use with <a href="docs.html#map">map</a>.</p>
 </div>
 
@@ -4801,7 +4841,9 @@ async.times(5, function(n, next) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import timesLimit from &apos;async/timesLimit&apos;;</code></pre><p>The same as <a href="docs.html#times">times</a> but runs a maximum of <code>limit</code> async operations at a
+    <pre class="prettyprint source"><code>import timesLimit from &apos;async/timesLimit&apos;;
+</code></pre>
+<p>The same as <a href="docs.html#times">times</a> but runs a maximum of <code>limit</code> async operations at a
 time.</p>
 </div>
 
@@ -5033,7 +5075,9 @@ Invoked with the iteration index and a callback: (n, next).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import timesSeries from &apos;async/timesSeries&apos;;</code></pre><p>The same as <a href="docs.html#times">times</a> but runs only a single async operation at a time.</p>
+    <pre class="prettyprint source"><code>import timesSeries from &apos;async/timesSeries&apos;;
+</code></pre>
+<p>The same as <a href="docs.html#times">times</a> but runs only a single async operation at a time.</p>
 </div>
 
 
@@ -5241,7 +5285,9 @@ Invoked with the iteration index and a callback: (n, next).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import tryEach from &apos;async/tryEach&apos;;</code></pre><p>It runs each task in series but stops whenever any of the functions were
+    <pre class="prettyprint source"><code>import tryEach from &apos;async/tryEach&apos;;
+</code></pre>
+<p>It runs each task in series but stops whenever any of the functions were
 successful. If one of the tasks were successful, the <code>callback</code> will be
 passed the result of the successful task. If all tasks fail, the callback
 will be passed the error and result (if any) of the final attempt.</p>
@@ -5457,7 +5503,9 @@ function(err, results) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import until from &apos;async/until&apos;;</code></pre><p>Repeatedly call <code>iteratee</code> until <code>test</code> returns <code>true</code>. Calls <code>callback</code> when
+    <pre class="prettyprint source"><code>import until from &apos;async/until&apos;;
+</code></pre>
+<p>Repeatedly call <code>iteratee</code> until <code>test</code> returns <code>true</code>. Calls <code>callback</code> when
 stopped, or an error occurs. <code>callback</code> will be passed an error and any
 arguments passed to the final <code>iteratee</code>&apos;s callback.</p>
 <p>The inverse of <a href="docs.html#whilst">whilst</a>.</p>
@@ -5690,7 +5738,9 @@ async.until(function test(page, cb) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import waterfall from &apos;async/waterfall&apos;;</code></pre><p>Runs the <code>tasks</code> array of functions in series, each passing their results to
+    <pre class="prettyprint source"><code>import waterfall from &apos;async/waterfall&apos;;
+</code></pre>
+<p>Runs the <code>tasks</code> array of functions in series, each passing their results to
 the next in the array. However, if any of the <code>tasks</code> pass an error to their
 own callback, the next function is not executed, and the main <code>callback</code> is
 immediately called with the error.</p>
@@ -5904,7 +5954,9 @@ function myLastFunction(arg1, callback) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import whilst from &apos;async/whilst&apos;;</code></pre><p>Repeatedly call <code>iteratee</code>, while <code>test</code> returns <code>true</code>. Calls <code>callback</code> when
+    <pre class="prettyprint source"><code>import whilst from &apos;async/whilst&apos;;
+</code></pre>
+<p>Repeatedly call <code>iteratee</code>, while <code>test</code> returns <code>true</code>. Calls <code>callback</code> when
 stopped, or an error occurs.</p>
 </div>
 
@@ -6131,7 +6183,9 @@ async.whilst(
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import queue from &apos;async/queue&apos;;</code></pre><p>A queue of tasks for the worker function to complete.</p>
+    <pre class="prettyprint source"><code>import queue from &apos;async/queue&apos;;
+</code></pre>
+<p>A queue of tasks for the worker function to complete.</p>
 </div>
 
 
@@ -6352,7 +6406,7 @@ passed to the worker function at a time. only applies if this is a
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
 
 
             
@@ -6378,7 +6432,7 @@ task in the list. Invoke with <code>queue.push(task, [callback])</code>,</p></td
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
 
 
             
@@ -6390,6 +6444,54 @@ task in the list. Invoke with <code>queue.push(task, [callback])</code>,</p></td
 
             <td class="description last"><p>add a new task to the front of the <code>queue</code>.
 Invoke with <code>queue.unshift(task, [callback])</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pushAsync</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the same as <code>q.push</code>, except this returns
+a promise that rejects if an error occurs.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>unshirtAsync</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the same as <code>q.unshift</code>, except this returns
+a promise that rejects if an error occurs.</p></td>
         </tr>
 
     
@@ -6753,7 +6855,7 @@ await q.drain()</code></pre>
 
 
     <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a> using the Minami theme.
 </footer></div>
 </div>
 

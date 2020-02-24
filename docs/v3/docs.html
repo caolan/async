@@ -31,7 +31,7 @@
   </div>
   <ul class="nav navbar-nav">
     <li id="version-dropdown" class="dropdown">
-      <a href="#" class="dropdown-toggle vertically-centered" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">v3.0.1 <span class="caret"></span>
+      <a href="#" class="dropdown-toggle vertically-centered" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">v3.1.1 <span class="caret"></span>
       </a>
       <ul class="dropdown-menu">
         <li><a href="../v3/">v3.0.x</a></li>
@@ -336,7 +336,9 @@ arrays and objects.</p></div>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import concat from &apos;async/concat&apos;;</code></pre><p>Applies <code>iteratee</code> to each item in <code>coll</code>, concatenating the results. Returns
+    <pre class="prettyprint source"><code>import concat from &apos;async/concat&apos;;
+</code></pre>
+<p>Applies <code>iteratee</code> to each item in <code>coll</code>, concatenating the results. Returns
 the concatenated list. The <code>iteratee</code>s are called in parallel, and the
 results are concatenated as they return. The results array will be returned in
 the original order of <code>coll</code> passed to the <code>iteratee</code> function.</p>
@@ -554,7 +556,9 @@ containing the concatenated results of the <code>iteratee</code> function. Invok
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import concatLimit from &apos;async/concatLimit&apos;;</code></pre><p>The same as <a href="#concat"><code>concat</code></a> but runs a maximum of <code>limit</code> async operations at a time.</p>
+    <pre class="prettyprint source"><code>import concatLimit from &apos;async/concatLimit&apos;;
+</code></pre>
+<p>The same as <a href="#concat"><code>concat</code></a> but runs a maximum of <code>limit</code> async operations at a time.</p>
 </div>
 
 
@@ -792,7 +796,9 @@ containing the concatenated results of the <code>iteratee</code> function. Invok
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import concatSeries from &apos;async/concatSeries&apos;;</code></pre><p>The same as <a href="#concat"><code>concat</code></a> but runs only a single async operation at a time.</p>
+    <pre class="prettyprint source"><code>import concatSeries from &apos;async/concatSeries&apos;;
+</code></pre>
+<p>The same as <a href="#concat"><code>concat</code></a> but runs only a single async operation at a time.</p>
 </div>
 
 
@@ -1008,7 +1014,9 @@ containing the concatenated results of the <code>iteratee</code> function. Invok
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import detect from &apos;async/detect&apos;;</code></pre><p>Returns the first value in <code>coll</code> that passes an async truth test. The
+    <pre class="prettyprint source"><code>import detect from &apos;async/detect&apos;;
+</code></pre>
+<p>Returns the first value in <code>coll</code> that passes an async truth test. The
 <code>iteratee</code> is applied in parallel, meaning the first iteratee to return
 <code>true</code> will fire the detect <code>callback</code> with that result. That means the
 result might not be the first item in the original <code>coll</code> (in terms of order)
@@ -1235,7 +1243,9 @@ Result will be the first item in the array that passes the truth test
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import detectLimit from &apos;async/detectLimit&apos;;</code></pre><p>The same as <a href="#detect"><code>detect</code></a> but runs a maximum of <code>limit</code> async operations at a
+    <pre class="prettyprint source"><code>import detectLimit from &apos;async/detectLimit&apos;;
+</code></pre>
+<p>The same as <a href="#detect"><code>detect</code></a> but runs a maximum of <code>limit</code> async operations at a
 time.</p>
 </div>
 
@@ -1476,7 +1486,9 @@ Result will be the first item in the array that passes the truth test
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import detectSeries from &apos;async/detectSeries&apos;;</code></pre><p>The same as <a href="#detect"><code>detect</code></a> but runs only a single async operation at a time.</p>
+    <pre class="prettyprint source"><code>import detectSeries from &apos;async/detectSeries&apos;;
+</code></pre>
+<p>The same as <a href="#detect"><code>detect</code></a> but runs only a single async operation at a time.</p>
 </div>
 
 
@@ -1693,7 +1705,9 @@ Result will be the first item in the array that passes the truth test
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import each from &apos;async/each&apos;;</code></pre><p>Applies the function <code>iteratee</code> to each item in <code>coll</code>, in parallel.
+    <pre class="prettyprint source"><code>import each from &apos;async/each&apos;;
+</code></pre>
+<p>Applies the function <code>iteratee</code> to each item in <code>coll</code>, in parallel.
 The <code>iteratee</code> is called with an item from the list, and a callback for when
 it has finished. If the <code>iteratee</code> passes an error to its <code>callback</code>, the
 main <code>callback</code> (for the <code>each</code> function) is immediately called with the
@@ -1954,7 +1968,9 @@ async.each(openFiles, function(file, callback) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import eachLimit from &apos;async/eachLimit&apos;;</code></pre><p>The same as <a href="#each"><code>each</code></a> but runs a maximum of <code>limit</code> async operations at a time.</p>
+    <pre class="prettyprint source"><code>import eachLimit from &apos;async/eachLimit&apos;;
+</code></pre>
+<p>The same as <a href="#each"><code>each</code></a> but runs a maximum of <code>limit</code> async operations at a time.</p>
 </div>
 
 
@@ -2205,7 +2221,9 @@ Invoked with (item, callback).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import eachOf from &apos;async/eachOf&apos;;</code></pre><p>Like <a href="#each"><code>each</code></a>, except that it passes the key (or index) as the second argument
+    <pre class="prettyprint source"><code>import eachOf from &apos;async/eachOf&apos;;
+</code></pre>
+<p>Like <a href="#each"><code>each</code></a>, except that it passes the key (or index) as the second argument
 to the iteratee.</p>
 </div>
 
@@ -2455,7 +2473,9 @@ async.forEachOf(obj, function (value, key, callback) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import eachOfLimit from &apos;async/eachOfLimit&apos;;</code></pre><p>The same as <a href="#eachOf"><code>eachOf</code></a> but runs a maximum of <code>limit</code> async operations at a
+    <pre class="prettyprint source"><code>import eachOfLimit from &apos;async/eachOfLimit&apos;;
+</code></pre>
+<p>The same as <a href="#eachOf"><code>eachOf</code></a> but runs a maximum of <code>limit</code> async operations at a
 time.</p>
 </div>
 
@@ -2706,7 +2726,9 @@ Invoked with (item, key, callback).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import eachOfSeries from &apos;async/eachOfSeries&apos;;</code></pre><p>The same as <a href="#eachOf"><code>eachOf</code></a> but runs only a single async operation at a time.</p>
+    <pre class="prettyprint source"><code>import eachOfSeries from &apos;async/eachOfSeries&apos;;
+</code></pre>
+<p>The same as <a href="#eachOf"><code>eachOf</code></a> but runs only a single async operation at a time.</p>
 </div>
 
 
@@ -2932,7 +2954,9 @@ functions have finished, or an error occurs. Invoked with (err).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import eachSeries from &apos;async/eachSeries&apos;;</code></pre><p>The same as <a href="#each"><code>each</code></a> but runs only a single async operation at a time.</p>
+    <pre class="prettyprint source"><code>import eachSeries from &apos;async/eachSeries&apos;;
+</code></pre>
+<p>The same as <a href="#each"><code>each</code></a> but runs only a single async operation at a time.</p>
 <p>Note, that unlike <a href="#each"><code>each</code></a>, this function applies iteratee to each item
 in series and therefore the iteratee functions will complete in order.</p>
 </div>
@@ -3162,7 +3186,9 @@ Invoked with (item, callback).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import every from &apos;async/every&apos;;</code></pre><p>Returns <code>true</code> if every element in <code>coll</code> satisfies an async test. If any
+    <pre class="prettyprint source"><code>import every from &apos;async/every&apos;;
+</code></pre>
+<p>Returns <code>true</code> if every element in <code>coll</code> satisfies an async test. If any
 iteratee call returns <code>false</code>, the main <code>callback</code> is immediately called.</p>
 </div>
 
@@ -3395,7 +3421,9 @@ depending on the values of the async tests. Invoked with (err, result).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import everyLimit from &apos;async/everyLimit&apos;;</code></pre><p>The same as <a href="#every"><code>every</code></a> but runs a maximum of <code>limit</code> async operations at a time.</p>
+    <pre class="prettyprint source"><code>import everyLimit from &apos;async/everyLimit&apos;;
+</code></pre>
+<p>The same as <a href="#every"><code>every</code></a> but runs a maximum of <code>limit</code> async operations at a time.</p>
 </div>
 
 
@@ -3646,7 +3674,9 @@ depending on the values of the async tests. Invoked with (err, result).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import everySeries from &apos;async/everySeries&apos;;</code></pre><p>The same as <a href="#every"><code>every</code></a> but runs only a single async operation at a time.</p>
+    <pre class="prettyprint source"><code>import everySeries from &apos;async/everySeries&apos;;
+</code></pre>
+<p>The same as <a href="#every"><code>every</code></a> but runs only a single async operation at a time.</p>
 </div>
 
 
@@ -3874,7 +3904,9 @@ depending on the values of the async tests. Invoked with (err, result).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import filter from &apos;async/filter&apos;;</code></pre><p>Returns a new array of all the values in <code>coll</code> which pass an async truth
+    <pre class="prettyprint source"><code>import filter from &apos;async/filter&apos;;
+</code></pre>
+<p>Returns a new array of all the values in <code>coll</code> which pass an async truth
 test. This operation is performed in parallel, but the results array will be
 in the same order as the original.</p>
 </div>
@@ -4106,7 +4138,9 @@ with a boolean argument once it has completed. Invoked with (item, callback).</p
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import filterLimit from &apos;async/filterLimit&apos;;</code></pre><p>The same as <a href="#filter"><code>filter</code></a> but runs a maximum of <code>limit</code> async operations at a
+    <pre class="prettyprint source"><code>import filterLimit from &apos;async/filterLimit&apos;;
+</code></pre>
+<p>The same as <a href="#filter"><code>filter</code></a> but runs a maximum of <code>limit</code> async operations at a
 time.</p>
 </div>
 
@@ -4356,7 +4390,9 @@ with a boolean argument once it has completed. Invoked with (item, callback).</p
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import filterSeries from &apos;async/filterSeries&apos;;</code></pre><p>The same as <a href="#filter"><code>filter</code></a> but runs only a single async operation at a time.</p>
+    <pre class="prettyprint source"><code>import filterSeries from &apos;async/filterSeries&apos;;
+</code></pre>
+<p>The same as <a href="#filter"><code>filter</code></a> but runs only a single async operation at a time.</p>
 </div>
 
 
@@ -4582,7 +4618,9 @@ with a boolean argument once it has completed. Invoked with (item, callback).</p
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import groupBy from &apos;async/groupBy&apos;;</code></pre><p>Returns a new object, where each value corresponds to an array of items, from
+    <pre class="prettyprint source"><code>import groupBy from &apos;async/groupBy&apos;;
+</code></pre>
+<p>Returns a new object, where each value corresponds to an array of items, from
 <code>coll</code>, that returned the corresponding key. That is, the keys of the object
 correspond to the values passed to the <code>iteratee</code> callback.</p>
 <p>Note: Since this function applies the <code>iteratee</code> to each item in parallel,
@@ -4818,7 +4856,9 @@ properties are arrays of values which returned the corresponding key.</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import groupByLimit from &apos;async/groupByLimit&apos;;</code></pre><p>The same as <a href="#groupBy"><code>groupBy</code></a> but runs a maximum of <code>limit</code> async operations at a time.</p>
+    <pre class="prettyprint source"><code>import groupByLimit from &apos;async/groupByLimit&apos;;
+</code></pre>
+<p>The same as <a href="#groupBy"><code>groupBy</code></a> but runs a maximum of <code>limit</code> async operations at a time.</p>
 </div>
 
 
@@ -5064,7 +5104,9 @@ properties are arrays of values which returned the corresponding key.</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import groupBySeries from &apos;async/groupBySeries&apos;;</code></pre><p>The same as <a href="#groupBy"><code>groupBy</code></a> but runs only a single async operation at a time.</p>
+    <pre class="prettyprint source"><code>import groupBySeries from &apos;async/groupBySeries&apos;;
+</code></pre>
+<p>The same as <a href="#groupBy"><code>groupBy</code></a> but runs only a single async operation at a time.</p>
 </div>
 
 
@@ -5287,7 +5329,9 @@ properties are arrays of values which returned the corresponding key.</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import map from &apos;async/map&apos;;</code></pre><p>Produces a new collection of values by mapping each value in <code>coll</code> through
+    <pre class="prettyprint source"><code>import map from &apos;async/map&apos;;
+</code></pre>
+<p>Produces a new collection of values by mapping each value in <code>coll</code> through
 the <code>iteratee</code> function. The <code>iteratee</code> is called with an item from <code>coll</code>
 and a callback for when it has finished processing. Each of these callback
 takes 2 arguments: an <code>error</code>, and the transformed item from <code>coll</code>. If
@@ -5522,7 +5566,9 @@ transformed items from the <code>coll</code>. Invoked with (err, results).</p></
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import mapLimit from &apos;async/mapLimit&apos;;</code></pre><p>The same as <a href="#map"><code>map</code></a> but runs a maximum of <code>limit</code> async operations at a time.</p>
+    <pre class="prettyprint source"><code>import mapLimit from &apos;async/mapLimit&apos;;
+</code></pre>
+<p>The same as <a href="#map"><code>map</code></a> but runs a maximum of <code>limit</code> async operations at a time.</p>
 </div>
 
 
@@ -5768,7 +5814,9 @@ transformed items from the <code>coll</code>. Invoked with (err, results).</p></
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import mapSeries from &apos;async/mapSeries&apos;;</code></pre><p>The same as <a href="#map"><code>map</code></a> but runs only a single async operation at a time.</p>
+    <pre class="prettyprint source"><code>import mapSeries from &apos;async/mapSeries&apos;;
+</code></pre>
+<p>The same as <a href="#map"><code>map</code></a> but runs only a single async operation at a time.</p>
 </div>
 
 
@@ -5991,7 +6039,9 @@ transformed items from the <code>coll</code>. Invoked with (err, results).</p></
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import mapValues from &apos;async/mapValues&apos;;</code></pre><p>A relative of <a href="#map"><code>map</code></a>, designed for use with objects.</p>
+    <pre class="prettyprint source"><code>import mapValues from &apos;async/mapValues&apos;;
+</code></pre>
+<p>A relative of <a href="#map"><code>map</code></a>, designed for use with objects.</p>
 <p>Produces a new Object by mapping each value of <code>obj</code> through the <code>iteratee</code>
 function. The <code>iteratee</code> is called each <code>value</code> and <code>key</code> from <code>obj</code> and a
 callback for when it has finished processing. Each of these callbacks takes
@@ -6225,7 +6275,9 @@ Invoked with (err, result).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import mapValuesLimit from &apos;async/mapValuesLimit&apos;;</code></pre><p>The same as <a href="#mapValues"><code>mapValues</code></a> but runs a maximum of <code>limit</code> async operations at a
+    <pre class="prettyprint source"><code>import mapValuesLimit from &apos;async/mapValuesLimit&apos;;
+</code></pre>
+<p>The same as <a href="#mapValues"><code>mapValues</code></a> but runs a maximum of <code>limit</code> async operations at a
 time.</p>
 </div>
 
@@ -6464,7 +6516,9 @@ Invoked with (err, result).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import mapValuesSeries from &apos;async/mapValuesSeries&apos;;</code></pre><p>The same as <a href="#mapValues"><code>mapValues</code></a> but runs only a single async operation at a time.</p>
+    <pre class="prettyprint source"><code>import mapValuesSeries from &apos;async/mapValuesSeries&apos;;
+</code></pre>
+<p>The same as <a href="#mapValues"><code>mapValues</code></a> but runs only a single async operation at a time.</p>
 </div>
 
 
@@ -6679,7 +6733,9 @@ Invoked with (err, result).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import reduce from &apos;async/reduce&apos;;</code></pre><p>Reduces <code>coll</code> into a single value using an async <code>iteratee</code> to return each
+    <pre class="prettyprint source"><code>import reduce from &apos;async/reduce&apos;;
+</code></pre>
+<p>Reduces <code>coll</code> into a single value using an async <code>iteratee</code> to return each
 successive step. <code>memo</code> is the initial state of the reduction. This function
 only operates in series.</p>
 <p>For performance reasons, it may make sense to split a call to this function
@@ -6944,7 +7000,9 @@ Invoked with (memo, item, callback).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import reduceRight from &apos;async/reduceRight&apos;;</code></pre><p>Same as <a href="#reduce"><code>reduce</code></a>, only operates on <code>array</code> in reverse order.</p>
+    <pre class="prettyprint source"><code>import reduceRight from &apos;async/reduceRight&apos;;
+</code></pre>
+<p>Same as <a href="#reduce"><code>reduce</code></a>, only operates on <code>array</code> in reverse order.</p>
 </div>
 
 
@@ -7188,7 +7246,9 @@ Invoked with (memo, item, callback).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import reject from &apos;async/reject&apos;;</code></pre><p>The opposite of <a href="#filter"><code>filter</code></a>. Removes values that pass an <code>async</code> truth test.</p>
+    <pre class="prettyprint source"><code>import reject from &apos;async/reject&apos;;
+</code></pre>
+<p>The opposite of <a href="#filter"><code>filter</code></a>. Removes values that pass an <code>async</code> truth test.</p>
 </div>
 
 
@@ -7422,7 +7482,9 @@ Invoked with (item, callback).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import rejectLimit from &apos;async/rejectLimit&apos;;</code></pre><p>The same as <a href="#reject"><code>reject</code></a> but runs a maximum of <code>limit</code> async operations at a
+    <pre class="prettyprint source"><code>import rejectLimit from &apos;async/rejectLimit&apos;;
+</code></pre>
+<p>The same as <a href="#reject"><code>reject</code></a> but runs a maximum of <code>limit</code> async operations at a
 time.</p>
 </div>
 
@@ -7668,7 +7730,9 @@ Invoked with (item, callback).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import rejectSeries from &apos;async/rejectSeries&apos;;</code></pre><p>The same as <a href="#reject"><code>reject</code></a> but runs only a single async operation at a time.</p>
+    <pre class="prettyprint source"><code>import rejectSeries from &apos;async/rejectSeries&apos;;
+</code></pre>
+<p>The same as <a href="#reject"><code>reject</code></a> but runs only a single async operation at a time.</p>
 </div>
 
 
@@ -7890,7 +7954,9 @@ Invoked with (item, callback).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import some from &apos;async/some&apos;;</code></pre><p>Returns <code>true</code> if at least one element in the <code>coll</code> satisfies an async test.
+    <pre class="prettyprint source"><code>import some from &apos;async/some&apos;;
+</code></pre>
+<p>Returns <code>true</code> if at least one element in the <code>coll</code> satisfies an async test.
 If any iteratee call returns <code>true</code>, the main <code>callback</code> is immediately
 called.</p>
 </div>
@@ -8125,7 +8191,9 @@ tests. Invoked with (err, result).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import someLimit from &apos;async/someLimit&apos;;</code></pre><p>The same as <a href="#some"><code>some</code></a> but runs a maximum of <code>limit</code> async operations at a time.</p>
+    <pre class="prettyprint source"><code>import someLimit from &apos;async/someLimit&apos;;
+</code></pre>
+<p>The same as <a href="#some"><code>some</code></a> but runs a maximum of <code>limit</code> async operations at a time.</p>
 </div>
 
 
@@ -8377,7 +8445,9 @@ tests. Invoked with (err, result).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import someSeries from &apos;async/someSeries&apos;;</code></pre><p>The same as <a href="#some"><code>some</code></a> but runs only a single async operation at a time.</p>
+    <pre class="prettyprint source"><code>import someSeries from &apos;async/someSeries&apos;;
+</code></pre>
+<p>The same as <a href="#some"><code>some</code></a> but runs only a single async operation at a time.</p>
 </div>
 
 
@@ -8606,7 +8676,9 @@ tests. Invoked with (err, result).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import sortBy from &apos;async/sortBy&apos;;</code></pre><p>Sorts a list by the results of running each <code>coll</code> value through an async
+    <pre class="prettyprint source"><code>import sortBy from &apos;async/sortBy&apos;;
+</code></pre>
+<p>Sorts a list by the results of running each <code>coll</code> value through an async
 <code>iteratee</code>.</p>
 </div>
 
@@ -8852,7 +8924,9 @@ async.sortBy([1,9,3,5], function(x, callback) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import transform from &apos;async/transform&apos;;</code></pre><p>A relative of <code>reduce</code>.  Takes an Object or Array, and iterates over each
+    <pre class="prettyprint source"><code>import transform from &apos;async/transform&apos;;
+</code></pre>
+<p>A relative of <code>reduce</code>.  Takes an Object or Array, and iterates over each
 element in parallel, each step potentially mutating an <code>accumulator</code> value.
 The type of the accumulator defaults to the type of collection passed in.</p>
 </div>
@@ -9250,7 +9324,9 @@ Invoked with (err, result).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import applyEach from &apos;async/applyEach&apos;;</code></pre><p>Applies the provided arguments to each function in the array, calling
+    <pre class="prettyprint source"><code>import applyEach from &apos;async/applyEach&apos;;
+</code></pre>
+<p>Applies the provided arguments to each function in the array, calling
 <code>callback</code> after all functions have completed. If you only provide the first
 argument, <code>fns</code>, then it will return a function which lets you pass in the
 arguments as if it were a single function call. If more arguments are
@@ -9493,7 +9569,9 @@ async.each(
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import applyEachSeries from &apos;async/applyEachSeries&apos;;</code></pre><p>The same as <a href="#applyEach"><code>applyEach</code></a> but runs only a single async operation at a time.</p>
+    <pre class="prettyprint source"><code>import applyEachSeries from &apos;async/applyEachSeries&apos;;
+</code></pre>
+<p>The same as <a href="#applyEach"><code>applyEach</code></a> but runs only a single async operation at a time.</p>
 </div>
 
 
@@ -9720,7 +9798,9 @@ a callback.</li>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import auto from &apos;async/auto&apos;;</code></pre><p>Determines the best order for running the <a href="global.html">AsyncFunction</a>s in <code>tasks</code>, based on
+    <pre class="prettyprint source"><code>import auto from &apos;async/auto&apos;;
+</code></pre>
+<p>Determines the best order for running the <a href="global.html">AsyncFunction</a>s in <code>tasks</code>, based on
 their requirements. Each function can optionally depend on other functions
 being completed first, and each function is run as soon as its requirements
 are satisfied.</p>
@@ -10008,7 +10088,9 @@ async.auto({
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import autoInject from &apos;async/autoInject&apos;;</code></pre><p>A dependency-injected version of the <a href="#auto">async.auto</a> function. Dependent
+    <pre class="prettyprint source"><code>import autoInject from &apos;async/autoInject&apos;;
+</code></pre>
+<p>A dependency-injected version of the <a href="#auto">async.auto</a> function. Dependent
 tasks are specified as parameters to the function, after the usual callback
 parameter, with the parameter names matching the names of the tasks it
 depends on. This can provide even more readable task graphs which can be
@@ -10266,7 +10348,9 @@ async.autoInject({
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import cargo from &apos;async/cargo&apos;;</code></pre><p>Creates a <code>cargo</code> object with the specified payload. Tasks added to the
+    <pre class="prettyprint source"><code>import cargo from &apos;async/cargo&apos;;
+</code></pre>
+<p>Creates a <code>cargo</code> object with the specified payload. Tasks added to the
 cargo will be processed altogether (up to the <code>payload</code> limit). If the
 <code>worker</code> is in progress, the task is queued until it becomes available. Once
 the <code>worker</code> has completed some tasks, each callback of those tasks is
@@ -10498,7 +10582,9 @@ console.log(&apos;finished processing baz&apos;);</code></pre>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import cargoQueue from &apos;async/cargoQueue&apos;;</code></pre><p>Creates a <code>cargoQueue</code> object with the specified payload. Tasks added to the
+    <pre class="prettyprint source"><code>import cargoQueue from &apos;async/cargoQueue&apos;;
+</code></pre>
+<p>Creates a <code>cargoQueue</code> object with the specified payload. Tasks added to the
 cargoQueue will be processed together (up to the <code>payload</code> limit) in <code>concurrency</code> parallel workers.
 If the all <code>workers</code> are in progress, the task is queued until one becomes available. Once
 a <code>worker</code> has completed some tasks, each callback of those tasks is
@@ -10769,7 +10855,9 @@ cargoQueue.push({name: &apos;boo&apos;}, function(err) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import compose from &apos;async/compose&apos;;</code></pre><p>Creates a function which is a composition of the passed asynchronous
+    <pre class="prettyprint source"><code>import compose from &apos;async/compose&apos;;
+</code></pre>
+<p>Creates a function which is a composition of the passed asynchronous
 functions. Each function consumes the return value of the function that
 follows. Composing functions <code>f()</code>, <code>g()</code>, and <code>h()</code> would produce the result
 of <code>f(g(h()))</code>, only this version uses callbacks to obtain the return values.</p>
@@ -10950,7 +11038,9 @@ add1mul3(4, function (err, result) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import doUntil from &apos;async/doUntil&apos;;</code></pre><p>Like <a href="#doWhilst">&apos;doWhilst&apos;</a>, except the <code>test</code> is inverted. Note the
+    <pre class="prettyprint source"><code>import doUntil from &apos;async/doUntil&apos;;
+</code></pre>
+<p>Like <a href="#doWhilst">&apos;doWhilst&apos;</a>, except the <code>test</code> is inverted. Note the
 argument ordering differs from <code>until</code>.</p>
 </div>
 
@@ -11166,7 +11256,9 @@ callback. Invoked with (err, [results]);</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import doWhilst from &apos;async/doWhilst&apos;;</code></pre><p>The post-check version of <a href="#whilst"><code>whilst</code></a>. To reflect the difference in
+    <pre class="prettyprint source"><code>import doWhilst from &apos;async/doWhilst&apos;;
+</code></pre>
+<p>The post-check version of <a href="#whilst"><code>whilst</code></a>. To reflect the difference in
 the order of operations, the arguments <code>test</code> and <code>iteratee</code> are switched.</p>
 <p><code>doWhilst</code> is to <code>whilst</code> as <code>do while</code> is to <code>while</code> in plain JavaScript.</p>
 </div>
@@ -11383,7 +11475,9 @@ function has failed and repeated execution of <code>iteratee</code> has stopped.
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import forever from &apos;async/forever&apos;;</code></pre><p>Calls the asynchronous function <code>fn</code> with a callback parameter that allows it
+    <pre class="prettyprint source"><code>import forever from &apos;async/forever&apos;;
+</code></pre>
+<p>Calls the asynchronous function <code>fn</code> with a callback parameter that allows it
 to call itself again, in series, indefinitely.
 If an error is passed to the callback then <code>errback</code> is called with the
 error, and execution stops, otherwise it will never be called.</p>
@@ -11582,7 +11676,9 @@ is not passed</p>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import parallel from &apos;async/parallel&apos;;</code></pre><p>Run the <code>tasks</code> collection of functions in parallel, without waiting until
+    <pre class="prettyprint source"><code>import parallel from &apos;async/parallel&apos;;
+</code></pre>
+<p>Run the <code>tasks</code> collection of functions in parallel, without waiting until
 the previous function has completed. If any of the functions pass an error to
 its callback, the main <code>callback</code> is immediately called with the value of the
 error. Once the <code>tasks</code> have completed, the results are passed to the final
@@ -11827,7 +11923,9 @@ async.parallel({
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import parallelLimit from &apos;async/parallelLimit&apos;;</code></pre><p>The same as <a href="#parallel"><code>parallel</code></a> but runs a maximum of <code>limit</code> async operations at a
+    <pre class="prettyprint source"><code>import parallelLimit from &apos;async/parallelLimit&apos;;
+</code></pre>
+<p>The same as <a href="#parallel"><code>parallel</code></a> but runs a maximum of <code>limit</code> async operations at a
 time.</p>
 </div>
 
@@ -12051,7 +12149,9 @@ Invoked with (err, results).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import priorityQueue from &apos;async/priorityQueue&apos;;</code></pre><p>The same as <a href="#queue">async.queue</a> only tasks are assigned a priority and
+    <pre class="prettyprint source"><code>import priorityQueue from &apos;async/priorityQueue&apos;;
+</code></pre>
+<p>The same as <a href="#queue">async.queue</a> only tasks are assigned a priority and
 completed in ascending priority order.</p>
 </div>
 
@@ -12247,7 +12347,9 @@ array of <code>tasks</code> is given, all tasks will be assigned the same priori
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import queue from &apos;async/queue&apos;;</code></pre><p>Creates a <code>queue</code> object with the specified <code>concurrency</code>. Tasks added to the
+    <pre class="prettyprint source"><code>import queue from &apos;async/queue&apos;;
+</code></pre>
+<p>Creates a <code>queue</code> object with the specified <code>concurrency</code>. Tasks added to the
 <code>queue</code> are processed in parallel (up to the <code>concurrency</code> limit). If all
 <code>worker</code>s are in progress, the task is queued until one becomes available.
 Once a <code>worker</code> completes a <code>task</code>, that <code>task</code>&apos;s callback is called.</p>
@@ -12451,7 +12553,7 @@ q.unshift({name: &apos;bar&apos;}, function (err) {
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="queue.js.html">queue.js</a>, <a href="queue.js.html#line85">line 85</a>
+        <a href="queue.js.html">queue.js</a>, <a href="queue.js.html#line89">line 89</a>
     </li></ul></dd>
     
 
@@ -12485,7 +12587,9 @@ q.unshift({name: &apos;bar&apos;}, function (err) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import race from &apos;async/race&apos;;</code></pre><p>Runs the <code>tasks</code> array of functions in parallel, without waiting until the
+    <pre class="prettyprint source"><code>import race from &apos;async/race&apos;;
+</code></pre>
+<p>Runs the <code>tasks</code> array of functions in parallel, without waiting until the
 previous function has completed. Once any of the <code>tasks</code> complete or pass an
 error to its callback, the main <code>callback</code> is immediately called. It&apos;s
 equivalent to <code>Promise.race()</code>.</p>
@@ -12676,7 +12780,9 @@ function(err, result) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import retry from &apos;async/retry&apos;;</code></pre><p>Attempts to get a successful response from <code>task</code> no more than <code>times</code> times
+    <pre class="prettyprint source"><code>import retry from &apos;async/retry&apos;;
+</code></pre>
+<p>Attempts to get a successful response from <code>task</code> no more than <code>times</code> times
 before returning an error. If the task is successful, the <code>callback</code> will be
 passed the result of the successful task. If all attempts fail, the callback
 will be passed the error and result (if any) of the final attempt.</p>
@@ -12979,7 +13085,9 @@ async.auto({
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import retryable from &apos;async/retryable&apos;;</code></pre><p>A close relative of <a href="#retry"><code>retry</code></a>.  This method
+    <pre class="prettyprint source"><code>import retryable from &apos;async/retryable&apos;;
+</code></pre>
+<p>A close relative of <a href="#retry"><code>retry</code></a>.  This method
 wraps a task and makes it retryable, rather than immediately calling it
 with retries.</p>
 </div>
@@ -13198,7 +13306,9 @@ This function will accept the same parameters as <code>task</code>.</p>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import seq from &apos;async/seq&apos;;</code></pre><p>Version of the compose function that is more natural to read. Each function
+    <pre class="prettyprint source"><code>import seq from &apos;async/seq&apos;;
+</code></pre>
+<p>Version of the compose function that is more natural to read. Each function
 consumes the return value of the previous function. It is the equivalent of
 <a href="#compose">compose</a> with the arguments reversed.</p>
 <p>Each function is executed with the <code>this</code> binding of the composed function.</p>
@@ -13386,7 +13496,9 @@ app.get(&apos;/cats&apos;, function(request, response) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import series from &apos;async/series&apos;;</code></pre><p>Run the functions in the <code>tasks</code> collection in series, each one running once
+    <pre class="prettyprint source"><code>import series from &apos;async/series&apos;;
+</code></pre>
+<p>Run the functions in the <code>tasks</code> collection in series, each one running once
 the previous function has completed. If any functions in the series pass an
 error to its callback, no more functions are run, and <code>callback</code> is
 immediately called with the value of the error. Otherwise, <code>callback</code>
@@ -13394,7 +13506,7 @@ receives an array of results when <code>tasks</code> have completed.</p>
 <p>It is also possible to use an object instead of an array. Each property will
 be run as a function, and the results will be passed to the final <code>callback</code>
 as an object instead of an array. This can be a more readable way of handling
- results from async.series.</p>
+results from async.series.</p>
 <p><strong>Note</strong> that while many implementations preserve the order of object
 properties, the <a href="http://www.ecma-international.org/ecma-262/5.1/#sec-8.6">ECMAScript Language Specification</a>
 explicitly states that</p>
@@ -13628,7 +13740,9 @@ async.series({
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import times from &apos;async/times&apos;;</code></pre><p>Calls the <code>iteratee</code> function <code>n</code> times, and accumulates results in the same
+    <pre class="prettyprint source"><code>import times from &apos;async/times&apos;;
+</code></pre>
+<p>Calls the <code>iteratee</code> function <code>n</code> times, and accumulates results in the same
 manner you would use with <a href="#map">map</a>.</p>
 </div>
 
@@ -13856,7 +13970,9 @@ async.times(5, function(n, next) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import timesLimit from &apos;async/timesLimit&apos;;</code></pre><p>The same as <a href="#times">times</a> but runs a maximum of <code>limit</code> async operations at a
+    <pre class="prettyprint source"><code>import timesLimit from &apos;async/timesLimit&apos;;
+</code></pre>
+<p>The same as <a href="#times">times</a> but runs a maximum of <code>limit</code> async operations at a
 time.</p>
 </div>
 
@@ -14088,7 +14204,9 @@ Invoked with the iteration index and a callback: (n, next).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import timesSeries from &apos;async/timesSeries&apos;;</code></pre><p>The same as <a href="#times">times</a> but runs only a single async operation at a time.</p>
+    <pre class="prettyprint source"><code>import timesSeries from &apos;async/timesSeries&apos;;
+</code></pre>
+<p>The same as <a href="#times">times</a> but runs only a single async operation at a time.</p>
 </div>
 
 
@@ -14296,7 +14414,9 @@ Invoked with the iteration index and a callback: (n, next).</p></td>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import tryEach from &apos;async/tryEach&apos;;</code></pre><p>It runs each task in series but stops whenever any of the functions were
+    <pre class="prettyprint source"><code>import tryEach from &apos;async/tryEach&apos;;
+</code></pre>
+<p>It runs each task in series but stops whenever any of the functions were
 successful. If one of the tasks were successful, the <code>callback</code> will be
 passed the result of the successful task. If all tasks fail, the callback
 will be passed the error and result (if any) of the final attempt.</p>
@@ -14512,7 +14632,9 @@ function(err, results) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import until from &apos;async/until&apos;;</code></pre><p>Repeatedly call <code>iteratee</code> until <code>test</code> returns <code>true</code>. Calls <code>callback</code> when
+    <pre class="prettyprint source"><code>import until from &apos;async/until&apos;;
+</code></pre>
+<p>Repeatedly call <code>iteratee</code> until <code>test</code> returns <code>true</code>. Calls <code>callback</code> when
 stopped, or an error occurs. <code>callback</code> will be passed an error and any
 arguments passed to the final <code>iteratee</code>&apos;s callback.</p>
 <p>The inverse of <a href="#whilst">whilst</a>.</p>
@@ -14745,7 +14867,9 @@ async.until(function test(page, cb) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import waterfall from &apos;async/waterfall&apos;;</code></pre><p>Runs the <code>tasks</code> array of functions in series, each passing their results to
+    <pre class="prettyprint source"><code>import waterfall from &apos;async/waterfall&apos;;
+</code></pre>
+<p>Runs the <code>tasks</code> array of functions in series, each passing their results to
 the next in the array. However, if any of the <code>tasks</code> pass an error to their
 own callback, the next function is not executed, and the main <code>callback</code> is
 immediately called with the error.</p>
@@ -14959,7 +15083,9 @@ function myLastFunction(arg1, callback) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import whilst from &apos;async/whilst&apos;;</code></pre><p>Repeatedly call <code>iteratee</code>, while <code>test</code> returns <code>true</code>. Calls <code>callback</code> when
+    <pre class="prettyprint source"><code>import whilst from &apos;async/whilst&apos;;
+</code></pre>
+<p>Repeatedly call <code>iteratee</code>, while <code>test</code> returns <code>true</code>. Calls <code>callback</code> when
 stopped, or an error occurs.</p>
 </div>
 
@@ -15186,7 +15312,9 @@ async.whilst(
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import queue from &apos;async/queue&apos;;</code></pre><p>A queue of tasks for the worker function to complete.</p>
+    <pre class="prettyprint source"><code>import queue from &apos;async/queue&apos;;
+</code></pre>
+<p>A queue of tasks for the worker function to complete.</p>
 </div>
 
 
@@ -15407,7 +15535,7 @@ passed to the worker function at a time. only applies if this is a
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
 
 
             
@@ -15433,7 +15561,7 @@ task in the list. Invoke with <code>queue.push(task, [callback])</code>,</p></td
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
 
 
             
@@ -15445,6 +15573,54 @@ task in the list. Invoke with <code>queue.push(task, [callback])</code>,</p></td
 
             <td class="description last"><p>add a new task to the front of the <code>queue</code>.
 Invoke with <code>queue.unshift(task, [callback])</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pushAsync</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the same as <code>q.push</code>, except this returns
+a promise that rejects if an error occurs.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>unshirtAsync</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html">AsyncFunction</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the same as <code>q.unshift</code>, except this returns
+a promise that rejects if an error occurs.</p></td>
         </tr>
 
     
@@ -15939,7 +16115,9 @@ await q.drain()</code></pre>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import apply from &apos;async/apply&apos;;</code></pre><p>Creates a continuation function with some arguments already applied.</p>
+    <pre class="prettyprint source"><code>import apply from &apos;async/apply&apos;;
+</code></pre>
+<p>Creates a continuation function with some arguments already applied.</p>
 <p>Useful as a shorthand when combined with other control flow functions. Any
 arguments passed to the returned function are added to the arguments
 originally passed to apply.</p>
@@ -16150,7 +16328,9 @@ three</code></pre>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import asyncify from &apos;async/asyncify&apos;;</code></pre><p>Take a sync function and make it async, passing its return value to a
+    <pre class="prettyprint source"><code>import asyncify from &apos;async/asyncify&apos;;
+</code></pre>
+<p>Take a sync function and make it async, passing its return value to a
 callback. This is useful for plugging sync functions into a waterfall,
 series, or other async functions. Any arguments passed to the generated
 function will be passed to the wrapped function (except for the final
@@ -16353,7 +16533,9 @@ q.push(files);</code></pre>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import constant from &apos;async/constant&apos;;</code></pre><p>Returns a function that when called, calls-back with the values provided.
+    <pre class="prettyprint source"><code>import constant from &apos;async/constant&apos;;
+</code></pre>
+<p>Returns a function that when called, calls-back with the values provided.
 Useful as the first function in a <a href="#waterfall"><code>waterfall</code></a>, or for plugging values in to
 <a href="#auto"><code>auto</code></a>.</p>
 </div>
@@ -16540,7 +16722,9 @@ async.auto({
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import dir from &apos;async/dir&apos;;</code></pre><p>Logs the result of an <a href="global.html"><code>async</code> function</a> to the
+    <pre class="prettyprint source"><code>import dir from &apos;async/dir&apos;;
+</code></pre>
+<p>Logs the result of an <a href="global.html"><code>async</code> function</a> to the
 <code>console</code> using <code>console.dir</code> to display the properties of the resulting object.
 Only works in Node.js or in browsers that support <code>console.dir</code> and
 <code>console.error</code> (such as FF and Chrome).
@@ -16715,7 +16899,9 @@ node&gt; async.dir(hello, &apos;world&apos;);
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import ensureAsync from &apos;async/ensureAsync&apos;;</code></pre><p>Wrap an async function and ensure it calls its callback on a later tick of
+    <pre class="prettyprint source"><code>import ensureAsync from &apos;async/ensureAsync&apos;;
+</code></pre>
+<p>Wrap an async function and ensure it calls its callback on a later tick of
 the event loop.  If the function already calls its callback on a next tick,
 no extra deferral is added. This is useful for preventing stack overflows
 (<code>RangeError: Maximum call stack size exceeded</code>) and generally keeping
@@ -16895,7 +17081,9 @@ async.mapSeries(args, async.ensureAsync(sometimesAsync), done);</code></pre>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import log from &apos;async/log&apos;;</code></pre><p>Logs the result of an <code>async</code> function to the <code>console</code>. Only works in
+    <pre class="prettyprint source"><code>import log from &apos;async/log&apos;;
+</code></pre>
+<p>Logs the result of an <code>async</code> function to the <code>console</code>. Only works in
 Node.js or in browsers that support <code>console.log</code> and <code>console.error</code> (such
 as FF and Chrome). If multiple arguments are returned from the async
 function, <code>console.log</code> is called on each argument in order.</p>
@@ -17068,7 +17256,9 @@ node&gt; async.log(hello, &apos;world&apos;);
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import memoize from &apos;async/memoize&apos;;</code></pre><p>Caches the results of an async function. When creating a hash to store
+    <pre class="prettyprint source"><code>import memoize from &apos;async/memoize&apos;;
+</code></pre>
+<p>Caches the results of an async function. When creating a hash to store
 function results against, the callback is omitted from the hash and an
 optional hash function can be used.</p>
 <p><strong>Note: if the async function errs, the result will not be cached and
@@ -17272,7 +17462,9 @@ fn(&apos;some name&apos;, function() {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import nextTick from &apos;async/nextTick&apos;;</code></pre><p>Calls <code>callback</code> on a later loop around the event loop. In Node.js this just
+    <pre class="prettyprint source"><code>import nextTick from &apos;async/nextTick&apos;;
+</code></pre>
+<p>Calls <code>callback</code> on a later loop around the event loop. In Node.js this just
 calls <code>process.nextTick</code>.  In the browser it will use <code>setImmediate</code> if
 available, otherwise <code>setTimeout(callback, 0)</code>, which means other higher
 priority events may precede the execution of <code>callback</code>.</p>
@@ -17454,7 +17646,9 @@ async.setImmediate(function (a, b, c) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import reflect from &apos;async/reflect&apos;;</code></pre><p>Wraps the async function in another function that always completes with a
+    <pre class="prettyprint source"><code>import reflect from &apos;async/reflect&apos;;
+</code></pre>
+<p>Wraps the async function in another function that always completes with a
 result object, even when it errors.</p>
 <p>The result object has either the property <code>error</code> or <code>value</code>.</p>
 </div>
@@ -17639,7 +17833,9 @@ function(err, results) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import reflectAll from &apos;async/reflectAll&apos;;</code></pre><p>A helper function that wraps an array or an object of functions with <code>reflect</code>.</p>
+    <pre class="prettyprint source"><code>import reflectAll from &apos;async/reflectAll&apos;;
+</code></pre>
+<p>A helper function that wraps an array or an object of functions with <code>reflect</code>.</p>
 </div>
 
 
@@ -17863,7 +18059,9 @@ function(err, results) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import setImmediate from &apos;async/setImmediate&apos;;</code></pre><p>Calls <code>callback</code> on a later loop around the event loop. In Node.js this just
+    <pre class="prettyprint source"><code>import setImmediate from &apos;async/setImmediate&apos;;
+</code></pre>
+<p>Calls <code>callback</code> on a later loop around the event loop. In Node.js this just
 calls <code>setImmediate</code>.  In the browser it will use <code>setImmediate</code> if
 available, otherwise <code>setTimeout(callback, 0)</code>, which means other higher
 priority events may precede the execution of <code>callback</code>.</p>
@@ -18045,7 +18243,9 @@ async.setImmediate(function (a, b, c) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import timeout from &apos;async/timeout&apos;;</code></pre><p>Sets a time limit on an asynchronous function. If the function does not call
+    <pre class="prettyprint source"><code>import timeout from &apos;async/timeout&apos;;
+</code></pre>
+<p>Sets a time limit on an asynchronous function. If the function does not call
 its callback within the specified milliseconds, it will be called with a
 timeout error. The code property for the error object will be <code>&apos;ETIMEDOUT&apos;</code>.</p>
 </div>
@@ -18277,7 +18477,9 @@ wrapped({ bar: &apos;bar&apos; }, function(err, data) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import unmemoize from &apos;async/unmemoize&apos;;</code></pre><p>Undoes a <a href="#memoize">memoize</a>d function, reverting it to the original,
+    <pre class="prettyprint source"><code>import unmemoize from &apos;async/unmemoize&apos;;
+</code></pre>
+<p>Undoes a <a href="#memoize">memoize</a>d function, reverting it to the original,
 unmemoized form. Handy for testing.</p>
 </div>
 
@@ -18441,7 +18643,7 @@ unmemoized form. Handy for testing.</p>
 
 
     <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a> using the Minami theme.
 </footer></div>
 </div>
 

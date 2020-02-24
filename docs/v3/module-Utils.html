@@ -30,7 +30,7 @@
   </div>
   <ul class="nav navbar-nav">
     <li id="version-dropdown" class="dropdown">
-      <a href="#" class="dropdown-toggle vertically-centered" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">v3.0.1 <span class="caret"></span>
+      <a href="#" class="dropdown-toggle vertically-centered" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">v3.1.1 <span class="caret"></span>
       </a>
       <ul class="dropdown-menu">
         <li><a href="../v3/">v3.0.x</a></li>
@@ -195,7 +195,9 @@
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import apply from &apos;async/apply&apos;;</code></pre><p>Creates a continuation function with some arguments already applied.</p>
+    <pre class="prettyprint source"><code>import apply from &apos;async/apply&apos;;
+</code></pre>
+<p>Creates a continuation function with some arguments already applied.</p>
 <p>Useful as a shorthand when combined with other control flow functions. Any
 arguments passed to the returned function are added to the arguments
 originally passed to apply.</p>
@@ -406,7 +408,9 @@ three</code></pre>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import asyncify from &apos;async/asyncify&apos;;</code></pre><p>Take a sync function and make it async, passing its return value to a
+    <pre class="prettyprint source"><code>import asyncify from &apos;async/asyncify&apos;;
+</code></pre>
+<p>Take a sync function and make it async, passing its return value to a
 callback. This is useful for plugging sync functions into a waterfall,
 series, or other async functions. Any arguments passed to the generated
 function will be passed to the wrapped function (except for the final
@@ -609,7 +613,9 @@ q.push(files);</code></pre>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import constant from &apos;async/constant&apos;;</code></pre><p>Returns a function that when called, calls-back with the values provided.
+    <pre class="prettyprint source"><code>import constant from &apos;async/constant&apos;;
+</code></pre>
+<p>Returns a function that when called, calls-back with the values provided.
 Useful as the first function in a <a href="docs.html#waterfall"><code>waterfall</code></a>, or for plugging values in to
 <a href="docs.html#auto"><code>auto</code></a>.</p>
 </div>
@@ -796,7 +802,9 @@ async.auto({
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import dir from &apos;async/dir&apos;;</code></pre><p>Logs the result of an <a href="global.html"><code>async</code> function</a> to the
+    <pre class="prettyprint source"><code>import dir from &apos;async/dir&apos;;
+</code></pre>
+<p>Logs the result of an <a href="global.html"><code>async</code> function</a> to the
 <code>console</code> using <code>console.dir</code> to display the properties of the resulting object.
 Only works in Node.js or in browsers that support <code>console.dir</code> and
 <code>console.error</code> (such as FF and Chrome).
@@ -971,7 +979,9 @@ node&gt; async.dir(hello, &apos;world&apos;);
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import ensureAsync from &apos;async/ensureAsync&apos;;</code></pre><p>Wrap an async function and ensure it calls its callback on a later tick of
+    <pre class="prettyprint source"><code>import ensureAsync from &apos;async/ensureAsync&apos;;
+</code></pre>
+<p>Wrap an async function and ensure it calls its callback on a later tick of
 the event loop.  If the function already calls its callback on a next tick,
 no extra deferral is added. This is useful for preventing stack overflows
 (<code>RangeError: Maximum call stack size exceeded</code>) and generally keeping
@@ -1151,7 +1161,9 @@ async.mapSeries(args, async.ensureAsync(sometimesAsync), done);</code></pre>
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import log from &apos;async/log&apos;;</code></pre><p>Logs the result of an <code>async</code> function to the <code>console</code>. Only works in
+    <pre class="prettyprint source"><code>import log from &apos;async/log&apos;;
+</code></pre>
+<p>Logs the result of an <code>async</code> function to the <code>console</code>. Only works in
 Node.js or in browsers that support <code>console.log</code> and <code>console.error</code> (such
 as FF and Chrome). If multiple arguments are returned from the async
 function, <code>console.log</code> is called on each argument in order.</p>
@@ -1324,7 +1336,9 @@ node&gt; async.log(hello, &apos;world&apos;);
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import memoize from &apos;async/memoize&apos;;</code></pre><p>Caches the results of an async function. When creating a hash to store
+    <pre class="prettyprint source"><code>import memoize from &apos;async/memoize&apos;;
+</code></pre>
+<p>Caches the results of an async function. When creating a hash to store
 function results against, the callback is omitted from the hash and an
 optional hash function can be used.</p>
 <p><strong>Note: if the async function errs, the result will not be cached and
@@ -1528,7 +1542,9 @@ fn(&apos;some name&apos;, function() {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import nextTick from &apos;async/nextTick&apos;;</code></pre><p>Calls <code>callback</code> on a later loop around the event loop. In Node.js this just
+    <pre class="prettyprint source"><code>import nextTick from &apos;async/nextTick&apos;;
+</code></pre>
+<p>Calls <code>callback</code> on a later loop around the event loop. In Node.js this just
 calls <code>process.nextTick</code>.  In the browser it will use <code>setImmediate</code> if
 available, otherwise <code>setTimeout(callback, 0)</code>, which means other higher
 priority events may precede the execution of <code>callback</code>.</p>
@@ -1710,7 +1726,9 @@ async.setImmediate(function (a, b, c) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import reflect from &apos;async/reflect&apos;;</code></pre><p>Wraps the async function in another function that always completes with a
+    <pre class="prettyprint source"><code>import reflect from &apos;async/reflect&apos;;
+</code></pre>
+<p>Wraps the async function in another function that always completes with a
 result object, even when it errors.</p>
 <p>The result object has either the property <code>error</code> or <code>value</code>.</p>
 </div>
@@ -1895,7 +1913,9 @@ function(err, results) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import reflectAll from &apos;async/reflectAll&apos;;</code></pre><p>A helper function that wraps an array or an object of functions with <code>reflect</code>.</p>
+    <pre class="prettyprint source"><code>import reflectAll from &apos;async/reflectAll&apos;;
+</code></pre>
+<p>A helper function that wraps an array or an object of functions with <code>reflect</code>.</p>
 </div>
 
 
@@ -2119,7 +2139,9 @@ function(err, results) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import setImmediate from &apos;async/setImmediate&apos;;</code></pre><p>Calls <code>callback</code> on a later loop around the event loop. In Node.js this just
+    <pre class="prettyprint source"><code>import setImmediate from &apos;async/setImmediate&apos;;
+</code></pre>
+<p>Calls <code>callback</code> on a later loop around the event loop. In Node.js this just
 calls <code>setImmediate</code>.  In the browser it will use <code>setImmediate</code> if
 available, otherwise <code>setTimeout(callback, 0)</code>, which means other higher
 priority events may precede the execution of <code>callback</code>.</p>
@@ -2301,7 +2323,9 @@ async.setImmediate(function (a, b, c) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import timeout from &apos;async/timeout&apos;;</code></pre><p>Sets a time limit on an asynchronous function. If the function does not call
+    <pre class="prettyprint source"><code>import timeout from &apos;async/timeout&apos;;
+</code></pre>
+<p>Sets a time limit on an asynchronous function. If the function does not call
 its callback within the specified milliseconds, it will be called with a
 timeout error. The code property for the error object will be <code>&apos;ETIMEDOUT&apos;</code>.</p>
 </div>
@@ -2533,7 +2557,9 @@ wrapped({ bar: &apos;bar&apos; }, function(err, data) {
 
 
 <div class="description">
-    <pre class="prettyprint source"><code>import unmemoize from &apos;async/unmemoize&apos;;</code></pre><p>Undoes a <a href="docs.html#memoize">memoize</a>d function, reverting it to the original,
+    <pre class="prettyprint source"><code>import unmemoize from &apos;async/unmemoize&apos;;
+</code></pre>
+<p>Undoes a <a href="docs.html#memoize">memoize</a>d function, reverting it to the original,
 unmemoized form. Handy for testing.</p>
 </div>
 
@@ -2697,7 +2723,7 @@ unmemoized form. Handy for testing.</p>
 
 
     <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a> using the Minami theme.
 </footer></div>
 </div>
 
