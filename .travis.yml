@@ -2,7 +2,6 @@ sudo: false
 dist: xenial
 language: node_js
 node_js:
-  - "8"
   - "10"
   - "12"
 
@@ -11,7 +10,7 @@ services:
 
 matrix:
   include:
-    - node_js: "10"
+    - node_js: "12"
       addons:
         firefox: "60.0"
       env: BROWSER=true MAKE_TEST=true
