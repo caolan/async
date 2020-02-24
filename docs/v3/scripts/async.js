@@ -217,11 +217,6 @@
             })
         }
 
-        Object.defineProperty(awaitable, 'name', {
-            configurable: true, // allows redefining
-            value: `awaitable(${asyncFn.name})`
-        });
-
         return awaitable
     }
 
@@ -1557,7 +1552,7 @@
      * @param {number} [payload=Infinity] - An optional `integer` for determining
      * how many tasks should be processed per round; if omitted, the default is
      * unlimited.
-     * @returns {module:ControlFlow.CargoObject} A cargoQueue object to manage the tasks. Callbacks can
+     * @returns {module:ControlFlow.QueueObject} A cargoQueue object to manage the tasks. Callbacks can
      * attached as certain properties to listen for specific events during the
      * lifecycle of the cargoQueue and inner queue.
      * @example
@@ -2946,7 +2941,7 @@
 
     var nextTick = wrap(_defer$1);
 
-    var _parallel = awaitify((eachfn, tasks, callback) => {
+    var parallel = awaitify((eachfn, tasks, callback) => {
         var results = isArrayLike(tasks) ? [] : {};
 
         eachfn(tasks, (task, key, taskCb) => {
@@ -3030,8 +3025,8 @@
      *     // results is now equals to: {one: 1, two: 2}
      * });
      */
-    function parallel(tasks, callback) {
-        return _parallel(eachOf$1, tasks, callback);
+    function parallel$1(tasks, callback) {
+        return parallel(eachOf$1, tasks, callback);
     }
 
     /**
@@ -3055,7 +3050,7 @@
      * @returns {Promise} a promise, if a callback is not passed
      */
     function parallelLimit(tasks, limit, callback) {
-        return _parallel(eachOfLimit(limit), tasks, callback);
+        return parallel(eachOfLimit(limit), tasks, callback);
     }
 
     /**
@@ -3959,7 +3954,7 @@
      * });
      */
     function series(tasks, callback) {
-        return _parallel(eachOfSeries$1, tasks, callback);
+        return parallel(eachOfSeries$1, tasks, callback);
     }
 
     /**
@@ -4433,7 +4428,7 @@
      *
      * var count = 0;
      * async.whilst(
-     *     function test(cb) { cb(null, count < 5;) },
+     *     function test(cb) { cb(null, count < 5); },
      *     function iter(callback) {
      *         count++;
      *         setTimeout(function() {
@@ -4494,13 +4489,15 @@
      *
      * @example
      * const results = []
+     * let finished = false
      * async.until(function test(page, cb) {
-     *     cb(null, page.next == null)
+     *     cb(null, finished)
      * }, function iter(next) {
      *     fetchPage(url, (err, body) => {
      *         if (err) return next(err)
      *         results = results.concat(body.objects)
-     *         next(err, body)
+     *         finished = !!body.next
+     *         next(err)
      *     })
      * }, function done (err) {
      *     // all pages have been fetched
@@ -4677,7 +4674,7 @@
         mapValuesSeries,
         memoize,
         nextTick,
-        parallel,
+        parallel: parallel$1,
         parallelLimit,
         priorityQueue,
         queue: queue$1,
@@ -4785,7 +4782,7 @@
     exports.mapValuesSeries = mapValuesSeries;
     exports.memoize = memoize;
     exports.nextTick = nextTick;
-    exports.parallel = parallel;
+    exports.parallel = parallel$1;
     exports.parallelLimit = parallelLimit;
     exports.priorityQueue = priorityQueue;
     exports.queue = queue$1;
