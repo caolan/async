@@ -103,13 +103,15 @@ import wrapAsync from &apos;./internal/wrapAsync&apos;;
  *
  * @example
  * const results = []
+ * let finished = false
  * async.until(function test(page, cb) {
- *     cb(null, page.next == null)
+ *     cb(null, finished)
  * }, function iter(next) {
  *     fetchPage(url, (err, body) =&gt; {
  *         if (err) return next(err)
  *         results = results.concat(body.objects)
- *         next(err, body)
+ *         finished = !!body.next
+ *         next(err)
  *     })
  * }, function done (err) {
  *     // all pages have been fetched
