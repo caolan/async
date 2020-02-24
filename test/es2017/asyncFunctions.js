@@ -271,9 +271,11 @@ module.exports = function () {
      * Control Flow
      */
 
-    it('should handle async functions in apply', () => {
-        const result = async.apply(asyncIdentity, input);
-        expect(result[Symbol.toStringTag]).to.eql('AsyncFunction');
+    it('should handle async functions in apply', (done) => {
+        async.apply(asyncIdentity, input)((err, result) => {
+            expect(result).to.eql(input);
+            done(err);
+        });
     });
 
     it('should handle async functions in applyEach', (done) => {
