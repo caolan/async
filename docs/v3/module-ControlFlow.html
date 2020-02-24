@@ -6101,7 +6101,7 @@ callback. Invoked with (err, [results]);</p></td>
     
     <pre class="prettyprint"><code>var count = 0;
 async.whilst(
-    function test(cb) { cb(null, count &lt; 5;) },
+    function test(cb) { cb(null, count &lt; 5); },
     function iter(callback) {
         count++;
         setTimeout(function() {
