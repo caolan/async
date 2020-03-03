@@ -3120,7 +3120,7 @@
      * should be pushed to the queue after calling this function. Invoke with `queue.kill()`.
      *
      * @example
-     * const q = aync.queue(worker, 2)
+     * const q = async.queue(worker, 2)
      * q.push(item1)
      * q.push(item2)
      * q.push(item3)
