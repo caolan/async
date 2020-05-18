@@ -3532,7 +3532,7 @@ function forever(fn, errback) {
  * The iteratee should complete with a `key` to group the value under.
  * Invoked with (value, callback).
  * @param {Function} [callback] - A callback which is called when all `iteratee`
- * functions have finished, or an error occurs. Result is an `Object` whoses
+ * functions have finished, or an error occurs. Result is an `Object` whose
  * properties are arrays of values which returned the corresponding key.
  */
 var groupByLimit = function(coll, limit, iteratee, callback) {
@@ -3587,7 +3587,7 @@ var groupByLimit = function(coll, limit, iteratee, callback) {
  * The iteratee should complete with a `key` to group the value under.
  * Invoked with (value, callback).
  * @param {Function} [callback] - A callback which is called when all `iteratee`
- * functions have finished, or an error occurs. Result is an `Object` whoses
+ * functions have finished, or an error occurs. Result is an `Object` whose
  * properties are arrays of values which returned the corresponding key.
  * @example
  *
@@ -3619,7 +3619,7 @@ var groupBy = doLimit(groupByLimit, Infinity);
  * The iteratee should complete with a `key` to group the value under.
  * Invoked with (value, callback).
  * @param {Function} [callback] - A callback which is called when all `iteratee`
- * functions have finished, or an error occurs. Result is an `Object` whoses
+ * functions have finished, or an error occurs. Result is an `Object` whose
  * properties are arrays of values which returned the corresponding key.
  */
 var groupBySeries = doLimit(groupByLimit, 1);
