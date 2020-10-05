@@ -137,12 +137,19 @@ function eachOfGeneric (coll, iteratee, callback) {
  * @returns {Promise} a promise, if a callback is omitted
  * @example
  *
- * var obj = {dev: &quot;/dev.json&quot;, test: &quot;/test.json&quot;, prod: &quot;/prod.json&quot;};
- * var configs = {};
+ * // dev.json is a file containing a valid json object config for dev environment
+ * // dev.json is a file containing a valid json object config for test environment
+ * // prod.json is a file containing a valid json object config for prod environment
+ * // invalid.json is a file with a malformed json object
  *
- * async.forEachOf(obj, function (value, key, callback) {
- *     fs.readFile(__dirname + value, &quot;utf8&quot;, function (err, data) {
- *         if (err) return callback(err);
+ * let configs = {}; //global variable
+ * let validConfigFileMap = {dev: &apos;dev.json&apos;, test: &apos;test.json&apos;, prod: &apos;prod.json&apos;};
+ * let invalidConfigFileMap = {dev: &apos;dev.json&apos;, test: &apos;test.json&apos;, invalid: &apos;invalid.json&apos;};
+ *
+ * // asynchronous function that reads a json file and parses the contents as json object
+ * function parseFile(file, key, callback) {
+ *     fs.readFile(file, &quot;utf8&quot;, function(err, data) {
+ *         if (err) return calback(err);
  *         try {
  *             configs[key] = JSON.parse(data);
  *         } catch (e) {
@@ -150,11 +157,73 @@ function eachOfGeneric (coll, iteratee, callback) {
  *         }
  *         callback();
  *     });
- * }, function (err) {
- *     if (err) console.error(err.message);
- *     // configs is now a map of JSON data
- *     doSomethingWith(configs);
+ * }
+ *
+ * // Using callbacks
+ * async.forEachOf(validConfigFileMap, parseFile, function (err) {
+ *     if (err) {
+ *         console.error(err);
+ *     } else {
+ *         console.log(configs);
+ *         // configs is now a map of JSON data, e.g.
+ *         // { dev: //parsed dev.json, test: //parsed test.json, prod: //parsed prod.json}
+ *     }
  * });
+ *
+ * //Error handing
+ * async.forEachOf(invalidConfigFileMap, parseFile, function (err) {
+ *     if (err) {
+ *         console.error(err);
+ *         // JSON parse error exception
+ *     } else {
+ *         console.log(configs);
+ *     }
+ * });
+ *
+ * // Using Promises
+ * async.forEachOf(validConfigFileMap, parseFile)
+ * .then( () =&gt; {
+ *     console.log(configs);
+ *     // configs is now a map of JSON data, e.g.
+ *     // { dev: //parsed dev.json, test: //parsed test.json, prod: //parsed prod.json}
+ * }).catch( err =&gt; {
+ *     console.error(err);
+ * });
+ *
+ * //Error handing
+ * async.forEachOf(invalidConfigFileMap, parseFile)
+ * .then( () =&gt; {
+ *     console.log(configs);
+ * }).catch( err =&gt; {
+ *     console.error(err);
+ *     // JSON parse error exception
+ * });
+ *
+ * // Using async/await
+ * (async () =&gt; {
+ *     try {
+ *         let result = await async.forEachOf(validConfigFileMap, parseFile);
+ *         console.log(configs);
+ *         // configs is now a map of JSON data, e.g.
+ *         // { dev: //parsed dev.json, test: //parsed test.json, prod: //parsed prod.json}
+ *     }
+ *     catch (err) {
+ *         console.log(err);
+ *     }
+ * })();
+ *
+ * //Error handing
+ * (async () =&gt; {
+ *     try {
+ *         let result = await async.forEachOf(invalidConfigFileMap, parseFile);
+ *         console.log(configs);
+ *     }
+ *     catch (err) {
+ *         console.log(err);
+ *         // JSON parse error exception
+ *     }
+ * })();
+ *
  */
 function eachOf(coll, iteratee, callback) {
     var eachOfImplementation = isArrayLike(coll) ? eachOfArrayLike : eachOfGeneric;

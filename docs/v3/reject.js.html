@@ -98,14 +98,48 @@ import awaitify from &apos;./internal/awaitify&apos;
  * @returns {Promise} a promise, if no callback is passed
  * @example
  *
- * async.reject([&apos;file1&apos;,&apos;file2&apos;,&apos;file3&apos;], function(filePath, callback) {
- *     fs.access(filePath, function(err) {
- *         callback(null, !err)
- *     });
- * }, function(err, results) {
- *     // results now equals an array of missing files
- *     createFiles(results);
+ * // dir1 is a directory that contains file1.txt, file2.txt
+ * // dir2 is a directory that contains file3.txt, file4.txt
+ * // dir3 is a directory that contains file5.txt
+ *
+ * const fileList = [&apos;dir1/file1.txt&apos;,&apos;dir2/file3.txt&apos;,&apos;dir3/file6.txt&apos;];
+ *
+ * // asynchronous function that checks if a file exists
+ * function fileExists(file, callback) {
+ *    fs.access(file, fs.constants.F_OK, (err) =&gt; {
+ *        callback(null, !err);
+ *    });
+ * }
+ *
+ * // Using callbacks
+ * async.reject(fileList, fileExists, function(err, results) {
+ *    // [ &apos;dir3/file6.txt&apos; ]
+ *    // results now equals an array of the non-existing files
  * });
+ *
+ * // Using Promises
+ * async.reject(fileList, fileExists)
+ * .then( results =&gt; {
+ *     console.log(results);
+ *     // [ &apos;dir3/file6.txt&apos; ]
+ *     // results now equals an array of the non-existing files
+ * }).catch( err =&gt; {
+ *     console.log(err);
+ * });
+ *
+ * // Using async/await
+ * (async () =&gt; {
+ *     try {
+ *         let results = await async.reject(fileList, fileExists);
+ *         console.log(results);
+ *         // [ &apos;dir3/file6.txt&apos; ]
+ *         // results now equals an array of the non-existing files
+ *     }
+ *     catch (err) {
+ *         console.log(err);
+ *     }
+ * })();
+ *
  */
 function reject (coll, iteratee, callback) {
     return _reject(eachOf, coll, iteratee, callback)

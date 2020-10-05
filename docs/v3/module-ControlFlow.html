@@ -5652,7 +5652,7 @@ callback. Invoked with (err, [results]);</p></td>
     
     <pre class="prettyprint"><code>const results = []
 let finished = false
-async.until(function test(page, cb) {
+async.until(function test(cb) {
     cb(null, finished)
 }, function iter(next) {
     fetchPage(url, (err, body) =&gt; {
@@ -6476,7 +6476,7 @@ a promise that rejects if an error occurs.</p></td>
 
         <tr>
             
-                <td class="name"><code>unshirtAsync</code></td>
+                <td class="name"><code>unshiftAsync</code></td>
             
 
             <td class="type">

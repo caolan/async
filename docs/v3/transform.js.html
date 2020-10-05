@@ -102,26 +102,118 @@ import { promiseCallback, PROMISE_SYMBOL } from &apos;./internal/promiseCallback
  * @returns {Promise} a promise, if no callback provided
  * @example
  *
- * async.transform([1,2,3], function(acc, item, index, callback) {
- *     // pointless async:
- *     process.nextTick(function() {
- *         acc[index] = item * 2
- *         callback(null)
+ * // file1.txt is a file that is 1000 bytes in size
+ * // file2.txt is a file that is 2000 bytes in size
+ * // file3.txt is a file that is 3000 bytes in size
+ *
+ * // helper function that returns human-readable size format from bytes
+ * function formatBytes(bytes, decimals = 2) {
+ *   // implementation not included for brevity
+ *   return humanReadbleFilesize;
+ * }
+ *
+ * const fileList = [&apos;file1.txt&apos;,&apos;file2.txt&apos;,&apos;file3.txt&apos;];
+ *
+ * // asynchronous function that returns the file size, transformed to human-readable format
+ * // e.g. 1024 bytes = 1KB, 1234 bytes = 1.21 KB, 1048576 bytes = 1MB, etc.
+ * function transformFileSize(acc, value, key, callback) {
+ *     fs.stat(value, function(err, stat) {
+ *         if (err) {
+ *             return callback(err);
+ *         }
+ *         acc[key] = formatBytes(stat.size);
+ *         callback(null);
  *     });
- * }, function(err, result) {
- *     // result is now equal to [2, 4, 6]
+ * }
+ *
+ * // Using callbacks
+ * async.transform(fileList, transformFileSize, function(err, result) {
+ *     if(err) {
+ *         console.log(err);
+ *     } else {
+ *         console.log(result);
+ *         // [ &apos;1000 Bytes&apos;, &apos;1.95 KB&apos;, &apos;2.93 KB&apos; ]
+ *     }
  * });
+ *
+ * // Using Promises
+ * async.transform(fileList, transformFileSize)
+ * .then(result =&gt; {
+ *     console.log(result);
+ *     // [ &apos;1000 Bytes&apos;, &apos;1.95 KB&apos;, &apos;2.93 KB&apos; ]
+ * }).catch(err =&gt; {
+ *     console.log(err);
+ * });
+ *
+ * // Using async/await
+ * (async () =&gt; {
+ *     try {
+ *         let result = await async.transform(fileList, transformFileSize);
+ *         console.log(result);
+ *         // [ &apos;1000 Bytes&apos;, &apos;1.95 KB&apos;, &apos;2.93 KB&apos; ]
+ *     }
+ *     catch (err) {
+ *         console.log(err);
+ *     }
+ * })();
  *
  * @example
  *
- * async.transform({a: 1, b: 2, c: 3}, function (obj, val, key, callback) {
- *     setImmediate(function () {
- *         obj[key] = val * 2;
- *         callback();
- *     })
- * }, function (err, result) {
- *     // result is equal to {a: 2, b: 4, c: 6}
- * })
+ * // file1.txt is a file that is 1000 bytes in size
+ * // file2.txt is a file that is 2000 bytes in size
+ * // file3.txt is a file that is 3000 bytes in size
+ *
+ * // helper function that returns human-readable size format from bytes
+ * function formatBytes(bytes, decimals = 2) {
+ *   // implementation not included for brevity
+ *   return humanReadbleFilesize;
+ * }
+ *
+ * const fileMap = { f1: &apos;file1.txt&apos;, f2: &apos;file2.txt&apos;, f3: &apos;file3.txt&apos; };
+ *
+ * // asynchronous function that returns the file size, transformed to human-readable format
+ * // e.g. 1024 bytes = 1KB, 1234 bytes = 1.21 KB, 1048576 bytes = 1MB, etc.
+ * function transformFileSize(acc, value, key, callback) {
+ *     fs.stat(value, function(err, stat) {
+ *         if (err) {
+ *             return callback(err);
+ *         }
+ *         acc[key] = formatBytes(stat.size);
+ *         callback(null);
+ *     });
+ * }
+ *
+ * // Using callbacks
+ * async.transform(fileMap, transformFileSize, function(err, result) {
+ *     if(err) {
+ *         console.log(err);
+ *     } else {
+ *         console.log(result);
+ *         // { f1: &apos;1000 Bytes&apos;, f2: &apos;1.95 KB&apos;, f3: &apos;2.93 KB&apos; }
+ *     }
+ * });
+ *
+ * // Using Promises
+ * async.transform(fileMap, transformFileSize)
+ * .then(result =&gt; {
+ *     console.log(result);
+ *     // { f1: &apos;1000 Bytes&apos;, f2: &apos;1.95 KB&apos;, f3: &apos;2.93 KB&apos; }
+ * }).catch(err =&gt; {
+ *     console.log(err);
+ * });
+ *
+ * // Using async/await
+ * (async () =&gt; {
+ *     try {
+ *         let result = await async.transform(fileMap, transformFileSize);
+ *         console.log(result);
+ *         // { f1: &apos;1000 Bytes&apos;, f2: &apos;1.95 KB&apos;, f3: &apos;2.93 KB&apos; }
+ *     }
+ *     catch (err) {
+ *         console.log(err);
+ *     }
+ * })();
+ *
  */
 export default function transform (coll, accumulator, iteratee, callback) {
     if (arguments.length &lt;= 3 &amp;&amp; typeof accumulator === &apos;function&apos;) {

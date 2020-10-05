@@ -107,13 +107,48 @@ import awaitify from &apos;./internal/awaitify&apos;
  * @returns A Promise, if no callback is passed
  * @example
  *
- * async.detect([&apos;file1&apos;,&apos;file2&apos;,&apos;file3&apos;], function(filePath, callback) {
- *     fs.access(filePath, function(err) {
- *         callback(null, !err)
- *     });
- * }, function(err, result) {
+ * // dir1 is a directory that contains file1.txt, file2.txt
+ * // dir2 is a directory that contains file3.txt, file4.txt
+ * // dir3 is a directory that contains file5.txt
+ *
+ * // asynchronous function that checks if a file exists
+ * function fileExists(file, callback) {
+ *    fs.access(file, fs.constants.F_OK, (err) =&gt; {
+ *        callback(null, !err);
+ *    });
+ * }
+ *
+ * async.detect([&apos;file3.txt&apos;,&apos;file2.txt&apos;,&apos;dir1/file1.txt&apos;], fileExists,
+ *    function(err, result) {
+ *        console.log(result);
+ *        // dir1/file1.txt
+ *        // result now equals the first file in the list that exists
+ *    }
+ *);
+ *
+ * // Using Promises
+ * async.detect([&apos;file3.txt&apos;,&apos;file2.txt&apos;,&apos;dir1/file1.txt&apos;], fileExists)
+ * .then(result =&gt; {
+ *     console.log(result);
+ *     // dir1/file1.txt
  *     // result now equals the first file in the list that exists
+ * }).catch(err =&gt; {
+ *     console.log(err);
  * });
+ *
+ * // Using async/await
+ * (async () =&gt; {
+ *     try {
+ *         let result = await async.detect([&apos;file3.txt&apos;,&apos;file2.txt&apos;,&apos;dir1/file1.txt&apos;], fileExists);
+ *         console.log(result);
+ *         // dir1/file1.txt
+ *         // result now equals the file in the list that exists
+ *     }
+ *     catch (err) {
+ *         console.log(err);
+ *     }
+ * })();
+ *
  */
 function detect(coll, iteratee, callback) {
     return createTester(bool =&gt; bool, (res, item) =&gt; item)(eachOf, coll, iteratee, callback)

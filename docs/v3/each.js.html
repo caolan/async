@@ -106,37 +106,78 @@ import awaitify from &apos;./internal/awaitify&apos;
  * @returns {Promise} a promise, if a callback is omitted
  * @example
  *
- * // assuming openFiles is an array of file names and saveFile is a function
- * // to save the modified contents of that file:
+ * // dir1 is a directory that contains file1.txt, file2.txt
+ * // dir2 is a directory that contains file3.txt, file4.txt
+ * // dir3 is a directory that contains file5.txt
+ * // dir4 does not exist
  *
- * async.each(openFiles, saveFile, function(err){
- *   // if any of the saves produced an error, err would equal that error
- * });
+ * const fileList = [ &apos;dir1/file2.txt&apos;, &apos;dir2/file3.txt&apos;, &apos;dir/file5.txt&apos;];
+ * const withMissingFileList = [&apos;dir1/file1.txt&apos;, &apos;dir4/file2.txt&apos;];
  *
- * // assuming openFiles is an array of file names
- * async.each(openFiles, function(file, callback) {
+ * // asynchronous function that deletes a file
+ * const deleteFile = function(file, callback) {
+ *     fs.unlink(file, callback);
+ * };
  *
- *     // Perform operation on file here.
- *     console.log(&apos;Processing file &apos; + file);
- *
- *     if( file.length &gt; 32 ) {
- *       console.log(&apos;This file name is too long&apos;);
- *       callback(&apos;File name too long&apos;);
- *     } else {
- *       // Do work to process file here
- *       console.log(&apos;File processed&apos;);
- *       callback();
- *     }
- * }, function(err) {
- *     // if any of the file processing produced an error, err would equal that error
+ * // Using callbacks
+ * async.each(fileList, deleteFile, function(err) {
  *     if( err ) {
- *       // One of the iterations produced an error.
- *       // All processing will now stop.
- *       console.log(&apos;A file failed to process&apos;);
+ *         console.log(err);
  *     } else {
- *       console.log(&apos;All files have been processed successfully&apos;);
+ *         console.log(&apos;All files have been deleted successfully&apos;);
  *     }
  * });
+ *
+ * // Error Handling
+ * async.each(withMissingFileList, deleteFile, function(err){
+ *     console.log(err);
+ *     // [ Error: ENOENT: no such file or directory ]
+ *     // since dir4/file2.txt does not exist
+ *     // dir1/file1.txt could have been deleted
+ * });
+ *
+ * // Using Promises
+ * async.each(fileList, deleteFile)
+ * .then( () =&gt; {
+ *     console.log(&apos;All files have been deleted successfully&apos;);
+ * }).catch( err =&gt; {
+ *     console.log(err);
+ * });
+ *
+ * // Error Handling
+ * async.each(fileList, deleteFile)
+ * .then( () =&gt; {
+ *     console.log(&apos;All files have been deleted successfully&apos;);
+ * }).catch( err =&gt; {
+ *     console.log(err);
+ *     // [ Error: ENOENT: no such file or directory ]
+ *     // since dir4/file2.txt does not exist
+ *     // dir1/file1.txt could have been deleted
+ * });
+ *
+ * // Using async/await
+ * (async () =&gt; {
+ *     try {
+ *         await async.each(files, deleteFile);
+ *     }
+ *     catch (err) {
+ *         console.log(err);
+ *     }
+ * })();
+ *
+ * // Error Handling
+ * (async () =&gt; {
+ *     try {
+ *         await async.each(withMissingFileList, deleteFile);
+ *     }
+ *     catch (err) {
+ *         console.log(err);
+ *         // [ Error: ENOENT: no such file or directory ]
+ *         // since dir4/file2.txt does not exist
+ *         // dir1/file1.txt could have been deleted
+ *     }
+ * })();
+ *
  */
 function eachLimit(coll, iteratee, callback) {
     return eachOf(coll, withoutIndex(wrapAsync(iteratee)), callback);

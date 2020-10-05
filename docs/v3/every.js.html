@@ -100,13 +100,78 @@ import awaitify from &apos;./internal/awaitify&apos;
  * @returns {Promise} a promise, if no callback provided
  * @example
  *
- * async.every([&apos;file1&apos;,&apos;file2&apos;,&apos;file3&apos;], function(filePath, callback) {
- *     fs.access(filePath, function(err) {
- *         callback(null, !err)
- *     });
- * }, function(err, result) {
- *     // if result is true then every file exists
+ * // dir1 is a directory that contains file1.txt, file2.txt
+ * // dir2 is a directory that contains file3.txt, file4.txt
+ * // dir3 is a directory that contains file5.txt
+ * // dir4 does not exist
+ *
+ * const fileList = [&apos;dir1/file1.txt&apos;,&apos;dir2/file3.txt&apos;,&apos;dir3/file5.txt&apos;];
+ * const withMissingFileList = [&apos;file1.txt&apos;,&apos;file2.txt&apos;,&apos;file4.txt&apos;];
+ *
+ * // asynchronous function that checks if a file exists
+ * function fileExists(file, callback) {
+ *    fs.access(file, fs.constants.F_OK, (err) =&gt; {
+ *        callback(null, !err);
+ *    });
+ * }
+ *
+ * // Using callbacks
+ * async.every(fileList, fileExists, function(err, result) {
+ *     console.log(result);
+ *     // true
+ *     // result is true since every file exists
  * });
+ *
+ * async.every(withMissingFileList, fileExists, function(err, result) {
+ *     console.log(result);
+ *     // false
+ *     // result is false since NOT every file exists
+ * });
+ *
+ * // Using Promises
+ * async.every(fileList, fileExists)
+ * .then( result =&gt; {
+ *     console.log(result);
+ *     // true
+ *     // result is true since every file exists
+ * }).catch( err =&gt; {
+ *     console.log(err);
+ * });
+ *
+ * async.every(withMissingFileList, fileExists)
+ * .then( result =&gt; {
+ *     console.log(result);
+ *     // false
+ *     // result is false since NOT every file exists
+ * }).catch( err =&gt; {
+ *     console.log(err);
+ * });
+ *
+ * // Using async/await
+ * (async () =&gt; {
+ *     try {
+ *         let result = await async.every(fileList, fileExists);
+ *         console.log(result);
+ *         // true
+ *         // result is true since every file exists
+ *     }
+ *     catch (err) {
+ *         console.log(err);
+ *     }
+ * })();
+ *
+ * (async () =&gt; {
+ *     try {
+ *         let result = await async.every(withMissingFileList, fileExists);
+ *         console.log(result);
+ *         // false
+ *         // result is false since NOT every file exists
+ *     }
+ *     catch (err) {
+ *         console.log(err);
+ *     }
+ * })();
+ *
  */
 function every(coll, iteratee, callback) {
     return createTester(bool =&gt; !bool, res =&gt; !res)(eachOf, coll, iteratee, callback)

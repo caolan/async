@@ -101,31 +101,133 @@ import awaitify from &apos;./internal/awaitify&apos;
  * @returns {Promise} a promise, if no callback passed
  * @example
  *
- * async.sortBy([&apos;file1&apos;,&apos;file2&apos;,&apos;file3&apos;], function(file, callback) {
- *     fs.stat(file, function(err, stats) {
- *         callback(err, stats.mtime);
+ * // bigfile.txt is a file that is 251100 bytes in size
+ * // mediumfile.txt is a file that is 11000 bytes in size
+ * // smallfile.txt is a file that is 121 bytes in size
+ *
+ * // asynchronous function that returns the file size in bytes
+ * function getFileSizeInBytes(file, callback) {
+ *     fs.stat(file, function(err, stat) {
+ *         if (err) {
+ *             return callback(err);
+ *         }
+ *         callback(null, stat.size);
  *     });
- * }, function(err, results) {
- *     // results is now the original array of files sorted by
- *     // modified date
- * });
+ * }
+ *
+ * // Using callbacks
+ * async.sortBy([&apos;mediumfile.txt&apos;,&apos;smallfile.txt&apos;,&apos;bigfile.txt&apos;], getFileSizeInBytes,
+ *     function(err, results) {
+ *         if (err) {
+ *             console.log(err);
+ *         } else {
+ *             console.log(results);
+ *             // results is now the original array of files sorted by
+ *             // file size (ascending by default), e.g.
+ *             // [ &apos;smallfile.txt&apos;, &apos;mediumfile.txt&apos;, &apos;bigfile.txt&apos;]
+ *         }
+ *     }
+ * );
  *
  * // By modifying the callback parameter the
  * // sorting order can be influenced:
  *
  * // ascending order
- * async.sortBy([1,9,3,5], function(x, callback) {
- *     callback(null, x);
- * }, function(err,result) {
- *     // result callback
- * });
+ * async.sortBy([&apos;mediumfile.txt&apos;,&apos;smallfile.txt&apos;,&apos;bigfile.txt&apos;], function(file, callback) {
+ *     getFileSizeInBytes(file, function(getFileSizeErr, fileSize) {
+ *         if (getFileSizeErr) return callback(getFileSizeErr);
+ *         callback(null, fileSize);
+ *     });
+ * }, function(err, results) {
+ *         if (err) {
+ *             console.log(err);
+ *         } else {
+ *             console.log(results);
+ *             // results is now the original array of files sorted by
+ *             // file size (ascending by default), e.g.
+ *             // [ &apos;smallfile.txt&apos;, &apos;mediumfile.txt&apos;, &apos;bigfile.txt&apos;]
+ *         }
+ *     }
+ * );
  *
  * // descending order
- * async.sortBy([1,9,3,5], function(x, callback) {
- *     callback(null, x*-1);    //&lt;- x*-1 instead of x, turns the order around
- * }, function(err,result) {
- *     // result callback
+ * async.sortBy([&apos;bigfile.txt&apos;,&apos;mediumfile.txt&apos;,&apos;smallfile.txt&apos;], function(file, callback) {
+ *     getFileSizeInBytes(file, function(getFileSizeErr, fileSize) {
+ *         if (getFileSizeErr) {
+ *             return callback(getFileSizeErr);
+ *         }
+ *         callback(null, fileSize * -1);
+ *     });
+ * }, function(err, results) {
+ *         if (err) {
+ *             console.log(err);
+ *         } else {
+ *             console.log(results);
+ *             // results is now the original array of files sorted by
+ *             // file size (ascending by default), e.g.
+ *             // [ &apos;bigfile.txt&apos;, &apos;mediumfile.txt&apos;, &apos;smallfile.txt&apos;]
+ *         }
+ *     }
+ * );
+ *
+ * // Error handling
+ * async.sortBy([&apos;mediumfile.txt&apos;,&apos;smallfile.txt&apos;,&apos;missingfile.txt&apos;], getFileSizeInBytes,
+ *     function(err, results) {
+ *         if (err) {
+ *             console.log(err);
+ *             // [ Error: ENOENT: no such file or directory ]
+ *         } else {
+ *             console.log(results);
+ *         }
+ *     }
+ * );
+ *
+ * // Using Promises
+ * async.sortBy([&apos;mediumfile.txt&apos;,&apos;smallfile.txt&apos;,&apos;bigfile.txt&apos;], getFileSizeInBytes)
+ * .then( results =&gt; {
+ *     console.log(results);
+ *     // results is now the original array of files sorted by
+ *     // file size (ascending by default), e.g.
+ *     // [ &apos;smallfile.txt&apos;, &apos;mediumfile.txt&apos;, &apos;bigfile.txt&apos;]
+ * }).catch( err =&gt; {
+ *     console.log(err);
  * });
+ *
+ * // Error handling
+ * async.sortBy([&apos;mediumfile.txt&apos;,&apos;smallfile.txt&apos;,&apos;missingfile.txt&apos;], getFileSizeInBytes)
+ * .then( results =&gt; {
+ *     console.log(results);
+ * }).catch( err =&gt; {
+ *     console.log(err);
+ *     // [ Error: ENOENT: no such file or directory ]
+ * });
+ *
+ * // Using async/await
+ * (async () =&gt; {
+ *     try {
+ *         let results = await async.sortBy([&apos;bigfile.txt&apos;,&apos;mediumfile.txt&apos;,&apos;smallfile.txt&apos;], getFileSizeInBytes);
+ *         console.log(results);
+ *         // results is now the original array of files sorted by
+ *         // file size (ascending by default), e.g.
+ *         // [ &apos;smallfile.txt&apos;, &apos;mediumfile.txt&apos;, &apos;bigfile.txt&apos;]
+ *     }
+ *     catch (err) {
+ *         console.log(err);
+ *     }
+ * })();
+ *
+ * // Error handling
+ * (async () =&gt; {
+ *     try {
+ *         let results = await async.sortBy([&apos;missingfile.txt&apos;,&apos;mediumfile.txt&apos;,&apos;smallfile.txt&apos;], getFileSizeInBytes);
+ *         console.log(results);
+ *     }
+ *     catch (err) {
+ *         console.log(err);
+ *         // [ Error: ENOENT: no such file or directory ]
+ *     }
+ * })();
+ *
  */
 function sortBy (coll, iteratee, callback) {
     var _iteratee = wrapAsync(iteratee);

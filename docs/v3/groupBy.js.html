@@ -104,15 +104,69 @@
  * @returns {Promise} a promise, if no callback is passed
  * @example
  *
- * async.groupBy([&apos;userId1&apos;, &apos;userId2&apos;, &apos;userId3&apos;], function(userId, callback) {
- *     db.findById(userId, function(err, user) {
- *         if (err) return callback(err);
- *         return callback(null, user.age);
+ * // dir1 is a directory that contains file1.txt, file2.txt
+ * // dir2 is a directory that contains file3.txt, file4.txt
+ * // dir3 is a directory that contains file5.txt
+ * // dir4 does not exist
+ *
+ * const files = [&apos;dir1/file1.txt&apos;,&apos;dir2&apos;,&apos;dir4&apos;]
+ *
+ * // asynchronous function that detects file type as none, file, or directory
+ * function detectFile(file, callback) {
+ *     fs.stat(file, function(err, stat) {
+ *         if (err) {
+ *             return callback(null, &apos;none&apos;);
+ *         }
+ *         callback(null, stat.isDirectory() ? &apos;directory&apos; : &apos;file&apos;);
  *     });
- * }, function(err, result) {
- *     // result is object containing the userIds grouped by age
- *     // e.g. { 30: [&apos;userId1&apos;, &apos;userId3&apos;], 42: [&apos;userId2&apos;]};
+ * }
+ *
+ * //Using callbacks
+ * async.groupBy(files, detectFile, function(err, result) {
+ *     if(err) {
+ *         console.log(err);
+ *     } else {
+ *	       console.log(result);
+ *         // {
+ *         //     file: [ &apos;dir1/file1.txt&apos; ],
+ *         //     none: [ &apos;dir4&apos; ],
+ *         //     directory: [ &apos;dir2&apos;]
+ *         // }
+ *         // result is object containing the files grouped by type
+ *     }
  * });
+ *
+ * // Using Promises
+ * async.groupBy(files, detectFile)
+ * .then( result =&gt; {
+ *     console.log(result);
+ *     // {
+ *     //     file: [ &apos;dir1/file1.txt&apos; ],
+ *     //     none: [ &apos;dir4&apos; ],
+ *     //     directory: [ &apos;dir2&apos;]
+ *     // }
+ *     // result is object containing the files grouped by type
+ * }).catch( err =&gt; {
+ *     console.log(err);
+ * });
+ *
+ * // Using async/await
+ * (async () =&gt; {
+ *     try {
+ *         let result = await async.groupBy(files, detectFile);
+ *         console.log(result);
+ *         // {
+ *         //     file: [ &apos;dir1/file1.txt&apos; ],
+ *         //     none: [ &apos;dir4&apos; ],
+ *         //     directory: [ &apos;dir2&apos;]
+ *         // }
+ *         // result is object containing the files grouped by type
+ *     }
+ *     catch (err) {
+ *         console.log(err);
+ *     }
+ * })();
+ *
  */
 export default function groupBy (coll, iteratee, callback) {
     return groupByLimit(coll, Infinity, iteratee, callback)
