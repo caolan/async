@@ -183,7 +183,7 @@
  * });
  *
  * // Using async/await
- * (async () =&gt; {
+ * async () =&gt; {
  *     try {
  *         let result = await async.mapValues(fileMap, getFileSizeInBytes);
  *         console.log(result);
@@ -197,10 +197,10 @@
  *     catch (err) {
  *         console.log(err);
  *     }
- * })();
+ * }
  *
  * // Error Handling
- * (async () =&gt; {
+ * async () =&gt; {
  *     try {
  *         let result = await async.mapValues(withMissingFileMap, getFileSizeInBytes);
  *         console.log(result);
@@ -209,7 +209,7 @@
  *         console.log(err);
  *         // [ Error: ENOENT: no such file or directory ]
  *     }
- * })();
+ * }
  *
  */
 export default function mapValues(obj, iteratee, callback) {

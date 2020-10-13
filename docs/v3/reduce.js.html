@@ -172,7 +172,7 @@ import awaitify from &apos;./internal/awaitify&apos;
  * });
  *
  * // Using async/await
- * (async () =&gt; {
+ * async () =&gt; {
  *     try {
  *         let result = await async.reduce(fileList, 0, getFileSizeInBytes);
  *         console.log(result);
@@ -182,10 +182,10 @@ import awaitify from &apos;./internal/awaitify&apos;
  *     catch (err) {
  *         console.log(err);
  *     }
- * })();
+ * }
  *
  * // Error Handling
- * (async () =&gt; {
+ * async () =&gt; {
  *     try {
  *         let result = await async.reduce(withMissingFileList, 0, getFileSizeInBytes);
  *         console.log(result);
@@ -194,7 +194,7 @@ import awaitify from &apos;./internal/awaitify&apos;
  *         console.log(err);
  *         // [ Error: ENOENT: no such file or directory ]
  *     }
- * })();
+ * }
  *
  */
 function reduce(coll, memo, iteratee, callback) {

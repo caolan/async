@@ -149,7 +149,7 @@ import awaitify from &apos;./internal/awaitify&apos;
  * });
  *
  * // Using async/await
- * (async () =&gt; {
+ * async () =&gt; {
  *     try {
  *         let results = await async.concat(directoryList, fs.readdir);
  *         console.log(results);
@@ -157,10 +157,10 @@ import awaitify from &apos;./internal/awaitify&apos;
  *     } catch (err) {
  *         console.log(err);
  *     }
- * })();
+ * }
  *
  * // Error Handling
- * (async () =&gt; {
+ * async () =&gt; {
  *     try {
  *         let results = await async.concat(withMissingDirectoryList, fs.readdir);
  *         console.log(results);
@@ -169,7 +169,7 @@ import awaitify from &apos;./internal/awaitify&apos;
  *         // [ Error: ENOENT: no such file or directory ]
  *         // since dir4 does not exist
  *     }
- * })();
+ * }
  *
  */
 function concat(coll, iteratee, callback) {

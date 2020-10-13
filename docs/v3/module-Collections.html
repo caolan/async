@@ -393,7 +393,7 @@ async.concat(withMissingDirectoryList, fs.readdir)
 });
 
 // Using async/await
-(async () =&gt; {
+async () =&gt; {
     try {
         let results = await async.concat(directoryList, fs.readdir);
         console.log(results);
@@ -401,10 +401,10 @@ async.concat(withMissingDirectoryList, fs.readdir)
     } catch (err) {
         console.log(err);
     }
-})();
+}
 
 // Error Handling
-(async () =&gt; {
+async () =&gt; {
     try {
         let results = await async.concat(withMissingDirectoryList, fs.readdir);
         console.log(results);
@@ -413,7 +413,7 @@ async.concat(withMissingDirectoryList, fs.readdir)
         // [ Error: ENOENT: no such file or directory ]
         // since dir4 does not exist
     }
-})();</code></pre>
+}</code></pre>
 
 
 
@@ -1124,7 +1124,7 @@ async.detect([&apos;file3.txt&apos;,&apos;file2.txt&apos;,&apos;dir1/file1.txt&a
 });
 
 // Using async/await
-(async () =&gt; {
+async () =&gt; {
     try {
         let result = await async.detect([&apos;file3.txt&apos;,&apos;file2.txt&apos;,&apos;dir1/file1.txt&apos;], fileExists);
         console.log(result);
@@ -1134,7 +1134,7 @@ async.detect([&apos;file3.txt&apos;,&apos;file2.txt&apos;,&apos;dir1/file1.txt&a
     catch (err) {
         console.log(err);
     }
-})();</code></pre>
+}</code></pre>
 
 
 
@@ -1879,17 +1879,17 @@ async.each(fileList, deleteFile)
 });
 
 // Using async/await
-(async () =&gt; {
+async () =&gt; {
     try {
         await async.each(files, deleteFile);
     }
     catch (err) {
         console.log(err);
     }
-})();
+}
 
 // Error Handling
-(async () =&gt; {
+async () =&gt; {
     try {
         await async.each(withMissingFileList, deleteFile);
     }
@@ -1899,7 +1899,7 @@ async.each(fileList, deleteFile)
         // since dir4/file2.txt does not exist
         // dir1/file1.txt could have been deleted
     }
-})();</code></pre>
+}</code></pre>
 
 
 
@@ -2443,7 +2443,7 @@ async.forEachOf(invalidConfigFileMap, parseFile)
 });
 
 // Using async/await
-(async () =&gt; {
+async () =&gt; {
     try {
         let result = await async.forEachOf(validConfigFileMap, parseFile);
         console.log(configs);
@@ -2453,10 +2453,10 @@ async.forEachOf(invalidConfigFileMap, parseFile)
     catch (err) {
         console.log(err);
     }
-})();
+}
 
 //Error handing
-(async () =&gt; {
+async () =&gt; {
     try {
         let result = await async.forEachOf(invalidConfigFileMap, parseFile);
         console.log(configs);
@@ -2465,7 +2465,7 @@ async.forEachOf(invalidConfigFileMap, parseFile)
         console.log(err);
         // JSON parse error exception
     }
-})();</code></pre>
+}</code></pre>
 
 
 
@@ -3462,7 +3462,7 @@ async.every(withMissingFileList, fileExists)
 });
 
 // Using async/await
-(async () =&gt; {
+async () =&gt; {
     try {
         let result = await async.every(fileList, fileExists);
         console.log(result);
@@ -3472,9 +3472,9 @@ async.every(withMissingFileList, fileExists)
     catch (err) {
         console.log(err);
     }
-})();
+}
 
-(async () =&gt; {
+async () =&gt; {
     try {
         let result = await async.every(withMissingFileList, fileExists);
         console.log(result);
@@ -3484,7 +3484,7 @@ async.every(withMissingFileList, fileExists)
     catch (err) {
         console.log(err);
     }
-})();</code></pre>
+}</code></pre>
 
 
 
@@ -4230,7 +4230,7 @@ async.filter(files, fileExists)
 });
 
 // Using async/await
-(async () =&gt; {
+async () =&gt; {
     try {
         let results = await async.filter(files, fileExists);
         console.log(results);
@@ -4240,7 +4240,7 @@ async.filter(files, fileExists)
     catch (err) {
         console.log(err);
     }
-})();</code></pre>
+}</code></pre>
 
 
 
@@ -4997,7 +4997,7 @@ async.groupBy(files, detectFile)
 });
 
 // Using async/await
-(async () =&gt; {
+async () =&gt; {
     try {
         let result = await async.groupBy(files, detectFile);
         console.log(result);
@@ -5011,7 +5011,7 @@ async.groupBy(files, detectFile)
     catch (err) {
         console.log(err);
     }
-})();</code></pre>
+}</code></pre>
 
 
 
@@ -5778,7 +5778,7 @@ async.map(withMissingFileList, getFileSizeInBytes)
 });
 
 // Using async/await
-(async () =&gt; {
+async () =&gt; {
     try {
         let results = await async.map(fileList, getFileSizeInBytes);
         console.log(results);
@@ -5788,10 +5788,10 @@ async.map(withMissingFileList, getFileSizeInBytes)
     catch (err) {
         console.log(err);
     }
-})();
+}
 
 // Error Handling
-(async () =&gt; {
+async () =&gt; {
     try {
         let results = await async.map(withMissingFileList, getFileSizeInBytes);
         console.log(results);
@@ -5800,7 +5800,7 @@ async.map(withMissingFileList, getFileSizeInBytes)
         console.log(err);
         // [ Error: ENOENT: no such file or directory ]
     }
-})();</code></pre>
+}</code></pre>
 
 
 
@@ -6572,7 +6572,7 @@ async.mapValues(withMissingFileMap, getFileSizeInBytes)
 });
 
 // Using async/await
-(async () =&gt; {
+async () =&gt; {
     try {
         let result = await async.mapValues(fileMap, getFileSizeInBytes);
         console.log(result);
@@ -6586,10 +6586,10 @@ async.mapValues(withMissingFileMap, getFileSizeInBytes)
     catch (err) {
         console.log(err);
     }
-})();
+}
 
 // Error Handling
-(async () =&gt; {
+async () =&gt; {
     try {
         let result = await async.mapValues(withMissingFileMap, getFileSizeInBytes);
         console.log(result);
@@ -6598,7 +6598,7 @@ async.mapValues(withMissingFileMap, getFileSizeInBytes)
         console.log(err);
         // [ Error: ENOENT: no such file or directory ]
     }
-})();</code></pre>
+}</code></pre>
 
 
 
@@ -7376,7 +7376,7 @@ async.reduce(withMissingFileList, 0, getFileSizeInBytes)
 });
 
 // Using async/await
-(async () =&gt; {
+async () =&gt; {
     try {
         let result = await async.reduce(fileList, 0, getFileSizeInBytes);
         console.log(result);
@@ -7386,10 +7386,10 @@ async.reduce(withMissingFileList, 0, getFileSizeInBytes)
     catch (err) {
         console.log(err);
     }
-})();
+}
 
 // Error Handling
-(async () =&gt; {
+async () =&gt; {
     try {
         let result = await async.reduce(withMissingFileList, 0, getFileSizeInBytes);
         console.log(result);
@@ -7398,7 +7398,7 @@ async.reduce(withMissingFileList, 0, getFileSizeInBytes)
         console.log(err);
         // [ Error: ENOENT: no such file or directory ]
     }
-})();</code></pre>
+}</code></pre>
 
 
 
@@ -7896,7 +7896,7 @@ async.reject(fileList, fileExists)
 });
 
 // Using async/await
-(async () =&gt; {
+async () =&gt; {
     try {
         let results = await async.reject(fileList, fileExists);
         console.log(results);
@@ -7906,7 +7906,7 @@ async.reject(fileList, fileExists)
     catch (err) {
         console.log(err);
     }
-})();</code></pre>
+}</code></pre>
 
 
 
@@ -8665,7 +8665,7 @@ async.some([&apos;dir1/missing.txt&apos;,&apos;dir2/missing.txt&apos;,&apos;dir4
 });
 
 // Using async/await
-(async () =&gt; {
+async () =&gt; {
     try {
         let result = await async.some([&apos;dir1/missing.txt&apos;,&apos;dir2/missing.txt&apos;,&apos;dir3/file5.txt&apos;], fileExists);
         console.log(result);
@@ -8675,9 +8675,9 @@ async.some([&apos;dir1/missing.txt&apos;,&apos;dir2/missing.txt&apos;,&apos;dir4
     catch (err) {
         console.log(err);
     }
-})();
+}
 
-(async () =&gt; {
+async () =&gt; {
     try {
         let result = await async.some([&apos;dir1/missing.txt&apos;,&apos;dir2/missing.txt&apos;,&apos;dir4/missing.txt&apos;], fileExists);
         console.log(result);
@@ -8687,7 +8687,7 @@ async.some([&apos;dir1/missing.txt&apos;,&apos;dir2/missing.txt&apos;,&apos;dir4
     catch (err) {
         console.log(err);
     }
-})();</code></pre>
+}</code></pre>
 
 
 
@@ -9512,7 +9512,7 @@ async.sortBy([&apos;mediumfile.txt&apos;,&apos;smallfile.txt&apos;,&apos;missing
 })();
 
 // Error handling
-(async () =&gt; {
+async () =&gt; {
     try {
         let results = await async.sortBy([&apos;missingfile.txt&apos;,&apos;mediumfile.txt&apos;,&apos;smallfile.txt&apos;], getFileSizeInBytes);
         console.log(results);
@@ -9521,7 +9521,7 @@ async.sortBy([&apos;mediumfile.txt&apos;,&apos;smallfile.txt&apos;,&apos;missing
         console.log(err);
         // [ Error: ENOENT: no such file or directory ]
     }
-})();</code></pre>
+}</code></pre>
 
 
 
@@ -9870,7 +9870,7 @@ async.transform(fileMap, transformFileSize)
 });
 
 // Using async/await
-(async () =&gt; {
+async () =&gt; {
     try {
         let result = await async.transform(fileMap, transformFileSize);
         console.log(result);
@@ -9879,7 +9879,7 @@ async.transform(fileMap, transformFileSize)
     catch (err) {
         console.log(err);
     }
-})();</code></pre>
+}</code></pre>
 
 
 

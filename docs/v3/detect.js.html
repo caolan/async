@@ -137,7 +137,7 @@ import awaitify from &apos;./internal/awaitify&apos;
  * });
  *
  * // Using async/await
- * (async () =&gt; {
+ * async () =&gt; {
  *     try {
  *         let result = await async.detect([&apos;file3.txt&apos;,&apos;file2.txt&apos;,&apos;dir1/file1.txt&apos;], fileExists);
  *         console.log(result);
@@ -147,7 +147,7 @@ import awaitify from &apos;./internal/awaitify&apos;
  *     catch (err) {
  *         console.log(err);
  *     }
- * })();
+ * }
  *
  */
 function detect(coll, iteratee, callback) {

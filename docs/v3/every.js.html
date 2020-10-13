@@ -148,7 +148,7 @@ import awaitify from &apos;./internal/awaitify&apos;
  * });
  *
  * // Using async/await
- * (async () =&gt; {
+ * async () =&gt; {
  *     try {
  *         let result = await async.every(fileList, fileExists);
  *         console.log(result);
@@ -158,9 +158,9 @@ import awaitify from &apos;./internal/awaitify&apos;
  *     catch (err) {
  *         console.log(err);
  *     }
- * })();
+ * }
  *
- * (async () =&gt; {
+ * async () =&gt; {
  *     try {
  *         let result = await async.every(withMissingFileList, fileExists);
  *         console.log(result);
@@ -170,7 +170,7 @@ import awaitify from &apos;./internal/awaitify&apos;
  *     catch (err) {
  *         console.log(err);
  *     }
- * })();
+ * }
  *
  */
 function every(coll, iteratee, callback) {

@@ -200,7 +200,7 @@ function eachOfGeneric (coll, iteratee, callback) {
  * });
  *
  * // Using async/await
- * (async () =&gt; {
+ * async () =&gt; {
  *     try {
  *         let result = await async.forEachOf(validConfigFileMap, parseFile);
  *         console.log(configs);
@@ -210,10 +210,10 @@ function eachOfGeneric (coll, iteratee, callback) {
  *     catch (err) {
  *         console.log(err);
  *     }
- * })();
+ * }
  *
  * //Error handing
- * (async () =&gt; {
+ * async () =&gt; {
  *     try {
  *         let result = await async.forEachOf(invalidConfigFileMap, parseFile);
  *         console.log(configs);
@@ -222,7 +222,7 @@ function eachOfGeneric (coll, iteratee, callback) {
  *         console.log(err);
  *         // JSON parse error exception
  *     }
- * })();
+ * }
  *
  */
 function eachOf(coll, iteratee, callback) {

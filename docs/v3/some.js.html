@@ -151,7 +151,7 @@ import awaitify from &apos;./internal/awaitify&apos;
  * });
  *
  * // Using async/await
- * (async () =&gt; {
+ * async () =&gt; {
  *     try {
  *         let result = await async.some([&apos;dir1/missing.txt&apos;,&apos;dir2/missing.txt&apos;,&apos;dir3/file5.txt&apos;], fileExists);
  *         console.log(result);
@@ -161,9 +161,9 @@ import awaitify from &apos;./internal/awaitify&apos;
  *     catch (err) {
  *         console.log(err);
  *     }
- * })();
+ * }
  *
- * (async () =&gt; {
+ * async () =&gt; {
  *     try {
  *         let result = await async.some([&apos;dir1/missing.txt&apos;,&apos;dir2/missing.txt&apos;,&apos;dir4/missing.txt&apos;], fileExists);
  *         console.log(result);
@@ -173,7 +173,7 @@ import awaitify from &apos;./internal/awaitify&apos;
  *     catch (err) {
  *         console.log(err);
  *     }
- * })();
+ * }
  *
  */
 function some(coll, iteratee, callback) {

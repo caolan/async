@@ -217,7 +217,7 @@ import awaitify from &apos;./internal/awaitify&apos;
  * })();
  *
  * // Error handling
- * (async () =&gt; {
+ * async () =&gt; {
  *     try {
  *         let results = await async.sortBy([&apos;missingfile.txt&apos;,&apos;mediumfile.txt&apos;,&apos;smallfile.txt&apos;], getFileSizeInBytes);
  *         console.log(results);
@@ -226,7 +226,7 @@ import awaitify from &apos;./internal/awaitify&apos;
  *         console.log(err);
  *         // [ Error: ENOENT: no such file or directory ]
  *     }
- * })();
+ * }
  *
  */
 function sortBy (coll, iteratee, callback) {

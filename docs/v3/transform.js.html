@@ -203,7 +203,7 @@ import { promiseCallback, PROMISE_SYMBOL } from &apos;./internal/promiseCallback
  * });
  *
  * // Using async/await
- * (async () =&gt; {
+ * async () =&gt; {
  *     try {
  *         let result = await async.transform(fileMap, transformFileSize);
  *         console.log(result);
@@ -212,7 +212,7 @@ import { promiseCallback, PROMISE_SYMBOL } from &apos;./internal/promiseCallback
  *     catch (err) {
  *         console.log(err);
  *     }
- * })();
+ * }
  *
  */
 export default function transform (coll, accumulator, iteratee, callback) {

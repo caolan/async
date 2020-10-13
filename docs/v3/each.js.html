@@ -156,17 +156,17 @@ import awaitify from &apos;./internal/awaitify&apos;
  * });
  *
  * // Using async/await
- * (async () =&gt; {
+ * async () =&gt; {
  *     try {
  *         await async.each(files, deleteFile);
  *     }
  *     catch (err) {
  *         console.log(err);
  *     }
- * })();
+ * }
  *
  * // Error Handling
- * (async () =&gt; {
+ * async () =&gt; {
  *     try {
  *         await async.each(withMissingFileList, deleteFile);
  *     }
@@ -176,7 +176,7 @@ import awaitify from &apos;./internal/awaitify&apos;
  *         // since dir4/file2.txt does not exist
  *         // dir1/file1.txt could have been deleted
  *     }
- * })();
+ * }
  *
  */
 function eachLimit(coll, iteratee, callback) {
