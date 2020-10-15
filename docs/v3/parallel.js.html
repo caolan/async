@@ -114,6 +114,8 @@ import _parallel from &apos;./internal/parallel&apos;;
  * @returns {Promise} a promise, if a callback is not passed
  *
  * @example
+ *
+ * //Using Callbacks
  * async.parallel([
  *     function(callback) {
  *         setTimeout(function() {
@@ -125,10 +127,9 @@ import _parallel from &apos;./internal/parallel&apos;;
  *             callback(null, &apos;two&apos;);
  *         }, 100);
  *     }
- * ],
- * // optional callback
- * function(err, results) {
- *     // the results array will equal [&apos;one&apos;,&apos;two&apos;] even though
+ * ], function(err, results) {
+ *     console.log(results);
+ *     // results is equal to [&apos;one&apos;,&apos;two&apos;] even though
  *     // the second function had a shorter timeout.
  * });
  *
@@ -145,8 +146,96 @@ import _parallel from &apos;./internal/parallel&apos;;
  *         }, 100);
  *     }
  * }, function(err, results) {
- *     // results is now equals to: {one: 1, two: 2}
+ *     console.log(results);
+ *     // results is equal to: { one: 1, two: 2 }
  * });
+ *
+ * //Using Promises
+ * async.parallel([
+ *     function(callback) {
+ *         setTimeout(function() {
+ *             callback(null, &apos;one&apos;);
+ *         }, 200);
+ *     },
+ *     function(callback) {
+ *         setTimeout(function() {
+ *             callback(null, &apos;two&apos;);
+ *         }, 100);
+ *     }
+ * ]).then(results =&gt; {
+ *     console.log(results);
+ *     // results is equal to [&apos;one&apos;,&apos;two&apos;] even though
+ *     // the second function had a shorter timeout.
+ * }).catch(err =&gt; {
+ *     console.log(err);
+ * });
+ *
+ * // an example using an object instead of an array
+ * async.parallel({
+ *     one: function(callback) {
+ *         setTimeout(function() {
+ *             callback(null, 1);
+ *         }, 200);
+ *     },
+ *     two: function(callback) {
+ *         setTimeout(function() {
+ *             callback(null, 2);
+ *         }, 100);
+ *     }
+ * }).then(results =&gt; {
+ *     console.log(results);
+ *     // results is equal to: { one: 1, two: 2 }
+ * }).catch(err =&gt; {
+ *     console.log(err);
+ * });
+ *
+ * //Using async/await
+ * async () =&gt; {
+ *     try {
+ *         let results = await async.parallel([
+ *             function(callback) {
+ *                 setTimeout(function() {
+ *                     callback(null, &apos;one&apos;);
+ *                 }, 200);
+ *             },
+ *             function(callback) {
+ *                 setTimeout(function() {
+ *                     callback(null, &apos;two&apos;);
+ *                 }, 100);
+ *             }
+ *         ]);
+ *         console.log(results);
+ *         // results is equal to [&apos;one&apos;,&apos;two&apos;] even though
+ *         // the second function had a shorter timeout.
+ *     }
+ *     catch (err) {
+ *         console.log(err);
+ *     }
+ * }
+ *
+ * // an example using an object instead of an array
+ * async () =&gt; {
+ *     try {
+ *         let results = await async.parallel({
+ *             one: function(callback) {
+ *                 setTimeout(function() {
+ *                     callback(null, 1);
+ *                 }, 200);
+ *             },
+ *            two: function(callback) {
+ *                 setTimeout(function() {
+ *                     callback(null, 2);
+ *                 }, 100);
+ *            }
+ *         });
+ *         console.log(results);
+ *         // results is equal to: { one: 1, two: 2 }
+ *     }
+ *     catch (err) {
+ *         console.log(err);
+ *     }
+ * }
+ *
  */
 export default function parallel(tasks, callback) {
     return _parallel(eachOf, tasks, callback);
