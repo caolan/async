@@ -4,9 +4,9 @@ This template is for bug reports. If you are reporting a bug, please continue on
 
 **What version of async are you using?**
 
-**Which environment did the issue occur in (Node version/browser version)**
+**Which environment did the issue occur in (Node/browser/Babel/Typescript version)**
 
-**What did you do? Please include a minimal reproducable case illustrating issue.**
+**What did you do? Please include a minimal reproducible case illustrating issue.**
 
 **What did you expect to happen?**
 
