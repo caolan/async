@@ -9,13 +9,11 @@ jobs:
 
   strategy:
     matrix:
-      node_10_x:
-        node_version: 10.x
       node_12_x:
         node_version: 12.x
         # run_browser_tests: true
         # browser_name: Edge
-        run_coveralls: true
+        # run_coveralls: true
 
   steps:
   - template: .azure-pipelines-steps.yml
@@ -31,9 +29,11 @@ jobs:
     matrix:
       node_10_x:
         node_version: 10.x
-        DISPLAY: :99.0
       node_12_x:
         node_version: 12.x
+      node_14_x:
+        node_version: 14.x
+        DISPLAY: :99.0
         run_browser_tests: true
         browser_name: Firefox
         run_coveralls: true
