@@ -2,7 +2,7 @@ jobs:
 
 - job: Windows
   pool:
-    vmImage: vs2017-win2016
+    vmImage: windows-latest
 
   variables:
     os_name: Windows
@@ -20,7 +20,7 @@ jobs:
 
 - job: Linux
   pool:
-    vmImage: 'Ubuntu 18.04'
+    vmImage: 'ubuntu-latest'
 
   variables:
     os_name: Linux
@@ -49,17 +49,15 @@ jobs:
 
 - job: OSX
   pool:
-    vmImage: 'macOS 10.13'
+    vmImage: 'macOS-latest'
 
   variables:
     os_name: OSX
 
   strategy:
     matrix:
-      node_10_x:
-        node_version: 10.x
-      node_12_x:
-        node_version: 12.x
+      node_14_x:
+        node_version: 14.x
         run_browser_tests: true
         browser_name: Safari
 
