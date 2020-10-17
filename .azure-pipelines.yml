@@ -47,19 +47,20 @@ jobs:
 
   - template: .azure-pipelines-steps.yml
 
-- job: OSX
-  pool:
-    vmImage: 'macOS-latest'
-
-  variables:
-    os_name: OSX
-
-  strategy:
-    matrix:
-      node_14_x:
-        node_version: 14.x
-        run_browser_tests: true
-        browser_name: Safari
-
-  steps:
-  - template: .azure-pipelines-steps.yml
+#- job: OSX
+#  pool:
+#    vmImage: 'macOS-latest'
+#
+#  variables:
+#    os_name: OSX
+#
+#  strategy:
+#    matrix:
+#      node_14_x:
+#        node_version: 14.x
+#        run_browser_tests: true
+#        browser_name: Safari
+#
+#  steps:
+#  - template: .azure-pipelines-steps.yml
+#
