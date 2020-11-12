@@ -1,4 +1,7 @@
 sudo: false
+arch:
+ - amd64
+ - ppc64le
 dist: xenial
 language: node_js
 node_js:
