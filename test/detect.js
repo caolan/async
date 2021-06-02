@@ -24,7 +24,7 @@ describe("detect", () => {
         }, 25);
     });
 
-    it('detect - mulitple matches', function(done){
+    it('detect - multiple matches', function(done){
         var call_order = [];
         async.detect([3,2,2,1,2], detectIteratee.bind(this, call_order), (err, result) => {
             call_order.push('callback');
