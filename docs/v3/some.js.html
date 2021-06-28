@@ -102,13 +102,79 @@ import awaitify from &apos;./internal/awaitify&apos;
  * @returns {Promise} a promise, if no callback provided
  * @example
  *
- * async.some([&apos;file1&apos;,&apos;file2&apos;,&apos;file3&apos;], function(filePath, callback) {
- *     fs.access(filePath, function(err) {
- *         callback(null, !err)
- *     });
- * }, function(err, result) {
- *     // if result is true then at least one of the files exists
+ * // dir1 is a directory that contains file1.txt, file2.txt
+ * // dir2 is a directory that contains file3.txt, file4.txt
+ * // dir3 is a directory that contains file5.txt
+ * // dir4 does not exist
+ *
+ * // asynchronous function that checks if a file exists
+ * function fileExists(file, callback) {
+ *    fs.access(file, fs.constants.F_OK, (err) =&gt; {
+ *        callback(null, !err);
+ *    });
+ * }
+ *
+ * // Using callbacks
+ * async.some([&apos;dir1/missing.txt&apos;,&apos;dir2/missing.txt&apos;,&apos;dir3/file5.txt&apos;], fileExists,
+ *    function(err, result) {
+ *        console.log(result);
+ *        // true
+ *        // result is true since some file in the list exists
+ *    }
+ *);
+ *
+ * async.some([&apos;dir1/missing.txt&apos;,&apos;dir2/missing.txt&apos;,&apos;dir4/missing.txt&apos;], fileExists,
+ *    function(err, result) {
+ *        console.log(result);
+ *        // false
+ *        // result is false since none of the files exists
+ *    }
+ *);
+ *
+ * // Using Promises
+ * async.some([&apos;dir1/missing.txt&apos;,&apos;dir2/missing.txt&apos;,&apos;dir3/file5.txt&apos;], fileExists)
+ * .then( result =&gt; {
+ *     console.log(result);
+ *     // true
+ *     // result is true since some file in the list exists
+ * }).catch( err =&gt; {
+ *     console.log(err);
  * });
+ *
+ * async.some([&apos;dir1/missing.txt&apos;,&apos;dir2/missing.txt&apos;,&apos;dir4/missing.txt&apos;], fileExists)
+ * .then( result =&gt; {
+ *     console.log(result);
+ *     // false
+ *     // result is false since none of the files exists
+ * }).catch( err =&gt; {
+ *     console.log(err);
+ * });
+ *
+ * // Using async/await
+ * async () =&gt; {
+ *     try {
+ *         let result = await async.some([&apos;dir1/missing.txt&apos;,&apos;dir2/missing.txt&apos;,&apos;dir3/file5.txt&apos;], fileExists);
+ *         console.log(result);
+ *         // true
+ *         // result is true since some file in the list exists
+ *     }
+ *     catch (err) {
+ *         console.log(err);
+ *     }
+ * }
+ *
+ * async () =&gt; {
+ *     try {
+ *         let result = await async.some([&apos;dir1/missing.txt&apos;,&apos;dir2/missing.txt&apos;,&apos;dir4/missing.txt&apos;], fileExists);
+ *         console.log(result);
+ *         // false
+ *         // result is false since none of the files exists
+ *     }
+ *     catch (err) {
+ *         console.log(err);
+ *     }
+ * }
+ *
  */
 function some(coll, iteratee, callback) {
     return createTester(Boolean, res =&gt; res)(eachOf, coll, iteratee, callback)
