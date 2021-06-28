@@ -49,8 +49,15 @@ describe('priorityQueue', () => {
             ]);
             expect(q.concurrency).to.equal(1);
             expect(q.length()).to.equal(0);
-            done();
+            q.push([])
+            expect(q.length()).to.equal(0)
+            done()
         });
+        try {
+            q.push(5, 5, 'NOT_A_FUNCTION')
+        } catch(e) {
+            expect(e.message).to.equal('task callback must be a function')
+        }
     });
 
     it('concurrency', (done) => {
@@ -276,4 +283,3 @@ describe('priorityQueue', () => {
         q.push([], 1, () => {});
     });
 });
-

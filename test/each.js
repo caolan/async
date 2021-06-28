@@ -96,6 +96,15 @@ describe("each", () => {
         async.each([1], eachNoCallbackIteratee.bind(this, done));
     });
 
+    it('each no callback', async (done) => {
+        try {
+            async.each([1], 'INVALID_CALL_BACK', () => {});
+        } catch(err) {
+            expect(err.message).to.equal('expected a function')
+            done()
+        }
+    });
+
     it('eachSeries', function(done) {
         var args = [];
         async.eachSeries([1,3,2], eachIteratee.bind(this, args), (err) => {
