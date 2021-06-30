@@ -298,3 +298,4 @@ It is recommended to target ES2017 or higher in your `tsconfig.json`, so `async`
 * [`neo-async`](https://www.npmjs.com/package/neo-async) an altername implementation of Async, focusing on speed.
 * [`co-async`](https://www.npmjs.com/package/co-async) a library inspired by Async for use with [`co`](https://www.npmjs.com/package/co) and generator functions.
 *  [`promise-async`](https://www.npmjs.com/package/promise-async) a version of Async where all the methods are Promisified.
+* ['modern-async'](https://www.npmjs.com/package/modern-async) an alternative to Async using only async/await and promises.
