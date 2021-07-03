@@ -1606,7 +1606,7 @@
      * @param {AsyncFunction} iteratee - A function applied to each item in the
      * array to produce the next step in the reduction.
      * The `iteratee` should complete with the next state of the reduction.
-     * If the iteratee complete with an error, the reduction is stopped and the
+     * If the iteratee completes with an error, the reduction is stopped and the
      * main `callback` is immediately called with the error.
      * Invoked with (memo, item, callback).
      * @param {Function} [callback] - A callback which is called after all the
@@ -3441,7 +3441,7 @@
      * @param {AsyncFunction} iteratee - A function applied to each item in the
      * array to produce the next step in the reduction.
      * The `iteratee` should complete with the next state of the reduction.
-     * If the iteratee complete with an error, the reduction is stopped and the
+     * If the iteratee completes with an error, the reduction is stopped and the
      * main `callback` is immediately called with the error.
      * Invoked with (memo, item, callback).
      * @param {Function} [callback] - A callback which is called after all the
