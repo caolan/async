@@ -107,20 +107,110 @@
  * @returns {Promise} a promise, if no callback is passed
  * @example
  *
- * async.mapValues({
- *     f1: &apos;file1&apos;,
- *     f2: &apos;file2&apos;,
- *     f3: &apos;file3&apos;
- * }, function (file, key, callback) {
- *   fs.stat(file, callback);
- * }, function(err, result) {
- *     // result is now a map of stats for each file, e.g.
- *     // {
- *     //     f1: [stats for file1],
- *     //     f2: [stats for file2],
- *     //     f3: [stats for file3]
- *     // }
+ * // file1.txt is a file that is 1000 bytes in size
+ * // file2.txt is a file that is 2000 bytes in size
+ * // file3.txt is a file that is 3000 bytes in size
+ * // file4.txt does not exist
+ *
+ * const fileMap = {
+ *     f1: &apos;file1.txt&apos;,
+ *     f2: &apos;file2.txt&apos;,
+ *     f3: &apos;file3.txt&apos;
+ * };
+ *
+ * const withMissingFileMap = {
+ *     f1: &apos;file1.txt&apos;,
+ *     f2: &apos;file2.txt&apos;,
+ *     f3: &apos;file4.txt&apos;
+ * };
+ *
+ * // asynchronous function that returns the file size in bytes
+ * function getFileSizeInBytes(file, key, callback) {
+ *     fs.stat(file, function(err, stat) {
+ *         if (err) {
+ *             return callback(err);
+ *         }
+ *         callback(null, stat.size);
+ *     });
+ * }
+ *
+ * // Using callbacks
+ * async.mapValues(fileMap, getFileSizeInBytes, function(err, result) {
+ *     if (err) {
+ *         console.log(err);
+ *     } else {
+ *         console.log(result);
+ *         // result is now a map of file size in bytes for each file, e.g.
+ *         // {
+ *         //     f1: 1000,
+ *         //     f2: 2000,
+ *         //     f3: 3000
+ *         // }
+ *     }
  * });
+ *
+ * // Error handling
+ * async.mapValues(withMissingFileMap, getFileSizeInBytes, function(err, result) {
+ *     if (err) {
+ *         console.log(err);
+ *         // [ Error: ENOENT: no such file or directory ]
+ *     } else {
+ *         console.log(result);
+ *     }
+ * });
+ *
+ * // Using Promises
+ * async.mapValues(fileMap, getFileSizeInBytes)
+ * .then( result =&gt; {
+ *     console.log(result);
+ *     // result is now a map of file size in bytes for each file, e.g.
+ *     // {
+ *     //     f1: 1000,
+ *     //     f2: 2000,
+ *     //     f3: 3000
+ *     // }
+ * }).catch (err =&gt; {
+ *     console.log(err);
+ * });
+ *
+ * // Error Handling
+ * async.mapValues(withMissingFileMap, getFileSizeInBytes)
+ * .then( result =&gt; {
+ *     console.log(result);
+ * }).catch (err =&gt; {
+ *     console.log(err);
+ *     // [ Error: ENOENT: no such file or directory ]
+ * });
+ *
+ * // Using async/await
+ * async () =&gt; {
+ *     try {
+ *         let result = await async.mapValues(fileMap, getFileSizeInBytes);
+ *         console.log(result);
+ *         // result is now a map of file size in bytes for each file, e.g.
+ *         // {
+ *         //     f1: 1000,
+ *         //     f2: 2000,
+ *         //     f3: 3000
+ *         // }
+ *     }
+ *     catch (err) {
+ *         console.log(err);
+ *     }
+ * }
+ *
+ * // Error Handling
+ * async () =&gt; {
+ *     try {
+ *         let result = await async.mapValues(withMissingFileMap, getFileSizeInBytes);
+ *         console.log(result);
+ *     }
+ *     catch (err) {
+ *         console.log(err);
+ *         // [ Error: ENOENT: no such file or directory ]
+ *     }
+ * }
+ *
  */
 export default function mapValues(obj, iteratee, callback) {
     return mapValuesLimit(obj, Infinity, iteratee, callback)

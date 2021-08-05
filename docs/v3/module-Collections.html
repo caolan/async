@@ -344,9 +344,76 @@ containing the concatenated results of the <code>iteratee</code> function. Invok
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>async.concat([&apos;dir1&apos;,&apos;dir2&apos;,&apos;dir3&apos;], fs.readdir, function(err, files) {
-    // files is now a list of filenames that exist in the 3 directories
-});</code></pre>
+    <pre class="prettyprint"><code>// dir1 is a directory that contains file1.txt, file2.txt
+// dir2 is a directory that contains file3.txt, file4.txt
+// dir3 is a directory that contains file5.txt
+// dir4 does not exist
+
+let directoryList = [&apos;dir1&apos;,&apos;dir2&apos;,&apos;dir3&apos;];
+let withMissingDirectoryList = [&apos;dir1&apos;,&apos;dir2&apos;,&apos;dir3&apos;, &apos;dir4&apos;];
+
+// Using callbacks
+async.concat(directoryList, fs.readdir, function(err, results) {
+   if (err) {
+       console.log(err);
+   } else {
+       console.log(results);
+       // [ &apos;file1.txt&apos;, &apos;file2.txt&apos;, &apos;file3.txt&apos;, &apos;file4.txt&apos;, file5.txt ]
+   }
+});
+
+// Error Handling
+async.concat(withMissingDirectoryList, fs.readdir, function(err, results) {
+   if (err) {
+       console.log(err);
+       // [ Error: ENOENT: no such file or directory ]
+       // since dir4 does not exist
+   } else {
+       console.log(results);
+   }
+});
+
+// Using Promises
+async.concat(directoryList, fs.readdir)
+.then(results =&gt; {
+    console.log(results);
+    // [ &apos;file1.txt&apos;, &apos;file2.txt&apos;, &apos;file3.txt&apos;, &apos;file4.txt&apos;, file5.txt ]
+}).catch(err =&gt; {
+     console.log(err);
+});
+
+// Error Handling
+async.concat(withMissingDirectoryList, fs.readdir)
+.then(results =&gt; {
+    console.log(results);
+}).catch(err =&gt; {
+    console.log(err);
+    // [ Error: ENOENT: no such file or directory ]
+    // since dir4 does not exist
+});
+
+// Using async/await
+async () =&gt; {
+    try {
+        let results = await async.concat(directoryList, fs.readdir);
+        console.log(results);
+        // [ &apos;file1.txt&apos;, &apos;file2.txt&apos;, &apos;file3.txt&apos;, &apos;file4.txt&apos;, file5.txt ]
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+// Error Handling
+async () =&gt; {
+    try {
+        let results = await async.concat(withMissingDirectoryList, fs.readdir);
+        console.log(results);
+    } catch (err) {
+        console.log(err);
+        // [ Error: ENOENT: no such file or directory ]
+        // since dir4 does not exist
+    }
+}</code></pre>
 
 
 
@@ -1027,13 +1094,47 @@ Result will be the first item in the array that passes the truth test
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>async.detect([&apos;file1&apos;,&apos;file2&apos;,&apos;file3&apos;], function(filePath, callback) {
-    fs.access(filePath, function(err) {
-        callback(null, !err)
-    });
-}, function(err, result) {
+    <pre class="prettyprint"><code>// dir1 is a directory that contains file1.txt, file2.txt
+// dir2 is a directory that contains file3.txt, file4.txt
+// dir3 is a directory that contains file5.txt
+
+// asynchronous function that checks if a file exists
+function fileExists(file, callback) {
+   fs.access(file, fs.constants.F_OK, (err) =&gt; {
+       callback(null, !err);
+   });
+}
+
+async.detect([&apos;file3.txt&apos;,&apos;file2.txt&apos;,&apos;dir1/file1.txt&apos;], fileExists,
+   function(err, result) {
+       console.log(result);
+       // dir1/file1.txt
+       // result now equals the first file in the list that exists
+   }
+);
+
+// Using Promises
+async.detect([&apos;file3.txt&apos;,&apos;file2.txt&apos;,&apos;dir1/file1.txt&apos;], fileExists)
+.then(result =&gt; {
+    console.log(result);
+    // dir1/file1.txt
     // result now equals the first file in the list that exists
-});</code></pre>
+}).catch(err =&gt; {
+    console.log(err);
+});
+
+// Using async/await
+async () =&gt; {
+    try {
+        let result = await async.detect([&apos;file3.txt&apos;,&apos;file2.txt&apos;,&apos;dir1/file1.txt&apos;], fileExists);
+        console.log(result);
+        // dir1/file1.txt
+        // result now equals the file in the list that exists
+    }
+    catch (err) {
+        console.log(err);
+    }
+}</code></pre>
 
 
 
@@ -1728,37 +1829,77 @@ If you need the index, use <code>eachOf</code>.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// assuming openFiles is an array of file names and saveFile is a function
-// to save the modified contents of that file:
+    <pre class="prettyprint"><code>// dir1 is a directory that contains file1.txt, file2.txt
+// dir2 is a directory that contains file3.txt, file4.txt
+// dir3 is a directory that contains file5.txt
+// dir4 does not exist
 
-async.each(openFiles, saveFile, function(err){
-  // if any of the saves produced an error, err would equal that error
+const fileList = [ &apos;dir1/file2.txt&apos;, &apos;dir2/file3.txt&apos;, &apos;dir/file5.txt&apos;];
+const withMissingFileList = [&apos;dir1/file1.txt&apos;, &apos;dir4/file2.txt&apos;];
+
+// asynchronous function that deletes a file
+const deleteFile = function(file, callback) {
+    fs.unlink(file, callback);
+};
+
+// Using callbacks
+async.each(fileList, deleteFile, function(err) {
+    if( err ) {
+        console.log(err);
+    } else {
+        console.log(&apos;All files have been deleted successfully&apos;);
+    }
 });
 
-// assuming openFiles is an array of file names
-async.each(openFiles, function(file, callback) {
+// Error Handling
+async.each(withMissingFileList, deleteFile, function(err){
+    console.log(err);
+    // [ Error: ENOENT: no such file or directory ]
+    // since dir4/file2.txt does not exist
+    // dir1/file1.txt could have been deleted
+});
 
-    // Perform operation on file here.
-    console.log(&apos;Processing file &apos; + file);
+// Using Promises
+async.each(fileList, deleteFile)
+.then( () =&gt; {
+    console.log(&apos;All files have been deleted successfully&apos;);
+}).catch( err =&gt; {
+    console.log(err);
+});
 
-    if( file.length &gt; 32 ) {
-      console.log(&apos;This file name is too long&apos;);
-      callback(&apos;File name too long&apos;);
-    } else {
-      // Do work to process file here
-      console.log(&apos;File processed&apos;);
-      callback();
+// Error Handling
+async.each(fileList, deleteFile)
+.then( () =&gt; {
+    console.log(&apos;All files have been deleted successfully&apos;);
+}).catch( err =&gt; {
+    console.log(err);
+    // [ Error: ENOENT: no such file or directory ]
+    // since dir4/file2.txt does not exist
+    // dir1/file1.txt could have been deleted
+});
+
+// Using async/await
+async () =&gt; {
+    try {
+        await async.each(files, deleteFile);
     }
-}, function(err) {
-    // if any of the file processing produced an error, err would equal that error
-    if( err ) {
-      // One of the iterations produced an error.
-      // All processing will now stop.
-      console.log(&apos;A file failed to process&apos;);
-    } else {
-      console.log(&apos;All files have been processed successfully&apos;);
+    catch (err) {
+        console.log(err);
     }
-});</code></pre>
+}
+
+// Error Handling
+async () =&gt; {
+    try {
+        await async.each(withMissingFileList, deleteFile);
+    }
+    catch (err) {
+        console.log(err);
+        // [ Error: ENOENT: no such file or directory ]
+        // since dir4/file2.txt does not exist
+        // dir1/file1.txt could have been deleted
+    }
+}</code></pre>
 
 
 
@@ -2239,12 +2380,19 @@ Invoked with (item, key, callback).</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var obj = {dev: &quot;/dev.json&quot;, test: &quot;/test.json&quot;, prod: &quot;/prod.json&quot;};
-var configs = {};
+    <pre class="prettyprint"><code>// dev.json is a file containing a valid json object config for dev environment
+// dev.json is a file containing a valid json object config for test environment
+// prod.json is a file containing a valid json object config for prod environment
+// invalid.json is a file with a malformed json object
 
-async.forEachOf(obj, function (value, key, callback) {
-    fs.readFile(__dirname + value, &quot;utf8&quot;, function (err, data) {
-        if (err) return callback(err);
+let configs = {}; //global variable
+let validConfigFileMap = {dev: &apos;dev.json&apos;, test: &apos;test.json&apos;, prod: &apos;prod.json&apos;};
+let invalidConfigFileMap = {dev: &apos;dev.json&apos;, test: &apos;test.json&apos;, invalid: &apos;invalid.json&apos;};
+
+// asynchronous function that reads a json file and parses the contents as json object
+function parseFile(file, key, callback) {
+    fs.readFile(file, &quot;utf8&quot;, function(err, data) {
+        if (err) return calback(err);
         try {
             configs[key] = JSON.parse(data);
         } catch (e) {
@@ -2252,11 +2400,72 @@ async.forEachOf(obj, function (value, key, callback) {
         }
         callback();
     });
-}, function (err) {
-    if (err) console.error(err.message);
-    // configs is now a map of JSON data
-    doSomethingWith(configs);
-});</code></pre>
+}
+
+// Using callbacks
+async.forEachOf(validConfigFileMap, parseFile, function (err) {
+    if (err) {
+        console.error(err);
+    } else {
+        console.log(configs);
+        // configs is now a map of JSON data, e.g.
+        // { dev: //parsed dev.json, test: //parsed test.json, prod: //parsed prod.json}
+    }
+});
+
+//Error handing
+async.forEachOf(invalidConfigFileMap, parseFile, function (err) {
+    if (err) {
+        console.error(err);
+        // JSON parse error exception
+    } else {
+        console.log(configs);
+    }
+});
+
+// Using Promises
+async.forEachOf(validConfigFileMap, parseFile)
+.then( () =&gt; {
+    console.log(configs);
+    // configs is now a map of JSON data, e.g.
+    // { dev: //parsed dev.json, test: //parsed test.json, prod: //parsed prod.json}
+}).catch( err =&gt; {
+    console.error(err);
+});
+
+//Error handing
+async.forEachOf(invalidConfigFileMap, parseFile)
+.then( () =&gt; {
+    console.log(configs);
+}).catch( err =&gt; {
+    console.error(err);
+    // JSON parse error exception
+});
+
+// Using async/await
+async () =&gt; {
+    try {
+        let result = await async.forEachOf(validConfigFileMap, parseFile);
+        console.log(configs);
+        // configs is now a map of JSON data, e.g.
+        // { dev: //parsed dev.json, test: //parsed test.json, prod: //parsed prod.json}
+    }
+    catch (err) {
+        console.log(err);
+    }
+}
+
+//Error handing
+async () =&gt; {
+    try {
+        let result = await async.forEachOf(invalidConfigFileMap, parseFile);
+        console.log(configs);
+    }
+    catch (err) {
+        console.log(err);
+        // JSON parse error exception
+    }
+}</code></pre>
 
 
 
@@ -3205,13 +3414,77 @@ depending on the values of the async tests. Invoked with (err, result).</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>async.every([&apos;file1&apos;,&apos;file2&apos;,&apos;file3&apos;], function(filePath, callback) {
-    fs.access(filePath, function(err) {
-        callback(null, !err)
-    });
-}, function(err, result) {
-    // if result is true then every file exists
-});</code></pre>
+    <pre class="prettyprint"><code>// dir1 is a directory that contains file1.txt, file2.txt
+// dir2 is a directory that contains file3.txt, file4.txt
+// dir3 is a directory that contains file5.txt
+// dir4 does not exist
+
+const fileList = [&apos;dir1/file1.txt&apos;,&apos;dir2/file3.txt&apos;,&apos;dir3/file5.txt&apos;];
+const withMissingFileList = [&apos;file1.txt&apos;,&apos;file2.txt&apos;,&apos;file4.txt&apos;];
+
+// asynchronous function that checks if a file exists
+function fileExists(file, callback) {
+   fs.access(file, fs.constants.F_OK, (err) =&gt; {
+       callback(null, !err);
+   });
+}
+
+// Using callbacks
+async.every(fileList, fileExists, function(err, result) {
+    console.log(result);
+    // true
+    // result is true since every file exists
+});
+
+async.every(withMissingFileList, fileExists, function(err, result) {
+    console.log(result);
+    // false
+    // result is false since NOT every file exists
+});
+
+// Using Promises
+async.every(fileList, fileExists)
+.then( result =&gt; {
+    console.log(result);
+    // true
+    // result is true since every file exists
+}).catch( err =&gt; {
+    console.log(err);
+});
+
+async.every(withMissingFileList, fileExists)
+.then( result =&gt; {
+    console.log(result);
+    // false
+    // result is false since NOT every file exists
+}).catch( err =&gt; {
+    console.log(err);
+});
+
+// Using async/await
+async () =&gt; {
+    try {
+        let result = await async.every(fileList, fileExists);
+        console.log(result);
+        // true
+        // result is true since every file exists
+    }
+    catch (err) {
+        console.log(err);
+    }
+}
+
+async () =&gt; {
+    try {
+        let result = await async.every(withMissingFileList, fileExists);
+        console.log(result);
+        // false
+        // result is false since NOT every file exists
+    }
+    catch (err) {
+        console.log(err);
+    }
+}</code></pre>
 
 
 
@@ -3922,13 +4195,52 @@ with a boolean argument once it has completed. Invoked with (item, callback).</p
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>async.filter([&apos;file1&apos;,&apos;file2&apos;,&apos;file3&apos;], function(filePath, callback) {
-    fs.access(filePath, function(err) {
-        callback(null, !err)
-    });
-}, function(err, results) {
-    // results now equals an array of the existing files
-});</code></pre>
+    <pre class="prettyprint"><code>// dir1 is a directory that contains file1.txt, file2.txt
+// dir2 is a directory that contains file3.txt, file4.txt
+// dir3 is a directory that contains file5.txt
+
+const files = [&apos;dir1/file1.txt&apos;,&apos;dir2/file3.txt&apos;,&apos;dir3/file6.txt&apos;];
+
+// asynchronous function that checks if a file exists
+function fileExists(file, callback) {
+   fs.access(file, fs.constants.F_OK, (err) =&gt; {
+       callback(null, !err);
+   });
+}
+
+// Using callbacks
+async.filter(files, fileExists, function(err, results) {
+   if(err) {
+       console.log(err);
+   } else {
+       console.log(results);
+       // [ &apos;dir1/file1.txt&apos;, &apos;dir2/file3.txt&apos; ]
+       // results is now an array of the existing files
+   }
+});
+
+// Using Promises
+async.filter(files, fileExists)
+.then(results =&gt; {
+    console.log(results);
+    // [ &apos;dir1/file1.txt&apos;, &apos;dir2/file3.txt&apos; ]
+    // results is now an array of the existing files
+}).catch(err =&gt; {
+    console.log(err);
+});
+
+// Using async/await
+async () =&gt; {
+    try {
+        let results = await async.filter(files, fileExists);
+        console.log(results);
+        // [ &apos;dir1/file1.txt&apos;, &apos;dir2/file3.txt&apos; ]
+        // results is now an array of the existing files
+    }
+    catch (err) {
+        console.log(err);
+    }
+}</code></pre>
 
 
 
@@ -4638,15 +4950,68 @@ properties are arrays of values which returned the corresponding key.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>async.groupBy([&apos;userId1&apos;, &apos;userId2&apos;, &apos;userId3&apos;], function(userId, callback) {
-    db.findById(userId, function(err, user) {
-        if (err) return callback(err);
-        return callback(null, user.age);
+    <pre class="prettyprint"><code>// dir1 is a directory that contains file1.txt, file2.txt
+// dir2 is a directory that contains file3.txt, file4.txt
+// dir3 is a directory that contains file5.txt
+// dir4 does not exist
+
+const files = [&apos;dir1/file1.txt&apos;,&apos;dir2&apos;,&apos;dir4&apos;]
+
+// asynchronous function that detects file type as none, file, or directory
+function detectFile(file, callback) {
+    fs.stat(file, function(err, stat) {
+        if (err) {
+            return callback(null, &apos;none&apos;);
+        }
+        callback(null, stat.isDirectory() ? &apos;directory&apos; : &apos;file&apos;);
     });
-}, function(err, result) {
-    // result is object containing the userIds grouped by age
-    // e.g. { 30: [&apos;userId1&apos;, &apos;userId3&apos;], 42: [&apos;userId2&apos;]};
-});</code></pre>
+}
+
+//Using callbacks
+async.groupBy(files, detectFile, function(err, result) {
+    if(err) {
+        console.log(err);
+    } else {
+	       console.log(result);
+        // {
+        //     file: [ &apos;dir1/file1.txt&apos; ],
+        //     none: [ &apos;dir4&apos; ],
+        //     directory: [ &apos;dir2&apos;]
+        // }
+        // result is object containing the files grouped by type
+    }
+});
+
+// Using Promises
+async.groupBy(files, detectFile)
+.then( result =&gt; {
+    console.log(result);
+    // {
+    //     file: [ &apos;dir1/file1.txt&apos; ],
+    //     none: [ &apos;dir4&apos; ],
+    //     directory: [ &apos;dir2&apos;]
+    // }
+    // result is object containing the files grouped by type
+}).catch( err =&gt; {
+    console.log(err);
+});
+
+// Using async/await
+async () =&gt; {
+    try {
+        let result = await async.groupBy(files, detectFile);
+        console.log(result);
+        // {
+        //     file: [ &apos;dir1/file1.txt&apos; ],
+        //     none: [ &apos;dir4&apos; ],
+        //     directory: [ &apos;dir2&apos;]
+        // }
+        // result is object containing the files grouped by type
+    }
+    catch (err) {
+        console.log(err);
+    }
+}</code></pre>
 
 
 
@@ -5080,7 +5445,7 @@ Invoked with (value, callback).</p></td>
             
 
             <td class="description last"><p>A callback which is called when all <code>iteratee</code>
-functions have finished, or an error occurs. Result is an <code>Object</code> whoses
+functions have finished, or an error occurs. Result is an <code>Object</code> whose
 properties are arrays of values which returned the corresponding key.</p></td>
         </tr>
 
@@ -5354,9 +5719,88 @@ transformed items from the <code>coll</code>. Invoked with (err, results).</p></
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>async.map([&apos;file1&apos;,&apos;file2&apos;,&apos;file3&apos;], fs.stat, function(err, results) {
-    // results is now an array of stats for each file
-});</code></pre>
+    <pre class="prettyprint"><code>// file1.txt is a file that is 1000 bytes in size
+// file2.txt is a file that is 2000 bytes in size
+// file3.txt is a file that is 3000 bytes in size
+// file4.txt does not exist
+
+const fileList = [&apos;file1.txt&apos;,&apos;file2.txt&apos;,&apos;file3.txt&apos;];
+const withMissingFileList = [&apos;file1.txt&apos;,&apos;file2.txt&apos;,&apos;file4.txt&apos;];
+
+// asynchronous function that returns the file size in bytes
+function getFileSizeInBytes(file, callback) {
+    fs.stat(file, function(err, stat) {
+        if (err) {
+            return callback(err);
+        }
+        callback(null, stat.size);
+    });
+}
+
+// Using callbacks
+async.map(fileList, getFileSizeInBytes, function(err, results) {
+    if (err) {
+        console.log(err);
+    } else {
+        console.log(results);
+        // results is now an array of the file size in bytes for each file, e.g.
+        // [ 1000, 2000, 3000]
+    }
+});
+
+// Error Handling
+async.map(withMissingFileList, getFileSizeInBytes, function(err, results) {
+    if (err) {
+        console.log(err);
+        // [ Error: ENOENT: no such file or directory ]
+    } else {
+        console.log(results);
+    }
+});
+
+// Using Promises
+async.map(fileList, getFileSizeInBytes)
+.then( results =&gt; {
+    console.log(results);
+    // results is now an array of the file size in bytes for each file, e.g.
+    // [ 1000, 2000, 3000]
+}).catch( err =&gt; {
+    console.log(err);
+});
+
+// Error Handling
+async.map(withMissingFileList, getFileSizeInBytes)
+.then( results =&gt; {
+    console.log(results);
+}).catch( err =&gt; {
+    console.log(err);
+    // [ Error: ENOENT: no such file or directory ]
+});
+
+// Using async/await
+async () =&gt; {
+    try {
+        let results = await async.map(fileList, getFileSizeInBytes);
+        console.log(results);
+        // results is now an array of the file size in bytes for each file, e.g.
+        // [ 1000, 2000, 3000]
+    }
+    catch (err) {
+        console.log(err);
+    }
+}
+
+// Error Handling
+async () =&gt; {
+    try {
+        let results = await async.map(withMissingFileList, getFileSizeInBytes);
+        console.log(results);
+    }
+    catch (err) {
+        console.log(err);
+        // [ Error: ENOENT: no such file or directory ]
+    }
+}</code></pre>
 
 
 
@@ -6052,20 +6496,109 @@ Invoked with (err, result).</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>async.mapValues({
-    f1: &apos;file1&apos;,
-    f2: &apos;file2&apos;,
-    f3: &apos;file3&apos;
-}, function (file, key, callback) {
-  fs.stat(file, callback);
-}, function(err, result) {
-    // result is now a map of stats for each file, e.g.
+    <pre class="prettyprint"><code>// file1.txt is a file that is 1000 bytes in size
+// file2.txt is a file that is 2000 bytes in size
+// file3.txt is a file that is 3000 bytes in size
+// file4.txt does not exist
+
+const fileMap = {
+    f1: &apos;file1.txt&apos;,
+    f2: &apos;file2.txt&apos;,
+    f3: &apos;file3.txt&apos;
+};
+
+const withMissingFileMap = {
+    f1: &apos;file1.txt&apos;,
+    f2: &apos;file2.txt&apos;,
+    f3: &apos;file4.txt&apos;
+};
+
+// asynchronous function that returns the file size in bytes
+function getFileSizeInBytes(file, key, callback) {
+    fs.stat(file, function(err, stat) {
+        if (err) {
+            return callback(err);
+        }
+        callback(null, stat.size);
+    });
+}
+
+// Using callbacks
+async.mapValues(fileMap, getFileSizeInBytes, function(err, result) {
+    if (err) {
+        console.log(err);
+    } else {
+        console.log(result);
+        // result is now a map of file size in bytes for each file, e.g.
+        // {
+        //     f1: 1000,
+        //     f2: 2000,
+        //     f3: 3000
+        // }
+    }
+});
+
+// Error handling
+async.mapValues(withMissingFileMap, getFileSizeInBytes, function(err, result) {
+    if (err) {
+        console.log(err);
+        // [ Error: ENOENT: no such file or directory ]
+    } else {
+        console.log(result);
+    }
+});
+
+// Using Promises
+async.mapValues(fileMap, getFileSizeInBytes)
+.then( result =&gt; {
+    console.log(result);
+    // result is now a map of file size in bytes for each file, e.g.
     // {
-    //     f1: [stats for file1],
-    //     f2: [stats for file2],
-    //     f3: [stats for file3]
+    //     f1: 1000,
+    //     f2: 2000,
+    //     f3: 3000
     // }
-});</code></pre>
+}).catch (err =&gt; {
+    console.log(err);
+});
+
+// Error Handling
+async.mapValues(withMissingFileMap, getFileSizeInBytes)
+.then( result =&gt; {
+    console.log(result);
+}).catch (err =&gt; {
+    console.log(err);
+    // [ Error: ENOENT: no such file or directory ]
+});
+
+// Using async/await
+async () =&gt; {
+    try {
+        let result = await async.mapValues(fileMap, getFileSizeInBytes);
+        console.log(result);
+        // result is now a map of file size in bytes for each file, e.g.
+        // {
+        //     f1: 1000,
+        //     f2: 2000,
+        //     f3: 3000
+        // }
+    }
+    catch (err) {
+        console.log(err);
+    }
+}
+
+// Error Handling
+async () =&gt; {
+    try {
+        let result = await async.mapValues(withMissingFileMap, getFileSizeInBytes);
+        console.log(result);
+    }
+    catch (err) {
+        console.log(err);
+        // [ Error: ENOENT: no such file or directory ]
+    }
+}</code></pre>
 
 
 
@@ -6783,14 +7316,89 @@ Invoked with (memo, item, callback).</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>async.reduce([1,2,3], 0, function(memo, item, callback) {
-    // pointless async:
-    process.nextTick(function() {
-        callback(null, memo + item)
+    <pre class="prettyprint"><code>// file1.txt is a file that is 1000 bytes in size
+// file2.txt is a file that is 2000 bytes in size
+// file3.txt is a file that is 3000 bytes in size
+// file4.txt does not exist
+
+const fileList = [&apos;file1.txt&apos;,&apos;file2.txt&apos;,&apos;file3.txt&apos;];
+const withMissingFileList = [&apos;file1.txt&apos;,&apos;file2.txt&apos;,&apos;file3.txt&apos;, &apos;file4.txt&apos;];
+
+// asynchronous function that computes the file size in bytes
+// file size is added to the memoized value, then returned
+function getFileSizeInBytes(memo, file, callback) {
+    fs.stat(file, function(err, stat) {
+        if (err) {
+            return callback(err);
+        }
+        callback(null, memo + stat.size);
     });
-}, function(err, result) {
-    // result is now equal to the last value of memo, which is 6
-});</code></pre>
+}
+
+// Using callbacks
+async.reduce(fileList, 0, getFileSizeInBytes, function(err, result) {
+    if (err) {
+        console.log(err);
+    } else {
+        console.log(result);
+        // 6000
+        // which is the sum of the file sizes of the three files
+    }
+});
+
+// Error Handling
+async.reduce(withMissingFileList, 0, getFileSizeInBytes, function(err, result) {
+    if (err) {
+        console.log(err);
+        // [ Error: ENOENT: no such file or directory ]
+    } else {
+        console.log(result);
+    }
+});
+
+// Using Promises
+async.reduce(fileList, 0, getFileSizeInBytes)
+.then( result =&gt; {
+    console.log(result);
+    // 6000
+    // which is the sum of the file sizes of the three files
+}).catch( err =&gt; {
+    console.log(err);
+});
+
+// Error Handling
+async.reduce(withMissingFileList, 0, getFileSizeInBytes)
+.then( result =&gt; {
+    console.log(result);
+}).catch( err =&gt; {
+    console.log(err);
+    // [ Error: ENOENT: no such file or directory ]
+});
+
+// Using async/await
+async () =&gt; {
+    try {
+        let result = await async.reduce(fileList, 0, getFileSizeInBytes);
+        console.log(result);
+        // 6000
+        // which is the sum of the file sizes of the three files
+    }
+    catch (err) {
+        console.log(err);
+    }
+}
+
+// Error Handling
+async () =&gt; {
+    try {
+        let result = await async.reduce(withMissingFileList, 0, getFileSizeInBytes);
+        console.log(result);
+    }
+    catch (err) {
+        console.log(err);
+        // [ Error: ENOENT: no such file or directory ]
+    }
+}</code></pre>
 
 
 
@@ -7258,14 +7866,47 @@ Invoked with (item, callback).</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>async.reject([&apos;file1&apos;,&apos;file2&apos;,&apos;file3&apos;], function(filePath, callback) {
-    fs.access(filePath, function(err) {
-        callback(null, !err)
-    });
-}, function(err, results) {
-    // results now equals an array of missing files
-    createFiles(results);
-});</code></pre>
+    <pre class="prettyprint"><code>// dir1 is a directory that contains file1.txt, file2.txt
+// dir2 is a directory that contains file3.txt, file4.txt
+// dir3 is a directory that contains file5.txt
+
+const fileList = [&apos;dir1/file1.txt&apos;,&apos;dir2/file3.txt&apos;,&apos;dir3/file6.txt&apos;];
+
+// asynchronous function that checks if a file exists
+function fileExists(file, callback) {
+   fs.access(file, fs.constants.F_OK, (err) =&gt; {
+       callback(null, !err);
+   });
+}
+
+// Using callbacks
+async.reject(fileList, fileExists, function(err, results) {
+   // [ &apos;dir3/file6.txt&apos; ]
+   // results now equals an array of the non-existing files
+});
+
+// Using Promises
+async.reject(fileList, fileExists)
+.then( results =&gt; {
+    console.log(results);
+    // [ &apos;dir3/file6.txt&apos; ]
+    // results now equals an array of the non-existing files
+}).catch( err =&gt; {
+    console.log(err);
+});
+
+// Using async/await
+async () =&gt; {
+    try {
+        let results = await async.reject(fileList, fileExists);
+        console.log(results);
+        // [ &apos;dir3/file6.txt&apos; ]
+        // results now equals an array of the non-existing files
+    }
+    catch (err) {
+        console.log(err);
+    }
+}</code></pre>
 
 
 
@@ -7975,13 +8616,78 @@ tests. Invoked with (err, result).</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>async.some([&apos;file1&apos;,&apos;file2&apos;,&apos;file3&apos;], function(filePath, callback) {
-    fs.access(filePath, function(err) {
-        callback(null, !err)
-    });
-}, function(err, result) {
-    // if result is true then at least one of the files exists
-});</code></pre>
+    <pre class="prettyprint"><code>// dir1 is a directory that contains file1.txt, file2.txt
+// dir2 is a directory that contains file3.txt, file4.txt
+// dir3 is a directory that contains file5.txt
+// dir4 does not exist
+
+// asynchronous function that checks if a file exists
+function fileExists(file, callback) {
+   fs.access(file, fs.constants.F_OK, (err) =&gt; {
+       callback(null, !err);
+   });
+}
+
+// Using callbacks
+async.some([&apos;dir1/missing.txt&apos;,&apos;dir2/missing.txt&apos;,&apos;dir3/file5.txt&apos;], fileExists,
+   function(err, result) {
+       console.log(result);
+       // true
+       // result is true since some file in the list exists
+   }
+);
+
+async.some([&apos;dir1/missing.txt&apos;,&apos;dir2/missing.txt&apos;,&apos;dir4/missing.txt&apos;], fileExists,
+   function(err, result) {
+       console.log(result);
+       // false
+       // result is false since none of the files exists
+   }
+);
+
+// Using Promises
+async.some([&apos;dir1/missing.txt&apos;,&apos;dir2/missing.txt&apos;,&apos;dir3/file5.txt&apos;], fileExists)
+.then( result =&gt; {
+    console.log(result);
+    // true
+    // result is true since some file in the list exists
+}).catch( err =&gt; {
+    console.log(err);
+});
+
+async.some([&apos;dir1/missing.txt&apos;,&apos;dir2/missing.txt&apos;,&apos;dir4/missing.txt&apos;], fileExists)
+.then( result =&gt; {
+    console.log(result);
+    // false
+    // result is false since none of the files exists
+}).catch( err =&gt; {
+    console.log(err);
+});
+
+// Using async/await
+async () =&gt; {
+    try {
+        let result = await async.some([&apos;dir1/missing.txt&apos;,&apos;dir2/missing.txt&apos;,&apos;dir3/file5.txt&apos;], fileExists);
+        console.log(result);
+        // true
+        // result is true since some file in the list exists
+    }
+    catch (err) {
+        console.log(err);
+    }
+}
+
+async () =&gt; {
+    try {
+        let result = await async.some([&apos;dir1/missing.txt&apos;,&apos;dir2/missing.txt&apos;,&apos;dir4/missing.txt&apos;], fileExists);
+        console.log(result);
+        // false
+        // result is false since none of the files exists
+    }
+    catch (err) {
+        console.log(err);
+    }
+}</code></pre>
 
 
 
@@ -8690,31 +9396,132 @@ calls. Invoked with (err, results).</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>async.sortBy([&apos;file1&apos;,&apos;file2&apos;,&apos;file3&apos;], function(file, callback) {
-    fs.stat(file, function(err, stats) {
-        callback(err, stats.mtime);
+    <pre class="prettyprint"><code>// bigfile.txt is a file that is 251100 bytes in size
+// mediumfile.txt is a file that is 11000 bytes in size
+// smallfile.txt is a file that is 121 bytes in size
+
+// asynchronous function that returns the file size in bytes
+function getFileSizeInBytes(file, callback) {
+    fs.stat(file, function(err, stat) {
+        if (err) {
+            return callback(err);
+        }
+        callback(null, stat.size);
     });
-}, function(err, results) {
-    // results is now the original array of files sorted by
-    // modified date
-});
+}
+
+// Using callbacks
+async.sortBy([&apos;mediumfile.txt&apos;,&apos;smallfile.txt&apos;,&apos;bigfile.txt&apos;], getFileSizeInBytes,
+    function(err, results) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(results);
+            // results is now the original array of files sorted by
+            // file size (ascending by default), e.g.
+            // [ &apos;smallfile.txt&apos;, &apos;mediumfile.txt&apos;, &apos;bigfile.txt&apos;]
+        }
+    }
+);
 
 // By modifying the callback parameter the
 // sorting order can be influenced:
 
 // ascending order
-async.sortBy([1,9,3,5], function(x, callback) {
-    callback(null, x);
-}, function(err,result) {
-    // result callback
-});
+async.sortBy([&apos;mediumfile.txt&apos;,&apos;smallfile.txt&apos;,&apos;bigfile.txt&apos;], function(file, callback) {
+    getFileSizeInBytes(file, function(getFileSizeErr, fileSize) {
+        if (getFileSizeErr) return callback(getFileSizeErr);
+        callback(null, fileSize);
+    });
+}, function(err, results) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(results);
+            // results is now the original array of files sorted by
+            // file size (ascending by default), e.g.
+            // [ &apos;smallfile.txt&apos;, &apos;mediumfile.txt&apos;, &apos;bigfile.txt&apos;]
+        }
+    }
+);
 
 // descending order
-async.sortBy([1,9,3,5], function(x, callback) {
-    callback(null, x*-1);    //&lt;- x*-1 instead of x, turns the order around
-}, function(err,result) {
-    // result callback
-});</code></pre>
+async.sortBy([&apos;bigfile.txt&apos;,&apos;mediumfile.txt&apos;,&apos;smallfile.txt&apos;], function(file, callback) {
+    getFileSizeInBytes(file, function(getFileSizeErr, fileSize) {
+        if (getFileSizeErr) {
+            return callback(getFileSizeErr);
+        }
+        callback(null, fileSize * -1);
+    });
+}, function(err, results) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(results);
+            // results is now the original array of files sorted by
+            // file size (ascending by default), e.g.
+            // [ &apos;bigfile.txt&apos;, &apos;mediumfile.txt&apos;, &apos;smallfile.txt&apos;]
+        }
+    }
+);
+
+// Error handling
+async.sortBy([&apos;mediumfile.txt&apos;,&apos;smallfile.txt&apos;,&apos;missingfile.txt&apos;], getFileSizeInBytes,
+    function(err, results) {
+        if (err) {
+            console.log(err);
+            // [ Error: ENOENT: no such file or directory ]
+        } else {
+            console.log(results);
+        }
+    }
+);
+
+// Using Promises
+async.sortBy([&apos;mediumfile.txt&apos;,&apos;smallfile.txt&apos;,&apos;bigfile.txt&apos;], getFileSizeInBytes)
+.then( results =&gt; {
+    console.log(results);
+    // results is now the original array of files sorted by
+    // file size (ascending by default), e.g.
+    // [ &apos;smallfile.txt&apos;, &apos;mediumfile.txt&apos;, &apos;bigfile.txt&apos;]
+}).catch( err =&gt; {
+    console.log(err);
+});
+
+// Error handling
+async.sortBy([&apos;mediumfile.txt&apos;,&apos;smallfile.txt&apos;,&apos;missingfile.txt&apos;], getFileSizeInBytes)
+.then( results =&gt; {
+    console.log(results);
+}).catch( err =&gt; {
+    console.log(err);
+    // [ Error: ENOENT: no such file or directory ]
+});
+
+// Using async/await
+(async () =&gt; {
+    try {
+        let results = await async.sortBy([&apos;bigfile.txt&apos;,&apos;mediumfile.txt&apos;,&apos;smallfile.txt&apos;], getFileSizeInBytes);
+        console.log(results);
+        // results is now the original array of files sorted by
+        // file size (ascending by default), e.g.
+        // [ &apos;smallfile.txt&apos;, &apos;mediumfile.txt&apos;, &apos;bigfile.txt&apos;]
+    }
+    catch (err) {
+        console.log(err);
+    }
+})();
+
+// Error handling
+async () =&gt; {
+    try {
+        let results = await async.sortBy([&apos;missingfile.txt&apos;,&apos;mediumfile.txt&apos;,&apos;smallfile.txt&apos;], getFileSizeInBytes);
+        console.log(results);
+    }
+    catch (err) {
+        console.log(err);
+        // [ Error: ENOENT: no such file or directory ]
+    }
+}</code></pre>
 
 
 
@@ -8964,24 +9771,115 @@ Invoked with (err, result).</p></td>
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>async.transform([1,2,3], function(acc, item, index, callback) {
-    // pointless async:
-    process.nextTick(function() {
-        acc[index] = item * 2
-        callback(null)
-    });
-}, function(err, result) {
-    // result is now equal to [2, 4, 6]
-});</code></pre>
+    <pre class="prettyprint"><code>// file1.txt is a file that is 1000 bytes in size
+// file2.txt is a file that is 2000 bytes in size
+// file3.txt is a file that is 3000 bytes in size
 
-    <pre class="prettyprint"><code>async.transform({a: 1, b: 2, c: 3}, function (obj, val, key, callback) {
-    setImmediate(function () {
-        obj[key] = val * 2;
-        callback();
-    })
-}, function (err, result) {
-    // result is equal to {a: 2, b: 4, c: 6}
-})</code></pre>
+// helper function that returns human-readable size format from bytes
+function formatBytes(bytes, decimals = 2) {
+  // implementation not included for brevity
+  return humanReadbleFilesize;
+}
+
+const fileList = [&apos;file1.txt&apos;,&apos;file2.txt&apos;,&apos;file3.txt&apos;];
+
+// asynchronous function that returns the file size, transformed to human-readable format
+// e.g. 1024 bytes = 1KB, 1234 bytes = 1.21 KB, 1048576 bytes = 1MB, etc.
+function transformFileSize(acc, value, key, callback) {
+    fs.stat(value, function(err, stat) {
+        if (err) {
+            return callback(err);
+        }
+        acc[key] = formatBytes(stat.size);
+        callback(null);
+    });
+}
+
+// Using callbacks
+async.transform(fileList, transformFileSize, function(err, result) {
+    if(err) {
+        console.log(err);
+    } else {
+        console.log(result);
+        // [ &apos;1000 Bytes&apos;, &apos;1.95 KB&apos;, &apos;2.93 KB&apos; ]
+    }
+});
+
+// Using Promises
+async.transform(fileList, transformFileSize)
+.then(result =&gt; {
+    console.log(result);
+    // [ &apos;1000 Bytes&apos;, &apos;1.95 KB&apos;, &apos;2.93 KB&apos; ]
+}).catch(err =&gt; {
+    console.log(err);
+});
+
+// Using async/await
+(async () =&gt; {
+    try {
+        let result = await async.transform(fileList, transformFileSize);
+        console.log(result);
+        // [ &apos;1000 Bytes&apos;, &apos;1.95 KB&apos;, &apos;2.93 KB&apos; ]
+    }
+    catch (err) {
+        console.log(err);
+    }
+})();</code></pre>
+
+    <pre class="prettyprint"><code>// file1.txt is a file that is 1000 bytes in size
+// file2.txt is a file that is 2000 bytes in size
+// file3.txt is a file that is 3000 bytes in size
+
+// helper function that returns human-readable size format from bytes
+function formatBytes(bytes, decimals = 2) {
+  // implementation not included for brevity
+  return humanReadbleFilesize;
+}
+
+const fileMap = { f1: &apos;file1.txt&apos;, f2: &apos;file2.txt&apos;, f3: &apos;file3.txt&apos; };
+
+// asynchronous function that returns the file size, transformed to human-readable format
+// e.g. 1024 bytes = 1KB, 1234 bytes = 1.21 KB, 1048576 bytes = 1MB, etc.
+function transformFileSize(acc, value, key, callback) {
+    fs.stat(value, function(err, stat) {
+        if (err) {
+            return callback(err);
+        }
+        acc[key] = formatBytes(stat.size);
+        callback(null);
+    });
+}
+
+// Using callbacks
+async.transform(fileMap, transformFileSize, function(err, result) {
+    if(err) {
+        console.log(err);
+    } else {
+        console.log(result);
+        // { f1: &apos;1000 Bytes&apos;, f2: &apos;1.95 KB&apos;, f3: &apos;2.93 KB&apos; }
+    }
+});
+
+// Using Promises
+async.transform(fileMap, transformFileSize)
+.then(result =&gt; {
+    console.log(result);
+    // { f1: &apos;1000 Bytes&apos;, f2: &apos;1.95 KB&apos;, f3: &apos;2.93 KB&apos; }
+}).catch(err =&gt; {
+    console.log(err);
+});
+
+// Using async/await
+async () =&gt; {
+    try {
+        let result = await async.transform(fileMap, transformFileSize);
+        console.log(result);
+        // { f1: &apos;1000 Bytes&apos;, f2: &apos;1.95 KB&apos;, f3: &apos;2.93 KB&apos; }
+    }
+    catch (err) {
+        console.log(err);
+    }
+}</code></pre>
 
 
 

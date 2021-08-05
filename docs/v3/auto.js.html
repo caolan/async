@@ -121,15 +121,40 @@ import { promiseCallback, PROMISE_SYMBOL } from &apos;./internal/promiseCallback
  * @returns {Promise} a promise, if a callback is not passed
  * @example
  *
+ * //Using Callbacks
  * async.auto({
- *     // this function will just be passed a callback
- *     readData: async.apply(fs.readFile, &apos;data.txt&apos;, &apos;utf-8&apos;),
- *     showData: [&apos;readData&apos;, function(results, cb) {
- *         // results.readData is the file&apos;s contents
- *         // ...
+ *     get_data: function(callback) {
+ *         // async code to get some data
+ *         callback(null, &apos;data&apos;, &apos;converted to array&apos;);
+ *     },
+ *     make_folder: function(callback) {
+ *         // async code to create a directory to store a file in
+ *         // this is run at the same time as getting the data
+ *         callback(null, &apos;folder&apos;);
+ *     },
+ *     write_file: [&apos;get_data&apos;, &apos;make_folder&apos;, function(results, callback) {
+ *         // once there is some data and the directory exists,
+ *         // write the data to a file in the directory
+ *         callback(null, &apos;filename&apos;);
+ *     }],
+ *     email_link: [&apos;write_file&apos;, function(results, callback) {
+ *         // once the file is written let&apos;s email a link to it...
+ *         callback(null, {&apos;file&apos;:results.write_file, &apos;email&apos;:&apos;user@example.com&apos;});
  *     }]
- * }, callback);
+ * }, function(err, results) {
+ *     if (err) {
+ *         console.log(&apos;err = &apos;, err);
+ *     }
+ *     console.log(&apos;results = &apos;, results);
+ *     // results = {
+ *     //     get_data: [&apos;data&apos;, &apos;converted to array&apos;]
+ *     //     make_folder; &apos;folder&apos;,
+ *     //     write_file: &apos;filename&apos;
+ *     //     email_link: { file: &apos;filename&apos;, email: &apos;user@example.com&apos; }
+ *     // }
+ * });
  *
+ * //Using Promises
  * async.auto({
  *     get_data: function(callback) {
  *         console.log(&apos;in get_data&apos;);
@@ -143,21 +168,62 @@ import { promiseCallback, PROMISE_SYMBOL } from &apos;./internal/promiseCallback
  *         callback(null, &apos;folder&apos;);
  *     },
  *     write_file: [&apos;get_data&apos;, &apos;make_folder&apos;, function(results, callback) {
- *         console.log(&apos;in write_file&apos;, JSON.stringify(results));
  *         // once there is some data and the directory exists,
  *         // write the data to a file in the directory
  *         callback(null, &apos;filename&apos;);
  *     }],
  *     email_link: [&apos;write_file&apos;, function(results, callback) {
- *         console.log(&apos;in email_link&apos;, JSON.stringify(results));
  *         // once the file is written let&apos;s email a link to it...
- *         // results.write_file contains the filename returned by write_file.
  *         callback(null, {&apos;file&apos;:results.write_file, &apos;email&apos;:&apos;user@example.com&apos;});
  *     }]
- * }, function(err, results) {
- *     console.log(&apos;err = &apos;, err);
+ * }).then(results =&gt; {
  *     console.log(&apos;results = &apos;, results);
+ *     // results = {
+ *     //     get_data: [&apos;data&apos;, &apos;converted to array&apos;]
+ *     //     make_folder; &apos;folder&apos;,
+ *     //     write_file: &apos;filename&apos;
+ *     //     email_link: { file: &apos;filename&apos;, email: &apos;user@example.com&apos; }
+ *     // }
+ * }).catch(err =&gt; {
+ *     console.log(&apos;err = &apos;, err);
  * });
+ *
+ * //Using async/await
+ * async () =&gt; {
+ *     try {
+ *         let results = await async.auto({
+ *             get_data: function(callback) {
+ *                 // async code to get some data
+ *                 callback(null, &apos;data&apos;, &apos;converted to array&apos;);
+ *             },
+ *             make_folder: function(callback) {
+ *                 // async code to create a directory to store a file in
+ *                 // this is run at the same time as getting the data
+ *                 callback(null, &apos;folder&apos;);
+ *             },
+ *             write_file: [&apos;get_data&apos;, &apos;make_folder&apos;, function(results, callback) {
+ *                 // once there is some data and the directory exists,
+ *                 // write the data to a file in the directory
+ *                 callback(null, &apos;filename&apos;);
+ *             }],
+ *             email_link: [&apos;write_file&apos;, function(results, callback) {
+ *                 // once the file is written let&apos;s email a link to it...
+ *                 callback(null, {&apos;file&apos;:results.write_file, &apos;email&apos;:&apos;user@example.com&apos;});
+ *             }]
+ *         });
+ *         console.log(&apos;results = &apos;, results);
+ *         // results = {
+ *         //     get_data: [&apos;data&apos;, &apos;converted to array&apos;]
+ *         //     make_folder; &apos;folder&apos;,
+ *         //     write_file: &apos;filename&apos;
+ *         //     email_link: { file: &apos;filename&apos;, email: &apos;user@example.com&apos; }
+ *         // }
+ *     }
+ *     catch (err) {
+ *         console.log(err);
+ *     }
+ * }
+ *
  */
 export default function auto(tasks, concurrency, callback) {
     if (typeof concurrency !== &apos;number&apos;) {
