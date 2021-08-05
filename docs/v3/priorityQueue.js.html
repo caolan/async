@@ -30,7 +30,7 @@
   </div>
   <ul class="nav navbar-nav">
     <li id="version-dropdown" class="dropdown">
-      <a href="#" class="dropdown-toggle vertically-centered" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">v3.2.0 <span class="caret"></span>
+      <a href="#" class="dropdown-toggle vertically-centered" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">v3.2.1 <span class="caret"></span>
       </a>
       <ul class="dropdown-menu">
         <li><a href="../v3/">v3.0.x</a></li>
@@ -105,6 +105,7 @@ import Heap from &apos;./internal/Heap&apos;;
 export default function(worker, concurrency) {
     // Start with a normal queue
     var q = queue(worker, concurrency);
+    var processingScheduled = false;
 
     q._tasks = new Heap();
 
@@ -132,7 +133,13 @@ export default function(worker, concurrency) {
             q._tasks.push(item);
         }
 
-        setImmediate(q.process);
+        if (!processingScheduled) {
+            processingScheduled = true;
+            setImmediate(() =&gt; {
+                processingScheduled = false;
+                q.process();
+            });
+        }
     };
 
     // Remove unshift function
