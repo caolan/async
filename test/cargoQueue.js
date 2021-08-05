@@ -76,12 +76,12 @@ describe('cargoQueue', () => {
         var call_order = [];
         var c = async.cargoQueue(worker.bind({ call_order }), 2, 2);
         c.push(1);
-        setImmediate(() => {
+        async.setImmediate(() => {
             c.push(2);
-            setImmediate(() => {
+            async.setImmediate(() => {
                 c.push(3);
                 c.push(4);
-                setImmediate(() => {
+                async.setImmediate(() => {
                     c.push(5);
                     c.drain(() => {
                         expect(call_order).to.eql([
