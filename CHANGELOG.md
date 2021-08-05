@@ -1,3 +1,10 @@
+# v3.2.1
+- Use `queueMicrotask` if available to the environment (#1761)
+- Minor perf improvement in `priorityQueue` (#1727)
+- More examples in documentation (#1726)
+- Various doc fixes (#1708, #1712, #1717, #1740, #1739, #1749, #1756)
+- Improved test coverage (#1754)
+
 # v3.2.0
 - Fix a bug in Safari related to overwriting `func.name`
 - Remove built-in browserify configuration (#1653)
