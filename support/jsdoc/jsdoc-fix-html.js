@@ -185,12 +185,9 @@ fs.readdir(docsDir, (readErr, files) => {
     async.waterfall([
         async.constant(HTMLFiles),
         combineFakeModules,
-        async.asyncify(() => {
-            HTMLFiles.push(docFilename)
-        }),
-        function(callback) {
-            fixModuleLinks(HTMLFiles, callback);
-        }
+        async.asyncify(() => HTMLFiles.push(docFilename)),
+        async.constant(HTMLFiles),
+        fixModuleLinks
     ], (err) => {
         if (err) throw err;
         console.log('Docs generated successfully');
