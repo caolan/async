@@ -303,6 +303,9 @@
         var len = okeys.length;
         return function next() {
             var key = okeys[++i];
+            if (key === '__proto__') {
+                return next();
+            }
             return i < len ? {value: obj[key], key} : null;
         };
     }
@@ -628,7 +631,7 @@
     /**
      * Produces a new collection of values by mapping each value in `coll` through
      * the `iteratee` function. The `iteratee` is called with an item from `coll`
-     * and a callback for when it has finished processing. Each of these callback
+     * and a callback for when it has finished processing. Each of these callbacks
      * takes 2 arguments: an `error`, and the transformed item from `coll`. If
      * `iteratee` passes an error to its callback, the main `callback` (for the
      * `map` function) is immediately called with the error.
