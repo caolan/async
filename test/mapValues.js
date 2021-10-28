@@ -60,6 +60,17 @@ describe('mapValues', () => {
                 done();
             }, 50);
         });
+
+        it('prototype pollution', (done) => {
+            var input = JSON.parse('{"a": 1, "b": 2, "__proto__": { "exploit": true }}');
+
+            async.mapValues(input, (val, key, next) => {
+                next(null, val)
+            }, (err, result) => {
+                expect(result.exploit).to.equal(undefined)
+                done(err);
+            })
+        })
     });
 
     context('mapValues', () => {
