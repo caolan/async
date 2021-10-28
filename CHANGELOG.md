@@ -1,3 +1,6 @@
+# v3.2.2
+- Fix potential prototype pollution exploit
+
 # v3.2.1
 - Use `queueMicrotask` if available to the environment (#1761)
 - Minor perf improvement in `priorityQueue` (#1727)
