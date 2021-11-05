@@ -4,6 +4,15 @@ var {expect} = require('chai');
 
 describe('autoInject', () => {
 
+    it('should not be subject to ReDoS', () => {
+        // This test will timeout if the bug is present.
+        var someComments = 'text/*'.repeat(1000000)
+        expect(() => async.autoInject({
+            someComments,
+            a () {}
+        })).to.throw()
+    });
+
     it("basics", (done) => {
         var callOrder = [];
         async.autoInject({
