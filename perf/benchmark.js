@@ -6,8 +6,8 @@ var {exec, execSync} = require("child_process");
 var fs = require("fs");
 var path = require("path");
 var mkdirp = require("mkdirp");
-var async = require("../");
-var suiteConfigs = require("./suites");
+var async = require("../index.js");
+var suiteConfigs = require("./suites.js");
 var semver = require("semver");
 
 var args = require("yargs")
