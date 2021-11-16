@@ -70,7 +70,7 @@ describe('auto', () => {
             task5: ['task2', makeCallback('task5')],
             task6: ['task2', makeCallback('task6')]
         }, concurrency, (err, results) => {
-            _.each(results, (result) => {
+            results.forEach((result) => {
                 expect(result.length).to.be.below(concurrency + 1);
             });
             done();
