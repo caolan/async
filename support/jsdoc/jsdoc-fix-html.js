@@ -1,4 +1,4 @@
-var async = require('../../dist/async');
+var async = require('../../dist/async.js');
 var fs = require('fs-extra');
 var path = require('path');
 
