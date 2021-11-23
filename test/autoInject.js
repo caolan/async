@@ -13,6 +13,27 @@ describe('autoInject', () => {
         })).to.throw()
     });
 
+    it('should properly strip comments in argument definitions', () => {
+        var foo =
+            `(inline /* remove me */) => {return a}` +
+            `(
+                // remove this
+                singleline
+            ) => {return a}`
+        expect (() => async.autoInject({
+            ab (a) {
+                a = foo
+                return a;
+            }
+        })).to.deep.eql(
+            `(inline ) => {return a}` +
+            `(
+                
+                singleline
+            ) => {return a}`
+        )
+    });
+
     it("basics", (done) => {
         var callOrder = [];
         async.autoInject({
