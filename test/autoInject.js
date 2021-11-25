@@ -13,25 +13,24 @@ describe('autoInject', () => {
         })).to.throw()
     });
 
-    it('should properly strip comments in argument definitions', () => {
-        var foo =
-            `(inline /* remove me */) => {return a}` +
-            `(
-                // remove this
-                singleline
-            ) => {return a}`
-        expect (() => async.autoInject({
-            ab (a) {
-                a = foo
-                return a;
+    it('should properly strip comments in argument definitions', (done) => {
+        async.autoInject({
+            task1: function(task2, /* ) */ callback) {
+                callback(null, true);
+            },
+            task2: function task2(task3 // )
+                ,callback) {
+                    callback(null, true);
+            },
+            task3: function task3(callback) {
+                callback(null, true);
             }
-        })).to.deep.eql(
-            `(inline ) => {return a}` +
-            `(
-                
-                singleline
-            ) => {return a}`
-        )
+        },
+        (err, result) => {
+            expect(err).to.eql(null);
+            expect(result).to.deep.eql({task1: true, task2: true, task3: true});
+            done();
+        });
     });
 
     it("basics", (done) => {
