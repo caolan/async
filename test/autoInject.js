@@ -225,7 +225,7 @@ describe('autoInject', () => {
         })
     })
 
-        it('should not be subject to ReDoS', () => {
+    it('should not be subject to ReDoS', () => {
         // This test will timeout if the bug is present.
         var someComments = 'text/*'.repeat(1000000)
         expect(() => async.autoInject({
@@ -241,7 +241,7 @@ describe('autoInject', () => {
             },
             task2: function task2(task3 // )
                 ,callback) {
-                    callback(null, true);
+                callback(null, true);
             },
             task3: function task3(callback) {
                 callback(null, true);
