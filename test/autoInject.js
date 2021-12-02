@@ -224,4 +224,33 @@ describe('autoInject', () => {
             done()
         })
     })
+
+    it('should not be subject to ReDoS', () => {
+        // This test will timeout if the bug is present.
+        var someComments = 'text/*'.repeat(1000000)
+        expect(() => async.autoInject({
+            someComments,
+            a () {}
+        })).to.throw()
+    });
+
+    it('should properly strip comments in argument definitions', (done) => {
+        async.autoInject({
+            task1: function(task2, /* ) */ callback) {
+                callback(null, true);
+            },
+            task2: function task2(task3 // )
+                ,callback) {
+                callback(null, true);
+            },
+            task3: function task3(callback) {
+                callback(null, true);
+            }
+        },
+        (err, result) => {
+            expect(err).to.eql(null);
+            expect(result).to.deep.eql({task1: true, task2: true, task3: true});
+            done();
+        });
+    });
 });
