@@ -10,7 +10,7 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function setup(num) {
+    setup(num) {
         tasks = _.range(num);
     },
     fn(async, done) {
@@ -25,7 +25,7 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function setup(num) {
+    setup(num) {
         tasks = _.range(num);
     },
     fn(async, done) {
@@ -40,7 +40,7 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function setup(num) {
+    setup(num) {
         tasks = _.range(num);
     },
     fn(async, done) {
@@ -56,7 +56,7 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function setup(num) {
+    setup(num) {
         tasks = _.range(num);
     },
     fn(async, done) {
@@ -71,7 +71,7 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function setup(num) {
+    setup(num) {
         tasks = _.range(num);
     },
     fn(async, done) {
@@ -86,7 +86,7 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function setup(num) {
+    setup(num) {
         tasks = _.range(num);
     },
     fn(async, done) {
@@ -101,7 +101,7 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function setup(c) {
+    setup(c) {
         count = c;
         tasks = _.range(count);
     },
@@ -119,7 +119,7 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function setup(c) {
+    setup(c) {
         count = c;
         tasks = _.range(count);
     },
@@ -138,7 +138,7 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function setup(num) {
+    setup(num) {
         tasks = _.range(num);
     },
     fn(async, done) {
@@ -156,7 +156,7 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function setup(num) {
+    setup(num) {
         tasks = _.range(num);
     },
     fn(async, done) {
@@ -171,7 +171,7 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function setup(num) {
+    setup(num) {
         tasks = _.range(num);
     },
     fn(async, done) {
@@ -186,7 +186,7 @@ module.exports = [{
         [300],
         [10000]
     ],
-    setup: function setup(num) {
+    setup(num) {
         tasks = _.range(num);
     },
     fn(async, done) {
@@ -201,7 +201,7 @@ module.exports = [{
         [100],
         [1000]
     ],
-    setup: function setup(num) {
+    setup(num) {
         tasks = _.range(num).map(() => {
             return function(cb) {
                 setImmediate(cb);
@@ -218,7 +218,7 @@ module.exports = [{
         [100],
         [1000]
     ],
-    setup: function setup(num) {
+    setup(num) {
         tasks = _.range(num).map(() => {
             return function(cb) {
                 setImmediate(cb);
@@ -235,7 +235,7 @@ module.exports = [{
         [100],
         [1000]
     ],
-    setup: function setup(num) {
+    setup(num) {
         tasks = [
             function(cb) {
                 return cb(null, 1);
@@ -258,7 +258,7 @@ module.exports = [{
         [10],
         [100]
     ],
-    setup: function setup(num) {
+    setup(num) {
         tasks = {
             dep1 (cb) { cb(null, 1); }
         };
@@ -283,7 +283,7 @@ module.exports = [{
         [100000],
         [200000]
     ],
-    setup: function setup(num) {
+    setup(num) {
         tasks = num;
     },
     fn(async, done) {
@@ -311,7 +311,7 @@ module.exports = [{
         [30000],
         [50000]
     ],
-    setup: function setup(num) {
+    setup(num) {
         tasks = num;
     },
     fn(async, done) {
@@ -339,7 +339,7 @@ module.exports = [{
     args: [
         [500]
     ],
-    setup: function setup(num) {
+    setup(num) {
         tasks = _.range(num);
     },
     fn(async, done) {
@@ -355,7 +355,7 @@ module.exports = [{
     args: [
         [500]
     ],
-    setup: function setup(num) {
+    setup(num) {
         tasks = _.range(num);
     },
     fn(async, done) {
@@ -371,7 +371,7 @@ module.exports = [{
     args: [
         [500]
     ],
-    setup: function setup(num) {
+    setup(num) {
         tasks = _.range(num);
     },
     fn(async, done) {
@@ -387,7 +387,7 @@ module.exports = [{
     args: [
         [500]
     ],
-    setup: function setup(num) {
+    setup(num) {
         tasks = _.range(num);
     },
     fn(async, done) {

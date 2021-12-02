@@ -1,4 +1,4 @@
-var async = require('../lib');
+var async = require('../lib/index.js');
 var {expect} = require('chai');
 var _ = require('lodash');
 
@@ -70,7 +70,7 @@ describe('auto', () => {
             task5: ['task2', makeCallback('task5')],
             task6: ['task2', makeCallback('task6')]
         }, concurrency, (err, results) => {
-            _.each(results, (result) => {
+            Object.values(results).forEach((result) => {
                 expect(result.length).to.be.below(concurrency + 1);
             });
             done();
@@ -457,7 +457,7 @@ describe('auto', () => {
                 next('Something bad happened here');
             },
             'filter' (next) {
-                _.delay(() => {
+                setTimeout(() => {
                     next(null, 'All fine here though');
                 }, 25);
             },
@@ -466,7 +466,7 @@ describe('auto', () => {
             }]
         }, (err) => {
             expect(err).to.equal('Something bad happened here');
-            _.delay(done, 30);
+            setTimeout(done, 30);
         });
     });
 
@@ -476,7 +476,7 @@ describe('auto', () => {
                 next('Something bad happened here');
             },
             'hasOwnProperty' (next) {
-                _.delay(() => {
+                setTimeout(() => {
                     next(null, 'All fine here though');
                 }, 25);
             },
@@ -485,7 +485,7 @@ describe('auto', () => {
             }]
         }, (err) => {
             expect(err).to.equal('Something bad happened here');
-            _.delay(done, 30);
+            setTimeout(done, 30);
         });
     });
 

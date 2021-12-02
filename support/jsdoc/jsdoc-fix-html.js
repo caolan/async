@@ -1,9 +1,8 @@
-var async = require('../../dist/async');
+var async = require('../../dist/async.js');
 var fs = require('fs-extra');
 var path = require('path');
 
 var $ = require('cheerio');
-var _ = require('lodash');
 
 var VERSION = require('../../package.json').version;
 var docsDir = path.join(__dirname, '../../docs/v3');
@@ -34,8 +33,8 @@ function generateHTMLFile(filename, $page, callback) {
 }
 
 function extractModuleFiles(files) {
-    return _.filter(files, (file) => {
-        return _.startsWith(file, 'module') && file !== mainModuleFile;
+    return files.filter((file) => {
+        return file.startsWith('module') && file !== mainModuleFile;
     });
 }
 
@@ -125,7 +124,7 @@ function fixToc(file, $page, moduleFiles) {
     var isDocsFile = file === docFilename
     var prependFilename = isDocsFile ? '' : docFilename;
     // make everything point to the same 'docs.html' page
-    _.each(moduleFiles, (filename) => {
+    moduleFiles.forEach((filename) => {
         $page.find('[href^="'+filename+'"]').each(function() {
             var $ele = $(this);
             var href = $ele.attr('href');

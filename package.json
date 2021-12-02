@@ -18,7 +18,6 @@
     "module",
     "utility"
   ],
-  "dependencies": {},
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.6",
@@ -54,7 +53,6 @@
     "mocha-junit-reporter": "^1.18.0",
     "native-promise-only": "^0.8.0-a",
     "nyc": "^14.1.1",
-    "rimraf": "^2.5.0",
     "rollup": "^0.63.4",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-npm": "^2.0.0",
