@@ -1,25 +1,25 @@
 /*global env: true */
 'use strict';
 
-var doop = require('jsdoc/util/doop');
-var fs = require('jsdoc/fs'); // jsdoc/fs offer non-standard functions (mkPath)
-var fsExtra = require('fs-extra');
-var helper = require('jsdoc/util/templateHelper');
-var logger = require('jsdoc/util/logger');
-var path = require('jsdoc/path');
-var taffy = require('taffydb').taffy;
-var template = require('jsdoc/template');
-var util = require('util');
+const doop = require('jsdoc/util/doop');
+const fs = require('jsdoc/fs'); // jsdoc/fs offer non-standard functions (mkPath)
+const fsExtra = require('fs-extra');
+const helper = require('jsdoc/util/templateHelper');
+const logger = require('jsdoc/util/logger');
+const path = require('jsdoc/path');
+const taffy = require('taffydb').taffy;
+const template = require('jsdoc/template');
+const util = require('util');
 
-var htmlsafe = helper.htmlsafe;
-var linkto = helper.linkto;
-var resolveAuthorLinks = helper.resolveAuthorLinks;
-var hasOwnProp = Object.prototype.hasOwnProperty;
+const htmlsafe = helper.htmlsafe;
+const linkto = helper.linkto;
+const resolveAuthorLinks = helper.resolveAuthorLinks;
+const hasOwnProp = Object.prototype.hasOwnProperty;
 
-var data;
-var view;
+let data;
+let view;
 
-var outdir = path.normalize(env.opts.destination);
+let outdir = path.normalize(env.opts.destination);
 
 function find(spec) {
     return helper.find(data, spec);
@@ -36,14 +36,14 @@ function getAncestorLinks(doclet) {
 function hashToLink(doclet, hash) {
     if ( !/^(#.+)/.test(hash) ) { return hash; }
 
-    var url = helper.createLink(doclet);
+    let url = helper.createLink(doclet);
 
     url = url.replace(/(#.+|$)/, hash);
     return '<a href="' + url + '">' + hash + '</a>';
 }
 
 function needsSignature(doclet) {
-    var needsSig = false;
+    let needsSig = false;
 
     // function and class definitions always get a signature
     if (doclet.kind === 'function' || doclet.kind === 'class') {
@@ -52,7 +52,7 @@ function needsSignature(doclet) {
     // typedefs that contain functions get a signature, too
     else if (doclet.kind === 'typedef' && doclet.type && doclet.type.names &&
         doclet.type.names.length) {
-        for (var i = 0, l = doclet.type.names.length; i < l; i++) {
+        for (let i = 0, l = doclet.type.names.length; i < l; i++) {
             if (doclet.type.names[i].toLowerCase() === 'function') {
                 needsSig = true;
                 break;
@@ -64,7 +64,7 @@ function needsSignature(doclet) {
 }
 
 function getSignatureAttributes(item) {
-    var attributes = [];
+    const attributes = [];
 
     if (item.optional) {
         attributes.push('opt');
@@ -81,8 +81,8 @@ function getSignatureAttributes(item) {
 }
 
 function updateItemName(item) {
-    var attributes = getSignatureAttributes(item);
-    var itemName = item.name || '';
+    const attributes = getSignatureAttributes(item);
+    let itemName = item.name || '';
 
     if (item.variable) {
         itemName = '&hellip;' + itemName;
@@ -97,16 +97,16 @@ function updateItemName(item) {
 }
 
 function addParamAttributes(params) {
-    return params.filter(function(param) {
+    return params.filter(param => {
         return param.name && param.name.indexOf('.') === -1;
     }).map(updateItemName);
 }
 
 function buildItemTypeStrings(item) {
-    var types = [];
+    const types = [];
 
     if (item && item.type && item.type.names) {
-        item.type.names.forEach(function(name) {
+        item.type.names.forEach(name => {
             types.push( linkto(name, htmlsafe(name)) );
         });
     }
@@ -115,7 +115,7 @@ function buildItemTypeStrings(item) {
 }
 
 function buildAttribsString(attribs) {
-    var attribsString = '';
+    let attribsString = '';
 
     if (attribs && attribs.length) {
         attribsString = htmlsafe( util.format('(%s) ', attribs.join(', ')) );
@@ -125,9 +125,9 @@ function buildAttribsString(attribs) {
 }
 
 function addNonParamAttributes(items) {
-    var types = [];
+    let types = [];
 
-    items.forEach(function(item) {
+    items.forEach(item => {
         types = types.concat( buildItemTypeStrings(item) );
     });
 
@@ -135,22 +135,22 @@ function addNonParamAttributes(items) {
 }
 
 function addSignatureParams(f) {
-    var params = f.params ? addParamAttributes(f.params) : [];
+    const params = f.params ? addParamAttributes(f.params) : [];
     f.signature = util.format( '%s(%s)', (f.signature || ''), params.join(', ') );
 }
 
 function addSignatureReturns(f) {
-    var attribs = [];
-    var attribsString = '';
-    var returnTypes = [];
-    var returnTypesString = '';
+    const attribs = [];
+    let attribsString = '';
+    let returnTypes = [];
+    let returnTypesString = '';
 
     // jam all the return-type attributes into an array. this could create odd results (for example,
     // if there are both nullable and non-nullable return types), but let's assume that most people
     // who use multiple @return tags aren't using Closure Compiler type annotations, and vice-versa.
     if (f.returns) {
-        f.returns.forEach(function(item) {
-            helper.getAttribs(item).forEach(function(attrib) {
+        f.returns.forEach(item => {
+            helper.getAttribs(item).forEach(attrib => {
                 if (attribs.indexOf(attrib) === -1) {
                     attribs.push(attrib);
                 }
@@ -172,21 +172,21 @@ function addSignatureReturns(f) {
 }
 
 function addSignatureTypes(f) {
-    var types = f.type ? buildItemTypeStrings(f) : [];
+    const types = f.type ? buildItemTypeStrings(f) : [];
 
     f.signature = (f.signature || '') + '<span class="type-signature">' +
         (types.length ? ' :' + types.join('|') : '') + '</span>';
 }
 
 function addAttribs(f) {
-    var attribs = helper.getAttribs(f);
-    var attribsString = buildAttribsString(attribs);
+    const attribs = helper.getAttribs(f);
+    const attribsString = buildAttribsString(attribs);
 
     f.attribs = util.format('<span class="type-signature">%s</span>', attribsString);
 }
 
 function shortenPaths(files, commonPrefix) {
-    Object.keys(files).forEach(function(file) {
+    Object.keys(files).forEach(file => {
         files[file].shortened = files[file].resolved.replace(commonPrefix, '')
             // always use forward slashes
             .replace(/\\/g, '/');
@@ -208,14 +208,14 @@ function getPathFromDoclet(doclet) {
 function generate(type, title, docs, filename, resolveLinks) {
     resolveLinks = resolveLinks === false ? false : true;
 
-    var docData = {
+    const docData = {
         type: type,
         title: title,
         docs: docs
     };
 
-    var outpath = path.join(outdir, filename),
-        html = view.render('container.tmpl', docData);
+    const outpath = path.join(outdir, filename);
+    let html = view.render('container.tmpl', docData);
 
     if (resolveLinks) {
         html = helper.resolveLinks(html); // turn {@link foo} into <a href="foodoc.html">foo</a>
@@ -226,11 +226,11 @@ function generate(type, title, docs, filename, resolveLinks) {
 
 function generateSourceFiles(sourceFiles, encoding) {
     encoding = encoding || 'utf8';
-    var sourceFilenames = [];
-    Object.keys(sourceFiles).forEach(function(file) {
-        var source;
+    const sourceFilenames = [];
+    Object.keys(sourceFiles).forEach(file => {
+        let source;
         // links are keyed to the shortened path in each doclet's `meta.shortpath` property
-        var sourceOutfile = helper.getUniqueFilename(sourceFiles[file].shortened);
+        const sourceOutfile = helper.getUniqueFilename(sourceFiles[file].shortened);
         sourceFilenames.push(sourceOutfile);
         helper.registerLink(sourceFiles[file].shortened, sourceOutfile);
 
@@ -260,23 +260,23 @@ function generateSourceFiles(sourceFiles, encoding) {
  * @param {Array.<module:jsdoc/doclet.Doclet>} modules - The array of module doclets to search.
  */
 function attachModuleSymbols(doclets, modules) {
-    var symbols = {};
+    const symbols = {};
 
     // build a lookup table
-    doclets.forEach(function(symbol) {
+    doclets.forEach(symbol => {
         symbols[symbol.longname] = symbols[symbol.longname] || [];
         symbols[symbol.longname].push(symbol);
     });
 
-    return modules.map(function(module) {
+    return modules.map(module => {
         if (symbols[module.longname]) {
             module.modules = symbols[module.longname]
                 // Only show symbols that have a description. Make an exception for classes, because
                 // we want to show the constructor-signature heading no matter what.
-                .filter(function(symbol) {
+                .filter(symbol => {
                     return symbol.description || symbol.kind === 'class';
                 })
-                .map(function(symbol) {
+                .map(symbol => {
                     symbol = doop(symbol);
 
                     if (symbol.kind === 'class' || symbol.kind === 'function') {
@@ -290,14 +290,14 @@ function attachModuleSymbols(doclets, modules) {
 }
 
 function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
-    var nav = '';
+    let nav = '';
 
     if (items && items.length) {
-        var itemsNav = '';
+        let itemsNav = '';
 
-        items.forEach(function(item) {
-            var methods = find({kind:'function', memberof: item.longname});
-            var members = find({kind:'member', memberof: item.longname});
+        items.forEach(item => {
+            const methods = find({kind:'function', memberof: item.longname});
+            const members = find({kind:'member', memberof: item.longname});
 
             if ( !hasOwnProp.call(item, 'longname') ) {
                 itemsNav += '<li>' + linktoFn('', item.name);
@@ -307,7 +307,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
                 if (methods.length) {
                     itemsNav += "<ul class='methods'>";
 
-                    methods.forEach(function (method) {
+                    methods.forEach(method => {
                         itemsNav += "<li data-type='method'>";
                         itemsNav += linkto(method.longname, method.name);
                         itemsNav += "</li>";
@@ -351,9 +351,9 @@ function linktoExternal(longName, name) {
  * @return {string} The HTML for the navigation sidebar.
  */
 function buildNav(members) {
-    var nav = '<h2><a href="index.html">Home</a></h2>';
-    var seen = {};
-    var seenTutorials = {};
+    let nav = '<h2><a href="index.html">Home</a></h2>';
+    const seen = {};
+    const seenTutorials = {};
 
     nav += buildMemberNav(members.classes, 'Classes', seen, linkto);
     nav += buildMemberNav(members.modules, 'Modules', {}, linkto);
@@ -365,9 +365,9 @@ function buildNav(members) {
     nav += buildMemberNav(members.interfaces, 'Interfaces', seen, linkto);
 
     if (members.globals.length) {
-        var globalNav = '';
+        let globalNav = '';
 
-        members.globals.forEach(function(g) {
+        members.globals.forEach(g => {
             if ( g.kind !== 'typedef' && !hasOwnProp.call(seen, g.longname) ) {
                 globalNav += '<li>' + linkto(g.longname, g.name) + '</li>';
             }
@@ -392,9 +392,9 @@ function buildNav(members) {
     @return {Array<String>} The sorted array
  */
 function sortStrs(strArr) {
-    return strArr.sort(function(s1, s2) {
-        var lowerCaseS1 = s1.toLowerCase();
-        var lowerCaseS2 = s2.toLowerCase();
+    return strArr.sort((s1, s2) => {
+        const lowerCaseS1 = s1.toLowerCase();
+        const lowerCaseS2 = s2.toLowerCase();
 
         if (lowerCaseS1 < lowerCaseS2) {
             return -1;
@@ -414,7 +414,7 @@ function sortStrs(strArr) {
     @param {Array<String>} sourceFilenames - A list of source filenames
  */
 function writeSearchData(methodNames, sourceFilenames) {
-    var dataDir = path.join(outdir, 'data');
+    const dataDir = path.join(outdir, 'data');
     fsExtra.mkdirsSync(dataDir);
     fsExtra.writeJsonSync(path.join(dataDir, 'methodNames.json'), sortStrs(methodNames), 'utf8');
     fsExtra.writeJsonSync(path.join(dataDir, 'sourceFiles.json'), sortStrs(sourceFilenames), 'utf8');
@@ -425,21 +425,21 @@ function writeSearchData(methodNames, sourceFilenames) {
     @param {object} opts
     @param {Tutorial} tutorials
  */
-exports.publish = function(taffyData, opts, tutorials) {
+exports.publish = (taffyData, opts, tutorials) => {
     data = taffyData;
 
-    var conf = env.conf.templates || {};
+    const conf = env.conf.templates || {};
     conf.default = conf.default || {};
 
-    var templatePath = path.normalize(opts.template);
+    const templatePath = path.normalize(opts.template);
     view = new template.Template( path.join(templatePath, 'tmpl') );
 
     // claim some special filenames in advance, so the All-Powerful Overseer of Filename Uniqueness
     // doesn't try to hand them out later
-    var indexUrl = helper.getUniqueFilename('index');
+    const indexUrl = helper.getUniqueFilename('index');
     // don't call registerLink() on this one! 'index' is also a valid longname
 
-    var globalUrl = helper.getUniqueFilename('global');
+    const globalUrl = helper.getUniqueFilename('global');
     helper.registerLink('global', globalUrl);
 
     // set up templating
@@ -455,14 +455,14 @@ exports.publish = function(taffyData, opts, tutorials) {
     data.sort('longname, version, since');
     helper.addEventListeners(data);
 
-    var sourceFiles = {};
-    var sourceFilePaths = [];
-    data().each(function(doclet) {
+    let sourceFiles = {};
+    const sourceFilePaths = [];
+    data().each(doclet => {
          doclet.attribs = '';
 
         if (doclet.examples) {
-            doclet.examples = doclet.examples.map(function(example) {
-                var caption, code;
+            doclet.examples = doclet.examples.map(example => {
+                let caption, code;
 
                 if (example.match(/^\s*<caption>([\s\S]+?)<\/caption>(\s*[\n\r])([\s\S]+)$/i)) {
                     caption = RegExp.$1;
@@ -476,13 +476,13 @@ exports.publish = function(taffyData, opts, tutorials) {
             });
         }
         if (doclet.see) {
-            doclet.see.forEach(function(seeItem, i) {
+            doclet.see.forEach((seeItem, i) => {
                 doclet.see[i] = hashToLink(doclet, seeItem);
             });
         }
 
         // build a list of source files
-        var sourcePath;
+        let sourcePath;
         if (doclet.meta) {
             sourcePath = getPathFromDoclet(doclet);
             sourceFiles[sourcePath] = {
@@ -496,41 +496,41 @@ exports.publish = function(taffyData, opts, tutorials) {
     });
 
     // update outdir if necessary, then create outdir
-    var packageInfo = ( find({kind: 'package'}) || [] ) [0];
+    const packageInfo = ( find({kind: 'package'}) || [] ) [0];
     if (packageInfo && packageInfo.name) {
         outdir = path.join( outdir, packageInfo.name, (packageInfo.version || '') );
     }
     fs.mkPath(outdir);
 
     // copy the template's static files to outdir
-    var fromDir = path.join(templatePath, 'static');
-    var staticFiles = fs.ls(fromDir, 3);
+    const fromDir = path.join(templatePath, 'static');
+    const staticFiles = fs.ls(fromDir, 3);
 
-    staticFiles.forEach(function(fileName) {
-        var toDir = fs.toDir( fileName.replace(fromDir, outdir) );
+    staticFiles.forEach(fileName => {
+        const toDir = fs.toDir( fileName.replace(fromDir, outdir) );
         fs.mkPath(toDir);
         fs.copyFileSync(fileName, toDir);
     });
 
     // copy user-specified static files to outdir
-    var staticFilePaths;
-    var staticFileFilter;
-    var staticFileScanner;
+    let staticFilePaths;
+    let staticFileFilter;
+    let staticFileScanner;
     if (conf.default.staticFiles) {
         // The canonical property name is `include`. We accept `paths` for backwards compatibility
         // with a bug in JSDoc 3.2.x.
         staticFilePaths = conf.default.staticFiles.include ||
             conf.default.staticFiles.paths ||
             [];
-        staticFileFilter = new (require('jsdoc/src/filter')).Filter(conf.default.staticFiles);
-        staticFileScanner = new (require('jsdoc/src/scanner')).Scanner();
+        staticFileFilter = new (require('jsdoc/src/filter').Filter)(conf.default.staticFiles);
+        staticFileScanner = new (require('jsdoc/src/scanner').Scanner)();
 
-        staticFilePaths.forEach(function(filePath) {
-            var extraStaticFiles = staticFileScanner.scan([filePath], 10, staticFileFilter);
+        staticFilePaths.forEach(filePath => {
+            const extraStaticFiles = staticFileScanner.scan([filePath], 10, staticFileFilter);
 
-            extraStaticFiles.forEach(function(fileName) {
-                var sourcePath = fs.toDir(filePath);
-                var toDir = fs.toDir( fileName.replace(sourcePath, outdir) );
+            extraStaticFiles.forEach(fileName => {
+                const sourcePath = fs.toDir(filePath);
+                const toDir = fs.toDir( fileName.replace(sourcePath, outdir) );
                 fs.mkPath(toDir);
                 fs.copyFileSync(fileName, toDir);
             });
@@ -540,12 +540,12 @@ exports.publish = function(taffyData, opts, tutorials) {
     if (sourceFilePaths.length) {
         sourceFiles = shortenPaths( sourceFiles, path.commonPrefix(sourceFilePaths) );
     }
-    data().each(function(doclet) {
-        var url = helper.createLink(doclet);
+    data().each(doclet => {
+        const url = helper.createLink(doclet);
         helper.registerLink(doclet.longname, url);
 
         // add a shortened version of the full path
-        var docletPath;
+        let docletPath;
         if (doclet.meta) {
             docletPath = getPathFromDoclet(doclet);
             docletPath = sourceFiles[docletPath].shortened;
@@ -555,8 +555,8 @@ exports.publish = function(taffyData, opts, tutorials) {
         }
     });
 
-    data().each(function(doclet) {
-        var url = helper.longnameToUrl[doclet.longname];
+    data().each(doclet => {
+        const url = helper.longnameToUrl[doclet.longname];
 
         if (url.indexOf('#') > -1) {
             doclet.id = helper.longnameToUrl[doclet.longname].split(/#/).pop();
@@ -573,12 +573,12 @@ exports.publish = function(taffyData, opts, tutorials) {
     });
 
     // do this after the urls have all been generated
-    var methodNames = [];
-    data().each(function(doclet) {
+    const methodNames = [];
+    data().each(doclet => {
         doclet.ancestors = getAncestorLinks(doclet);
         if (doclet.kind === 'function') {
-            var alias = doclet.alias;
-            var name  = doclet.name;
+            let alias = doclet.alias;
+            const name  = doclet.name;
             if (alias) {
                 if (Array.isArray(alias)) {
                     alias = alias.join(', ');
@@ -601,11 +601,11 @@ exports.publish = function(taffyData, opts, tutorials) {
         }
     });
 
-    var members = helper.getMembers(data);
+    const members = helper.getMembers(data);
     members.tutorials = tutorials.children;
 
     // output pretty-printed source files by default
-    var outputSourceFiles = conf.default && conf.default.outputSourceFiles !== false
+    const outputSourceFiles = conf.default && conf.default.outputSourceFiles !== false
         ? true
         : false;
 
@@ -622,7 +622,7 @@ exports.publish = function(taffyData, opts, tutorials) {
     attachModuleSymbols( find({ longname: {left: 'module:'} }), members.modules );
 
     // generate the pretty-printed source files first so other pages can link to them
-    var sourceFilenames = [];
+    let sourceFilenames = [];
     if (outputSourceFiles) {
         sourceFilenames = generateSourceFiles(sourceFiles, opts.encoding);
     }
@@ -634,8 +634,8 @@ exports.publish = function(taffyData, opts, tutorials) {
     }
 
     // index page displays information from package.json and lists files
-    var files = find({kind: 'file'});
-    var packages = find({kind: 'package'});
+    const files = find({kind: 'file'});
+    const packages = find({kind: 'package'});
 
     generate('', 'Home',
         packages.concat(
@@ -644,40 +644,40 @@ exports.publish = function(taffyData, opts, tutorials) {
     indexUrl);
 
     // set up the lists that we'll use to generate pages
-    var classes = taffy(members.classes);
-    var modules = taffy(members.modules);
-    var namespaces = taffy(members.namespaces);
-    var mixins = taffy(members.mixins);
-    var externals = taffy(members.externals);
-    var interfaces = taffy(members.interfaces);
+    const classes = taffy(members.classes);
+    const modules = taffy(members.modules);
+    const namespaces = taffy(members.namespaces);
+    const mixins = taffy(members.mixins);
+    const externals = taffy(members.externals);
+    const interfaces = taffy(members.interfaces);
 
-    Object.keys(helper.longnameToUrl).forEach(function(longname) {
-        var myModules = helper.find(modules, {longname: longname});
+    Object.keys(helper.longnameToUrl).forEach(longname => {
+        const myModules = helper.find(modules, {longname: longname});
         if (myModules.length) {
             generate('Module', myModules[0].name, myModules, helper.longnameToUrl[longname]);
         }
 
-        var myClasses = helper.find(classes, {longname: longname});
+        const myClasses = helper.find(classes, {longname: longname});
         if (myClasses.length) {
             generate('Class', myClasses[0].name, myClasses, helper.longnameToUrl[longname]);
         }
 
-        var myNamespaces = helper.find(namespaces, {longname: longname});
+        const myNamespaces = helper.find(namespaces, {longname: longname});
         if (myNamespaces.length) {
             generate('Namespace', myNamespaces[0].name, myNamespaces, helper.longnameToUrl[longname]);
         }
 
-        var myMixins = helper.find(mixins, {longname: longname});
+        const myMixins = helper.find(mixins, {longname: longname});
         if (myMixins.length) {
             generate('Mixin', myMixins[0].name, myMixins, helper.longnameToUrl[longname]);
         }
 
-        var myExternals = helper.find(externals, {longname: longname});
+        const myExternals = helper.find(externals, {longname: longname});
         if (myExternals.length) {
             generate('External', myExternals[0].name, myExternals, helper.longnameToUrl[longname]);
         }
 
-        var myInterfaces = helper.find(interfaces, {longname: longname});
+        const myInterfaces = helper.find(interfaces, {longname: longname});
         if (myInterfaces.length) {
             generate('Interface', myInterfaces[0].name, myInterfaces, helper.longnameToUrl[longname]);
         }
@@ -685,15 +685,15 @@ exports.publish = function(taffyData, opts, tutorials) {
 
     // TODO: move the tutorial functions to templateHelper.js
     function generateTutorial(title, tutorial, filename) {
-        var tutorialData = {
+        const tutorialData = {
             title: title,
             header: tutorial.title,
             content: tutorial.parse(),
             children: tutorial.children
         };
 
-        var tutorialPath = path.join(outdir, filename);
-        var html = view.render('tutorial.tmpl', tutorialData);
+        const tutorialPath = path.join(outdir, filename);
+        let html = view.render('tutorial.tmpl', tutorialData);
 
         // yes, you can use {@link} in tutorials too!
         html = helper.resolveLinks(html); // turn {@link foo} into <a href="foodoc.html">foo</a>
@@ -702,7 +702,7 @@ exports.publish = function(taffyData, opts, tutorials) {
 
     // tutorials can have only one parent so there is no risk for loops
     function saveChildren(node) {
-        node.children.forEach(function(child) {
+        node.children.forEach(child => {
             generateTutorial('Tutorial: ' + child.title, child, helper.tutorialToUrl(child.name));
             saveChildren(child);
         });
