@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout
+        uses: actions/checkout@v2
+
+      - name: ⎔ Setup node ${{ matrix.node }}
+        uses: actions/setup-node@v2
+        with:
+          cache: npm
+
+      - name: 📥 Download deps
+        run: npm ci
+
+      - name: 🧪 Run lint
+        run: npm run lint
+
+  build:
+    runs-on: ${{ matrix.os }}
+    needs: lint
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+          - 12
+          - 14
+          - 16
+          - 17
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        browser:
+          - FirefoxHeadless
+
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: ⬇️ Checkout
+        uses: actions/checkout@v2
+
+      - name: ⎔ Setup node ${{ matrix.node }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: 📥 Download deps
+        run: npm ci
+
+      - name: Run coverage
+        run: npm test
+
+      - name: Run browser tests
+        run: npm run mocha-browser-test -- --browsers ${{ matrix.browser }}  --timeout 10000
+        env:
+          DISPLAY: :99.0
+
+      - name: Coverage
+        if: matrix.os == 'ubuntu-latest' && matrix.node == '14'
+        run: npm run coverage && npx nyc report --reporter=lcov
+
+      - name: Coveralls
+        if: matrix.os == 'ubuntu-latest' && matrix.node == '14'
+        uses: coverallsapp/github-action@1.1.3
+        with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
