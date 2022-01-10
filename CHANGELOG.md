@@ -1,3 +1,6 @@
+# v3.2.3
+- Fix bugs in comment parsing in `autoInject`. (#1767, #1780)
+
 # v3.2.2
 - Fix potential prototype pollution exploit
 
