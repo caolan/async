@@ -13,7 +13,6 @@ jobs:
         node_version: 12.x
         # run_browser_tests: true
         # browser_name: Edge
-        # run_coveralls: true
 
   steps:
   - template: .azure-pipelines-steps.yml
@@ -36,7 +35,6 @@ jobs:
         DISPLAY: :99.0
         run_browser_tests: true
         browser_name: Firefox
-        run_coveralls: true
 
   steps:
   - script: |
