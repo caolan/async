@@ -243,13 +243,17 @@ describe('autoInject', () => {
                 ,callback) {
                 callback(null, true);
             },
-            task3: function task3(callback) {
+            task3: function task3(task4 /* /* )
+                */, callback) {
                 callback(null, true);
-            }
+            },
+            task4: function task4(callback) {
+                callback(null, true);
+            },
         },
         (err, result) => {
             expect(err).to.eql(null);
-            expect(result).to.deep.eql({task1: true, task2: true, task3: true});
+            expect(result).to.deep.eql({task1: true, task2: true, task3: true, task4: true});
             done();
         });
     });
