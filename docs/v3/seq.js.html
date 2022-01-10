@@ -30,7 +30,7 @@
   </div>
   <ul class="nav navbar-nav">
     <li id="version-dropdown" class="dropdown">
-      <a href="#" class="dropdown-toggle vertically-centered" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">v3.2.2 <span class="caret"></span>
+      <a href="#" class="dropdown-toggle vertically-centered" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">v3.2.3 <span class="caret"></span>
       </a>
       <ul class="dropdown-menu">
         <li><a href="../v3/">v3.0.x</a></li>
@@ -75,9 +75,9 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import reduce from &apos;./reduce&apos;;
-import wrapAsync from &apos;./internal/wrapAsync&apos;;
-import { promiseCallback, PROMISE_SYMBOL } from &apos;./internal/promiseCallback&apos;;
+            <pre class="prettyprint source linenums"><code>import reduce from &apos;./reduce.js&apos;
+import wrapAsync from &apos;./internal/wrapAsync.js&apos;
+import { promiseCallback, PROMISE_SYMBOL } from &apos;./internal/promiseCallback.js&apos;
 
 /**
  * Version of the compose function that is more natural to read. Each function
@@ -103,7 +103,7 @@ import { promiseCallback, PROMISE_SYMBOL } from &apos;./internal/promiseCallback
  * app.get(&apos;/cats&apos;, function(request, response) {
  *     var User = request.models.User;
  *     async.seq(
- *         _.bind(User.get, User),  // &apos;User.get&apos; has signature (id, callback(err, data))
+ *         User.get.bind(User),  // &apos;User.get&apos; has signature (id, callback(err, data))
  *         function(user, fn) {
  *             user.getCats(fn);      // &apos;getCats&apos; has signature (callback(err, data))
  *         }

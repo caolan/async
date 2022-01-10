@@ -31,7 +31,7 @@
   </div>
   <ul class="nav navbar-nav">
     <li id="version-dropdown" class="dropdown">
-      <a href="#" class="dropdown-toggle vertically-centered" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">v3.2.2 <span class="caret"></span>
+      <a href="#" class="dropdown-toggle vertically-centered" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">v3.2.3 <span class="caret"></span>
       </a>
       <ul class="dropdown-menu">
         <li><a href="../v3/">v3.0.x</a></li>
@@ -11270,7 +11270,7 @@ async.autoInject({
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="autoInject.js.html">autoInject.js</a>, <a href="autoInject.js.html#line25">line 25</a>
+        <a href="autoInject.js.html">autoInject.js</a>, <a href="autoInject.js.html#line51">line 51</a>
     </li></ul></dd>
     
 
@@ -14457,7 +14457,7 @@ consumes the return value of the previous function. It is the equivalent of
 app.get(&apos;/cats&apos;, function(request, response) {
     var User = request.models.User;
     async.seq(
-        _.bind(User.get, User),  // &apos;User.get&apos; has signature (id, callback(err, data))
+        User.get.bind(User),  // &apos;User.get&apos; has signature (id, callback(err, data))
         function(user, fn) {
             user.getCats(fn);      // &apos;getCats&apos; has signature (callback(err, data))
         }
@@ -16199,7 +16199,7 @@ function myLastFunction(arg1, callback) {
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="waterfall.js.html">waterfall.js</a>, <a href="waterfall.js.html#line7">line 7</a>
+        <a href="waterfall.js.html">waterfall.js</a>, <a href="waterfall.js.html#line6">line 6</a>
     </li></ul></dd>
     
 
@@ -18755,7 +18755,7 @@ async.setImmediate(function (a, b, c) {
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="nextTick.js.html">nextTick.js</a>, <a href="nextTick.js.html#line5">line 5</a>
+        <a href="nextTick.js.html">nextTick.js</a>, <a href="nextTick.js.html#line4">line 4</a>
     </li></ul></dd>
     
 
