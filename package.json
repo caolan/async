@@ -42,7 +42,7 @@
     "jsdoc": "^3.6.2",
     "karma": "^4.1.0",
     "karma-browserify": "^8.1.0",
-    "karma-firefox-launcher": "^1.1.0",
+    "karma-firefox-launcher": "^2.1.2",
     "karma-mocha": "^1.2.0",
     "karma-mocha-reporter": "^2.2.0",
     "karma-safari-launcher": "^1.0.0",
