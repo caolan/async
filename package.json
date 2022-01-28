@@ -19,8 +19,8 @@
     "utility"
   ],
   "devDependencies": {
+    "@babel/eslint-parser": "^7.16.5",
     "babel-core": "^6.26.3",
-    "babel-eslint": "^8.2.6",
     "babel-minify": "^0.5.0",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-istanbul": "^5.1.4",
@@ -36,8 +36,8 @@
     "chai": "^4.2.0",
     "cheerio": "^0.22.0",
     "es6-promise": "^2.3.0",
-    "eslint": "^6.0.1",
-    "eslint-plugin-prefer-arrow": "^1.1.5",
+    "eslint": "^8.6.0",
+    "eslint-plugin-prefer-arrow": "^1.2.3",
     "fs-extra": "^0.26.7",
     "jsdoc": "^3.6.2",
     "karma": "^4.1.0",
@@ -61,7 +61,7 @@
   "scripts": {
     "coverage": "nyc npm run mocha-node-test -- --grep @nycinvalid --invert",
     "jsdoc": "jsdoc -c ./support/jsdoc/jsdoc.json && node support/jsdoc/jsdoc-fix-html.js",
-    "lint": "eslint --fix lib/ test/ perf/memory.js perf/suites.js perf/benchmark.js support/build/ support/*.js karma.conf.js",
+    "lint": "eslint --fix .",
     "mocha-browser-test": "karma start",
     "mocha-node-test": "mocha",
     "mocha-test": "npm run mocha-node-test && npm run mocha-browser-test",

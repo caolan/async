@@ -1,0 +1,57 @@
+{
+    "env": {
+        "browser": true,
+        "node": true,
+        "es6": true
+    },
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+        "ecmaVersion": 8,
+        "sourceType": "module"
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+        "guard-for-in": 2,
+        "indent": [
+            2,
+            4,
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "no-caller": 2,
+        "no-undef": 2,
+        "no-unused-vars": 2,
+        "no-shadow": 2,
+        "no-eval": 2,
+        "comma-style": [
+            2,
+            "last"
+        ],
+        "prefer-arrow-callback": 2,
+        "arrow-spacing": 2,
+        "object-shorthand": 2,
+        "prefer-destructuring": 2,
+        "no-loop-func": 2,
+        "no-trailing-spaces": 2,
+        "valid-jsdoc": [
+            "error",
+            {
+                "requireReturn": false,
+                "requireReturnDescription": false,
+                "requireReturnType": false
+            }
+        ]
+    },
+    "overrides": [
+        {
+            "files": [
+                "support/build.test.js",
+                "test/**/*.js"
+            ],
+            "env": {
+                "mocha": true
+            }
+        }
+    ]
+}
