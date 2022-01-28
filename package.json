@@ -32,7 +32,7 @@
     "babelify": "^8.0.0",
     "benchmark": "^2.1.1",
     "bluebird": "^3.4.6",
-    "browserify": "^16.2.3",
+    "browserify": "^17.0.0",
     "chai": "^4.2.0",
     "cheerio": "^0.22.0",
     "es6-promise": "^4.2.8",
