@@ -35,7 +35,7 @@
     "browserify": "^16.2.3",
     "chai": "^4.2.0",
     "cheerio": "^0.22.0",
-    "es6-promise": "^2.3.0",
+    "es6-promise": "^4.2.8",
     "eslint": "^8.6.0",
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "fs-extra": "^0.26.7",
