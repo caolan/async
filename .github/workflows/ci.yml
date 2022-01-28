@@ -36,13 +36,15 @@ jobs:
           - 16
           - 17
         os: [ubuntu-latest]
+        browser:
+          - FirefoxHeadless
         include:
           - os: macos-latest
             node: 16
+            browser: FirefoxHeadless
           - os: windows-latest
             node: 16
-        browser:
-          - FirefoxHeadless
+            browser: FirefoxHeadless
 
     steps:
       - name: 🛑 Cancel Previous Runs
@@ -66,6 +68,7 @@ jobs:
         run: npm test
 
       - name: Run browser tests
+        if: matrix.node == 16
         run: npm run mocha-browser-test -- --browsers ${{ matrix.browser }}  --timeout 10000
         env:
           DISPLAY: :99.0
