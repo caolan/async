@@ -53,7 +53,7 @@
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-npm": "^2.0.0",
     "rsvp": "^4.8.5",
-    "semver": "^5.5.0",
+    "semver": "^7.3.5",
     "yargs": "^11.0.0"
   },
   "scripts": {
