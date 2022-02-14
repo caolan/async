@@ -670,6 +670,46 @@ describe('queue', function(){
         done();
     });
 
+    it('should only call drain once when empty tasks are pushed', (done) => {
+        const q = async.queue(() => {
+            throw new Error('should not be called')
+        })
+
+        let numCalled = 0
+        q.drain(() => {
+            numCalled++
+        })
+        q.push([])
+        q.push([])
+        q.push([])
+
+        setTimeout(() => {
+            expect(numCalled).to.equal(1)
+            done()
+        }, 50);
+    });
+
+    it('should not schedule another drain call if one is running', (done) => {
+        const q = async.queue(() => {
+            throw new Error('should not be called')
+        })
+
+        let numCalled = 0
+        q.drain(() => {
+            if (numCalled > 0) {
+                throw new Error('drain should not be called more than one')
+            }
+            numCalled++
+            q.push([])
+        })
+        q.push([])
+
+        setTimeout(() => {
+            expect(numCalled).to.equal(1)
+            done()
+        }, 50);
+    });
+
     context('q.saturated(): ', () => {
         it('should call the saturated callback if tasks length is concurrency', (done) => {
             var calls = [];
