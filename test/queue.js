@@ -690,8 +690,8 @@ describe('queue', function(){
     });
 
     it('should not schedule another drain call if one is running', (done) => {
-        const q = async.queue(() => {
-            throw new Error('should not be called')
+        const q = async.queue((task, cb) => {
+            cb(null, task);
         })
 
         let numCalled = 0
@@ -702,7 +702,7 @@ describe('queue', function(){
             numCalled++
             q.push([])
         })
-        q.push([])
+        q.push('foo')
 
         setTimeout(() => {
             expect(numCalled).to.equal(1)
