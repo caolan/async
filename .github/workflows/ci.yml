@@ -6,6 +6,9 @@ on:
       - "dependabot/**"
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -25,6 +28,10 @@ jobs:
         run: npm run lint
 
   build:
+    permissions:
+      actions: write  # for styfle/cancel-workflow-action to cancel/stop running workflows
+      checks: write  # for coverallsapp/github-action to create new checks
+      contents: read  # for actions/checkout to fetch code
     runs-on: ${{ matrix.os }}
     needs: lint
     strategy:
