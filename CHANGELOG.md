@@ -1,3 +1,6 @@
+# v2.6.4
+- Fix potential prototype pollution exploit (#1828)
+
 # v2.6.3
 - Updated lodash to squelch a security warning (#1675)
 
