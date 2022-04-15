@@ -540,7 +540,7 @@ module.exports = function () {
     it('should work with queues', async () => {
         const q = async.queue(async (data) => {
             if (data === 2) throw new Error('oh noes')
-            await new Promise(resolve => setTimeout(resolve, 10))
+            await new Promise(resolve => setTimeout(() => resolve(data), 10))
             return data
         }, 5)
 
@@ -561,7 +561,7 @@ module.exports = function () {
         const multiP = Promise.all(q.push([9, 10]))
 
         await q.drain()
-        await multiP
+        const res = await multiP
         expect(calls.join()).to.eql([
             'saturated',
             'push cb 1',
@@ -580,6 +580,62 @@ module.exports = function () {
         ])
         expect(emptyCalls).to.eql([
             'empty',
+        ])
+
+        expect(res).to.eql([
+            9,
+            10
+        ])
+    })
+
+    it('should work with priorityQueues', async () => {
+        const q = async.priorityQueue(async (data) => {
+            if (data === 2) throw new Error('oh noes')
+            await new Promise(resolve => setTimeout(() => resolve(data), 10))
+            return data
+        }, 5)
+
+        const calls = []
+        const errorCalls = []
+        const emptyCalls = []
+        q.error().catch(d => errorCalls.push('error ' + d))
+        q.saturated().then(() => calls.push('saturated'))
+        q.unsaturated().then(() => calls.push('unsaturated'))
+        q.empty().then(() => emptyCalls.push('empty'))
+
+        q.push(1, 1).then(d => calls.push('push cb ' + d))
+        q.push(2, 1).then(d => errorCalls.push('push cb ' + d))
+        q.push([3, 4, 5, 6], 0).map(p => p.then(d => calls.push('push cb ' + d)))
+        q.push(7, 3).then(d => calls.push('push cb ' + d))
+        q.push(8, 3).then(d => calls.push('push cb ' + d))
+
+        const multiP = Promise.all(q.push([9, 10], 1))
+
+        await q.drain()
+        const res = await multiP
+        expect(calls.join()).to.eql([
+            'saturated',
+            'push cb 3',
+            'push cb 4',
+            'push cb 5',
+            'push cb 6',
+            'push cb 1',
+            'unsaturated',
+            'push cb 7',
+            'push cb 8'
+        ].join())
+
+        expect(errorCalls).to.eql([
+            'push cb undefined',
+            'error Error: oh noes',
+        ])
+        expect(emptyCalls).to.eql([
+            'empty',
+        ])
+
+        expect(res).to.eql([
+            9,
+            10
         ])
     })
 

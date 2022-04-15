@@ -170,7 +170,6 @@ describe('queue', function(){
         })
         q.pushAsync([3, 4]).map(p => p.then(() => calls.push('arr')))
         q.drain(() => setTimeout(() => {
-            console.log('drain')
             expect(calls).to.eql([1, 2, 'arr', 'arr'])
             done()
         }))
@@ -190,7 +189,6 @@ describe('queue', function(){
         })
         q.unshiftAsync([3, 4]).map(p => p.then(() => calls.push('arr')))
         q.drain(() => setTimeout(() => {
-            console.log('drain')
             expect(calls).to.eql(['arr', 'arr', 2, 1])
             done()
         }))
