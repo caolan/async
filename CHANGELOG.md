@@ -1,3 +1,7 @@
+# v3.2.4
+- Fix a bug in `priorityQueue` where it didn't wait for the result. (#1725)
+- Fix a bug where `unshiftAsync` was included in `priorityQueue`. (#1790)
+
 # v3.2.3
 - Fix bugs in comment parsing in `autoInject`. (#1767, #1780)
 
