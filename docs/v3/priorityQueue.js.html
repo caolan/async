@@ -30,7 +30,7 @@
   </div>
   <ul class="nav navbar-nav">
     <li id="version-dropdown" class="dropdown">
-      <a href="#" class="dropdown-toggle vertically-centered" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">v3.2.3 <span class="caret"></span>
+      <a href="#" class="dropdown-toggle vertically-centered" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">v3.2.4 <span class="caret"></span>
       </a>
       <ul class="dropdown-menu">
         <li><a href="../v3/">v3.0.x</a></li>
@@ -75,8 +75,7 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import setImmediate from &apos;./setImmediate.js&apos;
-import queue from &apos;./queue.js&apos;
+            <pre class="prettyprint source linenums"><code>import queue from &apos;./queue.js&apos;
 import Heap from &apos;./internal/Heap.js&apos;
 
 /**
@@ -96,54 +95,51 @@ import Heap from &apos;./internal/Heap.js&apos;
  * @param {number} concurrency - An `integer` for determining how many `worker`
  * functions should be run in parallel.  If omitted, the concurrency defaults to
  * `1`.  If the concurrency is `0`, an error is thrown.
- * @returns {module:ControlFlow.QueueObject} A priorityQueue object to manage the tasks. There are two
+ * @returns {module:ControlFlow.QueueObject} A priorityQueue object to manage the tasks. There are three
  * differences between `queue` and `priorityQueue` objects:
  * * `push(task, priority, [callback])` - `priority` should be a number. If an
  *   array of `tasks` is given, all tasks will be assigned the same priority.
- * * The `unshift` method was removed.
+ * * `pushAsync(task, priority, [callback])` - the same as `priorityQueue.push`,
+ *   except this returns a promise that rejects if an error occurs.
+ * * The `unshift` and `unshiftAsync` methods were removed.
  */
 export default function(worker, concurrency) {
     // Start with a normal queue
     var q = queue(worker, concurrency);
-    var processingScheduled = false;
+
+    var {
+        push,
+        pushAsync
+    } = q;
 
     q._tasks = new Heap();
-
-    // Override push to accept second parameter representing priority
-    q.push = function(data, priority = 0, callback = () =&gt; {}) {
-        if (typeof callback !== &apos;function&apos;) {
-            throw new Error(&apos;task callback must be a function&apos;);
-        }
-        q.started = true;
-        if (!Array.isArray(data)) {
-            data = [data];
-        }
-        if (data.length === 0 &amp;&amp; q.idle()) {
-            // call drain immediately if there are no tasks
-            return setImmediate(() =&gt; q.drain());
-        }
-
-        for (var i = 0, l = data.length; i &lt; l; i++) {
-            var item = {
-                data: data[i],
-                priority,
-                callback
-            };
-
-            q._tasks.push(item);
-        }
-
-        if (!processingScheduled) {
-            processingScheduled = true;
-            setImmediate(() =&gt; {
-                processingScheduled = false;
-                q.process();
-            });
-        }
+    q._createTaskItem = ({data, priority}, callback) =&gt; {
+        return {
+            data,
+            priority,
+            callback
+        };
     };
 
-    // Remove unshift function
+    function createDataItems(tasks, priority) {
+        if (!Array.isArray(tasks)) {
+            return {data: tasks, priority};
+        }
+        return tasks.map(data =&gt; { return {data, priority}; });
+    }
+
+    // Override push to accept second parameter representing priority
+    q.push = function(data, priority = 0, callback) {
+        return push(createDataItems(data, priority), callback);
+    };
+
+    q.pushAsync = function(data, priority = 0, callback) {
+        return pushAsync(createDataItems(data, priority), callback);
+    };
+
+    // Remove unshift functions
     delete q.unshift;
+    delete q.unshiftAsync;
 
     return q;
 }

@@ -31,7 +31,7 @@
   </div>
   <ul class="nav navbar-nav">
     <li id="version-dropdown" class="dropdown">
-      <a href="#" class="dropdown-toggle vertically-centered" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">v3.2.3 <span class="caret"></span>
+      <a href="#" class="dropdown-toggle vertically-centered" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">v3.2.4 <span class="caret"></span>
       </a>
       <ul class="dropdown-menu">
         <li><a href="../v3/">v3.0.x</a></li>
@@ -1074,7 +1074,7 @@ containing the concatenated results of the <code>iteratee</code> function. Invok
 
     
 
-    <h4 class="name" id="detect"><span class="type-signature">(static) </span>detect<span class="signature">(coll, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="detect"><span class="type-signature">(static) </span>detect<span class="signature">(coll, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &#x2192; {Promise}</span></h4>
 
     
 
@@ -1224,10 +1224,22 @@ Result will be the first item in the array that passes the truth test
 
         
 <div class="param-desc">
-    <p>A Promise, if no callback is passed</p>
+    <p>a promise, if a callback is omitted</p>
 </div>
 
 
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
 
     
 
@@ -1337,7 +1349,7 @@ async () =&gt; {
 
     
 
-    <h4 class="name" id="detectLimit"><span class="type-signature">(static) </span>detectLimit<span class="signature">(coll, limit, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="detectLimit"><span class="type-signature">(static) </span>detectLimit<span class="signature">(coll, limit, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &#x2192; {Promise}</span></h4>
 
     
 
@@ -1505,10 +1517,22 @@ Result will be the first item in the array that passes the truth test
 
         
 <div class="param-desc">
-    <p>a Promise if no callback is passed</p>
+    <p>a promise, if a callback is omitted</p>
 </div>
 
 
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
 
     
 
@@ -1580,7 +1604,7 @@ Result will be the first item in the array that passes the truth test
 
     
 
-    <h4 class="name" id="detectSeries"><span class="type-signature">(static) </span>detectSeries<span class="signature">(coll, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="detectSeries"><span class="type-signature">(static) </span>detectSeries<span class="signature">(coll, iteratee, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &#x2192; {Promise}</span></h4>
 
     
 
@@ -1724,10 +1748,22 @@ Result will be the first item in the array that passes the truth test
 
         
 <div class="param-desc">
-    <p>a Promise if no callback is passed</p>
+    <p>a promise, if a callback is omitted</p>
 </div>
 
 
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
 
     
 
@@ -13297,12 +13333,14 @@ functions should be run in parallel.  If omitted, the concurrency defaults to
 
         
 <div class="param-desc">
-    <p>A priorityQueue object to manage the tasks. There are two
+    <p>A priorityQueue object to manage the tasks. There are three
 differences between <code>queue</code> and <code>priorityQueue</code> objects:</p>
 <ul>
 <li><code>push(task, priority, [callback])</code> - <code>priority</code> should be a number. If an
 array of <code>tasks</code> is given, all tasks will be assigned the same priority.</li>
-<li>The <code>unshift</code> method was removed.</li>
+<li><code>pushAsync(task, priority, [callback])</code> - the same as <code>priorityQueue.push</code>,
+except this returns a promise that rejects if an error occurs.</li>
+<li>The <code>unshift</code> and <code>unshiftAsync</code> methods were removed.</li>
 </ul>
 </div>
 
@@ -13356,7 +13394,7 @@ array of <code>tasks</code> is given, all tasks will be assigned the same priori
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="priorityQueue.js.html">priorityQueue.js</a>, <a href="priorityQueue.js.html#line5">line 5</a>
+        <a href="priorityQueue.js.html">priorityQueue.js</a>, <a href="priorityQueue.js.html#line4">line 4</a>
     </li></ul></dd>
     
 
@@ -13630,7 +13668,7 @@ q.unshift({name: &apos;bar&apos;}, function (err) {
 
     
 
-    <h4 class="name" id="race"><span class="type-signature">(static) </span>race<span class="signature">(tasks, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="race"><span class="type-signature">(static) </span>race<span class="signature">(tasks, callback)</span><span class="type-signature"> &#x2192; {Promise}</span></h4>
 
     
 
@@ -13735,10 +13773,22 @@ completed. Invoked with (err, result).</p></td>
 
         
 <div class="param-desc">
-    <p>undefined</p>
+    <p>a promise, if a callback is omitted</p>
 </div>
 
 
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
 
     
 
@@ -16010,7 +16060,7 @@ async.until(function test(cb) {
 
     
 
-    <h4 class="name" id="waterfall"><span class="type-signature">(static) </span>waterfall<span class="signature">(tasks, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="waterfall"><span class="type-signature">(static) </span>waterfall<span class="signature">(tasks, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &#x2192; {Promise}</span></h4>
 
     
 
@@ -16119,10 +16169,22 @@ callback. Invoked with (err, [results]).</p></td>
 
         
 <div class="param-desc">
-    <p>undefined</p>
+    <p>a promise, if a callback is omitted</p>
 </div>
 
 
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
 
     
 

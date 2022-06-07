@@ -1512,12 +1512,11 @@
                 res(args);
             }
 
-            var item = {
+            var item = q._createTaskItem(
                 data,
-                callback: rejectOnError ?
-                    promiseCallback :
+                rejectOnError ? promiseCallback :
                     (callback || promiseCallback)
-            };
+            );
 
             if (insertAtFront) {
                 q._tasks.unshift(item);
@@ -1599,6 +1598,12 @@
         var isProcessing = false;
         var q = {
             _tasks: new DLL(),
+            _createTaskItem (data, callback) {
+                return {
+                    data,
+                    callback
+                };
+            },
             *[Symbol.iterator] () {
                 yield* q._tasks[Symbol.iterator]();
             },
@@ -2348,7 +2353,7 @@
      * Result will be the first item in the array that passes the truth test
      * (iteratee) or the value `undefined` if none passed. Invoked with
      * (err, result).
-     * @returns A Promise, if no callback is passed
+     * @returns {Promise} a promise, if a callback is omitted
      * @example
      *
      * // dir1 is a directory that contains file1.txt, file2.txt
@@ -2420,7 +2425,7 @@
      * Result will be the first item in the array that passes the truth test
      * (iteratee) or the value `undefined` if none passed. Invoked with
      * (err, result).
-     * @returns a Promise if no callback is passed
+     * @returns {Promise} a promise, if a callback is omitted
      */
     function detectLimit(coll, limit, iteratee, callback) {
         return _createTester(bool => bool, (res, item) => item)(eachOfLimit(limit), coll, iteratee, callback)
@@ -2446,7 +2451,7 @@
      * Result will be the first item in the array that passes the truth test
      * (iteratee) or the value `undefined` if none passed. Invoked with
      * (err, result).
-     * @returns a Promise if no callback is passed
+     * @returns {Promise} a promise, if a callback is omitted
      */
     function detectSeries(coll, iteratee, callback) {
         return _createTester(bool => bool, (res, item) => item)(eachOfLimit(1), coll, iteratee, callback)
@@ -3662,7 +3667,7 @@
 
     var nextTick = wrap(_defer$1);
 
-    var _parallel = awaitify((eachfn, tasks, callback) => {
+    var parallel = awaitify((eachfn, tasks, callback) => {
         var results = isArrayLike(tasks) ? [] : {};
 
         eachfn(tasks, (task, key, taskCb) => {
@@ -3835,8 +3840,8 @@
      * }
      *
      */
-    function parallel(tasks, callback) {
-        return _parallel(eachOf$1, tasks, callback);
+    function parallel$1(tasks, callback) {
+        return parallel(eachOf$1, tasks, callback);
     }
 
     /**
@@ -3860,7 +3865,7 @@
      * @returns {Promise} a promise, if a callback is not passed
      */
     function parallelLimit(tasks, limit, callback) {
-        return _parallel(eachOfLimit(limit), tasks, callback);
+        return parallel(eachOfLimit(limit), tasks, callback);
     }
 
     /**
@@ -4144,54 +4149,51 @@
      * @param {number} concurrency - An `integer` for determining how many `worker`
      * functions should be run in parallel.  If omitted, the concurrency defaults to
      * `1`.  If the concurrency is `0`, an error is thrown.
-     * @returns {module:ControlFlow.QueueObject} A priorityQueue object to manage the tasks. There are two
+     * @returns {module:ControlFlow.QueueObject} A priorityQueue object to manage the tasks. There are three
      * differences between `queue` and `priorityQueue` objects:
      * * `push(task, priority, [callback])` - `priority` should be a number. If an
      *   array of `tasks` is given, all tasks will be assigned the same priority.
-     * * The `unshift` method was removed.
+     * * `pushAsync(task, priority, [callback])` - the same as `priorityQueue.push`,
+     *   except this returns a promise that rejects if an error occurs.
+     * * The `unshift` and `unshiftAsync` methods were removed.
      */
     function priorityQueue(worker, concurrency) {
         // Start with a normal queue
         var q = queue$1(worker, concurrency);
-        var processingScheduled = false;
+
+        var {
+            push,
+            pushAsync
+        } = q;
 
         q._tasks = new Heap();
-
-        // Override push to accept second parameter representing priority
-        q.push = function(data, priority = 0, callback = () => {}) {
-            if (typeof callback !== 'function') {
-                throw new Error('task callback must be a function');
-            }
-            q.started = true;
-            if (!Array.isArray(data)) {
-                data = [data];
-            }
-            if (data.length === 0 && q.idle()) {
-                // call drain immediately if there are no tasks
-                return setImmediate$1(() => q.drain());
-            }
-
-            for (var i = 0, l = data.length; i < l; i++) {
-                var item = {
-                    data: data[i],
-                    priority,
-                    callback
-                };
-
-                q._tasks.push(item);
-            }
-
-            if (!processingScheduled) {
-                processingScheduled = true;
-                setImmediate$1(() => {
-                    processingScheduled = false;
-                    q.process();
-                });
-            }
+        q._createTaskItem = ({data, priority}, callback) => {
+            return {
+                data,
+                priority,
+                callback
+            };
         };
 
-        // Remove unshift function
+        function createDataItems(tasks, priority) {
+            if (!Array.isArray(tasks)) {
+                return {data: tasks, priority};
+            }
+            return tasks.map(data => { return {data, priority}; });
+        }
+
+        // Override push to accept second parameter representing priority
+        q.push = function(data, priority = 0, callback) {
+            return push(createDataItems(data, priority), callback);
+        };
+
+        q.pushAsync = function(data, priority = 0, callback) {
+            return pushAsync(createDataItems(data, priority), callback);
+        };
+
+        // Remove unshift functions
         delete q.unshift;
+        delete q.unshiftAsync;
 
         return q;
     }
@@ -4212,7 +4214,7 @@
      * @param {Function} callback - A callback to run once any of the functions have
      * completed. This function gets an error or result from the first function that
      * completed. Invoked with (err, result).
-     * @returns undefined
+     * @returns {Promise} a promise, if a callback is omitted
      * @example
      *
      * async.race([
@@ -4905,7 +4907,7 @@
      *
      */
     function series(tasks, callback) {
-        return _parallel(eachOfSeries$1, tasks, callback);
+        return parallel(eachOfSeries$1, tasks, callback);
     }
 
     /**
@@ -5737,7 +5739,7 @@
      * @param {Function} [callback] - An optional callback to run once all the
      * functions have completed. This will be passed the results of the last task's
      * callback. Invoked with (err, [results]).
-     * @returns undefined
+     * @returns {Promise} a promise, if a callback is omitted
      * @example
      *
      * async.waterfall([
@@ -5885,7 +5887,7 @@
         mapValuesSeries,
         memoize,
         nextTick,
-        parallel,
+        parallel: parallel$1,
         parallelLimit,
         priorityQueue,
         queue: queue$1,
@@ -5993,7 +5995,7 @@
     exports.mapValuesSeries = mapValuesSeries;
     exports.memoize = memoize;
     exports.nextTick = nextTick;
-    exports.parallel = parallel;
+    exports.parallel = parallel$1;
     exports.parallelLimit = parallelLimit;
     exports.priorityQueue = priorityQueue;
     exports.queue = queue$1;
