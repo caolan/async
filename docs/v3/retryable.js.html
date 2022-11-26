@@ -77,7 +77,8 @@
         <article>
             <pre class="prettyprint source linenums"><code>import retry from &apos;./retry.js&apos;
 import initialParams from &apos;./internal/initialParams.js&apos;
-import {default as wrapAsync, isAsync} from &apos;./internal/wrapAsync.js&apos;
+import wrapAsync from &apos;./internal/wrapAsync.js&apos;
+import { isAsync } from &apos;./internal/isAsync.js&apos;
 import { promiseCallback, PROMISE_SYMBOL } from &apos;./internal/promiseCallback.js&apos;
 
 /**
