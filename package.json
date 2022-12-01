@@ -49,7 +49,7 @@
     "mocha": "^6.1.4",
     "native-promise-only": "^0.8.0-a",
     "nyc": "^15.1.0",
-    "rollup": "^2.66.1",
+    "rollup": "^3.5.1",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-npm": "^2.0.0",
     "rsvp": "^4.8.5",
