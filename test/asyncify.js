@@ -59,6 +59,19 @@ describe('asyncify', () => {
         }
     });
 
+    it('propagates AggregateError', (done) => {
+        async.asyncify(async () => {
+            throw new AggregateError([new Error('foo'), new Error('bar')]);
+        })((err) => {
+            assert(err);
+            expect(err.errors).to.be.an('array');
+            expect(err.errors.length).to.equal(2);
+            expect(err.errors[0].message).to.equal('foo');
+            expect(err.errors[1].message).to.equal('bar');
+            done();
+        })
+    })
+
     describe('promisified', () => {
         function promisifiedTests(Promise) {
             it('resolve', (done) => {
