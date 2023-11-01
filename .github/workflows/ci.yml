@@ -12,6 +12,10 @@ permissions:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node:
+          - 20
     steps:
       - name: ⬇️ Checkout
         uses: actions/checkout@v2
