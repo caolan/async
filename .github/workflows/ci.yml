@@ -38,19 +38,18 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - 12
-          - 14
           - 16
-          - 17
+          - 18
+          - 20
         os: [ubuntu-latest]
         browser:
           - FirefoxHeadless
         include:
           - os: macos-latest
-            node: 16
+            node: 20
             browser: FirefoxHeadless
           - os: windows-latest
-            node: 16
+            node: 20
             browser: FirefoxHeadless
 
     steps:
@@ -75,7 +74,7 @@ jobs:
         run: npm test
 
       - name: Run browser tests
-        if: matrix.node == 16
+        if: matrix.node == 20
         run: npm run mocha-browser-test -- --browsers ${{ matrix.browser }}  --timeout 10000
         env:
           DISPLAY: :99.0
