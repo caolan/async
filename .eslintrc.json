@@ -8,7 +8,9 @@
     "parserOptions": {
         "ecmaVersion": 8,
         "sourceType": "module",
-        "requireConfigFile": false
+        "babelOptions": {
+          "configFile": "./.babelrc"
+        }
     },
     "extends": "eslint:recommended",
     "rules": {
