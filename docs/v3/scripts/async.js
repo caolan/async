@@ -1,8 +1,8 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
     typeof define === 'function' && define.amd ? define(['exports'], factory) :
-    (factory((global.async = {})));
-}(this, (function (exports) { 'use strict';
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.async = {}));
+})(this, (function (exports) { 'use strict';
 
     /**
      * Creates a continuation function with some arguments already applied.
@@ -74,19 +74,19 @@
         return (fn, ...args) => defer(() => fn(...args));
     }
 
-    var _defer;
+    var _defer$1;
 
     if (hasQueueMicrotask) {
-        _defer = queueMicrotask;
+        _defer$1 = queueMicrotask;
     } else if (hasSetImmediate) {
-        _defer = setImmediate;
+        _defer$1 = setImmediate;
     } else if (hasNextTick) {
-        _defer = process.nextTick;
+        _defer$1 = process.nextTick;
     } else {
-        _defer = fallback;
+        _defer$1 = fallback;
     }
 
-    var setImmediate$1 = wrap(_defer);
+    var setImmediate$1 = wrap(_defer$1);
 
     /**
      * Take a sync function and make it async, passing its return value to a
@@ -173,7 +173,7 @@
         return promise.then(value => {
             invokeCallback(callback, null, value);
         }, err => {
-            invokeCallback(callback, err && err.message ? err : new Error(err));
+            invokeCallback(callback, err && (err instanceof Error || err.message) ? err : new Error(err));
         });
     }
 
@@ -204,7 +204,8 @@
 
     // conditionally promisify a function.
     // only return a promise if a callback is omitted
-    function awaitify (asyncFn, arity = asyncFn.length) {
+    function awaitify (asyncFn, arity) {
+        if (!arity) arity = asyncFn.length;
         if (!arity) throw new Error('arity is undefined')
         function awaitable (...args) {
             if (typeof args[arity - 1] === 'function') {
@@ -223,7 +224,7 @@
         return awaitable
     }
 
-    function applyEach (eachfn) {
+    function applyEach$1 (eachfn) {
         return function applyEach(fns, ...callArgs) {
             const go = awaitify(function (callback) {
                 var that = this;
@@ -262,6 +263,7 @@
     // A temporary value used to identify if the loop should be broken.
     // See #1064, #1293
     const breakLoop = {};
+    var breakLoop$1 = breakLoop;
 
     function once(fn) {
         function wrapper (...args) {
@@ -372,7 +374,7 @@
                 return
             }
 
-            if (result === breakLoop || (done && running <= 0)) {
+            if (result === breakLoop$1 || (done && running <= 0)) {
                 done = true;
                 //console.log('done iterCb')
                 return callback(null);
@@ -390,7 +392,7 @@
         replenish();
     }
 
-    var eachOfLimit = (limit) => {
+    var eachOfLimit$2 = (limit) => {
         return (obj, iteratee, callback) => {
             callback = once(callback);
             if (limit <= 0) {
@@ -422,7 +424,7 @@
                     done = true;
                     canceled = true;
                 }
-                else if (value === breakLoop || (done && running <= 0)) {
+                else if (value === breakLoop$1 || (done && running <= 0)) {
                     done = true;
                     return callback(null);
                 }
@@ -473,11 +475,11 @@
      * `iteratee` functions have finished, or an error occurs. Invoked with (err).
      * @returns {Promise} a promise, if a callback is omitted
      */
-    function eachOfLimit$1(coll, limit, iteratee, callback) {
-        return eachOfLimit(limit)(coll, wrapAsync(iteratee), callback);
+    function eachOfLimit(coll, limit, iteratee, callback) {
+        return eachOfLimit$2(limit)(coll, wrapAsync(iteratee), callback);
     }
 
-    var eachOfLimit$2 = awaitify(eachOfLimit$1, 4);
+    var eachOfLimit$1 = awaitify(eachOfLimit, 4);
 
     // eachOf implementation optimized for array-likes
     function eachOfArrayLike(coll, iteratee, callback) {
@@ -497,7 +499,7 @@
             if (canceled === true) return
             if (err) {
                 callback(err);
-            } else if ((++completed === length) || value === breakLoop) {
+            } else if ((++completed === length) || value === breakLoop$1) {
                 callback(null);
             }
         }
@@ -509,7 +511,7 @@
 
     // a generic version of eachOf which can handle array, object, and iterator cases.
     function eachOfGeneric (coll, iteratee, callback) {
-        return eachOfLimit$2(coll, Infinity, iteratee, callback);
+        return eachOfLimit$1(coll, Infinity, iteratee, callback);
     }
 
     /**
@@ -789,7 +791,7 @@
      *     callback
      * );
      */
-    var applyEach$1 = applyEach(map$1);
+    var applyEach = applyEach$1(map$1);
 
     /**
      * The same as [`eachOf`]{@link module:Collections.eachOf} but runs only a single async operation at a time.
@@ -810,7 +812,7 @@
      * @returns {Promise} a promise, if a callback is omitted
      */
     function eachOfSeries(coll, iteratee, callback) {
-        return eachOfLimit$2(coll, 1, iteratee, callback)
+        return eachOfLimit$1(coll, 1, iteratee, callback)
     }
     var eachOfSeries$1 = awaitify(eachOfSeries, 3);
 
@@ -857,7 +859,7 @@
      * appling the `args` to the list of functions.  It takes no args, other than
      * a callback.
      */
-    var applyEachSeries = applyEach(mapSeries$1);
+    var applyEachSeries = applyEach$1(mapSeries$1);
 
     const PROMISE_SYMBOL = Symbol('promiseCallback');
 
@@ -1455,7 +1457,7 @@
         dll.head = dll.tail = node;
     }
 
-    function queue(worker, concurrency, payload) {
+    function queue$1(worker, concurrency, payload) {
         if (concurrency == null) {
             concurrency = 1;
         }
@@ -1773,8 +1775,8 @@
      * await cargo.push({name: 'baz'});
      * console.log('finished processing baz');
      */
-    function cargo(worker, payload) {
-        return queue(worker, 1, payload);
+    function cargo$1(worker, payload) {
+        return queue$1(worker, 1, payload);
     }
 
     /**
@@ -1831,8 +1833,8 @@
      *     console.log('finished processing boo');
      * });
      */
-    function cargo$1(worker, concurrency, payload) {
-        return queue(worker, concurrency, payload);
+    function cargo(worker, concurrency, payload) {
+        return queue$1(worker, concurrency, payload);
     }
 
     /**
@@ -2088,7 +2090,7 @@
      * @returns {Promise} a promise, if no callback is passed
      */
     function mapLimit (coll, limit, iteratee, callback) {
-        return _asyncMap(eachOfLimit(limit), coll, iteratee, callback)
+        return _asyncMap(eachOfLimit$2(limit), coll, iteratee, callback)
     }
     var mapLimit$1 = awaitify(mapLimit, 4);
 
@@ -2298,7 +2300,7 @@
      *     //...
      * }, callback);
      */
-    function constant(...args) {
+    function constant$1(...args) {
         return function (...ignoredArgs/*, callback*/) {
             var callback = ignoredArgs.pop();
             return callback(null, ...args);
@@ -2317,7 +2319,7 @@
                     if (check(result) && !testResult) {
                         testPassed = true;
                         testResult = getResult(true, value);
-                        return callback(null, breakLoop);
+                        return callback(null, breakLoop$1);
                     }
                     callback();
                 });
@@ -2428,7 +2430,7 @@
      * @returns {Promise} a promise, if a callback is omitted
      */
     function detectLimit(coll, limit, iteratee, callback) {
-        return _createTester(bool => bool, (res, item) => item)(eachOfLimit(limit), coll, iteratee, callback)
+        return _createTester(bool => bool, (res, item) => item)(eachOfLimit$2(limit), coll, iteratee, callback)
     }
     var detectLimit$1 = awaitify(detectLimit, 4);
 
@@ -2454,7 +2456,7 @@
      * @returns {Promise} a promise, if a callback is omitted
      */
     function detectSeries(coll, iteratee, callback) {
-        return _createTester(bool => bool, (res, item) => item)(eachOfLimit(1), coll, iteratee, callback)
+        return _createTester(bool => bool, (res, item) => item)(eachOfLimit$2(1), coll, iteratee, callback)
     }
 
     var detectSeries$1 = awaitify(detectSeries, 3);
@@ -2687,11 +2689,11 @@
      * }
      *
      */
-    function eachLimit(coll, iteratee, callback) {
+    function eachLimit$2(coll, iteratee, callback) {
         return eachOf$1(coll, _withoutIndex(wrapAsync(iteratee)), callback);
     }
 
-    var each = awaitify(eachLimit, 3);
+    var each = awaitify(eachLimit$2, 3);
 
     /**
      * The same as [`each`]{@link module:Collections.each} but runs a maximum of `limit` async operations at a time.
@@ -2714,10 +2716,10 @@
      * `iteratee` functions have finished, or an error occurs. Invoked with (err).
      * @returns {Promise} a promise, if a callback is omitted
      */
-    function eachLimit$1(coll, limit, iteratee, callback) {
-        return eachOfLimit(limit)(coll, _withoutIndex(wrapAsync(iteratee)), callback);
+    function eachLimit(coll, limit, iteratee, callback) {
+        return eachOfLimit$2(limit)(coll, _withoutIndex(wrapAsync(iteratee)), callback);
     }
-    var eachLimit$2 = awaitify(eachLimit$1, 4);
+    var eachLimit$1 = awaitify(eachLimit, 4);
 
     /**
      * The same as [`each`]{@link module:Collections.each} but runs only a single async operation at a time.
@@ -2743,7 +2745,7 @@
      * @returns {Promise} a promise, if a callback is omitted
      */
     function eachSeries(coll, iteratee, callback) {
-        return eachLimit$2(coll, 1, iteratee, callback)
+        return eachLimit$1(coll, 1, iteratee, callback)
     }
     var eachSeries$1 = awaitify(eachSeries, 3);
 
@@ -2920,7 +2922,7 @@
      * @returns {Promise} a promise, if no callback provided
      */
     function everyLimit(coll, limit, iteratee, callback) {
-        return _createTester(bool => !bool, res => !res)(eachOfLimit(limit), coll, iteratee, callback)
+        return _createTester(bool => !bool, res => !res)(eachOfLimit$2(limit), coll, iteratee, callback)
     }
     var everyLimit$1 = awaitify(everyLimit, 4);
 
@@ -3083,7 +3085,7 @@
      * @returns {Promise} a promise, if no callback provided
      */
     function filterLimit (coll, limit, iteratee, callback) {
-        return _filter(eachOfLimit(limit), coll, iteratee, callback)
+        return _filter(eachOfLimit$2(limit), coll, iteratee, callback)
     }
     var filterLimit$1 = awaitify(filterLimit, 4);
 
@@ -3378,7 +3380,7 @@
         callback = once(callback);
         var newObj = {};
         var _iteratee = wrapAsync(iteratee);
-        return eachOfLimit(limit)(obj, (val, key, next) => {
+        return eachOfLimit$2(limit)(obj, (val, key, next) => {
             _iteratee(val, key, (err, result) => {
                 if (err) return next(err);
                 newObj[key] = result;
@@ -3655,19 +3657,19 @@
      *     // a, b, and c equal 1, 2, and 3
      * }, 1, 2, 3);
      */
-    var _defer$1;
+    var _defer;
 
     if (hasNextTick) {
-        _defer$1 = process.nextTick;
+        _defer = process.nextTick;
     } else if (hasSetImmediate) {
-        _defer$1 = setImmediate;
+        _defer = setImmediate;
     } else {
-        _defer$1 = fallback;
+        _defer = fallback;
     }
 
-    var nextTick = wrap(_defer$1);
+    var nextTick = wrap(_defer);
 
-    var parallel = awaitify((eachfn, tasks, callback) => {
+    var _parallel = awaitify((eachfn, tasks, callback) => {
         var results = isArrayLike(tasks) ? [] : {};
 
         eachfn(tasks, (task, key, taskCb) => {
@@ -3840,8 +3842,8 @@
      * }
      *
      */
-    function parallel$1(tasks, callback) {
-        return parallel(eachOf$1, tasks, callback);
+    function parallel(tasks, callback) {
+        return _parallel(eachOf$1, tasks, callback);
     }
 
     /**
@@ -3865,7 +3867,7 @@
      * @returns {Promise} a promise, if a callback is not passed
      */
     function parallelLimit(tasks, limit, callback) {
-        return parallel(eachOfLimit(limit), tasks, callback);
+        return _parallel(eachOfLimit$2(limit), tasks, callback);
     }
 
     /**
@@ -4010,9 +4012,9 @@
      *     console.log('finished processing bar');
      * });
      */
-    function queue$1 (worker, concurrency) {
+    function queue (worker, concurrency) {
         var _worker = wrapAsync(worker);
-        return queue((items, cb) => {
+        return queue$1((items, cb) => {
             _worker(items[0], cb);
         }, concurrency, 1);
     }
@@ -4159,7 +4161,7 @@
      */
     function priorityQueue(worker, concurrency) {
         // Start with a normal queue
-        var q = queue$1(worker, concurrency);
+        var q = queue(worker, concurrency);
 
         var {
             push,
@@ -4414,7 +4416,7 @@
         return results;
     }
 
-    function reject(eachfn, arr, _iteratee, callback) {
+    function reject$2(eachfn, arr, _iteratee, callback) {
         const iteratee = wrapAsync(_iteratee);
         return _filter(eachfn, arr, (value, cb) => {
             iteratee(value, (err, v) => {
@@ -4485,10 +4487,10 @@
      * }
      *
      */
-    function reject$1 (coll, iteratee, callback) {
-        return reject(eachOf$1, coll, iteratee, callback)
+    function reject (coll, iteratee, callback) {
+        return reject$2(eachOf$1, coll, iteratee, callback)
     }
-    var reject$2 = awaitify(reject$1, 3);
+    var reject$1 = awaitify(reject, 3);
 
     /**
      * The same as [`reject`]{@link module:Collections.reject} but runs a maximum of `limit` async operations at a
@@ -4511,7 +4513,7 @@
      * @returns {Promise} a promise, if no callback is passed
      */
     function rejectLimit (coll, limit, iteratee, callback) {
-        return reject(eachOfLimit(limit), coll, iteratee, callback)
+        return reject$2(eachOfLimit$2(limit), coll, iteratee, callback)
     }
     var rejectLimit$1 = awaitify(rejectLimit, 4);
 
@@ -4534,11 +4536,11 @@
      * @returns {Promise} a promise, if no callback is passed
      */
     function rejectSeries (coll, iteratee, callback) {
-        return reject(eachOfSeries$1, coll, iteratee, callback)
+        return reject$2(eachOfSeries$1, coll, iteratee, callback)
     }
     var rejectSeries$1 = awaitify(rejectSeries, 3);
 
-    function constant$1(value) {
+    function constant(value) {
         return function () {
             return value;
         }
@@ -4635,7 +4637,7 @@
     function retry(opts, task, callback) {
         var options = {
             times: DEFAULT_TIMES,
-            intervalFunc: constant$1(DEFAULT_INTERVAL)
+            intervalFunc: constant(DEFAULT_INTERVAL)
         };
 
         if (arguments.length < 3 && typeof opts === 'function') {
@@ -4676,7 +4678,7 @@
 
             acc.intervalFunc = typeof t.interval === 'function' ?
                 t.interval :
-                constant$1(+t.interval || DEFAULT_INTERVAL);
+                constant(+t.interval || DEFAULT_INTERVAL);
 
             acc.errorFilter = t.errorFilter;
         } else if (typeof t === 'number' || typeof t === 'string') {
@@ -4907,7 +4909,7 @@
      *
      */
     function series(tasks, callback) {
-        return parallel(eachOfSeries$1, tasks, callback);
+        return _parallel(eachOfSeries$1, tasks, callback);
     }
 
     /**
@@ -5035,7 +5037,7 @@
      * @returns {Promise} a promise, if no callback provided
      */
     function someLimit(coll, limit, iteratee, callback) {
-        return _createTester(Boolean, res => res)(eachOfLimit(limit), coll, iteratee, callback)
+        return _createTester(Boolean, res => res)(eachOfLimit$2(limit), coll, iteratee, callback)
     }
     var someLimit$1 = awaitify(someLimit, 4);
 
@@ -5629,7 +5631,7 @@
      * @method
      * @category Control Flow
      * @param {AsyncFunction} test - asynchronous truth test to perform before each
-     * execution of `iteratee`. Invoked with ().
+     * execution of `iteratee`. Invoked with (callback).
      * @param {AsyncFunction} iteratee - An async function which is called each time
      * `test` passes. Invoked with (callback).
      * @param {Function} [callback] - A callback which is called after the test
@@ -5841,20 +5843,21 @@
      * @static
      */
 
+
     var index = {
         apply,
-        applyEach: applyEach$1,
+        applyEach,
         applyEachSeries,
         asyncify,
         auto,
         autoInject,
-        cargo,
-        cargoQueue: cargo$1,
+        cargo: cargo$1,
+        cargoQueue: cargo,
         compose,
         concat: concat$1,
         concatLimit: concatLimit$1,
         concatSeries: concatSeries$1,
-        constant,
+        constant: constant$1,
         detect: detect$1,
         detectLimit: detectLimit$1,
         detectSeries: detectSeries$1,
@@ -5862,9 +5865,9 @@
         doUntil,
         doWhilst: doWhilst$1,
         each,
-        eachLimit: eachLimit$2,
+        eachLimit: eachLimit$1,
         eachOf: eachOf$1,
-        eachOfLimit: eachOfLimit$2,
+        eachOfLimit: eachOfLimit$1,
         eachOfSeries: eachOfSeries$1,
         eachSeries: eachSeries$1,
         ensureAsync,
@@ -5887,16 +5890,16 @@
         mapValuesSeries,
         memoize,
         nextTick,
-        parallel: parallel$1,
+        parallel,
         parallelLimit,
         priorityQueue,
-        queue: queue$1,
+        queue,
         race: race$1,
         reduce: reduce$1,
         reduceRight,
         reflect,
         reflectAll,
-        reject: reject$2,
+        reject: reject$1,
         rejectLimit: rejectLimit$1,
         rejectSeries: rejectSeries$1,
         retry,
@@ -5934,10 +5937,10 @@
         flatMapSeries: concatSeries$1,
         forEach: each,
         forEachSeries: eachSeries$1,
-        forEachLimit: eachLimit$2,
+        forEachLimit: eachLimit$1,
         forEachOf: eachOf$1,
         forEachOfSeries: eachOfSeries$1,
-        forEachOfLimit: eachOfLimit$2,
+        forEachOfLimit: eachOfLimit$1,
         inject: reduce$1,
         foldl: reduce$1,
         foldr: reduceRight,
@@ -5949,30 +5952,38 @@
         doDuring: doWhilst$1
     };
 
-    exports.default = index;
+    exports.all = every$1;
+    exports.allLimit = everyLimit$1;
+    exports.allSeries = everySeries$1;
+    exports.any = some$1;
+    exports.anyLimit = someLimit$1;
+    exports.anySeries = someSeries$1;
     exports.apply = apply;
-    exports.applyEach = applyEach$1;
+    exports.applyEach = applyEach;
     exports.applyEachSeries = applyEachSeries;
     exports.asyncify = asyncify;
     exports.auto = auto;
     exports.autoInject = autoInject;
-    exports.cargo = cargo;
-    exports.cargoQueue = cargo$1;
+    exports.cargo = cargo$1;
+    exports.cargoQueue = cargo;
     exports.compose = compose;
     exports.concat = concat$1;
     exports.concatLimit = concatLimit$1;
     exports.concatSeries = concatSeries$1;
-    exports.constant = constant;
+    exports.constant = constant$1;
+    exports.default = index;
     exports.detect = detect$1;
     exports.detectLimit = detectLimit$1;
     exports.detectSeries = detectSeries$1;
     exports.dir = dir;
+    exports.doDuring = doWhilst$1;
     exports.doUntil = doUntil;
     exports.doWhilst = doWhilst$1;
+    exports.during = whilst$1;
     exports.each = each;
-    exports.eachLimit = eachLimit$2;
+    exports.eachLimit = eachLimit$1;
     exports.eachOf = eachOf$1;
-    exports.eachOfLimit = eachOfLimit$2;
+    exports.eachOfLimit = eachOfLimit$1;
     exports.eachOfSeries = eachOfSeries$1;
     exports.eachSeries = eachSeries$1;
     exports.ensureAsync = ensureAsync;
@@ -5982,10 +5993,25 @@
     exports.filter = filter$1;
     exports.filterLimit = filterLimit$1;
     exports.filterSeries = filterSeries$1;
+    exports.find = detect$1;
+    exports.findLimit = detectLimit$1;
+    exports.findSeries = detectSeries$1;
+    exports.flatMap = concat$1;
+    exports.flatMapLimit = concatLimit$1;
+    exports.flatMapSeries = concatSeries$1;
+    exports.foldl = reduce$1;
+    exports.foldr = reduceRight;
+    exports.forEach = each;
+    exports.forEachLimit = eachLimit$1;
+    exports.forEachOf = eachOf$1;
+    exports.forEachOfLimit = eachOfLimit$1;
+    exports.forEachOfSeries = eachOfSeries$1;
+    exports.forEachSeries = eachSeries$1;
     exports.forever = forever$1;
     exports.groupBy = groupBy;
     exports.groupByLimit = groupByLimit$1;
     exports.groupBySeries = groupBySeries;
+    exports.inject = reduce$1;
     exports.log = log;
     exports.map = map$1;
     exports.mapLimit = mapLimit$1;
@@ -5995,20 +6021,23 @@
     exports.mapValuesSeries = mapValuesSeries;
     exports.memoize = memoize;
     exports.nextTick = nextTick;
-    exports.parallel = parallel$1;
+    exports.parallel = parallel;
     exports.parallelLimit = parallelLimit;
     exports.priorityQueue = priorityQueue;
-    exports.queue = queue$1;
+    exports.queue = queue;
     exports.race = race$1;
     exports.reduce = reduce$1;
     exports.reduceRight = reduceRight;
     exports.reflect = reflect;
     exports.reflectAll = reflectAll;
-    exports.reject = reject$2;
+    exports.reject = reject$1;
     exports.rejectLimit = rejectLimit$1;
     exports.rejectSeries = rejectSeries$1;
     exports.retry = retry;
     exports.retryable = retryable;
+    exports.select = filter$1;
+    exports.selectLimit = filterLimit$1;
+    exports.selectSeries = filterSeries$1;
     exports.seq = seq;
     exports.series = series;
     exports.setImmediate = setImmediate$1;
@@ -6026,34 +6055,8 @@
     exports.until = until;
     exports.waterfall = waterfall$1;
     exports.whilst = whilst$1;
-    exports.all = every$1;
-    exports.allLimit = everyLimit$1;
-    exports.allSeries = everySeries$1;
-    exports.any = some$1;
-    exports.anyLimit = someLimit$1;
-    exports.anySeries = someSeries$1;
-    exports.find = detect$1;
-    exports.findLimit = detectLimit$1;
-    exports.findSeries = detectSeries$1;
-    exports.flatMap = concat$1;
-    exports.flatMapLimit = concatLimit$1;
-    exports.flatMapSeries = concatSeries$1;
-    exports.forEach = each;
-    exports.forEachSeries = eachSeries$1;
-    exports.forEachLimit = eachLimit$2;
-    exports.forEachOf = eachOf$1;
-    exports.forEachOfSeries = eachOfSeries$1;
-    exports.forEachOfLimit = eachOfLimit$2;
-    exports.inject = reduce$1;
-    exports.foldl = reduce$1;
-    exports.foldr = reduceRight;
-    exports.select = filter$1;
-    exports.selectLimit = filterLimit$1;
-    exports.selectSeries = filterSeries$1;
     exports.wrapSync = asyncify;
-    exports.during = whilst$1;
-    exports.doDuring = doWhilst$1;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
-})));
+}));
