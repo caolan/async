@@ -1,3 +1,6 @@
+# v3.2.5
+- Ensure `Error` objects such as `AggregateError` are propagated without modification (#1920)
+
 # v3.2.4
 - Fix a bug in `priorityQueue` where it didn't wait for the result. (#1725)
 - Fix a bug where `unshiftAsync` was included in `priorityQueue`. (#1790)
