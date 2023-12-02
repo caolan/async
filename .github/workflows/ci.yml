@@ -49,9 +49,6 @@ jobs:
         browser:
           - FirefoxHeadless
         include:
-          - os: macos-latest
-            node: 20
-            browser: FirefoxHeadless
           - os: windows-latest
             node: 20
             browser: FirefoxHeadless
