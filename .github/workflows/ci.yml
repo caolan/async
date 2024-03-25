@@ -42,9 +42,9 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - 16
           - 18
           - 20
+          - 21
         os: [ubuntu-latest]
         browser:
           - FirefoxHeadless
