@@ -86,6 +86,6 @@ jobs:
 
       - name: Coveralls
         if: matrix.os == 'ubuntu-latest' && matrix.node == '20'
-        uses: coverallsapp/github-action@v2.2.3
+        uses: coverallsapp/github-action@v2.3.0
         with:
             github-token: ${{ secrets.GITHUB_TOKEN }}
