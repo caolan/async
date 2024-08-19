@@ -19,8 +19,8 @@
     "utility"
   ],
   "devDependencies": {
-    "@babel/eslint-parser": "^7.16.5",
     "@babel/core": "7.25.2",
+    "@babel/eslint-parser": "^7.16.5",
     "babel-minify": "^0.5.0",
     "babel-plugin-add-module-exports": "^1.0.4",
     "babel-plugin-istanbul": "^7.0.0",
@@ -54,6 +54,7 @@
     "rollup-plugin-npm": "^2.0.0",
     "rsvp": "^4.8.5",
     "semver": "^7.3.5",
+    "taffydb": "^2.7.3",
     "yargs": "^17.3.1"
   },
   "scripts": {
