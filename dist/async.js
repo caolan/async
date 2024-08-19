@@ -263,7 +263,6 @@
     // A temporary value used to identify if the loop should be broken.
     // See #1064, #1293
     const breakLoop = {};
-    var breakLoop$1 = breakLoop;
 
     function once(fn) {
         function wrapper (...args) {
@@ -374,7 +373,7 @@
                 return
             }
 
-            if (result === breakLoop$1 || (done && running <= 0)) {
+            if (result === breakLoop || (done && running <= 0)) {
                 done = true;
                 //console.log('done iterCb')
                 return callback(null);
@@ -424,7 +423,7 @@
                     done = true;
                     canceled = true;
                 }
-                else if (value === breakLoop$1 || (done && running <= 0)) {
+                else if (value === breakLoop || (done && running <= 0)) {
                     done = true;
                     return callback(null);
                 }
@@ -499,7 +498,7 @@
             if (canceled === true) return
             if (err) {
                 callback(err);
-            } else if ((++completed === length) || value === breakLoop$1) {
+            } else if ((++completed === length) || value === breakLoop) {
                 callback(null);
             }
         }
@@ -1195,8 +1194,8 @@
         return callback[PROMISE_SYMBOL]
     }
 
-    var FN_ARGS = /^(?:async\s+)?(?:function)?\s*\w*\s*\(\s*([^)]+)\s*\)(?:\s*{)/;
-    var ARROW_FN_ARGS = /^(?:async\s+)?\(?\s*([^)=]+)\s*\)?(?:\s*=>)/;
+    var FN_ARGS = /^(?:async\s)?(?:function)?\s*(?:\w+\s*)?\(([^)]+)\)(?:\s*{)/;
+    var ARROW_FN_ARGS = /^(?:async\s)?\s*(?:\(\s*)?((?:[^)=\s]\s*)*)(?:\)\s*)?=>/;
     var FN_ARG_SPLIT = /,/;
     var FN_ARG = /(=.+)?(\s*)$/;
 
@@ -2319,7 +2318,7 @@
                     if (check(result) && !testResult) {
                         testPassed = true;
                         testResult = getResult(true, value);
-                        return callback(null, breakLoop$1);
+                        return callback(null, breakLoop);
                     }
                     callback();
                 });
