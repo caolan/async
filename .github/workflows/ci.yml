@@ -18,7 +18,7 @@ jobs:
           - 20
     steps:
       - name: ⬇️ Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: ⎔ Setup node ${{ matrix.node }}
         uses: actions/setup-node@v4
@@ -60,7 +60,7 @@ jobs:
           access_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: ⬇️ Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: ⎔ Setup node ${{ matrix.node }}
         uses: actions/setup-node@v4
