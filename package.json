@@ -19,7 +19,7 @@
     "utility"
   ],
   "devDependencies": {
-    "@babel/core": "7.27.1",
+    "@babel/core": "7.28.3",
     "@babel/eslint-parser": "^7.16.5",
     "babel-minify": "^0.5.0",
     "babel-plugin-add-module-exports": "^1.0.4",
