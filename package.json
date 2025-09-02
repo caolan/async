@@ -55,7 +55,7 @@
     "rsvp": "^4.8.5",
     "semver": "^7.3.5",
     "taffydb": "^2.7.3",
-    "yargs": "^17.3.1"
+    "yargs": "^18.0.0"
   },
   "scripts": {
     "coverage": "nyc npm run mocha-node-test -- --grep @nycinvalid --invert",
