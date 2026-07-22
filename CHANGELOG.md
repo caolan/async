@@ -1,3 +1,6 @@
+# v3.2.6
+- Fix ReDoS vulnerability in `autoInject` (#1980)
+
 # v3.2.5
 - Ensure `Error` objects such as `AggregateError` are propagated without modification (#1920)
 
