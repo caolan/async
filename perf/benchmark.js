@@ -2,7 +2,7 @@
 
 var _ = require("lodash");
 var Benchmark = require("benchmark");
-var {exec, execSync} = require("child_process");
+var {execFile, execSync} = require("child_process");
 var fs = require("fs");
 var path = require("path");
 var mkdirp = require("mkdirp");
@@ -216,9 +216,7 @@ function cloneVersion(tag, callback) {
 
         var repoPath = path.join(__dirname, "..");
 
-        var cmd = "git clone --branch " + tag + " " + repoPath + " " + versionDir;
-
-        exec(cmd, callback);
+        execFile("git", ["clone", "--branch", tag, repoPath, versionDir], callback);
 
     });
 }
