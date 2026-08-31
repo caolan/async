@@ -67,6 +67,10 @@
     "test": "npm run lint && npm run mocha-node-test"
   },
   "license": "MIT",
+  "overrides": {
+    "elliptic": "^6.6.1",
+    "browserify-sign": "^4.2.3"
+  },
   "nyc": {
     "exclude": [
       "test"
