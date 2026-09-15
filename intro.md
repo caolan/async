@@ -174,7 +174,7 @@ async.map([1, 2, 3], AsyncSquaringLibrary.square.bind(AsyncSquaringLibrary), fun
 });
 ```
 
-### Subtle Memory Leaks
+### Canceling an async flow
 
 There are cases where you might want to exit early from async flow, when calling an Async method inside another async function:
 
@@ -196,7 +196,7 @@ function myFunction (args, outerCallback) {
 
 Something happened in a waterfall where you want to skip the rest of the execution, so you call an outer callack.  However, Async will still wait for that inner `next` callback to be called, leaving some closure scope allocated.
 
-As of version 3.0, you can call any Async callback with `false` as the `error` argument, and the rest of the execution of the Async method will be stopped or ignored.
+As of version 3.0, calling any Async callback with `false` as the `error` argument cancels the flow: remaining work will be stopped or ignored, and the final callback will not run. Use `null` instead when a task succeeds and the flow should continue.
 
 ```javascript
         function (arg, next) {

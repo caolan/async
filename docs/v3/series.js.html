@@ -85,6 +85,10 @@ import eachOfSeries from &apos;./eachOfSeries.js&apos;
  * immediately called with the value of the error. Otherwise, `callback`
  * receives an array of results when `tasks` have completed.
  *
+ * **Note:** Calling a task&apos;s callback with `false` cancels the series. The
+ * remaining tasks and final `callback` will not run. Use `null` as the error
+ * argument to continue after a successful task.
+ *
  * It is also possible to use an object instead of an array. Each property will
  * be run as a function, and the results will be passed to the final `callback`
  * as an object instead of an array. This can be a more readable way of handling

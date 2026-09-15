@@ -223,7 +223,7 @@ async.map([1, 2, 3], AsyncSquaringLibrary.square.bind(AsyncSquaringLibrary), fun
     // will be as expected.
 });
 </code></pre>
-<h3>Subtle Memory Leaks</h3>
+<h3>Canceling an async flow</h3>
 <p>There are cases where you might want to exit early from async flow, when calling an Async method inside another async function:</p>
 <pre class="prettyprint source lang-javascript"><code>function myFunction (args, outerCallback) {
     async.waterfall([
@@ -240,7 +240,7 @@ async.map([1, 2, 3], AsyncSquaringLibrary.square.bind(AsyncSquaringLibrary), fun
 }
 </code></pre>
 <p>Something happened in a waterfall where you want to skip the rest of the execution, so you call an outer callack.  However, Async will still wait for that inner <code>next</code> callback to be called, leaving some closure scope allocated.</p>
-<p>As of version 3.0, you can call any Async callback with <code>false</code> as the <code>error</code> argument, and the rest of the execution of the Async method will be stopped or ignored.</p>
+<p>As of version 3.0, calling any Async callback with <code>false</code> as the <code>error</code> argument cancels the flow: remaining work will be stopped or ignored, and the final callback will not run. Use <code>null</code> instead when a task succeeds and the flow should continue.</p>
 <pre class="prettyprint source lang-javascript"><code>        function (arg, next) {
             if (someImportantCondition()) {
                 outerCallback(null)
