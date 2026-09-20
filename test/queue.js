@@ -63,6 +63,24 @@ describe('queue', function(){
         });
     });
 
+    ['push', 'unshift', 'pushAsync', 'unshiftAsync'].forEach(method => {
+        it(`waits for subsequent work after ${method} of an empty array`, async () => {
+            let completed = false;
+            const q = async.queue((task, callback) => {
+                async.setImmediate(() => {
+                    completed = true;
+                    callback();
+                });
+            });
+            const drained = q.drain();
+            q[method]([]);
+            q.push(1);
+            await drained;
+            expect(completed).to.equal(true);
+            expect(q.idle()).to.equal(true);
+        });
+    });
+
     it('default concurrency', (done) => {
         var call_order = [],
             delays = [50,10,180,10];
