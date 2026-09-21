@@ -28,6 +28,41 @@ module.exports = function () {
 
     this.retries(3);
 
+    it('should reject tryEach when the async generator fails before yielding a task', async () => {
+        const error = new Error('iterator failed')
+        async function * tasks () {
+            yield await Promise.reject(error)
+        }
+
+        await async.tryEach(tasks()).then(
+            () => { throw new Error('expected tryEach to reject') },
+            err => { expect(err).to.equal(error) }
+        )
+    })
+
+    it('should report tryEach iterator errors after a failed task', async () => {
+        const error = new Error('iterator failed')
+        async function * tasks () {
+            yield cb => cb(new Error('task failed'), 'last result')
+            throw error
+        }
+
+        const outcome = await new Promise(resolve => {
+            async.tryEach(tasks(), (err, result) => resolve({err, result}))
+        })
+        expect(outcome.err).to.equal(error)
+        expect(outcome.result).to.equal('last result')
+    })
+
+    it('should stop tryEach reading an async generator after a successful task', async () => {
+        async function * tasks () {
+            yield cb => cb(null, 'result')
+            throw new Error('should not request another task')
+        }
+
+        expect(await async.tryEach(tasks())).to.equal('result')
+    })
+
     it('should handle async generators in each', (done) => {
         const calls = []
         async.each(range(5),
