@@ -4540,6 +4540,9 @@ the previous function has completed. If any functions in the series pass an
 error to its callback, no more functions are run, and <code>callback</code> is
 immediately called with the value of the error. Otherwise, <code>callback</code>
 receives an array of results when <code>tasks</code> have completed.</p>
+<p><strong>Note:</strong> Calling a task&apos;s callback with <code>false</code> cancels the series. The
+remaining tasks and final <code>callback</code> will not run. Use <code>null</code> as the error
+argument to continue after a successful task.</p>
 <p>It is also possible to use an object instead of an array. Each property will
 be run as a function, and the results will be passed to the final <code>callback</code>
 as an object instead of an array. This can be a more readable way of handling
