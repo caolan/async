@@ -68,6 +68,25 @@ describe('timeout', () => {
         });
     });
 
+    [0, false, '', null].forEach((info) => {
+        it('preserves timeout info ' + JSON.stringify(info), (done) => {
+            const timed = async.timeout(() => {}, 1, info);
+            timed((err) => {
+                expect(err.code).to.equal('ETIMEDOUT');
+                expect(err).to.have.own.property('info', info);
+                done();
+            });
+        });
+    });
+
+    it('omits unspecified timeout info', (done) => {
+        const timed = async.timeout(() => {}, 1);
+        timed((err) => {
+            expect(err).not.to.have.own.property('info');
+            done();
+        });
+    });
+
     it('timeout with parallel', (done) => {
         async.parallel([
             async.timeout((callback) => {
