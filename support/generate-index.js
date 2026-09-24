@@ -52,7 +52,7 @@ function renderTemplate(entries, aliases, template) {
         .replace(
             `/*__imports__*/`,
             entries
-                .map(entry => `import ${entry} from './${entry}'`)
+                .map(entry => `import ${entry} from './${entry}.js'`)
                 .join('\n'))
         .replace(
             `/*__default_object__*/`,
