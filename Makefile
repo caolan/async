@@ -111,6 +111,7 @@ $(BUILD_ES)/%.js: lib/%.js
 
 test-build: $(UMD_BUNDLE) $(UMD_BUNDLE_MIN) $(ES_MODULES) $(CJS_MODULES)
 	mocha support/build.test.js
+	node support/esm-browser.test.js
 
 build-config: $(BUILDDIR)/package.json $(BUILDDIR)/bower.json $(BUILDDIR)/README.md $(BUILDDIR)/LICENSE $(BUILDDIR)/CHANGELOG.md
 
