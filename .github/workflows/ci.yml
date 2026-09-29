@@ -71,6 +71,10 @@ jobs:
       - name: 📥 Download deps
         run: npm ci
 
+      - name: 🏗 Build and smoke-test the dist bundles
+        if: runner.os == 'Linux'
+        run: make test-build
+
       - name: Run coverage
         run: npm test
 

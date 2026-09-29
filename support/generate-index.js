@@ -3,7 +3,7 @@
 
 const fs = require('fs')
 const path = require('path')
-require('babel-core/register')
+require('@babel/register')
 const autoInject = require('../lib/autoInject').default
 
 generateIndex(err => {

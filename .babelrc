@@ -1,7 +1,6 @@
 {
   "plugins": [
-    "transform-es2015-modules-commonjs",
-    "syntax-async-generators"
+    "@babel/plugin-transform-modules-commonjs"
   ],
   "env": {
     "test": {

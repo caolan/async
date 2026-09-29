@@ -2,7 +2,7 @@
 var methods = ["each", "waterfall", "queue", "eachSeries", "forEachOf"];
 var {expect} = require('chai');
 var {rollup} = require('rollup');
-var rollupPluginNodeResolve = require('rollup-plugin-node-resolve');
+var {nodeResolve: rollupPluginNodeResolve} = require('@rollup/plugin-node-resolve');
 var fs = require('fs');
 var {exec} = require('child_process');
 
@@ -31,6 +31,16 @@ describe("async umd", () => {
         methods.forEach((methodName) => {
             expect(async[methodName]).to.be.a("function");
         });
+    });
+});
+
+describe("async cjs vs umd", () => {
+    it("should expose the same names in both builds", () => {
+        // The UMD bundle is rolled up straight from the ES sources, the CJS
+        // modules go through Babel: the two export lists must not drift.
+        var cjs = require("../build/");
+        var umd = require("../build/dist/async.js");
+        expect(Object.keys(cjs).sort()).to.eql(Object.keys(umd).sort());
     });
 });
 

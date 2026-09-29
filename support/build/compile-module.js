@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 
 const yargs = require('yargs');
+const {hideBin} = require('yargs/helpers');
 const fs = require('fs');
-const {transformFile} = require('babel-core');
-const pluginCJS = require('babel-plugin-transform-es2015-modules-commonjs');
+const {transformFile} = require('@babel/core');
+const pluginCJS = require('@babel/plugin-transform-modules-commonjs');
 const pluginModuleExports = require('babel-plugin-add-module-exports');
 
-compileModule(yargs.argv, (err) => {
+compileModule(yargs(hideBin(process.argv)).argv, (err) => {
     if (err) throw err;
 })
 
@@ -19,6 +20,7 @@ function compileModule(options, callback) {
 
     transformFile(file, {
         babelrc: false,
+        configFile: false,
         ast: false,
         plugins
     }, (err, content) => {
