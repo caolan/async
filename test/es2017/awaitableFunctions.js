@@ -308,6 +308,16 @@ module.exports = function () {
         });
         expect(calls).to.eql(['a', 'c', 'b'])
     });
+    it('should return a Promise: auto with no tasks', () => {
+        return async.auto({}).then(result => {
+            expect(result).to.equal(undefined)
+        })
+    });
+    it('should return a Promise: auto with no tasks and a concurrency limit', () => {
+        return async.auto({}, 2).then(result => {
+            expect(result).to.equal(undefined)
+        })
+    });
     it('should return a Promise: autoInject', async () => {
         const calls = []
         await async.autoInject({
@@ -322,6 +332,11 @@ module.exports = function () {
             }
         }, 1);
         expect(calls).to.eql(['a', 'c', 'b', 'a', 'c'])
+    });
+    it('should return a Promise: autoInject with no tasks', () => {
+        return async.autoInject({}).then(result => {
+            expect(result).to.equal(undefined)
+        })
     });
 
     it('should return a Promise: compose', async () => {
