@@ -36,7 +36,7 @@
     "chai": "^4.2.0",
     "cheerio": "^1.0.0",
     "es6-promise": "^4.2.8",
-    "eslint": "^8.6.0",
+    "eslint": "^10.11.0",
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "fs-extra": "^11.1.1",
     "jsdoc": "^4.0.3",
