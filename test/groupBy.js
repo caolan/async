@@ -5,6 +5,38 @@ var assert = require('assert');
 describe('groupBy', function() {
     this.timeout(250);
 
+    ['groupBy', 'groupByLimit', 'groupBySeries'].forEach((method) => {
+        var values = ['__proto__', 'constructor', 'toString', '__proto__', 'hasOwnProperty'];
+
+        function checkGroups(result) {
+            expect(Object.getPrototypeOf(result)).to.equal(Object.prototype);
+            expect(Object.keys(result).sort()).to.eql([
+                '__proto__', 'constructor', 'hasOwnProperty', 'toString'
+            ]);
+            expect(result.__proto__).to.eql(['__proto__', '__proto__']);
+            expect(result.constructor).to.eql(['constructor']);
+            expect(result.toString).to.eql(['toString']);
+            expect(result.hasOwnProperty).to.eql(['hasOwnProperty']);
+        }
+
+        it(`${method} groups values under prototype property names`, (done) => {
+            var args = [values, (value, next) => {
+                async.setImmediate(() => next(null, value));
+            }, (err, result) => {
+                checkGroups(result);
+                done(err);
+            }];
+            if (method === 'groupByLimit') args.splice(1, 0, 2);
+            async[method](...args);
+        });
+
+        it(`${method} resolves groups under prototype property names`, async () => {
+            var args = [values, async value => value];
+            if (method === 'groupByLimit') args.splice(1, 0, 2);
+            checkGroups(await async[method](...args));
+        });
+    });
+
     function groupByIteratee(callOrder, val, next) {
         setTimeout(() => {
             callOrder.push(val);
