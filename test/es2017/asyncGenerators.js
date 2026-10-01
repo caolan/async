@@ -28,6 +28,21 @@ module.exports = function () {
 
     this.retries(3);
 
+    it('should reject repeated iteratee callbacks for async generators', async () => {
+        async function * values () {
+            yield 1
+            yield 2
+        }
+
+        await async.eachOfLimit(values(), 1, (value, key, callback) => {
+            callback(null)
+            callback(null)
+        }).then(
+            () => { throw new Error('expected repeated callback to reject') },
+            err => { expect(err.message).to.equal('Callback was already called.') }
+        )
+    })
+
     it('should reject tryEach when the async generator fails before yielding a task', async () => {
         const error = new Error('iterator failed')
         async function * tasks () {
