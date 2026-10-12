@@ -3,6 +3,55 @@ var {expect} = require('chai');
 var assert = require('assert');
 
 describe('retryable', () => {
+    it('should return a Promise without data arguments', async () => {
+        let calls = 0;
+        const fn = async.retryable(3, cb => {
+            calls++;
+            cb(calls === 1 ? new Error('retry') : null, 42);
+        });
+        expect(await fn()).to.equal(42);
+        expect(calls).to.equal(2);
+    });
+
+    it('should reject with the task error without data arguments', async () => {
+        const error = new Error('failure');
+        const fn = async.retryable(2, cb => cb(error));
+        await fn().then(
+            () => assert.fail('should reject'),
+            err => expect(err).to.equal(error)
+        );
+    });
+
+    [undefined, null].forEach(callback => {
+        it(`should accept ${callback} as an omitted callback`, async () => {
+            const fn = async.retryable((value, cb) => cb(null, value));
+            expect(await fn('value', callback)).to.equal('value');
+        });
+    });
+
+    it('should not pass a missing callback as data to an async task', async () => {
+        const fn = async.retryable(async (...args) => args.length);
+        expect(await fn()).to.equal(0);
+    });
+
+    it('should preserve an undefined data argument', async () => {
+        const fn = async.retryable((value, cb) => {
+            expect(value).to.equal(undefined);
+            cb(null, 42);
+        });
+        expect(await fn(undefined)).to.equal(42);
+    });
+
+    it('should preserve callbacks without data arguments', done => {
+        const fn = async.retryable(cb => async.setImmediate(() => cb(null, 42)));
+        const result = fn((err, value) => {
+            expect(err).to.equal(null);
+            expect(value).to.equal(42);
+            done();
+        });
+        expect(result).to.equal(undefined);
+    });
+
     it('basics', (done) => {
         var calls = 0;
         var retryableTask = async.retryable(3, (arg, cb) => {
