@@ -63,6 +63,31 @@ describe('queue', function(){
         });
     });
 
+    ['queue', 'cargo', 'cargoQueue', 'priorityQueue'].forEach(queueType => {
+        const methods = queueType === 'priorityQueue' ? ['push', 'pushAsync'] :
+            ['push', 'unshift', 'pushAsync', 'unshiftAsync'];
+        methods.forEach(method => {
+            it(`returns an empty promise array for ${queueType}.${method} of an empty array`, async () => {
+                const q = async[queueType]((task, callback) => {
+                    callback(null, task);
+                });
+                const drained = q.drain();
+                const idleResults = q[method]([]);
+                expect(idleResults).to.eql([]);
+                expect(await Promise.all(idleResults)).to.eql([]);
+                await drained;
+
+                q.pause();
+                const pending = q.pushAsync(1);
+                const busyResults = q[method]([]);
+                expect(busyResults).to.eql([]);
+                expect(await Promise.all(busyResults)).to.eql([]);
+                q.resume();
+                expect(await pending).to.eql(queueType === 'cargo' || queueType === 'cargoQueue' ? [1] : 1);
+            });
+        });
+    });
+
     ['push', 'unshift', 'pushAsync', 'unshiftAsync'].forEach(method => {
         it(`waits for subsequent work after ${method} of an empty array`, async () => {
             let completed = false;
