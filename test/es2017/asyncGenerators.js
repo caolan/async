@@ -28,6 +28,78 @@ module.exports = function () {
 
     this.retries(3);
 
+    it('should accept synchronous next results from an async iterable', async () => {
+        const iterable = {
+            [Symbol.asyncIterator]: () => [1, 2, 3][Symbol.iterator]()
+        }
+        const nativeResults = []
+        for await (const value of iterable) nativeResults.push(value * 2)
+
+        expect(await async.mapLimit(iterable, 2, async value => value * 2))
+            .to.eql(nativeResults)
+    })
+
+    it('should accept an empty synchronous async iterable with a callback', (done) => {
+        const iterable = {
+            [Symbol.asyncIterator]: () => [][Symbol.iterator]()
+        }
+        async.mapLimit(iterable, 2, async value => value, (err, results) => {
+            expect(err).to.equal(null)
+            expect(results).to.eql([])
+            done()
+        })
+    })
+
+    it('should assimilate thenable next results from an async iterable', async () => {
+        const iterable = {
+            [Symbol.asyncIterator]: () => {
+                const iterator = [1, 2, 3][Symbol.iterator]()
+                return {
+                    next: () => ({then: resolve => resolve(iterator.next())})
+                }
+            }
+        }
+        expect(await async.mapLimit(iterable, 2, async value => value * 2))
+            .to.eql([2, 4, 6])
+    })
+
+    it('should report rejected thenable next results', async () => {
+        const error = new Error('next failed')
+        const iterable = {
+            [Symbol.asyncIterator]: () => ({
+                next: () => ({then: (resolve, reject) => reject(error)})
+            })
+        }
+        await async.each(iterable, async () => {}).then(
+            () => { throw new Error('expected each to reject') },
+            err => { expect(err).to.equal(error) }
+        )
+    })
+
+    it('should report synchronous next errors to the callback', (done) => {
+        const error = new Error('next failed')
+        const iterable = {
+            [Symbol.asyncIterator]: () => ({next: () => { throw error }})
+        }
+        async.each(iterable, async () => {}, err => {
+            expect(err).to.equal(error)
+            done()
+        })
+    })
+
+    it('should report a throwing next result then getter to the callback', (done) => {
+        const error = new Error('then failed')
+        const iterable = {
+            [Symbol.asyncIterator]: () => ({
+                next: () => ({get then() { throw error }})
+            })
+        }
+        async.each(iterable, async () => {}, err => {
+            expect(err).to.equal(error)
+            done()
+        })
+    })
+
     it('should reject tryEach when the async generator fails before yielding a task', async () => {
         const error = new Error('iterator failed')
         async function * tasks () {
