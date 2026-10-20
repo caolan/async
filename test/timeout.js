@@ -3,6 +3,23 @@ var {expect} = require('chai');
 
 describe('timeout', () => {
 
+    it('clears the timeout when the wrapped function throws', (done) => {
+        const taskError = new Error('task failed');
+        let calls = 0;
+        const wrapped = async.timeout(() => {
+            throw taskError;
+        }, 10);
+
+        expect(() => wrapped(() => {
+            calls++;
+        })).to.throw(taskError);
+
+        setTimeout(() => {
+            expect(calls).to.equal(0);
+            done();
+        }, 30);
+    });
+
     it('clears the timeout when the final callback throws', (done) => {
         const callbackError = new Error('callback failed');
         let calls = 0;
