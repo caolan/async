@@ -300,3 +300,34 @@ describe("reject", () => {
         })
     });
 });
+
+// Complete predicates out of order without relying on timer scheduling.
+describe('filter object ordering', () => {
+    ['filter', 'filterLimit', 'reject', 'rejectLimit'].forEach(method => {
+        [
+            {first: 1, second: 2, third: 3},
+            {'2.5': 1, '1.5': 2, '0.5': 3}
+        ].forEach(collection => {
+            it(`${method} preserves object enumeration order for ${Object.keys(collection)}`, done => {
+                const callbacks = [];
+                const iteratee = (value, callback) => {
+                    callbacks.push(() => callback(null,
+                        method.startsWith('reject') ? value === 2 : value !== 2));
+                };
+                const complete = (err, results) => {
+                    expect(err).to.equal(null);
+                    expect(results).to.eql([1, 3]);
+                    done();
+                };
+                if (method.endsWith('Limit')) {
+                    async[method](collection, 3, iteratee, complete);
+                } else {
+                    async[method](collection, iteratee, complete);
+                }
+                callbacks[2]();
+                callbacks[0]();
+                callbacks[1]();
+            });
+        });
+    });
+});
