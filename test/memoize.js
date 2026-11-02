@@ -67,6 +67,61 @@ describe("memoize", () => {
         }
     });
 
+    it('preserves a pending cache hit when its cache entry is removed', (done) => {
+        var memoized = async.memoize((key, callback) => callback(null, key));
+
+        memoized('key', () => {});
+        memoized('key', (err, result) => {
+            expect(err).to.equal(null);
+            expect(result).to.equal('key');
+            expect(memoized.memo).not.to.have.property('key');
+            done();
+        });
+
+        delete memoized.memo.key;
+    });
+
+    it('preserves a pending cache hit when its cache entry is refilled', (done) => {
+        var calls = 0;
+        var memoized = async.memoize((key, callback) => {
+            calls++;
+            callback(null, key, calls);
+        });
+
+        memoized('key', () => {});
+        memoized('key', (err, key, call) => {
+            expect(err).to.equal(null);
+            expect(key).to.equal('key');
+            expect(call).to.equal(1);
+            expect(calls).to.equal(2);
+            done();
+        });
+
+        delete memoized.memo.key;
+        memoized('key', (err, key, call) => {
+            expect(err).to.equal(null);
+            expect(key).to.equal('key');
+            expect(call).to.equal(2);
+        });
+    });
+
+    it('preserves a pending cache hit when its cache entry is replaced', (done) => {
+        var memoized = async.memoize((key, callback) => callback(null, 'original'));
+
+        memoized('key', () => {});
+        memoized('key', (err, result) => {
+            expect(err).to.equal(null);
+            expect(result).to.equal('original');
+            memoized('key', (cachedErr, cachedResult) => {
+                expect(cachedErr).to.equal(null);
+                expect(cachedResult).to.equal('replacement');
+                done();
+            });
+        });
+
+        memoized.memo.key = ['replacement'];
+    });
+
     it('unmemoize', (done) => {
         var call_order = [];
 
