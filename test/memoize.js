@@ -133,6 +133,83 @@ describe("memoize", () => {
         });
     });
 
+    it('allows retrying a key after a synchronous throw', (done) => {
+        var testerr = new Error('test');
+        var calls = 0;
+        var memoized = async.memoize((key, callback) => {
+            calls++;
+            if (calls === 1) throw testerr;
+            async.setImmediate(() => callback(null, key));
+        });
+
+        assert.throws(() => memoized('key', () => {}), err => err === testerr);
+
+        memoized('key', (err, result) => {
+            expect(err).to.equal(null);
+            expect(result).to.equal('key');
+            memoized('key', (cachedErr, cachedResult) => {
+                expect(cachedErr).to.equal(null);
+                expect(cachedResult).to.equal('key');
+                expect(calls).to.equal(2);
+                done();
+            });
+        });
+        expect(calls).to.equal(2);
+    });
+
+    it('preserves a new pending call when an earlier callback throws', (done) => {
+        var testerr = new Error('test');
+        var callbackError = new Error('callback');
+        var calls = 0;
+        var memoized = async.memoize((key, callback) => {
+            calls++;
+            if (calls === 1) return callback(testerr);
+            async.setImmediate(() => callback(null, key));
+        });
+
+        assert.throws(() => memoized('key', () => {
+            memoized('key', (err, result) => {
+                expect(err).to.equal(null);
+                expect(result).to.equal('key');
+                expect(calls).to.equal(2);
+                done();
+            });
+            throw callbackError;
+        }), err => err === callbackError);
+    });
+
+    it('ignores a late callback from an invocation that threw', (done) => {
+        var testerr = new Error('test');
+        var calls = 0;
+        var completeFirst;
+        var completeRetry;
+        var memoized = async.memoize((key, callback) => {
+            calls++;
+            if (calls === 1) {
+                completeFirst = callback;
+                throw testerr;
+            }
+            completeRetry = callback;
+        });
+
+        assert.throws(() => memoized('key', () => {
+            throw new Error('failed invocation should not complete');
+        }), err => err === testerr);
+
+        memoized('key', (err, result) => {
+            expect(err).to.equal(null);
+            expect(result).to.equal('retry');
+            memoized('key', (cachedErr, cachedResult) => {
+                expect(cachedErr).to.equal(null);
+                expect(cachedResult).to.equal('retry');
+                expect(calls).to.equal(2);
+                done();
+            });
+        });
+        completeFirst(null, 'first');
+        completeRetry(null, 'retry');
+    });
+
     it('multiple calls', (done) => {
         var fn = function (arg1, arg2, callback) {
             assert(true);
