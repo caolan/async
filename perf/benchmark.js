@@ -10,7 +10,7 @@ var async = require("../index.js");
 var suiteConfigs = require("./suites.js");
 var semver = require("semver");
 
-var args = require("yargs")
+var args = require("yargs/yargs")(process.argv.slice(2))
     .usage("Usage: $0 [options] [tag1] [tag2]")
     .describe("g", "run only benchmarks whose names match this regex")
     .alias("g", "grep")
@@ -21,6 +21,7 @@ var args = require("yargs")
     .describe("l", "maximum running time per test (in seconds)")
     .alias("l", "limit")
     .default("l", 2)
+    .version(require("../package.json").version)
     .help("h")
     .alias("h", "help")
     .example("$0 0.9.2 0.9.0", "Compare v0.9.2 with v0.9.0")
@@ -29,7 +30,7 @@ var args = require("yargs")
     .example("$0 -g each", "only run the each(), eachLimit() and  " +
         "eachSeries() benchmarks")
     .example("")
-    .argv;
+    .parse();
 
 var grep = new RegExp(args.g, "i");
 var reject = new RegExp(args.i, "i");
