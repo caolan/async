@@ -464,3 +464,59 @@ describe('concat', function() {
         });
     });
 });
+
+
+describe('concat aggregation compatibility', () => {
+    ['concat', 'concatLimit', 'concatSeries'].forEach(method => {
+        function run(input, iteratee, callback) {
+            return method === 'concatLimit'
+                ? async.concatLimit(input, 2, iteratee, callback)
+                : async[method](input, iteratee, callback);
+        }
+
+        it(`${method} preserves holes and offsets in sparse results`, done => {
+            var sparse = new Array(10001);
+            sparse[10000] = 'last';
+            run([sparse, ['tail']], (value, next) => next(null, value), (err, result) => {
+                assert.ifError(err);
+                assert.strictEqual(result.length, 10002);
+                assert.deepStrictEqual(Object.keys(result), ['10000', '10001']);
+                assert.strictEqual(result[10000], 'last');
+                assert.strictEqual(result[10001], 'tail');
+                assert.deepStrictEqual(Object.keys(sparse), ['10000']);
+                done();
+            });
+        });
+
+        it(`${method} respects spreadability and single-level flattening`, done => {
+            var spreadable = {0: 'first', 2: 'third', length: 3};
+            spreadable[Symbol.isConcatSpreadable] = true;
+            var keptArray = ['kept'];
+            keptArray[Symbol.isConcatSpreadable] = false;
+            var nested = ['nested'];
+            run([0], (value, next) => next(null, spreadable, keptArray, [nested]), (err, result) => {
+                assert.ifError(err);
+                assert.strictEqual(result.length, 5);
+                assert.deepStrictEqual(Object.keys(result), ['0', '2', '3', '4']);
+                assert.strictEqual(result[0], 'first');
+                assert.strictEqual(result[2], 'third');
+                assert.strictEqual(result[3], keptArray);
+                assert.strictEqual(result[4], nested);
+                done();
+            });
+        });
+
+        it(`${method} retains variadic falsy values in input order`, done => {
+            run([1, 2], (value, next) => next(null, [value], null, undefined, false), (err, result) => {
+                assert.ifError(err);
+                assert.deepStrictEqual(result, [1, null, undefined, false, 2, null, undefined, false]);
+                done();
+            });
+        });
+
+        it(`${method} retains Promise results`, () => {
+            return run([1, 2], (value, next) => next(null, [value, value]))
+                .then(result => assert.deepStrictEqual(result, [1, 1, 2, 2]));
+        });
+    });
+});
