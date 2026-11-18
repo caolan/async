@@ -489,4 +489,36 @@ describe('auto', () => {
         });
     });
 
+    it('auto with a dependency listed more than once', (done) => {
+        var callOrder = [];
+        async.auto({
+            task1(callback) {
+                callOrder.push('task1');
+                callback(null, 1);
+            },
+            task2: ['task1', 'task1', function(results, callback) {
+                callOrder.push('task2');
+                callback(null, results.task1 + 1);
+            }],
+            task3: ['task2', 'task1', 'task2', function(results, callback) {
+                callOrder.push('task3');
+                callback(null, results.task2 + 1);
+            }]
+        }, (err, results) => {
+            expect(err).to.equal(null);
+            expect(results).to.eql({task1: 1, task2: 2, task3: 3});
+            expect(callOrder).to.eql(['task1', 'task2', 'task3']);
+            done();
+        });
+    });
+
+    it('auto still detects a cycle when a dependency is listed more than once', () => {
+        expect(() => {
+            async.auto({
+                task1: ['task2', 'task2', function(results, callback) { callback(null); }],
+                task2: ['task1', function(results, callback) { callback(null); }]
+            });
+        }).to.throw(/recursive dependency/);
+    });
+
 });
