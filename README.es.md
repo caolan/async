@@ -7,7 +7,7 @@
 [![jsDelivr Hits](https://data.jsdelivr.com/v1/package/npm/async/badge?style=rounded)](https://www.jsdelivr.com/package/npm/async)
 
 
-Async is a utility module which provides straight-forward, powerful functions for working with [asynchronous JavaScript](http://caolan.github.io/async/global.html). Although originally designed for use with [Node.js](https://nodejs.org/) and installable via `npm install --save async`, it can also be used directly in the browser.
+Async is a utility module which provides straight-forward, powerful functions for working with [asynchronous JavaScript](https://caolan.github.io/async/v3/global.html). Although originally designed for use with [Node.js](https://nodejs.org/) and installable via `npm install --save async`, it can also be used directly in the browser.
 
 This version of the package is optimized for building with webpack. If you use Async in Node.js, install [`async`](https://www.npmjs.com/package/async) instead.
 
