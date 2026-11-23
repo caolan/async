@@ -75,6 +75,16 @@ describe('asyncify', () => {
         })
     })
 
+    it('propagates symbol rejections from async functions', (done) => {
+        async.asyncify(async () => {
+            throw Symbol('failure');
+        })((err) => {
+            assert(err instanceof Error);
+            expect(err.message).to.equal('Symbol(failure)');
+            done();
+        }).catch(done);
+    });
+
     describe('promisified', () => {
         function promisifiedTests(Promise) {
             it('resolve', (done) => {
@@ -118,6 +128,17 @@ describe('asyncify', () => {
                     expect(err.message).to.eql('');
                     done();
                 });
+            });
+
+            it('reject with a symbol reason', (done) => {
+                var promisified = function() {
+                    return Promise.reject(Symbol('failure'));
+                };
+                async.asyncify(promisified)((err) => {
+                    assert(err instanceof Error);
+                    expect(err.message).to.equal('Symbol(failure)');
+                    done();
+                }).catch(done);
             });
 
             it('callback error @nodeonly', (done) => {
