@@ -75,6 +75,21 @@ describe('asyncify', () => {
         })
     })
 
+    it('delivers a Symbol thrown by a native async function', async () => {
+        const reason = Symbol('native failure');
+        let callbackCalls = 0;
+        let receivedError;
+        await async.asyncify(async () => {
+            throw reason;
+        })((err) => {
+            callbackCalls++;
+            receivedError = err;
+        });
+        expect(callbackCalls).to.equal(1);
+        assert(receivedError instanceof Error);
+        expect(receivedError.message).to.equal('Symbol(native failure)');
+    });
+
     describe('promisified', () => {
         function promisifiedTests(Promise) {
             it('resolve', (done) => {
@@ -104,6 +119,20 @@ describe('asyncify', () => {
                     assert(err);
                     expect(err.message).to.equal("argument rejected");
                     done();
+                });
+            });
+
+            it('delivers a Symbol rejection to the callback', () => {
+                const reason = Symbol('failure');
+                let callbackCalls = 0;
+                let receivedError;
+                return async.asyncify(() => Promise.reject(reason))((err) => {
+                    callbackCalls++;
+                    receivedError = err;
+                }).then(() => {
+                    expect(callbackCalls).to.equal(1);
+                    assert(receivedError instanceof Error);
+                    expect(receivedError.message).to.equal('Symbol(failure)');
                 });
             });
 
