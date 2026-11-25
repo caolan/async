@@ -3,6 +3,38 @@ var {expect} = require('chai');
 
 describe('priorityQueue', () => {
 
+    [0, 1, 2, 3, 4, 5, 6].forEach(removed => {
+        it(`preserves priority and FIFO ties after removing task ${removed}`, (done) => {
+            const tasks = [3, 1, 2, 1, 0, 4, 1].map((priority, id) => ({id, priority}));
+            const processed = [];
+            const callbacks = [];
+            const q = async.priorityQueue((task, callback) => {
+                processed.push(task.id);
+                async.setImmediate(callback);
+            }, 1);
+            q.pause();
+            tasks.forEach(task => {
+                q.push(task, task.priority, () => callbacks.push(task.id));
+            });
+            q.remove(({data}) => data.id === removed);
+            expect(q.length()).to.equal(tasks.length - 1);
+
+            const later = {id: tasks.length, priority: 1};
+            q.push(later, later.priority, () => callbacks.push(later.id));
+            const expected = tasks.concat(later)
+                .filter(task => task.id !== removed)
+                .sort((a, b) => a.priority - b.priority || a.id - b.id)
+                .map(task => task.id);
+            q.drain(() => {
+                expect(processed).to.eql(expected);
+                expect(callbacks).to.eql(expected);
+                expect(q.idle()).to.equal(true);
+                done();
+            });
+            q.resume();
+        });
+    });
+
     it('priorityQueue', (done) => {
         var call_order = [];
 
