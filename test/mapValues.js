@@ -61,16 +61,6 @@ describe('mapValues', () => {
             }, 50);
         });
 
-        it('prototype pollution', (done) => {
-            var input = JSON.parse('{"a": 1, "b": 2, "__proto__": { "exploit": true }}');
-
-            async.mapValues(input, (val, key, next) => {
-                next(null, val)
-            }, (err, result) => {
-                expect(result.exploit).to.equal(undefined)
-                done(err);
-            })
-        })
     });
 
     context('mapValues', () => {
@@ -158,6 +148,45 @@ describe('mapValues', () => {
                 expect(callOrder).to.eql([1, 'a', 2, 'b']);
                 done();
             }, 50);
+        });
+    });
+
+    ['mapValues', 'mapValuesLimit', 'mapValuesSeries'].forEach(method => {
+        context(`${method} prototype-named keys`, () => {
+            function inputArgs() {
+                var input = JSON.parse('{"a":1,"constructor":2,"toString":3,"hasOwnProperty":4,"__proto__":{"polluted":true}}');
+                return method === 'mapValuesLimit' ? [input, 2] : [input];
+            }
+
+            function checkResult(result, visited) {
+                expect(visited.sort()).to.eql(['a', 'constructor', 'hasOwnProperty', 'toString']);
+                expect(result).to.eql({a: 1, constructor: 2, toString: 3, hasOwnProperty: 4});
+                expect(Object.getPrototypeOf(result)).to.equal(Object.prototype);
+                expect(Object.prototype.hasOwnProperty.call(result, '__proto__')).to.equal(false);
+                expect(result.polluted).to.equal(undefined);
+            }
+
+            it('preserves ordinary keys and skips __proto__ with a callback', done => {
+                var visited = [];
+                async[method](...inputArgs(), (value, key, next) => {
+                    visited.push(key);
+                    next(null, value);
+                }, (err, result) => {
+                    if (err) return done(err);
+                    checkResult(result, visited);
+                    done();
+                });
+            });
+
+            it('preserves ordinary keys and skips __proto__ with a Promise', () => {
+                var visited = [];
+                return async[method](...inputArgs(), (value, key, next) => {
+                    visited.push(key);
+                    next(null, value);
+                }).then(result => {
+                    checkResult(result, visited);
+                });
+            });
         });
     });
 });
